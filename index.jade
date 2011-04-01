@@ -21,18 +21,29 @@ label Scale
       # weird indentation bug!!
        tone += Number(scale[index % scale.length]) # cycling hack
   window.updkeys = _.debounce(updkeys, 400)
+
+  bindhotkey = (key, downfn, upfn) ->
+    shortcut.add(key, downfn)
+    shortcut.add(key, upfn, {"type": "keyup"})
+
   bindkeytone = (key, tone) ->
       window.keys[key] = tone
       $("#keys").append("<div class='key' id='key_" + key + "'> " + key + " <br> " + tone)
       # TODO make the shortcut more dynamic: grab all keys and determine tone based on the key
-      shortcut.add(key, ()-> playkey(key))
-  window.getkeytone = (key) -> window.keys[key] # TODO convert to upper case first
-  window.playkey = (key) ->
+      downfn = ()-> playkey(key)
+      upfn = () -> liftkey(key)
+      bindhotkey(key, downfn, upfn)
+
+  getkeytone = (key) -> window.keys[key] # TODO convert to upper case first
+
+  playkey = (key) ->
     tone = getkeytone(key)
     if not tone 
       return
-    $("#key_" + key).css("background-color", "hsl(200, 40%, 10%)")
+    $("#key_" + key).css("background-color", "hsl(200, 40%, 80%)")
 
-    
+  liftkey = (key) ->
+    $("#key_" + key).css("background-color", "white")
+
   updkeys()
 
