@@ -36,14 +36,21 @@ label Scale
 
   getkeytone = (key) -> window.keys[key] # TODO convert to upper case first
 
+  getkeydiv = (key) -> $("#key_" + key)
+
   playkey = (key) ->
     tone = getkeytone(key)
     if not tone 
       return
-    $("#key_" + key).css("background-color", "hsl(200, 40%, 80%)")
+    getkeydiv(key).stop()
+    getkeydiv(key).css("background-color", "hsl(200, 40%, 80%)")
 
   liftkey = (key) ->
-    $("#key_" + key).css("background-color", "white")
+    tone = getkeytone(key)
+    if not tone 
+      return
+    getkeydiv(key).stop()
+    getkeydiv(key).animate({"background-color": "white"}, 100)
 
   updkeys()
 
