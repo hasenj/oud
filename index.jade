@@ -1,7 +1,7 @@
 div Web Oud
 
-label Starting Note
-  input#start(type="input", value="40", onkeyup="updkeys()")
+label Starting tone
+  input#start(type="input", value="10", onkeyup="updkeys()")
 label Scale
   input#scale(type="input", value="1 1 0.5 1 1 1 0.5", onkeyup="updkeys()")
 
@@ -9,16 +9,30 @@ label Scale
 
 :coffeescript
   fval = (id)-> $("#" + id).val() # field value
-  updkeys = () =>
+  window.keys = {}
+  updkeys = () ->
     keys = "QWERTYUIOP[]"
     scale = fval("scale").match(/[\\d.]+/g)
-    scale = scale.concat scale #// hack for cycling
-    note = Number(fval("start"))
+    scale = scale.concat scale # hack for cycling
+    tone = Number(fval("start"))
     $("#keys").text("")
     for key, index in keys
-      $("#keys").append("<div class='key'>" + key + "<br>" + note)
+      bindkeytone(key, tone)
       # weird indentation bug!!
-       note += Number(scale[index % scale.length]) # cycling hack
-  updkeys()
+       tone += Number(scale[index % scale.length]) # cycling hack
   window.updkeys = _.debounce(updkeys, 400)
+  bindkeytone = (key, tone) ->
+      window.keys[key] = tone
+      $("#keys").append("<div class='key' id='key_" + key + "'> " + key + " <br> " + tone)
+      # TODO make the shortcut more dynamic: grab all keys and determine tone based on the key
+      shortcut.add(key, ()-> playkey(key))
+  window.getkeytone = (key) -> window.keys[key] # TODO convert to upper case first
+  window.playkey = (key) ->
+    tone = getkeytone(key)
+    if not tone 
+      return
+    $("#key_" + key).css("background-color", "hsl(200, 40%, 10%)")
+
+    
+  updkeys()
 
