@@ -1,28 +1,24 @@
 div Web Oud
 
 label Starting Note
-  input#start(type="input", value="40")
+  input#start(type="input", value="40", onkeyup="updkeys()")
 label Scale
-  input#scale(type="input", value="1 1 0.5  1 1 1 0.5")
+  input#scale(type="input", value="1 1 0.5 1 1 1 0.5", onkeyup="updkeys()")
 
 #keys
 
 :coffeescript
   fval = (id)-> $("#" + id).val() # field value
-  keys = "QWERTYUIOP[]"
-  scale = fval("scale").match(/[\\d.]+/g)
-  scale = scale.concat scale #// hack for cycling
-  note = Number(fval("start"))
-  for [key, dist] in _.zip(keys, scale)
-    console.log(key, dist)
-    if not key 
-      break
-    $("#keys").append("<div class='key'>" + key + "<br>" + note)
-    note += Number(dist)
-
-
-
-
-
-
+  updkeys = () =>
+    keys = "QWERTYUIOP[]"
+    scale = fval("scale").match(/[\\d.]+/g)
+    scale = scale.concat scale #// hack for cycling
+    note = Number(fval("start"))
+    $("#keys").text("")
+    for key, index in keys
+      $("#keys").append("<div class='key'>" + key + "<br>" + note)
+      # weird indentation bug!!
+       note += Number(scale[index % scale.length]) # cycling hack
+  updkeys()
+  window.updkeys = _.debounce(updkeys, 400)
 
