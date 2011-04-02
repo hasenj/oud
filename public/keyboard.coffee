@@ -27,7 +27,7 @@ fval = (id)-> $("#" + id).val() # field value
 
 window.keys = {}
 updkeys = () ->
-    keys = "QWERTYUIOP[]"
+    keys = "QWERTYUIOPASDFGH"
     scale = fval("scale").match(/[\d.]+/g)
     offset = Number fval("offset")
     start = Number fval("start")
