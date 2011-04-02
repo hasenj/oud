@@ -18,7 +18,7 @@ gennotes = (scale, starttone, offset, length) ->
         tone -= getscalepoint scale, index
         tones.unshift tone
     if offset > 0
-        for inex in [0..offset]
+        for index in [0..offset-1]
             tones.shift()
     console.log tones
     return tones
