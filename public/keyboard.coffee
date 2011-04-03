@@ -20,7 +20,7 @@ gennotes = (scale, starttone, offset, length) ->
     if offset > 0
         for index in [0..offset-1]
             tones.shift()
-    console.log tones
+    # console.log tones
     return tones
 
 fval = (id)-> $("#" + id).val() # field value
@@ -62,7 +62,7 @@ tonefreq = (tone) ->
 
 window.channels = {}
 
-SRATE = 44100
+SRATE = 96000
 
 makechannel = () ->
     channel = new Audio()
@@ -74,15 +74,27 @@ getkeychannel = (key) ->
         channels[key] = makechannel()
     channels[key]
 
+genwave = (samples, freq) ->
+    k = 2 * Math.PI * freq / SRATE
+    gain = 0.2
+    for s,i in samples
+        samples[i] = gain * Math.sin(k * i) 
+
+    # make the wave end at 0
+    for i in [samples.length..samples.length-1000]
+        # find 0
+        if Math.abs(samples[i]) < 0.01
+            console.log "found zero at", i
+            break
+        samples[i] = 0
+    return samples
+
 playtone = (tone, channel) ->
     if not channel?
         channel = makechannel()
     samples = new Float32Array( SRATE )
     freq = tonefreq(tone)
-    k = 2 * Math.PI * freq / SRATE
-    for s,i in samples
-        samples[i] = 0.3 * Math.sin(k * i) 
-    channel.mozWriteAudio(samples)
+    channel.mozWriteAudio(genwave(samples, freq))
 
 playkey = (key) ->
     tone = getkeytone(key)
