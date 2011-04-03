@@ -29,7 +29,7 @@ window.keys = {}
 updkeys = () ->
     keys = "QWERTYUIOPASDFGHJK"
     scale = fval("scale").match(/[\d.]+/g)
-    offset = Number fval("offset")
+    offset = - Number fval("offset")
     start = Number fval("start")
     tones = gennotes scale, start, offset, keys.length
     $("#keys").text("")
@@ -77,11 +77,11 @@ getkeychannel = (key) ->
 playtone = (tone, channel) ->
     if not channel?
         channel = makechannel()
-    samples = new Float32Array( SRATE/2 )
+    samples = new Float32Array( SRATE )
     freq = tonefreq(tone)
     k = 2 * Math.PI * freq / SRATE
     for s,i in samples
-        samples[i] = Math.sin(k * i) 
+        samples[i] = 0.3 * Math.sin(k * i) 
     channel.mozWriteAudio(samples)
 
 playkey = (key) ->
