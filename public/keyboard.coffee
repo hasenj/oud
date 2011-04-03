@@ -60,7 +60,7 @@ tonefreq = (tone) ->
    steps = 6 # DON'T CHANGE!!
    return base * Math.pow(2, tone/steps)
 
-window.channels = {}
+channels = {}
 
 SRATE = 96000
 
@@ -74,29 +74,27 @@ getkeychannel = (key) ->
         channels[key] = makechannel()
     channels[key]
 
-genwave = (samples, freq) ->
+genwave = (freq, duration) ->
+    samples = new Float32Array(SRATE * 9 * duration)
     k = 2 * Math.PI * freq / SRATE
-    gain = 0.2
+    gain = 0.1
     for s,i in samples
+        gain *= 0.9999
         samples[i] = gain * Math.sin(k * i) 
-
-    # make the wave end at 0
-    for i in [samples.length..samples.length-1000]
-        # find 0
-        if Math.abs(samples[i]) < 0.01
-            console.log "found zero at", i
-            break
-        samples[i] = 0
     return samples
 
 playtone = (tone, channel) ->
     if not channel?
         channel = makechannel()
-    samples = new Float32Array( SRATE )
     freq = tonefreq(tone)
-    channel.mozWriteAudio(genwave(samples, freq))
+    channel.mozWriteAudio(genwave(freq, 0.4))
+
+downkeys = {}
 
 playkey = (key) ->
+    if downkeys[key]
+        return # already pressed
+    downkeys[key] = true
     tone = getkeytone(key)
     if not tone? 
       return
@@ -105,6 +103,7 @@ playkey = (key) ->
     playtone(tone, getkeychannel key)
 
 liftkey = (key) ->
+    downkeys[key] = false
     tone = getkeytone(key)
     if not tone?
       return
