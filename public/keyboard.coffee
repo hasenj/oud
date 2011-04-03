@@ -27,7 +27,7 @@ fval = (id)-> $("#" + id).val() # field value
 
 window.keys = {}
 updkeys = () ->
-    keys = "QWERTYUIOPASDFGH"
+    keys = "QWERTYUIOPASDFGHJK"
     scale = fval("scale").match(/[\d.]+/g)
     offset = Number fval("offset")
     start = Number fval("start")
@@ -60,14 +60,14 @@ playkey = (key) ->
     if not tone 
       return
     getkeydiv(key).stop()
-    getkeydiv(key).css("background-color", "hsl(200, 40%, 80%)")
+    getkeydiv(key).css("background-color", "hsl(210, 90%, 90%)")
 
 liftkey = (key) ->
     tone = getkeytone(key)
     if not tone 
       return
     getkeydiv(key).stop()
-    getkeydiv(key).animate({"background-color": "white"}, 300)
+    getkeydiv(key).animate({"background-color": "#fdfdfd"}, 300)
 
 updkeys()
 
