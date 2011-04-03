@@ -43,7 +43,9 @@ bindhotkey = (key, downfn, upfn) ->
 
 bindkeytone = (key, tone) ->
       window.keys[key] = tone
-      $("#keys").append("<div class='key' id='key_" + key + "'> " + key + " <br> " + tone)
+      tonespan = $("<div/>").addClass("tone").html(tone)
+      keydiv = $("<div/>").addClass("key").attr("id", "key_" + key).html(key).append(tonespan)
+      $("#keys").append(keydiv)
       # TODO make the shortcut more dynamic: grab all keys and determine tone based on the key
       downfn = ()-> playkey(key)
       upfn = () -> liftkey(key)
