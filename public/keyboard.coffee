@@ -62,7 +62,7 @@ tonefreq = (tone) ->
 
 channels = {}
 
-SRATE = 96000
+SRATE = 20000
 
 makechannel = () ->
     channel = new Audio()
@@ -74,12 +74,12 @@ getkeychannel = (key) ->
         channels[key] = makechannel()
     channels[key]
 
-genwave = (freq, duration) ->
-    samples = new Float32Array(SRATE * 9 * duration)
+genwave = (freq) ->
+    samples = new Float32Array(SRATE) # duration)
     k = 2 * Math.PI * freq / SRATE
     gain = 0.1
     for s,i in samples
-        gain *= 0.9999
+        gain *= 0.9994
         samples[i] = gain * Math.sin(k * i) 
     return samples
 
@@ -87,7 +87,7 @@ playtone = (tone, channel) ->
     if not channel?
         channel = makechannel()
     freq = tonefreq(tone)
-    channel.mozWriteAudio(genwave(freq, 0.4))
+    channel.mozWriteAudio(genwave freq)
 
 downkeys = {}
 
