@@ -62,32 +62,38 @@ tonefreq = (tone) ->
 
 window.channels = {}
 
-playtone = (tone) ->
-    if not window.channels[tone]
-        output = new Audio()
-        output.mozSetup( 1, 44100 )
-        window.channels[tone] = output
-    output = window.channels[tone]
+makechannel = () ->
+    channel = new Audio()
+    channel.mozSetup( 1, 44100 )
+    return channel
+
+getkeychannel = (key) ->
+    if not channels[key]
+        channels[key] = makechannel()
+    channels[key]
+
+playtone = (tone, channel) ->
+    if not channel?
+        channel = makechannel()
     samples = new Float32Array( 22050 )
     freq = tonefreq(tone)
-    console.log "n, freq: ", tone, freq
+    console.log "n, freq: ", tone, " | ", freq
     k = 2 * Math.PI * freq / 44100
     for s,i in samples
         samples[i] = Math.sin(k * i) # TODO calc frequency
-    output.mozWriteAudio(samples)
-  
+    channel.mozWriteAudio(samples)
 
 playkey = (key) ->
     tone = getkeytone(key)
-    if not tone 
+    if not tone? 
       return
     getkeydiv(key).stop()
     getkeydiv(key).css("background-color", "hsl(210, 90%, 90%)")
-    playtone(tone)
+    playtone(tone, getkeychannel key)
 
 liftkey = (key) ->
     tone = getkeytone(key)
-    if not tone 
+    if not tone?
       return
     getkeydiv(key).stop()
     getkeydiv(key).animate({"background-color": "#fdfdfd"}, 300)
