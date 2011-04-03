@@ -33,7 +33,7 @@ updkeys = () ->
     start = Number fval("start")
     tones = gennotes scale, start, offset, keys.length
     $("#keys").text("")
-    for [key, tone] in _.zip(keys, tones) when key and tone
+    for [key, tone] in _.zip(keys, tones) when key? and tone?
       bindkeytone key, tone
 window.updkeys = _.debounce(updkeys, 400)
 
@@ -55,12 +55,35 @@ getkeytone = (key) -> window.keys[key] # TODO convert to upper case first
 
 getkeydiv = (key) -> $("#key_" + key)
 
+tonefreq = (tone) ->
+   base = 440 # ok to change (only to experiment with a different base)
+   steps = 6 # DON'T CHANGE!!
+   return base * Math.pow(2, tone/steps)
+
+window.channels = {}
+
+playtone = (tone) ->
+    if not window.channels[tone]
+        output = new Audio()
+        output.mozSetup( 1, 44100 )
+        window.channels[tone] = output
+    output = window.channels[tone]
+    samples = new Float32Array( 22050 )
+    freq = tonefreq(tone)
+    console.log "n, freq: ", tone, freq
+    k = 2 * Math.PI * freq / 44100
+    for s,i in samples
+        samples[i] = Math.sin(k * i) # TODO calc frequency
+    output.mozWriteAudio(samples)
+  
+
 playkey = (key) ->
     tone = getkeytone(key)
     if not tone 
       return
     getkeydiv(key).stop()
     getkeydiv(key).css("background-color", "hsl(210, 90%, 90%)")
+    playtone(tone)
 
 liftkey = (key) ->
     tone = getkeytone(key)
