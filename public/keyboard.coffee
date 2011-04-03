@@ -51,7 +51,7 @@ bindkeytone = (key, tone) ->
       upfn = () -> liftkey(key)
       bindhotkey(key, downfn, upfn)
 
-getkeytone = (key) -> window.keys[key] # TODO convert to upper case first
+getkeytone = (key) -> window.keys[key] # TODO convert to upper case first?
 
 getkeydiv = (key) -> $("#key_" + key)
 
@@ -62,9 +62,11 @@ tonefreq = (tone) ->
 
 window.channels = {}
 
+SRATE = 44100
+
 makechannel = () ->
     channel = new Audio()
-    channel.mozSetup( 1, 44100 )
+    channel.mozSetup( 1, SRATE )
     return channel
 
 getkeychannel = (key) ->
@@ -75,12 +77,11 @@ getkeychannel = (key) ->
 playtone = (tone, channel) ->
     if not channel?
         channel = makechannel()
-    samples = new Float32Array( 22050 )
+    samples = new Float32Array( SRATE/2 )
     freq = tonefreq(tone)
-    console.log "n, freq: ", tone, " | ", freq
-    k = 2 * Math.PI * freq / 44100
+    k = 2 * Math.PI * freq / SRATE
     for s,i in samples
-        samples[i] = Math.sin(k * i) # TODO calc frequency
+        samples[i] = Math.sin(k * i) 
     channel.mozWriteAudio(samples)
 
 playkey = (key) ->
