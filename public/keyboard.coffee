@@ -151,7 +151,6 @@ maqam_presets =
     rast2: ["0", "1 0.75 0.75 1 1 0.5 1", "0"]
     rast_comb: ["0", "1 0.75 0.75 1 1 0.5 0.25 0.25", "0"]
 
-
 choose_maqam = (name) ->
     [start, scale, offset] = maqam_presets[name]
     $("#start").val(start)
@@ -159,12 +158,10 @@ choose_maqam = (name) ->
     $("#offset").val(offset)
     updkeys()
 
-choose_maqam("nahawand")
-
 # building preset list
 p = $("#presets")
 for name of maqam_presets
     option = $("<option>").html(name).attr("val", name)
     p.append(option)
 p.change(() => choose_maqam(p.val()))
-
+p.change() # trigger the choosing of the first element!
