@@ -114,7 +114,8 @@ genwave = (freq) ->
     samples = new Float32Array(length)
     k = 2 * Math.PI * freq / SRATE
     # adapt gain to the frequency (pink noise)
-    gain = 200/freq
+    gain = 100/freq
+    gain *= 0.8
     sinegen = (i) -> Math.sin(k * i)
     smoothergen = (i) ->
         x = i / length
