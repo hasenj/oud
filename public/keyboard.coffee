@@ -40,8 +40,8 @@ updkeys = () ->
 window.updkeys = _.debounce(updkeys, 400)
 
 bindhotkey = (key, downfn, upfn) ->
-    shortcut.add(key, downfn)
-    shortcut.add(key, upfn, {"type": "keyup"})
+    $(document).bind('keydown', key, downfn)
+    $(document).bind('keyup', key, upfn)
 
 bindkeytone = (key, tone) ->
       window.keys[key] = tone
