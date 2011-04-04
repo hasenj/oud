@@ -63,7 +63,7 @@ tonefreq = (tone) ->
    steps = 6 # DON'T CHANGE!!
    return base * Math.pow(2, tone/steps)
 
-SRATE = 10000
+SRATE = 44100
 
 makechannel = () ->
     try
@@ -91,8 +91,8 @@ getchannel = () -> # get a free audio channel
         #    console.log "this channel is busy"
     _ch += 1
     _ch = _ch % channels.length
-    if _ch == 0
-        console.log "all channels cycled"
+    # if _ch == 0
+    #   console.log "all channels cycled"
     channels[_ch]
 
 getkeychannel = (key) ->
@@ -101,13 +101,21 @@ getkeychannel = (key) ->
     channels[key]
 
 genwave = (freq) ->
-    samples = new Float32Array(SRATE) # duration)
+    duration = 3
+    samples = new Float32Array(SRATE * duration)
     k = 2 * Math.PI * freq / SRATE
     gain = 0.1
     for s,i in samples
-        gain *= 0.9997
-        samples[i] = gain * Math.sin(k * i) 
+        # 2 ^ (-5x)
+        x = (i / samples.length) * 15
+        smoother = Math.pow(2, 2 * -x)
+        # if i % 500 == 0
+        #   console.log smoother
+        samples[i] = smoother * gain * Math.sin(k * i) 
     return samples
+
+# cache results!!
+# genwave = _.once(genwave)
 
 playtone = (tone) ->
     # TODO add random +/- 0.05 for microtonal variations!!!
@@ -147,6 +155,8 @@ updkeys()
 maqam_presets = 
     ajam: ["0", "1 1 0.5 1 1 1 0.5", "0"]
     nahawand: ["0", "1 0.5 1 1 0.5 1.5 0.5", "0"]
+    hijaz1: ["1", "0.5 1.5 0.5 1 0.75 0.75 1", "2"]
+    hijaz2: ["1", "0.5 1.5 0.5 1 0.5 1 1", "2"]
     bayati: ["1", "0.75 0.75 1 1 0.5 1 1", "2"]
     rast1: ["0", "1 0.75 0.75 1 1 0.75 0.75", "0"]
     rast2: ["0", "1 0.75 0.75 1 1 0.5 1", "0"]
