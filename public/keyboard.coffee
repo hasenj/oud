@@ -59,7 +59,6 @@ getkeydiv = (key) -> $("#key_" + key)
 
 tonefreq = (tone) ->
    base = 220 # ok to change (only to experiment with a different base)
-   base = 138.0 # C / Do natural
    steps = 6 # DON'T CHANGE!!
    return base * Math.pow(2, tone/steps)
 
@@ -100,22 +99,29 @@ getkeychannel = (key) ->
         channels[key] = makechannel()
     channels[key]
 
+_k = _.memoize((freq) -> 2 * Math.PI * freq / SRATE)
+sinegen = (freq, i) ->
+    k = _k(freq)
+    Math.sin(k * i) 
+
+_x = _.memoize((i, length) -> (i / length) * 15)
+smoothergen = (length, i) ->
+    # a ^ (-bx) # or something like it
+    x = _x(i, length)
+    Math.pow(2, 2 * -x)
+
 genwave = (freq) ->
     duration = 3
     samples = new Float32Array(SRATE * duration)
     k = 2 * Math.PI * freq / SRATE
     gain = 0.1
     for s,i in samples
-        # 2 ^ (-5x)
-        x = (i / samples.length) * 15
-        smoother = Math.pow(2, 2 * -x)
-        # if i % 500 == 0
-        #   console.log smoother
-        samples[i] = smoother * gain * Math.sin(k * i) 
+        w = sinegen(freq, i) # the sine wave of the tone
+        s = smoothergen(samples.length, i) # a smoother (to ger rid of clicking sound)
+        samples[i] = w * s * gain
     return samples
-
 # cache results!!
-# genwave = _.once(genwave)
+genwave = _.memoize(genwave)
 
 playtone = (tone) ->
     # TODO add random +/- 0.05 for microtonal variations!!!
