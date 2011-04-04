@@ -6,7 +6,7 @@ getscalepoint = (scale, point) ->
     Number scale[point]
 
 # startoffset: add a few tones before the starting tone
-gennotes = (scale, starttone, offset, length) ->
+gentones = (scale, starttone, offset, length) ->
     tone = starttone
     tones = []
     for index in [0..length-offset-1]
@@ -33,7 +33,7 @@ updkeys = () ->
     scale = fval("scale").match(/[\d.]+/g)
     offset = - Number fval("offset")
     start = Number fval("start")
-    tones = gennotes scale, start, offset, keys.length
+    tones = gentones scale, start, offset, keys.length
     $("#keys").text("")
     for [key, tone] in _.zip(keys, tones) when key? and tone?
       bindkeytone key, tone
@@ -63,19 +63,19 @@ tonefreq = (tone) ->
    steps = 6 # DON'T CHANGE!!
    return base * Math.pow(2, tone/steps)
 
-SRATE = 30000
+SRATE = 10000
 
 makechannel = () ->
     try
         channel = new Audio()
-        channel.mozSetup( 1, SRATE )
+        channel.mozSetup(1, SRATE)
         return channel
     catch error
         console.log "mozSetup failed:", error
 
 
 channels = []
-for i in [0..15] # number of channels
+for i in [0..5] # number of channels
     channels.push makechannel()
 
 #debug
@@ -145,11 +145,15 @@ updkeys()
 
 
 maqam_presets = 
+    ajam: ["0", "1 1 0.5 1 1 1 0.5", "0"]
     nahawand: ["0", "1 0.5 1 1 0.5 1.5 0.5", "0"]
     bayati: ["1", "0.75 0.75 1 1 0.5 1 1", "2"]
     rast1: ["0", "1 0.75 0.75 1 1 0.75 0.75", "0"]
     rast2: ["0", "1 0.75 0.75 1 1 0.5 1", "0"]
-    rast_comb: ["0", "1 0.75 0.75 1 1 0.5 0.25 0.25", "0"]
+    rast_comb: ["0", "1 0.75 0.75 1 1 0.5 0.25 0.75", "0"]
+    jiharkah: ["4", "1 1 0.5 1 1 0.75 0.75", "0"]
+    saba1: ["1", "0.75 0.75 0.5 1.5 0.5 1 1", "2"]
+    saba2: ["1", "0.75 0.75 0.5 1.5 0.5 1 0.5 1.5 0.5 0.75 1", "2"]
 
 choose_maqam = (name) ->
     [start, scale, offset] = maqam_presets[name]
