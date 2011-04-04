@@ -99,25 +99,19 @@ getkeychannel = (key) ->
         channels[key] = makechannel()
     channels[key]
 
-_k = _.memoize((freq) -> 2 * Math.PI * freq / SRATE)
-sinegen = (freq, i) ->
-    k = _k(freq)
-    Math.sin(k * i) 
-
-_x = _.memoize((i, length) -> (i / length) * 15)
-smoothergen = (length, i) ->
-    # a ^ (-bx) # or something like it
-    x = _x(i, length)
-    Math.pow(2, 2 * -x)
-
 genwave = (freq) ->
     duration = 3
-    samples = new Float32Array(SRATE * duration)
+    length = SRATE * duration
+    samples = new Float32Array(length)
     k = 2 * Math.PI * freq / SRATE
     gain = 0.1
+    sinegen = (i) -> Math.sin(k * i)
+    smoothergen = (i) ->
+        x = (i / length) * 10
+        Math.pow(2, 4 * -x)
     for s,i in samples
-        w = sinegen(freq, i) # the sine wave of the tone
-        s = smoothergen(samples.length, i) # a smoother (to ger rid of clicking sound)
+        w = sinegen(i) # the sine wave of the tone
+        s = smoothergen(i) # a smoother (to ger rid of clicking sound)
         samples[i] = w * s * gain
     return samples
 # cache results!!
