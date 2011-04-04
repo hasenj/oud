@@ -71,6 +71,10 @@ makechannel = () ->
         return channel
     catch error
         console.log "mozSetup failed:", error
+        $("#error_box").text("Error initializing audio output. Reload the page (if that fails, you might have to restart the browser)!").show()
+        delete channel
+        return { mozWriteAudio: () -> }
+
 
 
 channels = []
