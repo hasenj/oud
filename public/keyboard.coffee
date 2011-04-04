@@ -99,6 +99,10 @@ getkeychannel = (key) ->
         channels[key] = makechannel()
     channels[key]
 
+samplelog = (i, s) ->
+    if i % 700 == 0
+        console.log i, " : ", s
+
 genwave = (freq) ->
     duration = 3
     length = SRATE * duration
@@ -107,8 +111,10 @@ genwave = (freq) ->
     gain = 0.4
     sinegen = (i) -> Math.sin(k * i)
     smoothergen = (i) ->
-        x = (i / length) * 10
-        Math.pow(2, 4 * -x)
+        x = i / length
+        s = Math.pow(Math.E, -x * 20)
+        # samplelog(i, s)
+        s
     for s,i in samples
         w = sinegen(i) # the sine wave of the tone
         s = smoothergen(i) # a smoother (to ger rid of clicking sound)
