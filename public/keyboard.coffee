@@ -104,7 +104,7 @@ samplelog = (i, s) ->
         console.log i, " : ", s
 
 genwave = (freq) ->
-    duration = 3
+    duration = 2.4
     length = SRATE * duration
     samples = new Float32Array(length)
     k = 2 * Math.PI * freq / SRATE
@@ -112,7 +112,7 @@ genwave = (freq) ->
     sinegen = (i) -> Math.sin(k * i)
     smoothergen = (i) ->
         x = i / length
-        s = Math.pow(Math.E, -x * 20)
+        s = Math.pow(Math.E, -x * duration * 10)
         # samplelog(i, s)
         s
     for s,i in samples
