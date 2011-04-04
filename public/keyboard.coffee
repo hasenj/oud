@@ -56,7 +56,8 @@ getkeytone = (key) -> window.keys[key] # TODO convert to upper case first?
 getkeydiv = (key) -> $("#key_" + key)
 
 tonefreq = (tone) ->
-   base = 440 # ok to change (only to experiment with a different base)
+   base = 220 # ok to change (only to experiment with a different base)
+   base = 138.0 # C / Do natural
    steps = 6 # DON'T CHANGE!!
    return base * Math.pow(2, tone/steps)
 
@@ -84,6 +85,7 @@ genwave = (freq) ->
     return samples
 
 playtone = (tone, channel) ->
+    # TODO add random +/- 0.05 for microtonal variations!!!
     if not channel?
         channel = makechannel()
     freq = tonefreq(tone)
