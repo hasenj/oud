@@ -59,6 +59,7 @@ getkeydiv = (key) -> $("#key_" + key)
 
 tonefreq = (tone) ->
    base = 220 # ok to change (only to experiment with a different base)
+   base = 138.0 # C / Do natural
    steps = 6 # DON'T CHANGE!!
    return base * Math.pow(2, tone/steps)
 
