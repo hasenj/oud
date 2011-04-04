@@ -62,14 +62,32 @@ tonefreq = (tone) ->
    steps = 6 # DON'T CHANGE!!
    return base * Math.pow(2, tone/steps)
 
-channels = {}
-
-SRATE = 20000
+SRATE = 30000
 
 makechannel = () ->
     channel = new Audio()
-    channel.mozSetup( 1, SRATE )
+    channel.mozSetup( 2, SRATE )
     return channel
+
+channels = []
+for i in [0..15] # number of channels
+    channels.push makechannel()
+
+#debug
+window.cs = channels
+
+_ch = 0
+getchannel = () -> # get a free audio channel
+    # for c in channels
+        # if c.paused
+        #    return c
+        # # check
+        # else
+        #    console.log "this channel is busy"
+    _ch += 1
+    _ch = _ch % channels.length
+    console.log "using :", _ch
+    channels[_ch]
 
 getkeychannel = (key) ->
     if not channels[key]
@@ -81,14 +99,15 @@ genwave = (freq) ->
     k = 2 * Math.PI * freq / SRATE
     gain = 0.1
     for s,i in samples
-        gain *= 0.9994
+        gain *= 0.9998
         samples[i] = gain * Math.sin(k * i) 
     return samples
 
-playtone = (tone, channel) ->
+playtone = (tone) ->
     # TODO add random +/- 0.05 for microtonal variations!!!
+    channel = getchannel()
     if not channel?
-        channel = makechannel()
+        return false
     freq = tonefreq(tone)
     channel.mozWriteAudio(genwave freq)
 
@@ -103,7 +122,7 @@ playkey = (key) ->
       return
     getkeydiv(key).stop()
     getkeydiv(key).css("background-color", "hsl(210, 90%, 90%)")
-    playtone(tone, getkeychannel key)
+    playtone(tone)
 
 liftkey = (key) ->
     downkeys[key] = false
