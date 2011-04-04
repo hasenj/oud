@@ -91,7 +91,8 @@ getchannel = () -> # get a free audio channel
         #    console.log "this channel is busy"
     _ch += 1
     _ch = _ch % channels.length
-    console.log "using :", _ch
+    if _ch == 0
+        console.log "all channels cycled"
     channels[_ch]
 
 getkeychannel = (key) ->
@@ -146,8 +147,13 @@ updkeys()
 maqam_presets = 
     nahawand: ["0", "1 0.5 1 1 0.5 1.5 0.5", "0"]
     bayati: ["1", "0.75 0.75 1 1 0.5 1 1", "2"]
+    rast1: ["0", "1 0.75 0.75 1 1 0.75 0.75", "0"]
+    rast2: ["0", "1 0.75 0.75 1 1 0.5 1", "0"]
+    rast_comb: ["0", "1 0.75 0.75 1 1 0.5 0.25 0.25", "0"]
+
 
 choose_maqam = (name) ->
+    console.log "choosing maqam", name
     [start, scale, offset] = maqam_presets[name]
     $("#start").val(start)
     $("#scale").val(scale)
@@ -162,6 +168,7 @@ choose_maqam("nahawand")
 console.log($)
         
 for name of maqam_presets
-    option = $("<option>").html(name).click(() -> choose_maqam(name))
+    option = $("<option>").html(name).attr("val", name)
     $("#preset").append(option)
+$("#preset").change(() => choose_maqam($("#preset").val()))
 
