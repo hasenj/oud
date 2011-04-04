@@ -6,7 +6,12 @@ label Tonal distances
   input#scale(type="input", value="0.5 1.5 0.5 1 0.5 1 1", onkeyup="updkeys()")
 label Starting key offset
   input#offset(type="input", value="2", onkeyup="updkeys()")
+label Maqam Preset
+  select#preset
 
 #keys
+
+/label Keyboard layout
+  input#keyslayout(type="input", value="QWERTYUIOPLKJHGFDSAZXCVBNM", onkeyup="updkeys()")
 
 script(type="text/coffeescript", src="/keyboard.coffee")

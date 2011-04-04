@@ -26,9 +26,10 @@ gennotes = (scale, starttone, offset, length) ->
 fval = (id)-> $("#" + id).val() # field value
 
 window.keys = {}
+window.keyslayout = "QWERTYUIOPLKJHGFDSAZXCVBNM"
 updkeys = () ->
     # TODO: allow custom layout!!
-    keys = "QWERTYUIOPLKJHGFDSAZXCVBNM"
+    keys = keyslayout
     scale = fval("scale").match(/[\d.]+/g)
     offset = - Number fval("offset")
     start = Number fval("start")
@@ -65,9 +66,13 @@ tonefreq = (tone) ->
 SRATE = 30000
 
 makechannel = () ->
-    channel = new Audio()
-    channel.mozSetup( 2, SRATE )
-    return channel
+    try
+        channel = new Audio()
+        channel.mozSetup( 1, SRATE )
+        return channel
+    catch error
+        console.log "mozSetup failed:", error
+
 
 channels = []
 for i in [0..15] # number of channels
@@ -99,7 +104,7 @@ genwave = (freq) ->
     k = 2 * Math.PI * freq / SRATE
     gain = 0.1
     for s,i in samples
-        gain *= 0.9998
+        gain *= 0.9997
         samples[i] = gain * Math.sin(k * i) 
     return samples
 
@@ -133,4 +138,30 @@ liftkey = (key) ->
     getkeydiv(key).animate({"background-color": "#fdfdfd"}, 300)
 
 updkeys()
+
+####
+# maqam presets
+
+
+maqam_presets = 
+    nahawand: ["0", "1 0.5 1 1 0.5 1.5 0.5", "0"]
+    bayati: ["1", "0.75 0.75 1 1 0.5 1 1", "2"]
+
+choose_maqam = (name) ->
+    [start, scale, offset] = maqam_presets[name]
+    $("#start").val(start)
+    $("#scale").val(scale)
+    $("#offset").val(offset)
+    updkeys()
+
+choose_maqam("nahawand")
+
+
+# looping on presets:
+
+console.log($)
+        
+for name of maqam_presets
+    option = $("<option>").html(name).click(() -> choose_maqam(name))
+    $("#preset").append(option)
 
