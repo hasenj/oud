@@ -153,7 +153,6 @@ maqam_presets =
 
 
 choose_maqam = (name) ->
-    console.log "choosing maqam", name
     [start, scale, offset] = maqam_presets[name]
     $("#start").val(start)
     $("#scale").val(scale)
@@ -162,13 +161,10 @@ choose_maqam = (name) ->
 
 choose_maqam("nahawand")
 
-
-# looping on presets:
-
-console.log($)
-        
+# building preset list
+p = $("#presets")
 for name of maqam_presets
     option = $("<option>").html(name).attr("val", name)
-    $("#preset").append(option)
-$("#preset").change(() => choose_maqam($("#preset").val()))
+    p.append(option)
+p.change(() => choose_maqam(p.val()))
 
