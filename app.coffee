@@ -19,3 +19,6 @@ app.get("/css", (req, res) ->
             res.send(css, {'Content-Type': 'text/css'}))
     ))
 
+# let .coffee files be served as text
+mime = require "mime"
+mime.define({'text/coffeescript' : ['coffee']})
