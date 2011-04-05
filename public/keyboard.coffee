@@ -109,13 +109,13 @@ samplelog = (i, s) ->
         console.log i, " : ", s
 
 genwave = (freq) ->
+    # TODO: turn this into a generator of some sort
     duration = 2.4
     length = SRATE * duration
     samples = new Float32Array(length)
     k = 2 * Math.PI * freq / SRATE
     # adapt gain to the frequency (pink noise)
-    gain = 100/freq
-    gain *= 0.8
+    gain = 140/freq
     sinegen = (i) -> Math.sin(k * i)
     smoothergen = (i) ->
         x = i / length
