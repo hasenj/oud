@@ -94,28 +94,21 @@ playtone = (tone) ->
     freq = tonefreq(tone)
     duration = 4
     gain = _.min([0.2, 160/freq])
-    currentSoundSample = 0
+    current_sample = 0
     last_sample = duration * SRATE
-    # @falloff_start = last_sample * 0.6
-    calls_to_read = 0
     source =
         audioParameters: APARAMS
         read: (out) -> 
-            calls_to_read++
-            if(currentSoundSample >= last_sample) 
-                # console.log(currentSoundSample)
-                console.log("ok, calls to read:", calls_to_read)
+            if(current_sample >= last_sample) 
                 return null
             size = out.length
-            samplelog("os", "output size:", size)
             k = 2 * Math.PI * freq / SRATE
             written = 0
-            while(written < size and currentSoundSample < last_sample) 
-                x = currentSoundSample / last_sample
+            while(written < size and current_sample < last_sample) 
+                x = current_sample / last_sample
                 s = Math.pow(Math.E, -x * 4)
-                # s = 1
-                out[written] = s * gain * Math.sin(k * currentSoundSample)
-                currentSoundSample++
+                out[written] = s * gain * Math.sin(k * current_sample)
+                current_sample++
                 written++
             return written
 
