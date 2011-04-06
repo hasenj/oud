@@ -13,7 +13,7 @@ app.get('/', (req, res) ->
 s = require "stylus"
 fs = require "fs"
 app.get("/css", (req, res) ->
-    fs.readFile(__dirname + "/css.styl", (err, data) ->
+    fs.readFile(__dirname + "/public/css.styl", (err, data) ->
         src = String(data)
         s.render(src, (err, css) ->
             res.send(css, {'Content-Type': 'text/css'}))
