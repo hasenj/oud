@@ -64,17 +64,18 @@ tonefreq = (tone) ->
    return base * Math.pow(2, tone/steps)
 
 SRATE = 44100
+APARAMS = new AudioParameters(1, SRATE)      
 
 makechannel = () ->
     try
-        channel = new Audio()
-        channel.mozSetup(1, SRATE)
+        channel = new AudioDataDestination()
+        channel.autoLatency = true
         return channel
     catch error
         console.log "mozSetup failed:", error
         $("#error_box").text("Error initializing audio output. Reload the page (if that fails, you might have to restart the browser)!").show()
         delete channel
-        return { mozWriteAudio: () -> }
+        return { writeAsync: () -> }
 
 
 
@@ -86,7 +87,7 @@ for i in [0..5] # number of channels
 window.cs = channels
 
 _ch = 0
-getchannel = () -> # get a free audio channel
+_getchannel = () -> # get a free audio channel
     # for c in channels
         # if c.paused
         #    return c
@@ -97,20 +98,29 @@ getchannel = () -> # get a free audio channel
     _ch = _ch % channels.length
     # if _ch == 0
     #   console.log "all channels cycled"
-    channels[_ch]
+    res = channels[_ch]
 
-getkeychannel = (key) ->
-    if not channels[key]
-        channels[key] = makechannel()
-    channels[key]
+getmixer = () ->
+    if window.mixer 
+        return window.mixer
+    mixer = new AudioDataMixer(APARAMS)
+    audio_output = new AudioDataDestination(APARAMS)
+    audio_output.autoLatency = true
+    audio_output.writeAsync(mixer)
+    window.mixer = mixer
+    return mixer
 
-samplelog = (i, s) ->
-    if i % 700 == 0
-        console.log i, " : ", s
+_sl = {}
+samplelog = (id, s) ->
+    if not id in _sl
+        _sl[id] = 0
+    _sl[id] += 1
+    if _sl[id] % 10 == 0
+        console.log s
 
 genwave = (freq) ->
     # TODO: turn this into a generator of some sort
-    duration = 2.4
+    duration = 1
     length = SRATE * duration
     samples = new Float32Array(length)
     k = 2 * Math.PI * freq / SRATE
@@ -130,7 +140,49 @@ genwave = (freq) ->
 # cache results!!
 genwave = _.memoize(genwave)
 
+######
+
+
 playtone = (tone) ->
+    freq = tonefreq(tone)
+    duration = 2
+    gain = 140/freq
+    class NoteSource 
+      constructor: () ->
+        currentSoundSample = 0
+        last_sample = duration * SRATE
+        # @falloff_start = last_sample * 0.6
+        @audioParameters = APARAMS
+        @calls_to_read = 0
+        @read = (out) -> 
+            @calls_to_read++
+            if(currentSoundSample >= last_sample) 
+                # console.log(currentSoundSample)
+                console.log("ok, calls to read: ", @calls_to_read)
+                samplelog("calls", "calls to read: " + @calls_to_read)
+                return null
+            size = out.length
+            k = 2 * Math.PI * freq / SRATE
+            written = 0
+            while(written < size && currentSoundSample < last_sample) 
+                x = currentSoundSample / last_sample
+                s = Math.pow(Math.E, -x * 4)
+                # s = 1
+                out[written] = s * gain * Math.sin(k * currentSoundSample)
+                currentSoundSample++
+                written++
+            return written
+        
+
+    audioSource = new NoteSource()
+    getmixer().addInputSource(audioSource)
+    # makechannel().writeAsync(audioSource)
+
+######
+
+
+
+_playtone = (tone) ->
     # TODO add random +/- 0.05 for microtonal variations!!!
     channel = getchannel()
     if not channel?
