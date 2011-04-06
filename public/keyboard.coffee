@@ -64,6 +64,7 @@ tonefreq = (tone, base=138) ->
 SRATE = 44100
 APARAMS = new AudioParameters(1, SRATE)      
 
+# Thanks to 'yury' from #audio@irc.mozilla.org
 getmixer = () ->
     try
         if window.mixer 
@@ -74,7 +75,7 @@ getmixer = () ->
         audio_output.writeAsync(mixer)
         window.mixer = mixer
         return mixer
-    catch error
+    catch error # not sure if the exception would happen here
         console.log "mozSetup failed:", error
         $("#error_box").text("Error initializing audio output. Reload the page (if that fails, you might have to restart the browser)!").show()
         return { addInputSource: () -> } # dummy mixer
@@ -87,29 +88,29 @@ samplelog = (id, s...) ->
         console.log s...
 
 
+# async now thanks to audiodata :)
 playtone = (tone) ->
     # TODO add random +/- 0.05 for microtonal variations!!!
     freq = tonefreq(tone)
     duration = 2
     gain = 140/freq
-    class NoteSource 
-      constructor: () ->
-        currentSoundSample = 0
-        last_sample = duration * SRATE
-        # @falloff_start = last_sample * 0.6
-        @audioParameters = APARAMS
-        @calls_to_read = 0
-        @read = (out) -> 
-            @calls_to_read++
+    currentSoundSample = 0
+    last_sample = duration * SRATE
+    # @falloff_start = last_sample * 0.6
+    calls_to_read = 0
+    source =
+        audioParameters: APARAMS
+        read: (out) -> 
+            calls_to_read++
             if(currentSoundSample >= last_sample) 
                 # console.log(currentSoundSample)
-                console.log("ok, calls to read:", @calls_to_read)
+                console.log("ok, calls to read:", calls_to_read)
                 return null
             size = out.length
             samplelog("os", "output size:", size)
             k = 2 * Math.PI * freq / SRATE
             written = 0
-            while(written < size && currentSoundSample < last_sample) 
+            while(written < size and currentSoundSample < last_sample) 
                 x = currentSoundSample / last_sample
                 s = Math.pow(Math.E, -x * 4)
                 # s = 1
@@ -118,8 +119,7 @@ playtone = (tone) ->
                 written++
             return written
 
-    audioSource = new NoteSource()
-    getmixer().addInputSource(audioSource)
+    getmixer().addInputSource(source)
 
 downkeys = {}
 
