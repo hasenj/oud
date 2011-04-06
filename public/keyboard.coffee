@@ -57,93 +57,38 @@ getkeytone = (key) -> window.keys[key] # TODO convert to upper case first?
 
 getkeydiv = (key) -> $("#key_" + key)
 
-tonefreq = (tone) ->
-   base = 220 # ok to change (only to experiment with a different base)
-   base = 138.0 # C / Do natural
-   steps = 6 # DON'T CHANGE!!
-   return base * Math.pow(2, tone/steps)
+tonefreq = (tone, base=138) ->
+   tones_per_octave = 6 # DON'T CHANGE!!
+   return base * Math.pow(2, tone/tones_per_octave)
 
 SRATE = 44100
 APARAMS = new AudioParameters(1, SRATE)      
 
-makechannel = () ->
+getmixer = () ->
     try
-        channel = new AudioDataDestination()
-        channel.autoLatency = true
-        return channel
+        if window.mixer 
+            return window.mixer
+        mixer = new AudioDataMixer(APARAMS)
+        audio_output = new AudioDataDestination(APARAMS)
+        audio_output.autoLatency = true
+        audio_output.writeAsync(mixer)
+        window.mixer = mixer
+        return mixer
     catch error
         console.log "mozSetup failed:", error
         $("#error_box").text("Error initializing audio output. Reload the page (if that fails, you might have to restart the browser)!").show()
-        delete channel
-        return { writeAsync: () -> }
+        return { addInputSource: () -> } # dummy mixer
 
-
-
-channels = []
-for i in [0..5] # number of channels
-    channels.push makechannel()
-
-#debug
-window.cs = channels
-
-_ch = 0
-_getchannel = () -> # get a free audio channel
-    # for c in channels
-        # if c.paused
-        #    return c
-        # # check
-        # else
-        #    console.log "this channel is busy"
-    _ch += 1
-    _ch = _ch % channels.length
-    # if _ch == 0
-    #   console.log "all channels cycled"
-    res = channels[_ch]
-
-getmixer = () ->
-    if window.mixer 
-        return window.mixer
-    mixer = new AudioDataMixer(APARAMS)
-    audio_output = new AudioDataDestination(APARAMS)
-    audio_output.autoLatency = true
-    audio_output.writeAsync(mixer)
-    window.mixer = mixer
-    return mixer
-
-_sl = {}
-samplelog = (id, s) ->
-    if not id in _sl
-        _sl[id] = 0
-    _sl[id] += 1
-    if _sl[id] % 10 == 0
-        console.log s
-
-genwave = (freq) ->
-    # TODO: turn this into a generator of some sort
-    duration = 1
-    length = SRATE * duration
-    samples = new Float32Array(length)
-    k = 2 * Math.PI * freq / SRATE
-    # adapt gain to the frequency (pink noise)
-    gain = 140/freq
-    sinegen = (i) -> Math.sin(k * i)
-    smoothergen = (i) ->
-        x = i / length
-        s = Math.pow(Math.E, -x * duration * 10)
-        # samplelog(i, s)
-        s
-    for s,i in samples
-        w = sinegen(i) # the sine wave of the tone
-        s = smoothergen(i) # a smoother (to ger rid of clicking sound)
-        samples[i] = w * s * gain
-    return samples
-# cache results!!
-genwave = _.memoize(genwave)
-
-######
+samplelog = (id, s...) ->
+    if id not of samplelog
+        samplelog[id] = 0
+    samplelog[id] += 1
+    if samplelog[id] % 20 == 0
+        console.log s...
 
 
 playtone = (tone) ->
+    # TODO add random +/- 0.05 for microtonal variations!!!
     freq = tonefreq(tone)
     duration = 2
     gain = 140/freq
@@ -158,10 +103,10 @@ playtone = (tone) ->
             @calls_to_read++
             if(currentSoundSample >= last_sample) 
                 # console.log(currentSoundSample)
-                console.log("ok, calls to read: ", @calls_to_read)
-                samplelog("calls", "calls to read: " + @calls_to_read)
+                console.log("ok, calls to read:", @calls_to_read)
                 return null
             size = out.length
+            samplelog("os", "output size:", size)
             k = 2 * Math.PI * freq / SRATE
             written = 0
             while(written < size && currentSoundSample < last_sample) 
@@ -172,23 +117,9 @@ playtone = (tone) ->
                 currentSoundSample++
                 written++
             return written
-        
 
     audioSource = new NoteSource()
     getmixer().addInputSource(audioSource)
-    # makechannel().writeAsync(audioSource)
-
-######
-
-
-
-_playtone = (tone) ->
-    # TODO add random +/- 0.05 for microtonal variations!!!
-    channel = getchannel()
-    if not channel?
-        return false
-    freq = tonefreq(tone)
-    channel.mozWriteAudio(genwave freq)
 
 downkeys = {}
 
