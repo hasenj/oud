@@ -57,7 +57,7 @@ getkeytone = (key) -> window.keys[key] # TODO convert to upper case first?
 
 getkeydiv = (key) -> $("#key_" + key)
 
-tonefreq = (tone, base=138) ->
+tonefreq = (tone, base=138*2) ->
    tones_per_octave = 6 # DON'T CHANGE!!
    return base * Math.pow(2, tone/tones_per_octave)
 
@@ -92,8 +92,8 @@ samplelog = (id, s...) ->
 playtone = (tone) ->
     # TODO add random +/- 0.05 for microtonal variations!!!
     freq = tonefreq(tone)
-    duration = 2
-    gain = 140/freq
+    duration = 4
+    gain = _.min([0.2, 160/freq])
     currentSoundSample = 0
     last_sample = duration * SRATE
     # @falloff_start = last_sample * 0.6
