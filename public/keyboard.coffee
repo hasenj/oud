@@ -45,12 +45,15 @@ bindhotkey = (key, downfn, upfn) ->
 
 bindkeytone = (key, tone) ->
       window.keys[key] = tone
-      tonespan = $("<div/>").addClass("tone").html(tone)
-      keydiv = $("<div/>").addClass("key").attr("id", "key_" + key).html(key).append(tonespan)
-      $("#keys").append(keydiv)
-      # TODO make the shortcut more dynamic: grab all keys and determine tone based on the key
       downfn = ()-> playkey(key)
       upfn = () -> liftkey(key)
+      tonespan = $("<div/>").addClass("tone").html(tone)
+      keydiv = $("<div/>").addClass("key").
+          attr("id", "key_" + key).html(key).
+          mousedown(downfn).mouseup(upfn).
+          append(tonespan)
+      $("#keys").append(keydiv)
+      # TODO make the shortcut more dynamic: grab all keys and determine tone based on the key
       bindhotkey(key, downfn, upfn)
 
 getkeytone = (key) -> window.keys[key] # TODO convert to upper case first?
@@ -167,7 +170,7 @@ choose_maqam = (name) ->
     [start, scale, offset] = maqam_presets[name]
     $("#start").val(start)
     $("#scale").val(scale)
-    $("#offset").val(offset)
+    # $("#offset").val(offset)
     updkeys()
 
 # building preset list
