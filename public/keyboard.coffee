@@ -61,7 +61,7 @@ tonefreq = (tone, base=138*2) ->
    tones_per_octave = 6 # DON'T CHANGE!!
    return base * Math.pow(2, tone/tones_per_octave)
 
-SRATE = 44100
+SRATE = 96000
 APARAMS = new AudioParameters(1, SRATE)      
 
 # Thanks to 'yury' from #audio@irc.mozilla.org
@@ -92,7 +92,7 @@ samplelog = (id, s...) ->
 playtone = (tone) ->
     # TODO add random +/- 0.05 for microtonal variations!!!
     freq = tonefreq(tone)
-    duration = 4
+    duration = 3
     gain = _.min([0.2, 160/freq])
     current_sample = 0
     last_sample = duration * SRATE
