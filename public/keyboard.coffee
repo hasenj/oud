@@ -83,6 +83,8 @@ getmixer = () ->
         $("#error_box").text("Error initializing audio output. Reload the page (if that fails, you might have to restart the browser)!").show()
         return { addInputSource: () -> } # dummy mixer
 
+getmixer()
+
 samplelog = (id, s...) ->
     if id not of samplelog
         samplelog[id] = 0
