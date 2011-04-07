@@ -26,7 +26,7 @@ gentones = (scale, starttone, offset, length) ->
 fval = (id)-> $("#" + id).val() # field value
 
 window.keys = {}
-window.keyslayout = "QWERTYUIOPLKJHGFDSAZXCVBNM"
+window.keyslayout = "QWERTYUIOP[]ASDFGHJKL;"
 updkeys = () ->
     # TODO: allow custom layout!!
     keys = keyslayout
@@ -43,13 +43,14 @@ bindhotkey = (key, downfn, upfn) ->
     $(document).bind('keydown', key, downfn)
     $(document).bind('keyup', key, upfn)
 
+genkeyid = (k) -> "key_" + k.charCodeAt(0)
 bindkeytone = (key, tone) ->
       window.keys[key] = tone
       downfn = ()-> playkey(key)
       upfn = () -> liftkey(key)
       tonespan = $("<div/>").addClass("tone").html(tone)
       keydiv = $("<div/>").addClass("key").
-          attr("id", "key_" + key).html(key).
+          attr("id", genkeyid key).html(key).
           mousedown(downfn).mouseup(upfn).
           append(tonespan)
       $("#keys").append(keydiv)
@@ -58,13 +59,13 @@ bindkeytone = (key, tone) ->
 
 getkeytone = (key) -> window.keys[key] # TODO convert to upper case first?
 
-getkeydiv = (key) -> $("#key_" + key)
+getkeydiv = (key) -> $("#" + genkeyid key)
 
 tonefreq = (tone, base=138*2) ->
    tones_per_octave = 6 # DON'T CHANGE!!
    return base * Math.pow(2, tone/tones_per_octave)
 
-SRATE = 44100
+SRATE = 96000
 APARAMS = new AudioParameters(1, SRATE)      
 
 # Thanks to 'yury' from #audio@irc.mozilla.org
@@ -101,7 +102,7 @@ playtone = (tone) ->
     # TODO add random +/- 0.05 for microtonal variations!!!
     freq = tonefreq(tone)
     duration = 3
-    gain = _.min([0.2, 160/freq])
+    pink = 200/freq
     current_sample = 0
     last_sample = duration * SRATE
     source =
@@ -114,8 +115,9 @@ playtone = (tone) ->
             written = 0
             while(written < size and current_sample < last_sample) 
                 x = current_sample / last_sample
-                s = Math.pow(Math.E, -x * 4)
-                out[written] = s * gain * Math.sin(k * current_sample)
+                smoother = Math.pow(Math.E, -x * 4)
+                wave = Math.sin(k * current_sample)
+                out[written] = smoother * pink * wave
                 current_sample++
                 written++
             return written
