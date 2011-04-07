@@ -64,7 +64,7 @@ tonefreq = (tone, base=138*2) ->
    tones_per_octave = 6 # DON'T CHANGE!!
    return base * Math.pow(2, tone/tones_per_octave)
 
-SRATE = 96000
+SRATE = 44100
 APARAMS = new AudioParameters(1, SRATE)      
 
 # Thanks to 'yury' from #audio@irc.mozilla.org
@@ -79,8 +79,11 @@ getmixer = () ->
         window.mixer = mixer
         return mixer
     catch error # not sure if the exception would happen here
-        console.log "mozSetup failed:", error
-        $("#error_box").text("Error initializing audio output. Reload the page (if that fails, you might have to restart the browser)!").show()
+        if $.browser.mozilla and $.browser.version >= 2
+            console.log "mozSetup failed:", error
+            $("#error_box").text("Error initializing audio output. Reload the page (if that fails, you might have to restart the browser)!").show()
+        else
+            $("#error_box").text("Only Firefox4 is supported").show()
         return { addInputSource: () -> } # dummy mixer
 
 getmixer()
