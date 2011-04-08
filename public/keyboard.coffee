@@ -26,7 +26,7 @@ gentones = (scale, starttone, offset, length) ->
 fval = (id)-> $("#" + id).val() # field value
 
 window.keys = {}
-window.keyslayout = "QWERTYUIOP[]ASDFGHJKL;"
+window.keyslayout = "QWERTYUIOPLKJHGFDSAZXC"
 updkeys = () ->
     # TODO: allow custom layout!!
     keys = keyslayout
@@ -61,7 +61,7 @@ getkeytone = (key) -> window.keys[key] # TODO convert to upper case first?
 
 getkeydiv = (key) -> $("#" + genkeyid key)
 
-tonefreq = (tone, base=138*2) ->
+tonefreq = (tone, base=138) ->
    tones_per_octave = 6 # DON'T CHANGE!!
    return base * Math.pow(2, tone/tones_per_octave)
 
@@ -102,7 +102,7 @@ playtone = (tone) ->
     # TODO add random +/- 0.05 for microtonal variations!!!
     freq = tonefreq(tone)
     duration = 2.4
-    pink = 100/freq
+    pink = 80/freq
     current_sample = 0
     last_sample = duration * SRATE
     source =
