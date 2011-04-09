@@ -1,5 +1,5 @@
 
-SRATE = 44100
+SRATE = 96000
 APARAMS = new AudioParameters(1, SRATE)      
 
 # Thanks to 'yury' from #audio@irc.mozilla.org
