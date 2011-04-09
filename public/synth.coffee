@@ -47,9 +47,9 @@ tonefreq = (tone, base=138) ->
 
 # async now thanks to audiodata :)
 window.playtone = (tone) ->
-    # TODO add random +/- 0.05 for microtonal variations!!!
     freq = tonefreq(tone)
-    pink = 50/freq
+    gain = 5/Math.pow(freq, 0.5)
+    gain *= 0.4
     duration = 2.4
     current_sample = 0
     last_sample = duration * SRATE # offbyone?
@@ -65,7 +65,7 @@ window.playtone = (tone) ->
                 x = current_sample / last_sample
                 smoother = Math.pow(Math.E, -x * 5)
                 wave = wtable(current_sample + 1) + wtable(current_sample) >> 1
-                out[written] = pink * smoother * wave
+                out[written] = gain * smoother * wave
                 current_sample++
                 written++
             return written
