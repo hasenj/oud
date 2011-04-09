@@ -21,7 +21,7 @@ getmixer = () ->
             $("#error_box").text("Only Firefox4 is supported").show()
         return { addInputSource: () -> } # dummy mixer
 
-getmixer()
+$ getmixer
 
 tonefreq = (tone, base=138) ->
    tones_per_octave = 6 # DON'T CHANGE!!

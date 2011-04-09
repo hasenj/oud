@@ -23,16 +23,23 @@ maqam_presets =
     iraq: ["5.25", "0.75 1 0.75 0.75 1 1 0.75"]
     nawa_athar: ["0", "1 0.5 1.5 0.5 0.5 1.5 0.5"]
 
-choose_maqam = (name) ->
+on_choose_maqam = () ->
+    name = @value
     [start, scale] = maqam_presets[name]
     $("#start").val(start)
     $("#scale").val(scale)
+    $.cookie('maqam', name)
     updkeys()
 
-# building preset list
-p = $("#presets")
-for name of maqam_presets
-    option = $("<option>").html(name).attr("val", name)
-    p.append(option)
-p.change(() => choose_maqam(p.val()))
-p.change() # trigger the choosing of the first element!
+init_maqams = () ->
+    # building preset list
+    p = $("#presets")
+    for name of maqam_presets
+        option = $("<option>").html(name).attr("val", name)
+        p.append(option)
+    p.change(on_choose_maqam)
+    # remember last chosen maqam
+    m = $.cookie('maqam') or p.val()
+    p.val(m)
+
+$ init_maqams

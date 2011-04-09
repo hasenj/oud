@@ -57,13 +57,9 @@ bindkeytone = (key, tone) ->
       # TODO make the shortcut more dynamic: grab all keys and determine tone based on the key
       bindhotkey(key, downfn, upfn)
 
-getkeytone = (key) -> window.keys[key] # TODO convert to upper case first?
+getkeytone = (key) -> window.keys[key]
 
 getkeydiv = (key) -> $("#" + genkeyid key)
-
-tonefreq = (tone, base=138) ->
-   tones_per_octave = 6 # DON'T CHANGE!!
-   return base * Math.pow(2, tone/tones_per_octave)
 
 downkeys = {}
 
@@ -86,5 +82,5 @@ liftkey = (key) ->
     getkeydiv(key).stop()
     getkeydiv(key).animate({"background-color": "#fdfdfd"}, 300)
 
-$(document).ready(updkeys)
+$ updkeys
 
