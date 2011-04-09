@@ -64,9 +64,7 @@ window.playtone = (tone) ->
             while(written < size and current_sample < last_sample) 
                 x = current_sample / last_sample
                 smoother = Math.pow(Math.E, -x * 5)
-                wave = wtable(current_sample)
-                random = Math.random() - 0.5
-                wave += (random / 200)
+                wave = wtable(current_sample + 1) + wtable(current_sample) >> 1
                 out[written] = pink * smoother * wave
                 current_sample++
                 written++
