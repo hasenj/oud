@@ -20,7 +20,6 @@ gentones = (scale, starttone, offset, length) ->
     if offset > 0
         for index in [0..offset-1]
             tones.shift()
-    # console.log tones
     return tones
 
 get_octave_bounds = (offset, tones) ->
@@ -44,12 +43,10 @@ updkeys = () ->
     start = Number fval("start")
     tones = gentones scale, start, offset, keys.length
     octave_bounds = get_octave_bounds -offset, tones
-    console.log octave_bounds
     $("#keys").text("")
     for [key, tone], index in _.zip(keys, tones) when key? and tone?
         if (j = _.indexOf(octave_bounds, index)) != -1
             octavediv = $("<div>").addClass "octave"
-            console.log j
             if j % 2 == 0
                 octavediv.addClass "octave_bg"
             $("#keys").append(octavediv)
