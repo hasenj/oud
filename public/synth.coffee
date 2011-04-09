@@ -62,6 +62,8 @@ window.playtone = (tone) ->
                 x = current_sample / last_sample
                 smoother = Math.pow(Math.E, -x * 5)
                 wave = wtable(current_sample)
+                random = Math.random() - 0.5
+                wave += (random / 200)
                 out[written] = smoother * wave
                 current_sample++
                 written++
