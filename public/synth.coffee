@@ -24,18 +24,21 @@ getmixer = () ->
 $ getmixer
 
 wavetable = (freq) ->
-    samples = 3 * SRATE / freq
+    periods = 4
+    samples = periods * SRATE / freq
     console.log "samples: ", samples
     samples = Math.round(samples)
     console.log "freq1: ", freq
-    freq = SRATE / (samples / 3)
+    freq = SRATE / (samples / periods)
     console.log "freq2: ", freq
     k = 2 * Math.PI * freq / SRATE
     table = new Float32Array(samples)
-    for index in [0..samples]
-        table[index] = Math.sin(k * index)
+    _sample = (point) -> Math.sin(k * point)
     getsample = (point) ->
-        table[point % samples]
+        point = point % samples
+        if table[point] == 0
+            table[point] = _sample(point)
+        return table[point]
     return getsample
 
 wavetable = _.memoize(wavetable)
@@ -49,7 +52,7 @@ tonefreq = (tone, base=138) ->
 window.playtone = (tone) ->
     # TODO add random +/- 0.05 for microtonal variations!!!
     freq = tonefreq(tone)
-    pink = 80/freq
+    pink = 100/freq
     duration = 2.4
     current_sample = 0
     last_sample = duration * SRATE # offbyone?
