@@ -268,8 +268,7 @@ AudioDataDestination.prototype.writeAsync = function (source) {
       destination.currentWritePosition += written;
       if (written < tail.length) {
         // Not all the data was written, saving the tail...
-        if (written > 0)
-            tail = (tail.subarray ? tail.subarray(written) : tail.slice(written));
+        tail = (tail.subarray ? tail.subarray(written) : tail.slice(written));
         return; // ... and exit the function.
       }
       tail = null;
