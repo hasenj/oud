@@ -24,15 +24,10 @@ getmixer = () ->
 $ getmixer
 
 wavetable = (freq) ->
-    periods = 8
+    periods = 8 # how many periods to cache (to lower frequency distortion)
     samples = periods * SRATE / freq
-    console.log "samples: ", samples
     samples = Math.round(samples)
-    console.log "freq1: ", freq
-    freq0 = freq
     freq = SRATE / (samples / periods)
-    console.log "freq2: ", freq
-    console.log "freq distortion: ", (freq - freq0)
     k = 2 * Math.PI * freq / SRATE
     table = new Float32Array(samples)
     _sample = (point) -> Math.sin(k * point)
