@@ -54,7 +54,7 @@ tonefreq = (tone, base=138) ->
 window.playtone = (tone) ->
     # TODO add random +/- 0.05 for microtonal variations!!!
     freq = tonefreq(tone)
-    pink = 100/freq
+    pink = 50/freq
     duration = 2.4
     current_sample = 0
     last_sample = duration * SRATE # offbyone?

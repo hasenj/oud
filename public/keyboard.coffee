@@ -23,10 +23,19 @@ gentones = (scale, starttone, offset, length) ->
     # console.log tones
     return tones
 
+get_octave_bounds = (offset, tones) ->
+    res = [0, offset]
+    cur = tones[offset]
+    for t, i in tones
+        if t >= cur + 6
+            cur = t
+            res.push(i)
+    res
+
 fval = (id)-> $("#" + id).val() # field value
 
 window.keys = {}
-window.keyslayout = "QWERTYUIOPLKJHGFDSAZXC"
+window.keyslayout = "4321QWERTYUIOPLKJHGFDSAZXCVBNM"
 updkeys = () ->
     # TODO: allow custom layout!!
     keys = keyslayout
@@ -34,9 +43,17 @@ updkeys = () ->
     offset = - Number fval("offset")
     start = Number fval("start")
     tones = gentones scale, start, offset, keys.length
+    octave_bounds = get_octave_bounds -offset, tones
+    console.log octave_bounds
     $("#keys").text("")
-    for [key, tone] in _.zip(keys, tones) when key? and tone?
-      bindkeytone key, tone
+    for [key, tone], index in _.zip(keys, tones) when key? and tone?
+        if (j = _.indexOf(octave_bounds, index)) != -1
+            octavediv = $("<div>").addClass "octave"
+            console.log j
+            if j % 2 == 0
+                octavediv.addClass "octave_bg"
+            $("#keys").append(octavediv)
+        bindkeytone key, tone
 window.updkeys = _.debounce(updkeys, 400)
 
 bindhotkey = (key, downfn, upfn) ->
@@ -53,7 +70,7 @@ bindkeytone = (key, tone) ->
           attr("id", genkeyid key).html(key).
           mousedown(downfn).mouseup(upfn).
           append(tonespan)
-      $("#keys").append(keydiv)
+      $("#keys > .octave:last").append(keydiv)
       # TODO make the shortcut more dynamic: grab all keys and determine tone based on the key
       bindhotkey(key, downfn, upfn)
 
