@@ -23,6 +23,22 @@ getmixer = () ->
 
 $ getmixer
 
+wavetable = (freq) ->
+    samples = SRATE / freq
+    console.log "samples: ", samples
+    samples = Math.round(samples)
+    pink = 80/freq
+    k = 2 * Math.PI * freq / SRATE
+    table = new Float32Array(samples)
+    for index in [0..samples]
+        table[index] = Math.sin(k * index) * pink
+    getsample = (point) ->
+        table[point % samples]
+    return getsample
+
+wavetable = _.memoize(wavetable)
+
+
 tonefreq = (tone, base=138) ->
    tones_per_octave = 6 # DON'T CHANGE!!
    return base * Math.pow(2, tone/tones_per_octave)
@@ -32,22 +48,21 @@ window.playtone = (tone) ->
     # TODO add random +/- 0.05 for microtonal variations!!!
     freq = tonefreq(tone)
     duration = 2.4
-    pink = 80/freq
     current_sample = 0
-    last_sample = duration * SRATE
+    last_sample = duration * SRATE # offbyone?
+    wtable = wavetable(freq)
     source =
         audioParameters: APARAMS
         read: (out) -> 
             if(current_sample >= last_sample) 
                 return null
             size = out.length
-            k = 2 * Math.PI * freq / SRATE
             written = 0
             while(written < size and current_sample < last_sample) 
                 x = current_sample / last_sample
                 smoother = Math.pow(Math.E, -x * 5)
-                wave = Math.sin(k * current_sample)
-                out[written] = smoother * pink * wave
+                wave = wtable(current_sample)
+                out[written] = smoother * wave
                 current_sample++
                 written++
             return written
