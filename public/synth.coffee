@@ -42,7 +42,7 @@ random_sample = () ->
     2 * Math.random() - 1
 
 # karplus strong algorithm
-guitar = (freq) ->
+oudfn = (freq) ->
     samples = period_len freq
     table = new Float32Array(samples)
     inited = 0
@@ -73,7 +73,7 @@ window.playtone = (tone) ->
     duration = 3
     current_sample = 0
     last_sample = duration * SRATE
-    sigfn = guitar(freq)
+    sigfn = oudfn(freq)
     source =
         audioParameters: APARAMS
         read: (out) -> 
