@@ -34,13 +34,13 @@ get_octave_bounds = (offset, tones) ->
 fval = (id)-> $("#" + id).val() # field value
 
 window.keys = {}
-window.keyslayout = "654321QWERTYUIOPLKJHGFDSAZXCVBNM"
+window.keyslayout = "7654321QWERTYUJHGFDSAZXCVBNM"
 updkeys = () ->
     # TODO: allow custom layout!!
     keys = keyslayout
     scale = fval("scale").match(/[\d.]+/g)
     # offset = - Number fval("offset")
-    offset = -6
+    offset = -7
     start = Number fval("start")
     tones = gentones scale, start, offset, keys.length
     octave_bounds = get_octave_bounds -offset, tones
