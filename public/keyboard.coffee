@@ -5,31 +5,23 @@ getscalepoint = (scale, point) ->
     point %= scale.length
     Number scale[point]
 
-# startoffset: add a few tones before the starting tone
-gentones = (scale, starttone, offset, length) ->
+gentones = (scale, starttone, length) ->
     tone = starttone
     tones = []
-    for index in [0..length-offset-1]
+    for index in [0..length-1]
       tones.push tone
-      tone += getscalepoint scale, index
-    if offset < 0
-      tone = starttone
-      for index in [-1..offset]
-        tone -= getscalepoint scale, index
-        tones.unshift tone
-    if offset > 0
-        for index in [0..offset-1]
-            tones.shift()
+      dist = getscalepoint scale, index
+      tone += dist
     return tones
 
-get_octave_bounds = (offset, tones) ->
-    res = [0, offset]
-    cur = tones[offset]
-    for t, i in tones
-        if t >= cur + 6
-            cur = t
-            res.push(i)
-    res
+get_octave_bounds = (tones) ->
+    bounds = [0]
+    current_tone = tones[0]
+    for tone, i in tones
+        if tone >= current_tone + 6 # 6 == octave length 
+            current_tone = tone
+            bounds.push(i)
+    bounds
 
 fval = (id)-> $("#" + id).val() # field value
 
@@ -40,11 +32,10 @@ updkeys = () ->
     # TODO: allow custom layout!!
     keys = keyslayout
     scale = fval("scale").match(/[\d.]+/g)
-    # offset = - Number fval("offset")
-    offset = -7
     start = Number fval("start")
-    tones = gentones scale, start, offset, keys.length
-    octave_bounds = get_octave_bounds -offset, tones
+    start -= 6 # add an octave before
+    tones = gentones scale, start, keys.length
+    octave_bounds = get_octave_bounds tones
     $("#keys").text("")
     for [key, tone], index in _.zip(keys, tones) when key? and tone?
         if (j = _.indexOf(octave_bounds, index)) != -1
