@@ -23,23 +23,43 @@ getmixer = () ->
 
 $ getmixer
 
-wavetable = (freq) ->
+round_to = (num, factor) ->
+    num *= 1/factor
+    num = Math.round(num)
+    num *= factor
+    return num
+
+avg = (a, b) -> (a + b) / 2
+
+_period_len_of_freq = (freq) ->
+    # not accurate; results in a slight change (distortion) of the original frequency, but this change is acceptable
+    # returns [samples, freq] where `samples` is the number of samples (period length) and `freq` is the changed frequency
+    # TODO perhaps this is a bit of a complication and we can ignore the change in freq?
     periods = 8 # how many periods to cache (to lower frequency distortion)
     samples = periods * SRATE / freq
     samples = Math.round(samples)
     freq = SRATE / (samples / periods)
+    return [samples, freq]
+
+_period_len_of_freq = _.memoize(_period_len_of_freq)
+
+# same as above, but only gets the period length in samples
+period_len = (freq) -> _period_len_of_freq(freq)[0]
+
+wavetable = (freq) ->
+    [samples, freq] = _period_len_of_freq(freq)
     k = 2 * Math.PI * freq / SRATE
     table = new Float32Array(samples)
-    _sample = (point) -> Math.sin(k * point)
-    getsample = (point) ->
-        point = point % samples
-        if table[point] == 0
-            table[point] = _sample(point)
-        return table[point]
-    return getsample
+    sine = (point) -> Math.sin(k * point)
+    getsample = (index) ->
+        point = index % samples
+        if index == point
+            table[point] = sine(point)
+        else
+            prev = (index - 1) % samples
+            table[point] = 0.45 * (table[point] + table[prev])
 
 wavetable = _.memoize(wavetable)
-
 
 tonefreq = (tone, base=138) ->
    tones_per_octave = 6 # DON'T CHANGE!!
@@ -62,10 +82,10 @@ window.playtone = (tone) ->
             size = out.length
             written = 0
             while(written < size and current_sample < last_sample) 
-                x = current_sample / last_sample
-                smoother = Math.pow(Math.E, -x * 5)
-                wave = wtable(current_sample + 1) + wtable(current_sample) >> 1
-                out[written] = gain * smoother * wave
+                # x = current_sample / last_sample
+                # smoother = Math.pow(Math.E, -x * 5)
+                signal = wtable(current_sample)
+                out[written] = gain * signal
                 current_sample++
                 written++
             return written
