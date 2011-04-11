@@ -74,8 +74,6 @@ window.playtone = (tone) ->
             size = out.length
             written = 0
             while(written < size and current_sample < last_sample) 
-                # x = current_sample / last_sample
-                # smoother = Math.pow(Math.E, -x)
                 signal = sigfn(current_sample)
                 out[written] = gain * signal
                 current_sample++
