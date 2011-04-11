@@ -23,19 +23,17 @@ getmixer = () ->
 
 $ getmixer
 
-round_to = (num, factor) ->
-    num *= 1/factor
-    num = Math.round(num)
-    num *= factor
-    return num
-
 period_len = (freq) -> Math.floor (SRATE/freq)
 
-avgdecay = (a, b) -> (a + b) / 2
+avg = (a, b) -> (a + b) / 2
+
+probably = (p) ->
+    # return true with probablily p (p is between 0, 1)
+    return Math.random() < p
 
 ks_noise_sample = (val) ->
     # get either val or -val with 50% chance
-    if Math.random() > 0.5
+    if probably(0.5)
         val
     else
         -val
@@ -50,7 +48,7 @@ guitar = (freq) ->
             table[point] = ks_noise_sample(1)
         else
             prev = (index - 1) % samples
-            table[point] = avgdecay(table[point], table[prev])
+            table[point] = avg(table[point], table[prev])
 
 tonefreq = (tone, base=138) ->
    tones_per_octave = 6 # DON'T CHANGE!!
