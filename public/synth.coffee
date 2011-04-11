@@ -38,14 +38,26 @@ ks_noise_sample = (val) ->
     else
         -val
 
+random_sample = () ->
+    2 * Math.random() - 1
+
 # karplus strong algorithm
 guitar = (freq) ->
     samples = period_len freq
     table = new Float32Array(samples)
+    inited = 0
     getsample = (index) ->
         point = index % samples
         if index == point
-            table[point] = ks_noise_sample(1)
+            if point > inited
+                noise = ks_noise_sample(0.5)
+                table[point] = noise
+                repeat = 12 + Math.random() * 15
+                while inited < samples and inited < index + repeat
+                    table[inited] = noise
+                    inited++
+            else
+                table[point]
         else
             prev = (index - 1) % samples
             table[point] = avg(table[point], table[prev])
@@ -70,7 +82,7 @@ window.playtone = (tone) ->
             size = out.length
             written = 0
             while(written < size and current_sample < last_sample) 
-                damp = Math.pow(Math.E, -2 * (current_sample/last_sample))
+                damp = Math.pow(Math.E, -3 * (current_sample/last_sample))
                 signal = sigfn(current_sample)
                 out[written] = gain * signal * damp
                 current_sample++
