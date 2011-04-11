@@ -72,8 +72,9 @@ window.playtone = (tone) ->
             size = out.length
             written = 0
             while(written < size and current_sample < last_sample) 
+                damp = Math.pow(Math.E, -2 * (current_sample/last_sample))
                 signal = sigfn(current_sample)
-                out[written] = gain * signal
+                out[written] = gain * signal * damp
                 current_sample++
                 written++
             return written
