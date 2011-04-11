@@ -24,7 +24,7 @@ get_octave_bounds = (tones) ->
     bounds
 
 note_enum_fn = (start_tone) ->
-    canonical_notes = [0, 1, 2, 2.5, 3.5, 4.5, 5.5]
+    canonical_notes = [0, 1, 2, 2.5, 3.5, 4.5, 5.5, 6]
     note_names_C = "C D E F G A B".split(" ")
     note_names_DO = "DO RE MI FA SOL LA SI".split(" ")
     # find the start index accordin to starting tone
@@ -34,10 +34,8 @@ note_enum_fn = (start_tone) ->
             start_tone += 6
         start_tone %= 6
         for tone, index in canonical_notes
-            if start_tone > tone
-                if index + 1 < canonical_notes.length
-                    if start_tone < tone
-                        return inex
+            nexttone = canonical_notes[index+1]
+            if tone <= start_tone < nexttone
                 return index
     index = first_note()
     enumer = () ->
