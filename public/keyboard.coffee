@@ -23,6 +23,29 @@ get_octave_bounds = (tones) ->
             bounds.push(i)
     bounds
 
+note_enum_fn = (start_tone) ->
+    canonical_notes = [0, 1, 2, 2.5, 3.5, 4.5, 5.5]
+    note_names_C = "C D E F G A B".split(" ")
+    note_names_DO = "DO RE MI FA SOL LA SI".split(" ")
+    # find the start index accordin to starting tone
+    first_note = () ->
+        start_tone = Number start_tone
+        while start_tone < 0
+            start_tone += 6
+        start_tone %= 6
+        for tone, index in canonical_notes
+            if start_tone > tone
+                if index + 1 < canonical_notes.length
+                    if start_tone < tone
+                        return inex
+                return index
+    index = first_note()
+    enumer = () ->
+        note_names_DO[index++ % note_names_DO.length]
+
+
+
+
 fval = (id)-> $("#" + id).val() # field value
 
 window.keys = {}
@@ -33,9 +56,9 @@ updkeys = () ->
     keys = keyslayout
     scale = fval("scale").match(/[\d.]+/g)
     start = Number fval("start")
-    start -= 6 # add an octave before
-    tones = gentones scale, start, keys.length
+    tones = gentones scale, start - 6, keys.length # start - 6 for previous octave
     octave_bounds = get_octave_bounds tones
+    note_enumer = note_enum_fn(start)
     $("#keys").text("")
     for [key, tone], index in _.zip(keys, tones) when key? and tone?
         if (j = _.indexOf(octave_bounds, index)) != -1
@@ -43,7 +66,7 @@ updkeys = () ->
             if j % 2 == 0
                 octavediv.addClass "octave_bg"
             $("#keys").append(octavediv)
-        bindkeytone key, tone
+        bindkeytone key, tone, note_enumer()
 window.updkeys = _.debounce(updkeys, 400)
 
 bindhotkey = (key, downfn, upfn) ->
@@ -51,15 +74,16 @@ bindhotkey = (key, downfn, upfn) ->
     $(document).bind('keyup', key, upfn)
 
 genkeyid = (k) -> "key_" + k.charCodeAt(0)
-bindkeytone = (key, tone) ->
+bindkeytone = (key, tone, notename) ->
       window.keys[key] = tone
       downfn = ()-> playkey(key)
       upfn = () -> liftkey(key)
-      tonespan = $("<div/>").addClass("tone").html(tone)
+      tone_e = $("<div/>").addClass("tone").html(tone)
+      notename_e = $("<div/>").addClass("notename").html(notename)
       keydiv = $("<div/>").addClass("key").
           attr("id", genkeyid key).html(key).
           mousedown(downfn).mouseup(upfn).
-          append(tonespan)
+          append(tone_e).append(notename_e)
       $("#keys > .octave:last").append(keydiv)
       # TODO make the shortcut more dynamic: grab all keys and determine tone based on the key
       bindhotkey(key, downfn, upfn)
