@@ -21,26 +21,30 @@ pad()
     font normal 12pt Ubuntu
     color hsl(0, 0%, 20%)
 
-input#start
-    width 40px
+input#start, input#offset
+    width 20px
 input#scale
-    width 400px
+    width 300px
 
 label
     margin 3px 10px
-    font normal 10pt Ubuntu
-input
+    font normal 9pt Ubuntu
+input, select
     margin 0px 5px
-    font normal 10pt monospace
+    padding 2px
+    font normal 8pt monospace
+    border 1px solid silver
+    border-radius 2px
+    color hsl(0, 0%, 14%)
+    background-color hsl(0, 0%, 98%)
 
 .octave
     display inline-block
-    margin 10px 0px
+    padding 6px 0px
 
 .octave_bg
-    background-color hsl(200, 1%, 94%)
+    background-color hsl(200, 1%, 97%)
     border-width 0px 1px
-    border-style dotted
     border-color silver
 
 #keys
@@ -49,7 +53,7 @@ input
         background-color #fdfdfd
         color hsl(0, 0%, 20%)
         display inline-block
-        padding 45px 0px
+        padding 40px 0px
         margin 4px 
         font normal 9pt sans
         text-align center
