@@ -52,8 +52,6 @@ guitar = (freq) ->
             prev = (index - 1) % samples
             table[point] = avgdecay(table[point], table[prev])
 
-# guitar = _.memoize(guitar)
-
 tonefreq = (tone, base=138) ->
    tones_per_octave = 6 # DON'T CHANGE!!
    return base * Math.pow(2, tone/tones_per_octave)
