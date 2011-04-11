@@ -34,6 +34,7 @@ get_octave_bounds = (offset, tones) ->
 fval = (id)-> $("#" + id).val() # field value
 
 window.keys = {}
+# window.keyslayout = "9876543WERTYUIKJHGFDSZXCVBNM" # possible alternative
 window.keyslayout = "7654321QWERTYUJHGFDSAZXCVBNM"
 updkeys = () ->
     # TODO: allow custom layout!!
