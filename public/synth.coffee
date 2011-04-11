@@ -29,37 +29,30 @@ round_to = (num, factor) ->
     num *= factor
     return num
 
-avg = (a, b) -> (a + b) / 2
+period_len = (freq) -> Math.floor (SRATE/freq)
 
-_period_len_of_freq = (freq) ->
-    # not accurate; results in a slight change (distortion) of the original frequency, but this change is acceptable
-    # returns [samples, freq] where `samples` is the number of samples (period length) and `freq` is the changed frequency
-    # TODO perhaps this is a bit of a complication and we can ignore the change in freq?
-    periods = 8 # how many periods to cache (to lower frequency distortion)
-    samples = periods * SRATE / freq
-    samples = Math.round(samples)
-    freq = SRATE / (samples / periods)
-    return [samples, freq]
+avgdecay = (a, b) -> (a + b) / 2
 
-_period_len_of_freq = _.memoize(_period_len_of_freq)
+ks_noise_sample = (val) ->
+    # get either val or -val with 50% chance
+    if Math.random() > 0.5
+        val
+    else
+        -val
 
-# same as above, but only gets the period length in samples
-period_len = (freq) -> _period_len_of_freq(freq)[0]
-
-wavetable = (freq) ->
-    [samples, freq] = _period_len_of_freq(freq)
-    k = 2 * Math.PI * freq / SRATE
+# karplus strong algorithm
+guitar = (freq) ->
+    samples = period_len freq
     table = new Float32Array(samples)
-    sine = (point) -> Math.sin(k * point)
     getsample = (index) ->
         point = index % samples
         if index == point
-            table[point] = sine(point)
+            table[point] = ks_noise_sample(1)
         else
             prev = (index - 1) % samples
-            table[point] = 0.45 * (table[point] + table[prev])
+            table[point] = avgdecay(table[point], table[prev])
 
-wavetable = _.memoize(wavetable)
+# guitar = _.memoize(guitar)
 
 tonefreq = (tone, base=138) ->
    tones_per_octave = 6 # DON'T CHANGE!!
@@ -68,12 +61,11 @@ tonefreq = (tone, base=138) ->
 # async now thanks to audiodata :)
 window.playtone = (tone) ->
     freq = tonefreq(tone)
-    gain = 5/Math.pow(freq, 0.5)
-    gain *= 0.4
-    duration = 3.2
+    gain = 0.5
+    duration = 3
     current_sample = 0
-    last_sample = duration * SRATE # offbyone?
-    wtable = wavetable(freq)
+    last_sample = duration * SRATE
+    sigfn = guitar(freq)
     source =
         audioParameters: APARAMS
         read: (out) -> 
@@ -83,8 +75,8 @@ window.playtone = (tone) ->
             written = 0
             while(written < size and current_sample < last_sample) 
                 # x = current_sample / last_sample
-                # smoother = Math.pow(Math.E, -x * 5)
-                signal = wtable(current_sample)
+                # smoother = Math.pow(Math.E, -x)
+                signal = sigfn(current_sample)
                 out[written] = gain * signal
                 current_sample++
                 written++
