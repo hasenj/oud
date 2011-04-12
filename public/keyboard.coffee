@@ -28,7 +28,7 @@ note_enum_fn = (start_tone) ->
     note_names_C = "C D E F G A B".split(" ")
     note_names_DO = "DO RE MI FA SOL LA SI".split(" ")
     # find the start index accordin to starting tone
-    first_note = () ->
+    first_note = ->
         start_tone = Number start_tone
         while start_tone < 0
             start_tone += 6
@@ -38,7 +38,7 @@ note_enum_fn = (start_tone) ->
             if tone <= start_tone < nexttone
                 return index
     index = first_note()
-    enumer = () ->
+    enumer = ->
         note_names_DO[index++ % note_names_DO.length]
 
 
@@ -49,7 +49,7 @@ fval = (id)-> $("#" + id).val() # field value
 window.keys = {}
 # window.keyslayout = "9876543WERTYUIKJHGFDSZXCVBNM" # possible alternative
 window.keyslayout = "7654321QWERTYUJHGFDSAZXCVBNM"
-updkeys = () ->
+updkeys = ->
     # TODO: allow custom layout!!
     keys = keyslayout
     scale = fval("scale").match(/[\d.]+/g)
@@ -74,8 +74,8 @@ bindhotkey = (key, downfn, upfn) ->
 genkeyid = (k) -> "key_" + k.charCodeAt(0)
 bindkeytone = (key, tone, notename) ->
       window.keys[key] = tone
-      downfn = ()-> playkey(key)
-      upfn = () -> liftkey(key)
+      downfn = -> playkey(key)
+      upfn = -> liftkey(key)
       tone_e = $("<div/>").addClass("tone").html(tone)
       notename_e = $("<div/>").addClass("notename").html(notename)
       keydiv = $("<div/>").addClass("key").

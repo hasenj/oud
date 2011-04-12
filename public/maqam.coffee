@@ -24,7 +24,7 @@ maqam_presets =
     iraq: ["5.25", "0.75 1 0.75 0.75 1 1 0.75"]
     nawa_athar: ["0", "1 0.5 1.5 0.5 0.5 1.5 0.5"]
 
-on_choose_maqam = () ->
+on_choose_maqam = ->
     name = @value
     [start, scale] = maqam_presets[name]
     $("#start").val(start)
@@ -32,7 +32,7 @@ on_choose_maqam = () ->
     $.cookie('maqam', name)
     updkeys()
 
-init_maqams = () ->
+init_maqams = ->
     # building preset list
     p = $("#presets")
     for name of maqam_presets

@@ -3,7 +3,7 @@ SRATE = 96000
 APARAMS = new AudioParameters(1, SRATE)      
 
 # Thanks to 'yury' from #audio@irc.mozilla.org
-getmixer = () ->
+getmixer = ->
     try
         if window.mixer 
             return window.mixer
@@ -19,7 +19,7 @@ getmixer = () ->
             $("#error_box").text("Error initializing audio output. Reload the page (if that fails, you might have to restart the browser)!").show()
         else
             $("#error_box").text("Only Firefox4 is supported").show()
-        return { addInputSource: () -> } # dummy mixer
+        return { addInputSource: -> } # dummy mixer
 
 $ getmixer
 
@@ -38,7 +38,7 @@ ks_noise_sample = (val) ->
     else
         -val
 
-random_sample = () ->
+random_sample = ->
     2 * Math.random() - 1
 
 # karplus strong algorithm
