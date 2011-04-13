@@ -1,16 +1,15 @@
-getscalepoint = (scale, point) ->
-    # cycling hack
-    while point < 0
-      point += scale.length
-    point %= scale.length
-    Number scale[point]
+window.cycle_index = (list, index) ->
+    while index < 0
+        index += list.length
+    index %= list.length
+    list[index]
 
 gentones = (scale, starttone, length) ->
     tone = starttone
     tones = []
     for index in [0..length-1]
       tones.push tone
-      dist = getscalepoint scale, index
+      dist = cycle_index scale, index
       tone += dist
     return tones
 
@@ -29,7 +28,6 @@ note_enum_fn = (start_tone) ->
     note_names_DO = "DO RE MI FA SOL LA SI".split(" ")
     # find the start index accordin to starting tone
     first_note = ->
-        start_tone = Number start_tone
         while start_tone < 0
             start_tone += 6
         start_tone %= 6
@@ -52,7 +50,8 @@ window.keyslayout = "7654321QWERTYUJHGFDSAZXCVBNM"
 updkeys = ->
     # TODO: allow custom layout!!
     keys = keyslayout
-    scale = fval("scale").match(/[\d.]+/g)
+    scale = fval("scale").match(/[\d.]+/g) # this sorta works like .split
+    scale = _.map(scale, Number)
     start = Number fval("start")
     tones = gentones scale, start - 6, keys.length # start - 6 for previous octave
     octave_bounds = get_octave_bounds tones
