@@ -42,9 +42,9 @@ maqam_presets =
     nawa_athar: ["0", "1 0.5 1.5 0.5 0.5 1.5 0.5"]
 
 window.parse_scale = (scale_str) ->
-    toks = scale_str.match(/(\]|\[|(-?[\d.]+))/g) # this sorta works like .split
-    tonekey = (dist) ->
-        { dist1: dist, dist2: 0 }
+    # match [ ] and number tokens
+    toks = scale_str.match(/(\]|\[|(-?[\d.]+))/g) 
+    tonekey = (dist) -> { dist1: dist, dist2: 0 }
     scale = []
     sc_at = (index) ->
         if index < 0
@@ -53,7 +53,6 @@ window.parse_scale = (scale_str) ->
         while index >= scale.length
             scale.push tonekey(0)
         return scale[index]
-    console.log scale
     index = 0
     while toks.length > 0
         t = toks.shift()
@@ -68,10 +67,6 @@ window.parse_scale = (scale_str) ->
             index++
     console.log scale
     return scale
-
-            
-
-
 
 on_choose_maqam = ->
     name = @value

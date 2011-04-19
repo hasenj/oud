@@ -22,6 +22,7 @@ get_octave_bounds = (tones) ->
             bounds.push(i)
     bounds
 
+# TODO fix this!!!!
 note_enum_fn = (start_tone) ->
     canonical_notes = [0, 1, 2, 2.5, 3.5, 4.5, 5.5, 6]
     note_names_C = "C D E F G A B".split(" ")
