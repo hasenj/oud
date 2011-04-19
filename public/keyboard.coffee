@@ -71,19 +71,21 @@ updkeys = ->
             if j % 2 == 0
                 octavediv.addClass "octave_bg"
             $("#keys").append(octavediv)
-        bindkeytone key, tone.w, note_enumer()
+        bindkeytone key, tone, note_enumer()
 window.updkeys = _.debounce(updkeys, 400)
 
 bindhotkey = (key, downfn, upfn) ->
     $(document).bind('keydown', key, downfn)
     $(document).bind('keyup', key, upfn)
+    $(document).bind('keydown', 'Shift+'+key, downfn)
+    $(document).bind('keyup', 'Shift+'+key, upfn)
 
 genkeyid = (k) -> "key_" + k.charCodeAt(0)
 bindkeytone = (key, tone, notename) ->
       window.keys[key] = tone
-      downfn = -> playkey(key)
-      upfn = -> liftkey(key)
-      tone_e = $("<div/>").addClass("tone").html(tone)
+      downfn = (e) -> playkey(key, e.shiftKey)
+      upfn = (e) -> liftkey(key, e.shiftKey)
+      tone_e = $("<div/>").addClass("tone").html(tone.w)
       notename_e = $("<div/>").addClass("notename").html(notename)
       keydiv = $("<div/>").addClass("key").
           attr("id", genkeyid key).html(key).
@@ -99,13 +101,17 @@ getkeydiv = (key) -> $("#" + genkeyid key)
 
 downkeys = {}
 
-playkey = (key) ->
+playkey = (key, black) ->
     if downkeys[key]
         return # already pressed
     downkeys[key] = true
     tone = getkeytone(key)
     if not tone? 
       return
+    if black
+        tone = tone.b
+    else
+        tone = tone.w
     div = getkeydiv(key)
     div.stop()
     div.css("background-color", "hsl(210, 95%, 95%)")
