@@ -42,12 +42,12 @@ maqam_presets =
     nawa_athar: ["0", "1 0.5 1.5 0.5 0.5 1.5 0.5"]
 
 window.parse_scale = (scale_str) ->
-    scale = scale_str.match(/[\d.]+/g) # this sorta works like .split
+    scale = scale_str.match(/(\]|\[|(-?[\d.]+))/g) # this sorta works like .split
+    console.log scale
     scale = _.map(scale, Number)
     tonekey = (dist) ->
         { dist1: dist, dist2: 0 }
     scale = _.map(scale, tonekey)
-    console.log scale
     scale
 
 
