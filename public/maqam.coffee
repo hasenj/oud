@@ -44,6 +44,11 @@ maqam_presets =
 window.parse_scale = (scale_str) ->
     scale = scale_str.match(/[\d.]+/g) # this sorta works like .split
     scale = _.map(scale, Number)
+    tonekey = (dist) ->
+        { dist1: dist, dist2: 0 }
+    scale = _.map(scale, tonekey)
+    console.log scale
+    scale
 
 
 on_choose_maqam = ->

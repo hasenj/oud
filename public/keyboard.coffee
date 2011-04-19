@@ -10,7 +10,7 @@ gentones = (scale, starttone, length) ->
     for index in [0..length-1]
       tones.push tone
       dist = cycle_index scale, index
-      tone += dist
+      tone += dist.dist1
     return tones
 
 get_octave_bounds = (tones) ->
