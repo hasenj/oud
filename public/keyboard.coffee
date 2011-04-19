@@ -43,7 +43,12 @@ note_enum_fn = (start_tone) ->
         for tone, index in canonical_notes
             nexttone = canonical_notes[index+1]
             if tone <= start_tone < nexttone
-                return index
+                dist1 = Math.abs(start_tone - tone)
+                dist2 = Math.abs(nexttone - start_tone)
+                if dist1 <= dist2
+                    return index
+                else
+                    return index + 1
     index = first_note()
     enumer = ->
         note_names_DO[index++ % note_names_DO.length]
