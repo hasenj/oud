@@ -1,7 +1,10 @@
-window.cycle_index = (list, index) ->
+modulo = (index, length) ->
     while index < 0
-        index += list.length
-    index %= list.length
+        index += length
+    index %= length
+
+window.cycle_index = (list, index) ->
+    index = modulo index, list.length
     list[index]
 
 # array of tone objects. json objects with:
@@ -37,9 +40,7 @@ note_enum_fn = (start_tone) ->
     note_names_DO = "DO RE MI FA SOL LA SI".split(" ")
     # find the start index accordin to starting tone
     first_note = ->
-        while start_tone < 0
-            start_tone += 6
-        start_tone %= 6
+        start_tone = modulo start_tone, 6
         for tone, index in canonical_notes
             nexttone = canonical_notes[index+1]
             if tone <= start_tone < nexttone
