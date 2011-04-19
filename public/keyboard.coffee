@@ -4,21 +4,29 @@ window.cycle_index = (list, index) ->
     index %= list.length
     list[index]
 
+# array of tone objects. json objects with:
+#   w: the tone value (white)
+#   b: the super imposed tone value (black) 
 gentones = (scale, starttone, length) ->
-    tone = starttone
+    ctor = (w) -> {w: w, b: w}
     tones = []
+    tones.push ctor(starttone)
+    last = -> tones[tones.length-1]
     for index in [0..length-1]
-      tones.push tone
+      prev = last()
       dist = cycle_index scale, index
-      tone += dist.dist1
+      w = prev.w + dist.dist1
+      b = w + dist.dist2
+      tones.push {w : w, b: b}
+    console.log "tones: ", tones
     return tones
 
 get_octave_bounds = (tones) ->
     bounds = [0]
-    current_tone = tones[0]
+    current_tone = tones[0].w
     for tone, i in tones
-        if tone >= current_tone + 6 # 6 == octave length 
-            current_tone = tone
+        if tone.w >= current_tone + 6 # 6 == octave length 
+            current_tone = tone.w
             bounds.push(i)
     bounds
 
@@ -63,7 +71,7 @@ updkeys = ->
             if j % 2 == 0
                 octavediv.addClass "octave_bg"
             $("#keys").append(octavediv)
-        bindkeytone key, tone, note_enumer()
+        bindkeytone key, tone.w, note_enumer()
 window.updkeys = _.debounce(updkeys, 400)
 
 bindhotkey = (key, downfn, upfn) ->
