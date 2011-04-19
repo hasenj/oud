@@ -50,8 +50,7 @@ window.keyslayout = "7654321QWERTYUJHGFDSAZXCVBNM"
 updkeys = ->
     # TODO: allow custom layout!!
     keys = keyslayout
-    scale = fval("scale").match(/[\d.]+/g) # this sorta works like .split
-    scale = _.map(scale, Number)
+    scale = parse_scale fval("scale")
     start = Number fval("start")
     tones = gentones scale, start - 6, keys.length # start - 6 for previous octave
     octave_bounds = get_octave_bounds tones
