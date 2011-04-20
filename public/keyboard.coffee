@@ -119,8 +119,9 @@ playkey = (key, black) ->
     else
         tone = tone.w
     div = getkeydiv(key)
-    div.stop()
-    div.css("background-color", "hsl(210, 95%, 95%)")
+    div.stop(true, true)
+    # div.css("background-color", "hsl(210, 95%, 95%)")
+    div.addClass("key_down", 1)
     playtone(tone)
 
 liftkey = (key) ->
@@ -129,8 +130,9 @@ liftkey = (key) ->
     if not tone?
       return
     div = getkeydiv(key)
-    div.stop()
-    div.animate({"background-color": "#fdfdfd"}, 300)
+    div.stop(true, true)
+    # div.animate({"background-color": "#fdfdfd"}, 300)
+    div.removeClass("key_down", 200)
 
 $ updkeys
 
