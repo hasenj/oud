@@ -68,6 +68,14 @@ window.parse_scale = (scale_str) ->
     console.log scale
     return scale
 
+# From: http://www.mediacollege.com/internet/javascript/text/case-capitalize.html
+String.prototype.capitalize = ->
+   @replace /(^|\s)([a-z])/g , (m,p1,p2) -> p1+p2.toUpperCase()
+
+disp_name = (maqam_code) ->
+    maqam_code.replace("_", " ").capitalize()
+    
+
 on_choose_maqam = ->
     name = @value
     [start, scale] = maqam_presets[name]
@@ -80,7 +88,7 @@ init_maqams = ->
     # building preset list
     p = $("#presets")
     for name of maqam_presets
-        option = $("<option>").html(name).attr("val", name)
+        option = $("<option>").html(name)
         p.append(option)
     p.change(on_choose_maqam)
     # remember last chosen maqam
