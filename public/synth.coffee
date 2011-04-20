@@ -50,11 +50,11 @@ oudfn = (freq) ->
         point = index % samples
         if index == point
             if point > inited
-                noise = ks_noise_sample(0.5)
+                noise = ks_noise_sample(0.3)
                 table[point] = noise
-                repeat = 12 + Math.random() * 15
+                repeat = 10 + Math.random() * 20
                 while inited < samples and inited < index + repeat
-                    table[inited] = noise
+                    table[inited] = noise + random_sample() * 0.1
                     inited++
             else
                 table[point]
