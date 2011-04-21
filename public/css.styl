@@ -21,22 +21,33 @@ pad()
     font normal 12pt Ubuntu
     color hsl(0, 0%, 20%)
 
-input#start, input#offset
-    width 20px
+input#start
+    width 40px
+    text-align center
 input#scale
     width 300px
+    padding-left 10px
 
-label
-    margin 3px 10px
-    font normal 9pt Ubuntu
-input, select
+label, input, select
     margin 0px 5px
-    padding 2px
-    font normal 8pt monospace
-    border 1px solid silver
+    padding 8px
+    font normal 14pt Ubuntu
+    color hsl(0, 0%, 35%)
+
+input, select
     border-radius 2px
-    color hsl(0, 0%, 14%)
-    background-color hsl(0, 0%, 98%)
+    border 1px solid hsl(0, 0%, 98%)
+    background-color hsl(0, 0%, 99%)
+
+.maqam_info
+    padding 0px 10px 
+    label, input, select
+        font-size 8pt
+        padding 1px
+        margin 2px
+
+select#presets
+    font normal 14pt Georgia
 
 .octave
     display inline-block
