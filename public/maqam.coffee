@@ -72,10 +72,8 @@ String.prototype.capitalize = ->
 
 disp_name = (maqam_code) ->
     maqam_code.replace("_", " ").capitalize()
-    
 
-on_choose_maqam = ->
-    name = @value
+on_choose_maqam = (name) ->
     [start, scale] = maqam_presets[name]
     $("#start").val(start)
     $("#scale").val(scale)
@@ -84,15 +82,29 @@ on_choose_maqam = ->
     updkeys()
 
 init_maqams = ->
-    # building preset list
+    console.log 1
     p = $("#presets")
-    for name of maqam_presets
-        option = $("<option>").attr("value", name).html(disp_name name)
+    maqam_btns = {}
+    window.choose_maqam = (name) ->
+        b = maqam_btns[name]
+        console.log b
+        $(".selected_option", p).removeClass("selected_option")
+        b.addClass("selected_option")
+        on_choose_maqam name
+        return b
+    # building preset list
+    shkeys = "1234567890"
+    for name, index in _.keys maqam_presets
+        console.log name
+        disp = disp_name name
+        shortcut = 'ctrl+' + shkeys[index]
+        clickfn = -> choose_maqam name
+        option = $("<div>").addClass("option").html(disp_name name)
+        maqam_btns[name] = option
         p.append(option)
-    p.change(on_choose_maqam)
+        option.attr("onclick", "choose_maqam(\"" + name + "\")")
     # remember last chosen maqam
-    m = $.cookie('maqam') or 'c_major'
-    p.val(m)
-    p.change()
+    m = $.cookie('maqam') or 'c_major' 
+    choose_maqam m # TEST THIS WORKS!!!
 
 $ init_maqams

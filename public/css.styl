@@ -49,11 +49,11 @@ input#scale
 
 #maqam_section
 
-    select#presets
-        font normal 14pt Georgia
+    #presets
+        font normal 10pt Georgia
         background-color hsl(0, 0%, 99%)
-        padding 4px
-        margin 12px 0
+        color hsl(120, 10%, 30%)
+        margin 12px 20px
 
     input, select
         border-radius 2px
@@ -113,6 +113,18 @@ input#scale
         border-bottom 4px solid silver
         margin-top 0px
         margin-bottom 1px
+
+.option_set
+    width 200px
+    border 1px solid silver
+    border-width 0px 0px 1px 1px
+    .option
+        border 1px solid silver
+        border-width 1px 1px 0px 0px
+        padding 7px
+        cursor pointer
+    .selected_option
+        background-color hsl(140, 30%, 90%)
 
 #error_box
     border 2px solid red
