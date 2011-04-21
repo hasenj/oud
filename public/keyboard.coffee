@@ -60,8 +60,8 @@ fval = (id)-> $("#" + id).val() # field value
 
 window.keys = {}
 # window.keyslayout = "9876543WERTYUIKJHGFDSZXCVBNM" # possible alternative
-window.keyslayout = "7654321QWERTYUJHGFDSAZXCVBNM"
-# window.keyslayout = "654321QWERTYUOP;LKJHGFDSA"
+# window.keyslayout = "7654321QWERTYUJHGFDSAZXCVBNM"
+window.keyslayout = "7654321QWERTYUIOP;LKJHGFDSA"
 # window.keyslayout = "1234567qwertyuasdfghj"
 updkeys = ->
     # TODO: allow custom layout!!
