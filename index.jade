@@ -1,23 +1,23 @@
+table 
+  tr
+    td
+      div#keys
+      div#error_box
+    td
 
-label Maqam
-select#presets
+      div#maqam_section
+        .maqam_name
+          | Maqam 
+          span#current_maqam
 
-.maqam_info
-    label Starting tone
-    input#start(type="input", value="1", onkeyup="updkeys()")
-    label Tonal distances
-    input#scale(type="input", value="0.5 1.5 0.5 1 0.5 1 1", onkeyup="updkeys()")
+        .maqam_info
+            input#scale(type="input", value="0.5 1.5 0.5 1 0.5 1 1", onkeyup="updkeys()")
+            br
+            label Starting tone
+            input#start(type="input", value="1", onkeyup="updkeys()")
 
-#keys
+        select#presets
 
-  label Starting tone
-  input#start(type="input", value="1", onkeyup="updkeys()")
-  label Tonal distances
-  input#scale(type="input", value="0.5 1.5 0.5 1 0.5 1 1", onkeyup="updkeys()")
-#error_box
-
-/label Keyboard layout
-  input#keyslayout(type="input", value="QWERTYUIOPLKJHGFDSAZXCVBNM", onkeyup="updkeys()")
 
 script(type="text/coffeescript", src="/synth.coffee")
 script(type="text/coffeescript", src="/maqam.coffee")

@@ -79,6 +79,7 @@ on_choose_maqam = ->
     [start, scale] = maqam_presets[name]
     $("#start").val(start)
     $("#scale").val(scale)
+    $("#current_maqam").html(disp_name name)
     $.cookie('maqam', name)
     updkeys()
 
@@ -90,7 +91,8 @@ init_maqams = ->
         p.append(option)
     p.change(on_choose_maqam)
     # remember last chosen maqam
-    m = $.cookie('maqam') or p.val()
+    m = $.cookie('maqam') or 'c_major'
     p.val(m)
+    p.change()
 
 $ init_maqams
