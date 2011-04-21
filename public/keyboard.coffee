@@ -62,6 +62,8 @@ fval = (id)-> $("#" + id).val() # field value
 window.keys = {}
 # window.keyslayout = "9876543WERTYUIKJHGFDSZXCVBNM" # possible alternative
 window.keyslayout = "7654321QWERTYUJHGFDSAZXCVBNM"
+# window.keyslayout = "654321QWERTYUOP;LKJHGFDSA"
+# window.keyslayout = "1234567qwertyuasdfghj"
 updkeys = ->
     # TODO: allow custom layout!!
     keys = keyslayout
@@ -89,9 +91,13 @@ bindhotkey = (key, downfn, upfn) ->
 genkeyid = (k) -> "key_" + k.charCodeAt(0)
 bindkeytone = (key, tone, notename) ->
       window.keys[key] = tone
+      has_variation = tone.w != tone.b
       downfn = (e) -> playkey(key, e.shiftKey)
       upfn = (e) -> liftkey(key, e.shiftKey)
-      tone_e = $("<div/>").addClass("tone").html(tone.w)
+      tone_e = $("<div/>").addClass("tone")
+      tone_w = $("<div/>").addClass("tone_w").html(tone.w)
+      tone_b = $("<div/>").addClass("tone_b").html(tone.b).hide()
+      tone_e.append(tone_w).append(tone_b)
       notename_e = $("<div/>").addClass("notename").html(notename)
       keydiv = $("<div/>").addClass("key").
           attr("id", genkeyid key).html(key).
@@ -100,6 +106,17 @@ bindkeytone = (key, tone, notename) ->
       $("#keys > .octave:last").append(keydiv)
       # TODO make the shortcut more dynamic: grab all keys and determine tone based on the key
       bindhotkey(key, downfn, upfn)
+
+show_maqam_variation = ->
+    $(".tone_w").hide()
+    $(".tone_b").show()
+
+show_maqam_original = ->
+    $(".tone_w").show()
+    $(".tone_b").hide()
+
+$(document).bind('keydown', 'shift', show_maqam_variation)
+$(document).bind('keyup', 'shift', show_maqam_original)
 
 getkeytone = (key) -> window.keys[key]
 
