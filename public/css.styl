@@ -32,14 +32,18 @@ input#start
 input#scale
     width 300px
     padding-left 10px
+    word-spacing 1em
+
+*:focus
+   box-shadow 0px 0px 3px silver
+   outline none
+
+#maqam_name
+    padding 8px
+    font normal 22pt Ubuntu
+    color hsl(0, 0%, 32%)
 
 #maqam_section
-
-    .maqam_name
-        margin 0px 5px
-        padding 8px
-        font normal 20pt Ubuntu
-        color hsl(0, 0%, 35%)
 
     select#presets
         font normal 14pt Georgia
@@ -73,7 +77,7 @@ input#scale
     border-left 1px dotted hsl(0, 0%, 86%)
 
 #keys
-    margin 40px 0 0 0 
+    margin 10px 0
     .key
         background-color #fdfdfd
         color hsl(0, 0%, 20%)

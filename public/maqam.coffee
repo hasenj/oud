@@ -79,7 +79,7 @@ on_choose_maqam = ->
     [start, scale] = maqam_presets[name]
     $("#start").val(start)
     $("#scale").val(scale)
-    $("#current_maqam").html(disp_name name)
+    $("#maqam_name").html("Maqam " + disp_name name)
     $.cookie('maqam', name)
     updkeys()
 
