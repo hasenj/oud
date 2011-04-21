@@ -21,7 +21,6 @@ gentones = (scale, starttone, length) ->
       w = prev.w + dist.dist1
       b = w + dist.dist2
       tones.push {w : w, b: b}
-    console.log "tones: ", tones
     return tones
 
 get_octave_bounds = (tones) ->
@@ -114,7 +113,6 @@ show_maqam_variation = ->
     $(".tone_w").hide()
     $(".tone_b").show()
     $(".has_variation").parent().addClass("vhint")
-    console.log $(".vhint")
 
 show_maqam_original = ->
     $(".tone_w").show()

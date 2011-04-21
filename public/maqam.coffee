@@ -62,10 +62,8 @@ window.parse_scale = (scale_str) ->
             # not index+1 .. index already points to the "next" point
             sc_at(index).dist2 = Number toks.shift()
         else
-            console.log index, ' | ' , t
             sc_at(index).dist1 = Number t
             index++
-    console.log scale
     return scale
 
 # From: http://www.mediacollege.com/internet/javascript/text/case-capitalize.html
