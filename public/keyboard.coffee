@@ -103,6 +103,9 @@ bindkeytone = (key, tone, notename) ->
           attr("id", genkeyid key).html(key).
           mousedown(downfn).mouseup(upfn).
           append(tone_e).append(notename_e)
+      if has_variation
+          vhint = $("<div/>").addClass("has_variation").hide()
+          keydiv.append(vhint)
       $("#keys > .octave:last").append(keydiv)
       # TODO make the shortcut more dynamic: grab all keys and determine tone based on the key
       bindhotkey(key, downfn, upfn)
@@ -110,10 +113,13 @@ bindkeytone = (key, tone, notename) ->
 show_maqam_variation = ->
     $(".tone_w").hide()
     $(".tone_b").show()
+    $(".has_variation").parent().addClass("vhint")
+    console.log $(".vhint")
 
 show_maqam_original = ->
     $(".tone_w").show()
     $(".tone_b").hide()
+    $(".has_variation").parent().removeClass("vhint")
 
 $(document).bind('keydown', 'shift', show_maqam_variation)
 $(document).bind('keyup', 'shift', show_maqam_original)
