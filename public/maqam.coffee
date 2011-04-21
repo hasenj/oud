@@ -98,12 +98,14 @@ init_maqams = ->
         console.log name
         disp = disp_name name
         shortcut = 'ctrl+' + shkeys[index]
-        clickfn = -> choose_maqam name
+        # -> -> is necessary trickery for js closures inside loops!
+        clickfn = ((name)-> -> choose_maqam name) name
         option = $("<div>").addClass("option").html(disp_name name)
         option.append $("<div>").addClass("shortcut").html(shortcut)
-        option.attr("onclick", "choose_maqam(\"" + name + "\")")
+        option.click(clickfn)
         p.append(option)
         maqam_btns[name] = option
+        $(document).bind 'keydown', shortcut, clickfn
     # remember last chosen maqam
     m = $.cookie('maqam') or 'c_major' 
     choose_maqam m # TEST THIS WORKS!!!
