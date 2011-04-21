@@ -88,7 +88,7 @@ init_maqams = ->
     # building preset list
     p = $("#presets")
     for name of maqam_presets
-        option = $("<option>").html(name)
+        option = $("<option>").attr("value", name).html(disp_name name)
         p.append(option)
     p.change(on_choose_maqam)
     # remember last chosen maqam
