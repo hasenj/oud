@@ -9,6 +9,12 @@ body
 pad()
     padding 20px 12px
 
+link()
+    cursor pointer
+    -moz-user-select none
+    -webkit-user-select none
+    user-select none
+
 table.layout
     tr, td
         vertical-align top
@@ -50,9 +56,6 @@ input#scale
 #maqam_section
 
     #presets
-        font normal 10pt Georgia
-        background-color hsl(0, 0%, 99%)
-        color hsl(120, 10%, 30%)
         margin 12px 20px
 
     input, select
@@ -83,6 +86,7 @@ input#scale
 #keys
     margin 10px 0
     .key
+        link()
         background-color #fdfdfd
         color hsl(0, 0%, 20%)
         display inline-block
@@ -122,7 +126,17 @@ input#scale
         border 1px solid silver
         border-width 1px 1px 0px 0px
         padding 7px
-        cursor pointer
+        link()
+        font normal 10pt Georgia
+        background-color hsl(0, 0%, 99%)
+        color hsl(120, 10%, 30%)
+        .shortcut
+            font-size 0.8em
+            color silver * 0.9
+            position relative
+            right 2px
+            float right
+            text-align right
     .selected_option
         background-color hsl(140, 30%, 90%)
 

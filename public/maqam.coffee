@@ -93,16 +93,17 @@ init_maqams = ->
         on_choose_maqam name
         return b
     # building preset list
-    shkeys = "1234567890"
+    shkeys = "1234567890tyuiofghvbnm"
     for name, index in _.keys maqam_presets
         console.log name
         disp = disp_name name
         shortcut = 'ctrl+' + shkeys[index]
         clickfn = -> choose_maqam name
         option = $("<div>").addClass("option").html(disp_name name)
-        maqam_btns[name] = option
-        p.append(option)
+        option.append $("<div>").addClass("shortcut").html(shortcut)
         option.attr("onclick", "choose_maqam(\"" + name + "\")")
+        p.append(option)
+        maqam_btns[name] = option
     # remember last chosen maqam
     m = $.cookie('maqam') or 'c_major' 
     choose_maqam m # TEST THIS WORKS!!!
