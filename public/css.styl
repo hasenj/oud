@@ -38,7 +38,9 @@ table.layout
 #maqam_section
     pad()
     display inline-block
-    width 300px
+    width 500px
+    margin-left 20px
+    border-left 1px solid gray
 
 input#start
     width 40px
@@ -74,14 +76,13 @@ input#scale
 
 .octave
     display inline-block
-    padding 6px
-    margin 0 2px
+    padding 6px 2px
+    margin 0 
 
 .octave_bg
     background-color hsl(0, 0%, 98%)
+    border 1px solid hsl(0, 0%, 86%)
     border-top 1px solid hsl(0, 0%, 48%)
-    border-right 1px dotted hsl(0, 0%, 86%)
-    border-left 1px dotted hsl(0, 0%, 86%)
 
 #keys
     margin 10px 0
@@ -90,13 +91,12 @@ input#scale
         background-color #fdfdfd
         color hsl(0, 0%, 20%)
         display inline-block
-        padding 20px 0px
-        margin 4px 
+        padding 20px 1px
+        margin 3px 
         font normal 9pt sans
         text-align center
         border 1px solid silver
-        width 24px
-        max-width 30px
+        width 23px
         overflow hidden
         .tone
             font normal 5pt sans
@@ -114,24 +114,24 @@ input#scale
         .tone
             color silver * 0.9
     .vhint
-        border-bottom 4px solid silver
+        border-bottom 3px solid silver
         margin-top 0px
         margin-bottom 1px
 
 .option_set
-    width 200px
-    border 1px solid silver
-    border-width 0px 0px 1px 1px
     .option
         border 1px solid silver
-        border-width 1px 1px 0px 0px
         padding 7px
+        margin 1px
+        border-radius 1px
+        display inline-block
+        width 120px
         link()
         font normal 10pt Georgia
         background-color hsl(0, 0%, 99%)
         color hsl(120, 10%, 30%)
         .shortcut
-            font-size 0.8em
+            font normal 0.6em monospace
             color silver * 0.9
             position relative
             right 2px
