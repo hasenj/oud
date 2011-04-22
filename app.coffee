@@ -12,11 +12,15 @@ app.get('/', (req, res) ->
 
 s = require "stylus"
 fs = require "fs"
+nib = require "nib"
 app.get("/css", (req, res) ->
     fs.readFile(__dirname + "/public/css.styl", (err, data) ->
         src = String(data)
-        s.render(src, (err, css) ->
-            res.send(css, {'Content-Type': 'text/css'}))
+        s(src).use(nib()).render(
+            (err, css) ->
+                res.send(css, {'Content-Type': 'text/css'})
+            )
+
     ))
 
 # let .coffee files be served as text
