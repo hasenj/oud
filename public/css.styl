@@ -1,5 +1,7 @@
 @import 'nib'
 
+global-reset()
+
 body
     margin 0px
     padding 0px
@@ -122,19 +124,21 @@ input#scale
 
 .option_set
     .option
-        border 1px solid silver
+        minimal-button()
+        // border 1px solid silver
         padding 7px
-        margin 1px
-        border-radius 1px
+        margin 2px
+        // border-radius 1px
         display inline-block
         width 120px
         link()
         font normal 10pt Georgia
-        background-color hsl(0, 0%, 99%)
-        color hsl(120, 10%, 30%)
+        // background-color hsl(0, 0%, 99%)
+        // color hsl(120, 10%, 90%)
+        text-align left
         .shortcut
             font normal 0.6em monospace
-            color silver * 0.9
+            color silver * 0.7
             position relative
             right 2px
             float right

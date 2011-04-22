@@ -83,8 +83,8 @@ init_maqams = ->
     maqam_btns = {}
     window.choose_maqam = (name) ->
         b = maqam_btns[name]
-        $(".selected_option", p).removeClass("selected_option")
-        b.addClass("selected_option")
+        $(".active", p).removeClass("active")
+        b.addClass("active")
         on_choose_maqam name
         return b
     # building preset list
