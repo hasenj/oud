@@ -79,12 +79,10 @@ on_choose_maqam = (name) ->
     updkeys()
 
 init_maqams = ->
-    console.log 1
     p = $("#presets")
     maqam_btns = {}
     window.choose_maqam = (name) ->
         b = maqam_btns[name]
-        console.log b
         $(".selected_option", p).removeClass("selected_option")
         b.addClass("selected_option")
         on_choose_maqam name
@@ -92,7 +90,6 @@ init_maqams = ->
     # building preset list
     shkeys = "1234567890"
     for name, index in _.keys maqam_presets
-        console.log name
         disp = disp_name name
         # -> -> is necessary trickery for js closures inside loops!
         clickfn = ((name)-> -> choose_maqam name) name
