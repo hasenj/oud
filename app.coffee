@@ -14,7 +14,7 @@ s = require "stylus"
 fs = require "fs"
 nib = require "nib"
 app.get("/css", (req, res) ->
-    fs.readFile(__dirname + "/public/css.styl", (err, data) ->
+    fs.readFile(__dirname + "/css/index.styl", (err, data) ->
         src = String(data)
         s(src).use(nib()).render(
             (err, css) ->
