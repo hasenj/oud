@@ -18,6 +18,9 @@ app.get("/css", (req, res) ->
         src = String(data)
         s(src).use(nib()).render(
             (err, css) ->
+                if err
+                    console.log "stylus rendering error:"
+                    console.log err
                 res.send(css, {'Content-Type': 'text/css'})
             )
 
