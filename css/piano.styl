@@ -31,6 +31,7 @@ presscolor = hsl(246, 30%, 75%)
         border 1px solid silver
         width 23px
         overflow hidden
+        transition all 20ms ease-out
         .tone
             font normal 5pt sans
             padding-top 5px
@@ -43,14 +44,15 @@ presscolor = hsl(246, 30%, 75%)
             border-color silver * 0.9
             color hsl(300, 20%, 10%)
             box-shadow inset 0px -50px 40px -30px presscolor 
-            transition all 20ms ease-in-out
+            transition all 20ms ease-out
             .tone
                 color silver * 0.9
+            .notename
+                color #666
         &.unpressed
-            transition all 200ms ease-in-out
+            transition all 300ms ease-out
             box-shadow inset 0px -50px 50px -50px presscolor * 1.2
-    .vhint
-        border-bottom 3px solid silver
-        margin-top 0px
-        margin-bottom 1px
+        &.vhint
+            border-color silver * 0.6
+            transition all 20ms ease-out
 
