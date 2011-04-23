@@ -44,6 +44,11 @@ input#scale
     border-top-width 3px
     padding-top 4px
 
+transition()
+    vendor('transition', arguments)
+
+presscolor = hsl(250, 60%, 78%)
+
 #keys
     margin 10px 0
     .key
@@ -67,15 +72,16 @@ input#scale
             font normal 7pt monospace
             padding-top 12px
             color #777
-    .key_down
-        background-color hsl(210, 90%, 95%)
-        background linear-gradient(left, #fafafa, #fff)
-        background linear-gradient(bottom, hsl(200, 40%, 96%), 70% #fdfdfd)
-        border-color silver * 0.9
-        color hsl(300, 20%, 10%)
-        box-shadow inset 0px 0px 1px hsl(200, 20%, 90%)
-        .tone
-            color silver * 0.9
+        &.pressed
+            border-color silver * 0.9
+            color hsl(300, 20%, 10%)
+            box-shadow inset 0px -50px 40px -30px presscolor
+            transition all 20ms ease-in-out
+            .tone
+                color silver * 0.9
+        &.unpressed
+            transition all 200ms ease-in-out
+            box-shadow inset 0px -50px 40px -30px presscolor * 4
     .vhint
         border-bottom 3px solid silver
         margin-top 0px

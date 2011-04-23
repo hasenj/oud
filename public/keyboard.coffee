@@ -98,7 +98,7 @@ bindkeytone = (key, tone, notename) ->
       tone_b = $("<div/>").addClass("tone_b").html(tone.b).hide()
       tone_e.append(tone_w).append(tone_b)
       notename_e = $("<div/>").addClass("notename").html(notename)
-      keydiv = $("<div/>").addClass("key").
+      keydiv = $("<div/>").addClass("key unpressed").
           attr("id", genkeyid key).html(key).
           mousedown(downfn).mouseup(upfn).
           append(tone_e).append(notename_e)
@@ -142,7 +142,7 @@ playkey = (key, black) ->
     div = getkeydiv(key)
     div.stop(true, true)
     # div.css("background-color", "hsl(210, 95%, 95%)")
-    div.addClass("key_down", 1)
+    div.addClass("pressed").removeClass("unpressed")
     playtone(tone)
 
 liftkey = (key) ->
@@ -153,7 +153,7 @@ liftkey = (key) ->
     div = getkeydiv(key)
     div.stop(true, true)
     # div.animate({"background-color": "#fdfdfd"}, 300)
-    div.removeClass("key_down", 200)
+    div.removeClass("pressed").addClass("unpressed")
 
 $ updkeys
 
