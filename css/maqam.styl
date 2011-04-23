@@ -1,0 +1,52 @@
+@import 'nib'
+
+input#start
+    width 40px
+    text-align center
+input#scale
+    width 300px
+    word-spacing 1em
+
+#maqam_name
+    padding 8px
+    font normal 22pt Ubuntu
+    color hsl(0, 0%, 32%)
+
+#maqam_section
+    .maqam_info
+        padding 0px 10px 
+        label, input
+            font-size 8pt
+            margin 4px
+
+    #presets
+        margin 12px 20px
+
+    input
+        border-radius 100px
+        padding 3px 10px
+        border 0px solid white
+        box-shadow 0px 1px 2px gray inset
+        &:focus
+           box-shadow 0 0 2px 2px rgba(40, 120, 212, 0.2) inset, 0 0 2px 1px #2878D4, 0 1px 2px rgba(0, 0, 0, 0.3) inset
+
+
+
+.option_set
+    .option
+        minimal-button()
+        padding 7px
+        margin 2px
+        display inline-block
+        width 120px
+        link()
+        font normal 10pt Georgia
+        text-align left
+        .shortcut
+            font normal 0.6em monospace
+            color silver * 0.7
+            position relative
+            right 2px
+            float right
+            text-align right
+
