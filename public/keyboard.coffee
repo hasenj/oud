@@ -11,6 +11,7 @@ window.cycle_index = (list, index) ->
 #   w: the tone value (white)
 #   b: the super imposed tone value (black) 
 gentones = (scale, starttone, length) ->
+    starttone -= 6 # start an octave early!
     ctor = (w) -> {w: w, b: w}
     tones = []
     tones.push ctor(starttone)
@@ -23,12 +24,13 @@ gentones = (scale, starttone, length) ->
       tones.push {w : w, b: b}
     return tones
 
-get_octave_bounds = (tones) ->
+get_octave_bounds = (tones, start) ->
     bounds = [0]
-    current_tone = tones[0].w
+    while tones[0].w < start
+        start -= 6
     for tone, i in tones
-        if tone.w >= current_tone + 6 # 6 == octave length 
-            current_tone = tone.w
+        if tone.w >= start + 6 # 6 == octave length 
+            start += 6
             bounds.push(i)
     bounds
 
@@ -63,13 +65,14 @@ window.keys = {}
 # window.keyslayout = "7654321QWERTYUJHGFDSAZXCVBNM"
 window.keyslayout = "7654321QWERTYUIOP;LKJHGFDSA"
 # window.keyslayout = "1234567qwertyuasdfghj"
+# window.keyslayout = "4321qwertyuiop[]"
 updkeys = ->
     # TODO: allow custom layout!!
     keys = keyslayout
     scale = parse_scale fval("scale")
     start = Number fval("start")
-    tones = gentones scale, start - 6, keys.length # start - 6 for previous octave
-    octave_bounds = get_octave_bounds tones
+    tones = gentones scale, start, 40
+    octave_bounds = get_octave_bounds tones, start
     note_enumer = note_enum_fn(start)
     $("#keys").text("")
     for [key, tone], index in _.zip(keys, tones) when key? and tone?
