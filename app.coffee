@@ -14,9 +14,10 @@ s = require "stylus"
 fs = require "fs"
 nib = require "nib"
 app.get("/css", (req, res) ->
-    fs.readFile(__dirname + "/css/index.styl", (err, data) ->
+    fpath = __dirname + "/css/index.styl"
+    fs.readFile(fpath, (err, data) ->
         src = String(data)
-        s(src).use(nib()).render(
+        s(src).set('filename', fpath).use(nib()).render(
             (err, css) ->
                 if err
                     console.log "stylus rendering error:"

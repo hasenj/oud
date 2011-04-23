@@ -1,51 +1,5 @@
 @import 'nib'
-
-global-reset()
-
-body
-    margin 0px
-    padding 0px
-
-*:focus
-   box-shadow 0px 0px 3px silver
-   outline none
-
-pad()
-    padding 20px 12px
-
-link()
-    cursor pointer
-    -moz-user-select none
-    -webkit-user-select none
-    user-select none
-
-table.layout
-    tr, td
-        vertical-align top
-
-#header
-    background linear-gradient(bottom, hsl(280, 35%, 20%) 5%, hsl(283, 25%, 30%))
-    text-shadow 0 1px 1px black
-    color hsl(360 - 283, 16%, 80%)
-    font normal 18pt Ubuntu
-    pad()
-    h3
-        font normal 10pt Ubuntu
-        line-height 1em
-        margin 4px 10px 
-        display inline-block
-
-#content
-    pad()
-    font normal 12pt Ubuntu
-    color hsl(0, 0%, 20%)
-
-#maqam_section
-    pad()
-    display inline-block
-    width 500px
-    margin-left 20px
-    border-left 1px solid gray
+@import 'global'
 
 input#start
     width 40px
