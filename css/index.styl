@@ -38,7 +38,7 @@ input#scale
     padding 6px 2px
     margin 0 
 
-.octave_bg
+.octave.alt
     background-color hsl(0, 0%, 98%)
     border 1px solid hsl(0, 0%, 86%)
     border-top 1px solid hsl(0, 0%, 48%)
@@ -83,16 +83,12 @@ input#scale
 .option_set
     .option
         minimal-button()
-        // border 1px solid silver
         padding 7px
         margin 2px
-        // border-radius 1px
         display inline-block
         width 120px
         link()
         font normal 10pt Georgia
-        // background-color hsl(0, 0%, 99%)
-        // color hsl(120, 10%, 90%)
         text-align left
         .shortcut
             font normal 0.6em monospace
@@ -101,24 +97,4 @@ input#scale
             right 2px
             float right
             text-align right
-    .selected_option
-        background-color hsl(140, 30%, 90%)
 
-#error_box
-    border 2px solid red
-    background-color hsl(10, 70%, 80%)
-    color hsl(0, 100%, 20%)
-    font normal 12pt monospace
-    width: 50%
-    padding: 8px
-    margin: 10px
-    display: none
-
-footer
-    margin 20px
-    color hsl(160, 10%, 30%)
-    font normal 8pt/0.9 monospace
-    position absolute
-    bottom 2px
-    a
-        color: hsl(240, 10%, 30%)

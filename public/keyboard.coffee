@@ -76,7 +76,7 @@ updkeys = ->
         if (j = _.indexOf(octave_bounds, index)) != -1
             octavediv = $("<div>").addClass "octave"
             if j % 2 == 0
-                octavediv.addClass "octave_bg"
+                octavediv.addClass "alt"
             $("#keys").append(octavediv)
         bindkeytone key, tone, note_enumer()
 window.updkeys = _.debounce(updkeys, 400)
