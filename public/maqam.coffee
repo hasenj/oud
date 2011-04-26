@@ -100,7 +100,7 @@ init_maqams = ->
         option = $("<div>").addClass("option").html(disp_name name)
         if shkey = shkeys[index]
             shortcut = 'ctrl+' + shkey
-            option.append $("<div>").addClass("shortcut").html(shortcut)
+            option.append $("<div>").addClass("shortcut").html('ctrl-' + shkey)
             $(document).bind 'keydown', shortcut, clickfn
         option.click(clickfn)
         p.append(option)

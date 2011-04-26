@@ -31,6 +31,7 @@ input#scale
            box-shadow 0 0 2px 2px rgba(40, 120, 212, 0.2) inset, 0 0 2px 1px #2878D4, 0 1px 2px rgba(0, 0, 0, 0.3) inset
 
 
+bbg = hsl(100, 30%, 50%)
 option-button()
     smooth-button()
 
@@ -44,9 +45,11 @@ option-button()
         link()
         font normal 10pt Georgia
         text-align left
+        text-shadow 1px 1px 2px gray
         .shortcut
-            font normal 0.6em monospace
-            color silver * 0.7
+            font normal 0.7em monospace
+            color hsl(200, 20%, 90%)
+            text-shadow 1px 1px 1px gray
             position relative
             right 2px
             float right
