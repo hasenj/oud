@@ -21,14 +21,14 @@
 #   the first note is detected automatically
 #   the following notes just assume the sequence
 maqam_presets = 
-    ajam: ["-0.75", "1 1 0.5 1 1 1 0.5"]
+    ajam: ["-1", "1 1 0.5 1 1 1 0.5"]
     kurd: ["1", "0.5 1 1 1 0.5 1 ]-0.5 1"] # the -0.5 here is a cheat for rafat il hajjan!!
     nahawand: ["0", "1 0.5 1 1 0.5 ]-0.5 1.5 0.5"]
     hijaz: ["1", "0.5 1.5 0.5 1 ]+0.25 0.5 1 1"]
     rast: ["0", "1 0.75 0.75 1 1 ]-0.25 0.75 0.75"]
     saba: ["1", "0.75 0.75 0.5 1.5 0.5 1 ]-0.5 1"] # not sure what's the proper solution here
     bayati: ["1", "0.75 0.75 1 1 0.5 1 1"]
-    sikah:  ["1.25", "0.75 1 1 ]-0.25 0.75 0.75 1 0.75"]
+    sikah:  ["1.75", "0.75 1 1 ]-0.25 0.75 0.75 1 0.75"]
     huzam: ["1.25", "0.75 1 0.5 1.5 0.5 1 0.75"]
     jiharkah: ["4", "1 1 0.5 1 1 0.75 0.75"]
     husseini: ["1", "0.75 0.75 1 1 0.75 0.75 1"]
