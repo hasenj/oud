@@ -88,11 +88,15 @@ init_maqams = ->
         on_choose_maqam name
         return b
     # building preset list
-    shkeys = "1234567890"
+    shkeys = "1234567890asdfghjvbnm"
     for name, index in _.keys maqam_presets
         disp = disp_name name
         # -> -> is necessary trickery for js closures inside loops!
-        clickfn = ((name)-> -> choose_maqam name) name
+        clickfn = ((name)-> 
+            (e)-> 
+                e.preventDefault()
+                choose_maqam name
+            ) name
         option = $("<div>").addClass("option").html(disp_name name)
         if shkey = shkeys[index]
             shortcut = 'ctrl+' + shkey
