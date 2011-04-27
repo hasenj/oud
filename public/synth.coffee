@@ -1,12 +1,10 @@
 
-SRATE = 96000
+SRATE = 44100
 APARAMS = new AudioParameters(1, SRATE)      
 
 # Thanks to 'yury' from #audio@irc.mozilla.org
-getmixer = ->
+getmixer = _.once ->
     try
-        if window.mixer 
-            return window.mixer
         mixer = new AudioDataMixer(APARAMS)
         audio_output = new AudioDataDestination(APARAMS)
         audio_output.autoLatency = true
@@ -15,8 +13,8 @@ getmixer = ->
         return mixer
     catch error # not sure if the exception would happen here
         if $.browser.mozilla and $.browser.version >= 2
-            console.log "mozSetup failed:", error
             $("#error_box").text("Error initializing audio output. Reload the page (if that fails, you might have to restart the browser)!").show()
+            console.log "mozSetup failed:", error
         else
             $("#error_box").text("Only Firefox4 is supported").show()
         return { addInputSource: -> } # dummy mixer
