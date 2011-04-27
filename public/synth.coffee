@@ -39,7 +39,7 @@ ks_noise_sample = (val) ->
 random_sample = ->
     2 * Math.random() - 1
 
-freq_off = (freq, per_len) ->
+log_freq_off = (freq, per_len) ->
     freq0 = SRATE / per_len
     diff = Math.abs(freq0 - freq)
     r = 100 * diff / freq
@@ -52,12 +52,12 @@ freq_off = (freq, per_len) ->
 # karplus strong algorithm
 oudfn = (freq) ->
     samples = period_len freq
-    # freq_off(freq, samples)
+    # log_freq_off(freq, samples)
     table = new Float32Array(samples)
     inited = 0
     repeat = (samples/20) + random_sample() * 4
     repeat = Math.round repeat
-    console.log repeat
+    # console.log repeat
     getsample = (index) ->
         point = index % samples
         if index == point
