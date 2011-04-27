@@ -39,18 +39,31 @@ ks_noise_sample = (val) ->
 random_sample = ->
     2 * Math.random() - 1
 
+freq_off = (freq, per_len) ->
+    freq0 = SRATE / per_len
+    diff = Math.abs(freq0 - freq)
+    r = 100 * diff / freq
+    console.log "From %s to %s: %s", freq, freq0, r
+    if r > 1
+        console.log "Warning, frequency off by more than 1%"
+        console.log "From %s to %s: %s", freq, freq0, r
+    
+
 # karplus strong algorithm
 oudfn = (freq) ->
     samples = period_len freq
+    freq_off(freq, samples)
     table = new Float32Array(samples)
     inited = 0
+    repeat = (samples/20)
+    console.log repeat
     getsample = (index) ->
         point = index % samples
         if index == point
             if point > inited
                 noise = ks_noise_sample(0.3)
                 table[point] = noise
-                repeat = 10 + Math.random() * 20
+                # repeat = 10 + Math.random() * 20
                 while inited < samples and inited < index + repeat
                     table[inited] = noise + random_sample() * 0.1
                     inited++
@@ -60,7 +73,7 @@ oudfn = (freq) ->
             prev = (index - 1) % samples
             table[point] = avg(table[point], table[prev])
 
-tonefreq = (tone, base=138) ->
+tonefreq = (tone, base=130.82) ->
    tones_per_octave = 6 # DON'T CHANGE!!
    return base * Math.pow(2, tone/tones_per_octave)
 
