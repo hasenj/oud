@@ -52,10 +52,11 @@ freq_off = (freq, per_len) ->
 # karplus strong algorithm
 oudfn = (freq) ->
     samples = period_len freq
-    freq_off(freq, samples)
+    # freq_off(freq, samples)
     table = new Float32Array(samples)
     inited = 0
-    repeat = (samples/20)
+    repeat = (samples/20) + random_sample() * 4
+    repeat = Math.round repeat
     console.log repeat
     getsample = (index) ->
         point = index % samples
@@ -65,7 +66,7 @@ oudfn = (freq) ->
                 table[point] = noise
                 # repeat = 10 + Math.random() * 20
                 while inited < samples and inited < index + repeat
-                    table[inited] = noise + random_sample() * 0.1
+                    table[inited] = noise + random_sample() * 0.3
                     inited++
             else
                 table[point]
