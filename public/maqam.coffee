@@ -21,7 +21,7 @@
 #   the first note is detected automatically
 #   the following notes just assume the sequence
 maqam_presets = 
-    ajam: ["-1", "1 1 0.5 1 1 1 0.5"]
+    ajam: ["0", "1 1 0.5 1 1 1 0.5"]
     kurd: ["1", "0.5 1 1 1 0.5 1 ]-0.5 1"] # the -0.5 here is a cheat for rafat il hajjan!!
     nahawand: ["0", "1 0.5 1 1 0.5 ]-0.5 1.5 0.5"]
     hijaz: ["1", "0.5 1.5 0.5 1 ]+0.25 0.5 1 1"]
@@ -31,12 +31,12 @@ maqam_presets =
     siga:  ["1.75", "0.75 1 1 ]-0.25 0.75 0.75 1 0.75"]
     huzam: ["1.75", "0.75 1 0.5 1.5 0.5 1 0.75"]
     jiharkah: ["4", "1 1 0.5 1 1 0.75 0.75"]
-    husseini: ["1", "0.75 0.75 1 1 0.75 0.75 1"]
+    # husseini: ["1", "0.75 0.75 1 1 0.75 0.75 1"]
     hijaz_kar: ["0", "0.5 1.5 0.5 1 0.5 1.5 0.5"]
     # rahatelarwah: ["5.25", "0.75 1 0.5 1.5 0.5 1 0.75"] 
     # iraq: ["5.25", "0.75 1 0.75 0.75 1 1 0.75"]
     nawa_athar: ["0", "1 0.5 1.5 0.5 0.5 1.5 0.5"]
-    c_major: ["0", "1 1 0.5 1 1 1 0.5"]
+    # c_major: ["0", "1 1 0.5 1 1 1 0.5"]
 
 window.parse_scale = (scale_str) ->
     # match [ ] and number tokens
@@ -106,7 +106,9 @@ init_maqams = ->
         p.append(option)
         maqam_btns[name] = option
     # remember last chosen maqam
-    m = $.cookie('maqam') or 'c_major' 
-    choose_maqam m # TEST THIS WORKS!!!
+    m = $.cookie('maqam') 
+    if not m or m not of maqam_presets
+        m = 'ajam'
+    choose_maqam m 
 
 $ init_maqams
