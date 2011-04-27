@@ -21,7 +21,7 @@ getmixer = _.once ->
 
 $ getmixer
 
-period_len = (freq) -> Math.floor (SRATE/freq)
+period_len = (freq) -> Math.round (SRATE/freq)
 
 avg = (a, b) -> (a + b) / 2
 
