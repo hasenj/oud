@@ -66,7 +66,7 @@ oudfn = (freq) ->
                 table[point] = noise
                 # repeat = 10 + Math.random() * 20
                 while inited < samples and inited < index + repeat
-                    table[inited] = noise + random_sample() * 0.3
+                    table[inited] = noise # + random_sample() * 0.3
                     inited++
             else
                 table[point]
@@ -79,7 +79,7 @@ tonefreq = (tone, base=130.82) ->
    return base * Math.pow(2, tone/tones_per_octave)
 
 # async now thanks to audiodata :)
-window.playtone = (tone, fn=oudfn, gain=0.2) ->
+window.playtone = (tone, fn=oudfn, gain=0.3) ->
     freq = tonefreq(tone)
     duration = 3
     current_sample = 0
@@ -93,7 +93,7 @@ window.playtone = (tone, fn=oudfn, gain=0.2) ->
             size = out.length
             written = 0
             while(written < size and current_sample < last_sample) 
-                damp = Math.pow(Math.E, -3 * (current_sample/last_sample))
+                damp = Math.pow(Math.E, -2 * (current_sample/last_sample))
                 signal = sigfn(current_sample)
                 out[written] = gain * signal * damp
                 current_sample++
