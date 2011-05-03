@@ -70,6 +70,9 @@ String.prototype.capitalize = ->
 disp_name = (maqam_code) ->
     maqam_code.replace("_", " ").capitalize()
 
+if not window.updkeys?
+    window.updkeys = ->
+
 on_choose_maqam = (name) ->
     [start, scale] = maqam_presets[name]
     $("#start").val(start)

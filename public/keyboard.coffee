@@ -55,9 +55,6 @@ note_enum_fn = (start_tone) ->
     enumer = ->
         note_names_DO[index++ % note_names_DO.length]
 
-
-
-
 fval = (id)-> $("#" + id).val() # field value
 
 window.keys = {}
