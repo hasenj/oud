@@ -58,11 +58,7 @@ note_enum_fn = (start_tone) ->
 fval = (id)-> $("#" + id).val() # field value
 
 window.keys = {}
-# window.keyslayout = "9876543WERTYUIKJHGFDSZXCVBNM" # possible alternative
-# window.keyslayout = "7654321QWERTYUJHGFDSAZXCVBNM"
-window.keyslayout = "7654321QWERTYUIOP;LKJHGFDSA"
-# window.keyslayout = "1234567qwertyuasdfghj"
-# window.keyslayout = "4321qwertyuiop[]"
+window.keyslayout = "7654321QWERTYUIOP;LKJHGFDSAZXCVBNM"
 updkeys = ->
     # TODO: allow custom layout!!
     keys = keyslayout
@@ -105,9 +101,10 @@ bindkeytone = (key, tone, notename) ->
       if has_variation
           vhint = $("<div/>").addClass("has_variation").hide()
           keydiv.append(vhint)
-      $("#keys > .octave:last").append(keydiv)
-      # TODO make the shortcut more dynamic: grab all keys and determine tone based on the key
-      bindhotkey(key, downfn, upfn)
+      filter = -> -4 < tone.w < 11
+      if filter()
+          $("#keys > .octave:last").append(keydiv)
+          bindhotkey(key, downfn, upfn)
 
 show_maqam_variation = ->
     $(".tone_w").hide()
