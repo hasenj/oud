@@ -94,20 +94,18 @@ init_maqams = ->
     shkeys = "1234567890asdfghjvbnm"
     for name, index in _.keys maqam_presets
         disp = disp_name name
-        # -> -> is necessary trickery for js closures inside loops!
-        clickfn = ((name)-> 
-            (e)-> 
+        do(name) ->
+            clickfn = (e)-> 
                 e.preventDefault()
                 choose_maqam name
-            ) name
-        option = $("<div>").addClass("option").html(disp_name name)
-        if shkey = shkeys[index]
-            shortcut = 'ctrl+' + shkey
-            option.append $("<div>").addClass("shortcut").html('ctrl-' + shkey)
-            $(document).bind 'keydown', shortcut, clickfn
-        option.click(clickfn)
-        p.append(option)
-        maqam_btns[name] = option
+            option = $("<div>").addClass("option").html(disp_name name)
+            if shkey = shkeys[index]
+                shortcut = 'ctrl+' + shkey
+                option.append $("<div>").addClass("shortcut").html('ctrl-' + shkey)
+                $(document).bind 'keydown', shortcut, clickfn
+            option.click(clickfn)
+            p.append(option)
+            maqam_btns[name] = option
     # remember last chosen maqam
     m = $.cookie('maqam') 
     if not m or m not of maqam_presets
