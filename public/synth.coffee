@@ -51,8 +51,8 @@ log_freq_off = (freq, per_len) ->
 sine = (freq) ->
     k = 2 * Math.PI * freq / SRATE
     g = 0.7
-    console.log "sine of", freq
-    (point) -> g * Math.sin(k * point)
+    ps = Math.random() * 100
+    (point) -> g * Math.sin(k * (point + ps))
 
 sines = (freqs...) ->
     fns = _.map(freqs, sine)
@@ -62,7 +62,7 @@ sines = (freqs...) ->
             val += fn(point)
         return val
 
-sig = _.memoize sines(1, 4, 100)
+sig = _.memoize sines(2, 100)
 
 # karplus strong algorithm
 oudfn = (freq) ->
@@ -87,7 +87,7 @@ tonefreq = (tone, base=130.82) ->
 # async now thanks to audiodata :)
 window.playtone = (tone, fn=oudfn, gain=0.2) ->
     freq = tonefreq(tone)
-    duration = 2
+    duration = 4
     current_sample = 0
     last_sample = duration * SRATE
     sigfn = fn(freq)
