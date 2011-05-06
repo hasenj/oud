@@ -48,28 +48,24 @@ log_freq_off = (freq, per_len) ->
         console.log "Warning, frequency off by more than 1%"
         console.log "From %s to %s: %s", freq, freq0, r
     
+sine = (freq) ->
+    k = 2 * Math.PI * freq / SRATE
+    g = 0.5
+    (point) -> g * Math.sin(k * point)
+sig1 = sine(100)
+sig2 = sine(300)
 
 # karplus strong algorithm
 oudfn = (freq) ->
     samples = period_len freq
     # log_freq_off(freq, samples)
     table = new Float32Array(samples)
-    inited = 0
-    repeat = (samples/20) + random_sample() * 4
-    repeat = Math.round repeat
     # console.log repeat
     getsample = (index) ->
         point = index % samples
-        if index == point
-            if point > inited
-                noise = ks_noise_sample(0.3)
-                table[point] = noise
-                # repeat = 10 + Math.random() * 20
-                while inited < samples and inited < index + repeat
-                    table[inited] = noise # + random_sample() * 0.3
-                    inited++
-            else
-                table[point]
+        if index < samples
+            noise = sig1(point) + sig2(point) + ks_noise_sample(0.1)
+            table[point] = noise
         else
             prev = (index - 1) % samples
             table[point] = avg(table[point], table[prev])
@@ -81,7 +77,7 @@ tonefreq = (tone, base=130.82) ->
 # async now thanks to audiodata :)
 window.playtone = (tone, fn=oudfn, gain=0.3) ->
     freq = tonefreq(tone)
-    duration = 3
+    duration = 5
     current_sample = 0
     last_sample = duration * SRATE
     sigfn = fn(freq)
@@ -93,7 +89,7 @@ window.playtone = (tone, fn=oudfn, gain=0.3) ->
             size = out.length
             written = 0
             while(written < size and current_sample < last_sample) 
-                damp = Math.pow(Math.E, -2 * (current_sample/last_sample))
+                damp = Math.pow(Math.E, -3 * (current_sample/last_sample))
                 signal = sigfn(current_sample)
                 out[written] = gain * signal * damp
                 current_sample++
