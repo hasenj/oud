@@ -50,7 +50,7 @@ log_freq_off = (freq, per_len) ->
     
 sine = (freq) ->
     k = 2 * Math.PI * freq / SRATE
-    g = 0.5
+    g = 0.7
     console.log "sine of", freq
     (point) -> g * Math.sin(k * point)
 
@@ -73,7 +73,7 @@ oudfn = (freq) ->
     getsample = (index) ->
         point = index % samples
         if index < samples
-            noise = sig(point) + ks_noise_sample(0.2)
+            noise = sig(point) + ks_noise_sample(0.08)
             table[point] = noise
         else
             prev = (index - 1) % samples
