@@ -62,7 +62,7 @@ sines = (freqs...) ->
             val += fn(point)
         return val
 
-sig = _.memoize sines(100, 300)
+sig = _.memoize sines(90, 200)
 
 # karplus strong algorithm
 oudfn = (freq) ->
@@ -73,7 +73,7 @@ oudfn = (freq) ->
     getsample = (index) ->
         point = index % samples
         if index < samples
-            noise = sig(point) + ks_noise_sample(0.08)
+            noise = sig(point) + ks_noise_sample(0.14)
             table[point] = noise
         else
             prev = (index - 1) % samples
@@ -84,9 +84,9 @@ tonefreq = (tone, base=130.82) ->
    return base * Math.pow(2, tone/tones_per_octave)
 
 # async now thanks to audiodata :)
-window.playtone = (tone, fn=oudfn, gain=0.3) ->
+window.playtone = (tone, fn=oudfn, gain=0.2) ->
     freq = tonefreq(tone)
-    duration = 4
+    duration = 6
     current_sample = 0
     last_sample = duration * SRATE
     sigfn = fn(freq)
@@ -98,8 +98,8 @@ window.playtone = (tone, fn=oudfn, gain=0.3) ->
             size = out.length
             written = 0
             while(written < size and current_sample < last_sample) 
-                damp = Math.pow(Math.E, -6 * (current_sample/last_sample))
-                signal = sigfn(current_sample)
+                damp = Math.pow(Math.E, -5 * (current_sample/last_sample))
+                signal = sigfn(current_sample) + sigfn(current_sample + 16400)
                 out[written] = gain * signal * damp
                 current_sample++
                 written++
