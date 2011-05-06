@@ -58,7 +58,7 @@ note_enum_fn = (start_tone) ->
 fval = (id)-> $("#" + id).val() # field value
 
 window.keys = {}
-window.keyslayout = "7654321QWERTYUIOP;LKJHGFDSAZXCVBNM"
+window.keyslayout = "7654321QWERTYUIOP;LKJ"
 updkeys = ->
     # TODO: allow custom layout!!
     keys = keyslayout
@@ -101,10 +101,8 @@ bindkeytone = (key, tone, notename) ->
       if has_variation
           vhint = $("<div/>").addClass("has_variation").hide()
           keydiv.append(vhint)
-      filter = -> -4 < tone.w < 11
-      if filter()
-          $("#keys > .octave:last").append(keydiv)
-          bindhotkey(key, downfn, upfn)
+      $("#keys > .octave:last").append(keydiv)
+      bindhotkey(key, downfn, upfn)
 
 show_maqam_variation = ->
     $(".tone_w").hide()
