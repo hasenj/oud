@@ -62,7 +62,7 @@ sines = (freqs...) ->
             val += fn(point)
         return val
 
-sig = _.memoize sines(2, 100)
+sig = sines(2, 120, 320, 430)
 
 # karplus strong algorithm
 oudfn = (freq) ->
@@ -98,10 +98,12 @@ window.playtone = (tone, fn=oudfn, gain=0.2) ->
                 return null
             size = out.length
             written = 0
+            sample_at = (point) ->
+                damp = Math.pow(Math.E, -4 * (point/last_sample))
+                signal = sigfn(point) # + sigfn(point + 100)
+                return gain * damp * signal
             while(written < size and current_sample < last_sample) 
-                damp = Math.pow(Math.E, -4 * (current_sample/last_sample))
-                signal = sigfn(current_sample) + sigfn(current_sample + 3200) * 0.4
-                out[written] = gain * signal * damp
+                out[written] = sample_at(current_sample) # + sample_at(current_sample + 10)
                 current_sample++
                 written++
             return written
