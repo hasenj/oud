@@ -50,9 +50,7 @@ log_freq_off = (freq, per_len) ->
     
 sine = (freq) ->
     k = 2 * Math.PI * freq / SRATE
-    g = 0.7
-    ps = Math.random() * 100
-    (point) -> g * Math.sin(k * (point + ps))
+    (point) -> Math.sin(k * point)
 
 sines = (freqs...) ->
     fns = _.map(freqs, sine)
@@ -62,7 +60,14 @@ sines = (freqs...) ->
             val += fn(point)
         return val
 
-sig = sines(2, 120, 320, 430)
+precalc_table = _.once (fn, len=4000) ->
+    table = new Float32Array(len)
+    console.log "Created table with len", len
+    for point in [0..len]
+        table[point] = fn(point)
+    table
+
+sig = precalc_table sines(2, 120, 320, 430)
 
 # karplus strong algorithm
 oudfn = (freq) ->
@@ -70,7 +75,7 @@ oudfn = (freq) ->
     # log_freq_off(freq, samples)
     table = new Float32Array(samples)
     # console.log repeat
-    sampleat = (point) -> sig(point) + ks_noise_sample(0.3)
+    sampleat = (point) -> sig[point] + ks_noise_sample(0.3)
     getsample = (index) ->
         point = index % samples
         if index < samples
