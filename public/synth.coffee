@@ -67,7 +67,7 @@ precalc_table = _.once (fn, len=4000) ->
         table[point] = fn(point)
     table
 
-sines_sig = precalc_table sines(2, 120, 320, 430)
+sines_sig = precalc_table sines(2, 440)
 
 # karplus strong algorithm
 oudfn = (freq) ->
@@ -75,7 +75,7 @@ oudfn = (freq) ->
     # log_freq_off(freq, samples)
     table = new Float32Array(samples)
     # console.log repeat
-    sampleat = (point) -> sines_sig[point] + ks_noise_sample(0.36)
+    sampleat = (point) -> sines_sig[point] + ks_noise_sample(0.26)
     getsample = (index) ->
         point = index % samples
         if index < samples
@@ -108,7 +108,7 @@ window.playtone = (tone, fn=oudfn, gain=0.2) ->
                 signal = sigfn(point)
                 return gain * damp * signal
             while(written < size and current_sample < last_sample) 
-                out[written] = sample_at(current_sample) 
+                out[written] = sample_at(current_sample)
                 current_sample++
                 written++
             return written
