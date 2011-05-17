@@ -29,7 +29,7 @@ probably = (p) ->
     # return true with probablily p (p is between 0, 1)
     return Math.random() < p
 
-ks_noise_sample = (val) ->
+ks_noise_sample = (val=0.5) ->
     # get either val or -val with 50% chance
     if probably(0.5)
         val
@@ -67,7 +67,7 @@ precalc_table = _.once (fn, len=4000) ->
         table[point] = fn(point)
     table
 
-sig = precalc_table sines(2, 120, 320, 430)
+sines_sig = precalc_table sines(2, 120, 320, 430)
 
 # karplus strong algorithm
 oudfn = (freq) ->
@@ -75,7 +75,7 @@ oudfn = (freq) ->
     # log_freq_off(freq, samples)
     table = new Float32Array(samples)
     # console.log repeat
-    sampleat = (point) -> sig[point] + ks_noise_sample(0.3)
+    sampleat = (point) -> sines_sig[point] + ks_noise_sample(0.36)
     getsample = (index) ->
         point = index % samples
         if index < samples
@@ -104,11 +104,11 @@ window.playtone = (tone, fn=oudfn, gain=0.2) ->
             size = out.length
             written = 0
             sample_at = (point) ->
-                damp = Math.pow(Math.E, -4 * (point/last_sample))
-                signal = sigfn(point) # + sigfn(point + 100)
+                damp = Math.pow(Math.E, -5 * (point/last_sample))
+                signal = sigfn(point)
                 return gain * damp * signal
             while(written < size and current_sample < last_sample) 
-                out[written] = sample_at(current_sample) # + sample_at(current_sample + 10)
+                out[written] = sample_at(current_sample) 
                 current_sample++
                 written++
             return written
