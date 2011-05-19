@@ -67,7 +67,7 @@ precalc_table = _.once (fn, len=4000) ->
         table[point] = fn(point)
     table
 
-sines_sig = precalc_table sines(2, 440)
+sines_sig = precalc_table sines(2, 100, 390)
 
 # karplus strong algorithm
 oudfn = (freq) ->
