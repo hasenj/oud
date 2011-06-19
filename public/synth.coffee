@@ -89,6 +89,8 @@ tonefreq = (tone, base=130.82) ->
    tones_per_octave = 6 # DON'T CHANGE!!
    return base * Math.pow(2, tone/tones_per_octave)
 
+now_playing = 0
+
 # async now thanks to audiodata :)
 window.playtone = (tone, fn=oudfn, gain=0.2) ->
     freq = tonefreq(tone)
@@ -96,10 +98,17 @@ window.playtone = (tone, fn=oudfn, gain=0.2) ->
     current_sample = 0
     last_sample = duration * SRATE
     sigfn = fn(freq)
+    now_playing += 1
     source =
         audioParameters: APARAMS
         read: (out) -> 
+            end = false
             if(current_sample >= last_sample) 
+                end = true
+            if now_playing > 3
+                end = true
+            if end
+                now_playing -= 1
                 return null
             size = out.length
             written = 0
