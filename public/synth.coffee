@@ -39,15 +39,6 @@ ks_noise_sample = (val=0.5) ->
 random_sample = ->
     2 * Math.random() - 1
 
-log_freq_off = (freq, per_len) ->
-    freq0 = SRATE / per_len
-    diff = Math.abs(freq0 - freq)
-    r = 100 * diff / freq
-    console.log "From %s to %s: %s", freq, freq0, r
-    if r > 1
-        console.log "Warning, frequency off by more than 1%"
-        console.log "From %s to %s: %s", freq, freq0, r
-    
 sine = (freq) ->
     k = 2 * Math.PI * freq / SRATE
     (point) -> Math.sin(k * point)
@@ -62,7 +53,6 @@ sines = (freqs...) ->
 
 precalc_table = _.once (fn, len=4000) ->
     table = new Float32Array(len)
-    console.log "Created table with len", len
     for point in [0..len]
         table[point] = fn(point)
     table
@@ -72,9 +62,7 @@ sines_sig = precalc_table sines(2, 100, 390)
 # karplus strong algorithm
 oudfn = (freq) ->
     samples = period_len freq
-    # log_freq_off(freq, samples)
     table = new Float32Array(samples)
-    # console.log repeat
     sampleat = (point) -> sines_sig[point] + ks_noise_sample(0.26)
     getsample = (index) ->
         point = index % samples
