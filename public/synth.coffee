@@ -57,6 +57,7 @@ precalc_table = _.once (fn, len=4000) ->
         table[point] = fn(point)
     table
 
+# Base signal shape, which we later add white-noise to it
 sines_sig = precalc_table sines(2, 100, 390)
 
 # karplus strong algorithm
@@ -80,7 +81,7 @@ tonefreq = (tone, base=130.82) ->
 now_playing = 0
 
 # async now thanks to audiodata :)
-window.playtone = (tone, fn=oudfn, gain=0.2) ->
+window.playtone = (tone, fn=oudfn, gain=0.1) ->
     freq = tonefreq(tone)
     duration = 4
     current_sample = 0
@@ -93,7 +94,7 @@ window.playtone = (tone, fn=oudfn, gain=0.2) ->
             end = false
             if(current_sample >= last_sample) 
                 end = true
-            if now_playing > 3
+            if now_playing > 4
                 end = true
             if end
                 now_playing -= 1
@@ -101,7 +102,7 @@ window.playtone = (tone, fn=oudfn, gain=0.2) ->
             size = out.length
             written = 0
             sample_at = (point) ->
-                damp = Math.pow(Math.E, -5 * (point/last_sample))
+                damp = Math.pow(Math.E, -6 * (point/last_sample))
                 signal = sigfn(point)
                 return gain * damp * signal
             while(written < size and current_sample < last_sample) 
