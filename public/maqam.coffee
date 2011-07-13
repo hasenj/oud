@@ -29,8 +29,8 @@ maqam_presets =
     saba: ["1", "0.75 0.75 0.5 1.5 0.5 1 ]-0.5 1"] # not sure what's the proper solution here
     bayati: ["1", "0.75 0.75 1 1 0.5 1 1"]
     siga:  ["1.75", "0.75 1 1 ]-0.25 0.75 0.75 1 0.75"]
-    huzam: ["1.75", "0.75 1 0.5 1.5 0.5 1 0.75"]
-    jiharkah: ["4", "1 1 0.5 1 1 0.75 0.75"] # same as bayati
+    huzam: ["1.75", "0.75 1 0.5 1.5 0.5 1 0.75"] # same as hijaz form 2
+    jiharkah: ["-2", "1 1 0.5 1 1 0.75 0.75"] # same as bayati
     # husseini: ["1", "0.75 0.75 1 1 0.75 0.75 1"]
     hijaz_kar: ["0", "0.5 1.5 0.5 1 0.5 1.5 0.5"]
     # rahatelarwah: ["5.25", "0.75 1 0.5 1.5 0.5 1 0.75"] 
