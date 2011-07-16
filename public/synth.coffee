@@ -1,25 +1,36 @@
+mkbuf = (len) -> 
+    new audioLib.Float32Array(len)
+
+mixer = 
+    fns: []
+    add: (fn) ->
+        @fns.push(fn)
+    mix: (buf) ->
+        done = []
+        for fn in mixer.fns
+            b = mkbuf(buf.length)
+            result = fn(b)
+            for s, i in buf
+                buf[i] += b[i]
+            if not result
+                done.push(fn)
+        mixer.fns = _.difference(mixer.fns, done)
+        return true
 
 SRATE = 44100
-APARAMS = new AudioParameters(1, SRATE)      
 
 # Thanks to 'yury' from #audio@irc.mozilla.org
-getmixer = _.once ->
+$ ->
     try
-        mixer = new AudioDataMixer(APARAMS)
-        audio_output = new AudioDataDestination(APARAMS)
-        audio_output.autoLatency = true
-        audio_output.writeAsync(mixer)
-        window.mixer = mixer
-        return mixer
+        window.dev = audioLib.AudioDevice(mixer.mix, 1, 3000, SRATE)
+        SRATE = dev.sampleRate
     catch error # not sure if the exception would happen here
         if $.browser.mozilla and $.browser.version >= 2
-            $("#error_box").text("Error initializing audio output. Reload the page (if that fails, you might have to restart the browser)!").show()
-            console.log "mozSetup failed:", error
+            $("#error_box").text("Error initializing audio output").show()
+            console.log "something failed:\n", error
         else
-            $("#error_box").text("Only Firefox4 is supported").show()
-        return { addInputSource: -> } # dummy mixer
+            $("#error_box").text("Your browser doesn't support Web Audio. If you're using chrome, enable web audio from about:flags").show()
 
-$ getmixer
 
 period_len = (freq) -> Math.round (SRATE/freq)
 
@@ -88,28 +99,26 @@ window.playtone = (tone, fn=oudfn, gain=0.1) ->
     last_sample = duration * SRATE
     sigfn = fn(freq)
     now_playing += 1
-    source =
-        audioParameters: APARAMS
-        read: (out) -> 
-            end = false
-            if(current_sample >= last_sample) 
-                end = true
-            if now_playing > 4
-                end = true
-            if end
-                now_playing -= 1
-                return null
-            size = out.length
-            written = 0
-            sample_at = (point) ->
-                damp = Math.pow(Math.E, -6 * (point/last_sample))
-                signal = sigfn(point)
-                return gain * damp * signal
-            while(written < size and current_sample < last_sample) 
-                out[written] = sample_at(current_sample)
-                current_sample++
-                written++
-            return written
+    generator = (out) -> 
+        end = false
+        if(current_sample >= last_sample) 
+            end = true
+        if now_playing > 4
+            end = true
+        if end
+            now_playing -= 1
+            return null
+        size = out.length
+        written = 0
+        sample_at = (point) ->
+            damp = Math.pow(Math.E, -6 * (point/last_sample))
+            signal = sigfn(point)
+            return gain * damp * signal
+        while(written < size and current_sample < last_sample) 
+            out[written] = sample_at(current_sample)
+            current_sample++
+            written++
+        return written
 
-    getmixer().addInputSource(source)
+    mixer.add(generator)
 
