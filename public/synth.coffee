@@ -1,7 +1,7 @@
 mkbuf = (len) -> 
     new audioLib.Float32Array(len)
 
-mixer = 
+window.mixer = 
     fns: []
     add: (fn) ->
         @fns.push(fn)
@@ -17,13 +17,15 @@ mixer =
         mixer.fns = _.difference(mixer.fns, done)
         return true
 
-SRATE = 44100
-
 # Thanks to 'yury' from #audio@irc.mozilla.org
 $ ->
     try
-        window.dev = audioLib.AudioDevice(mixer.mix, 1, 3000, SRATE)
-        SRATE = dev.sampleRate
+        window.dev = audioLib.AudioDevice(mixer.mix, 1, 3000, 44100)
+        if dev.type == "webkit" # hack for chrome's sample rate bug
+            window.srate = -> dev.sampleRate * 2
+        else
+            window.srate = -> dev.sampleRate
+
     catch error # not sure if the exception would happen here
         if $.browser.mozilla and $.browser.version >= 2
             $("#error_box").text("Error initializing audio output").show()
@@ -32,7 +34,7 @@ $ ->
             $("#error_box").text("Your browser doesn't support Web Audio. If you're using chrome, enable web audio from about:flags").show()
 
 
-period_len = (freq) -> Math.round (SRATE/freq)
+period_len = (freq) -> Math.round (srate()/freq)
 
 avg = (a, b) -> (a + b) / 2
 
@@ -51,7 +53,7 @@ random_sample = ->
     2 * Math.random() - 1
 
 sine = (freq) ->
-    k = 2 * Math.PI * freq / SRATE
+    k = 2 * Math.PI * freq / srate()
     (point) -> Math.sin(k * point)
 
 sines = (freqs...) ->
@@ -92,11 +94,11 @@ tonefreq = (tone, base=130.82) ->
 now_playing = 0
 
 # async now thanks to audiodata :)
-window.playtone = (tone, fn=oudfn, gain=0.1) ->
+window.playtone = (tone, fn=oudfn, gain=0.16) ->
     freq = tonefreq(tone)
     duration = 4
     current_sample = 0
-    last_sample = duration * SRATE
+    last_sample = duration * srate()
     sigfn = fn(freq)
     now_playing += 1
     generator = (out) -> 
