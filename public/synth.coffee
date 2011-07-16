@@ -25,13 +25,13 @@ $ ->
             window.srate = -> dev.sampleRate * 2
         else
             window.srate = -> dev.sampleRate
-
+        if dev.type == "dummy"
+            $("#error_box").text("Your browser doesn't support Web Audio.").show()
+            if $.browser.webkit
+                $("#error_box").after("If you're using Chrome, enable web audio from <a href='about:flags'>about:flags</a>")
     catch error # not sure if the exception would happen here
-        if $.browser.mozilla and $.browser.version >= 2
-            $("#error_box").text("Error initializing audio output").show()
-            console.log "something failed:\n", error
-        else
-            $("#error_box").text("Your browser doesn't support Web Audio. If you're using chrome, enable web audio from about:flags").show()
+        $("#error_box").text("Error initializing audio output").show()
+        console.log "something failed:\n", error
 
 
 period_len = (freq) -> Math.round (srate()/freq)
