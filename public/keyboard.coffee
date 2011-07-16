@@ -58,7 +58,7 @@ note_enum_fn = (start_tone) ->
 fval = (id)-> $("#" + id).val() # field value
 
 window.keys = {}
-window.keyslayout = "7654321QWERTYUIOP;LKJ"
+window.keyslayout = "1234567QWERTYUIOPASDF"
 updkeys = ->
     # TODO: allow custom layout!!
     keys = keyslayout
