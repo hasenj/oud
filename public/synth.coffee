@@ -11,6 +11,7 @@ window.mixer =
             b = mkbuf(buf.length / 2) # buf is two channels, b is one channel
             result = fn(b)
             for s, i in buf
+                # convert mono-channel signal to dual-channel
                 buf[i*2] += b[i]
                 buf[i*2+1] = b[i]
             if not result
@@ -18,7 +19,6 @@ window.mixer =
         mixer.fns = _.difference(mixer.fns, done)
         return true
 
-# Thanks to 'yury' from #audio@irc.mozilla.org
 $ ->
     try
         window.dev = audioLib.AudioDevice(mixer.mix, 2, 300, 44100)
@@ -94,7 +94,7 @@ now_playing = 0
 # async now thanks to audiodata :)
 window.playtone = (tone, fn=oudfn, gain=0.16) ->
     freq = tonefreq(tone)
-    duration = 4
+    duration = 2.8
     current_sample = 0
     last_sample = duration * srate()
     sigfn = fn(freq)
@@ -103,7 +103,7 @@ window.playtone = (tone, fn=oudfn, gain=0.16) ->
         end = false
         if(current_sample >= last_sample) 
             end = true
-        if now_playing > 4
+        if now_playing > 7
             end = true
         if end
             now_playing -= 1
@@ -111,7 +111,7 @@ window.playtone = (tone, fn=oudfn, gain=0.16) ->
         size = out.length
         written = 0
         sample_at = (point) ->
-            damp = Math.pow(Math.E, -6 * (point/last_sample))
+            damp = Math.pow(Math.E, -5 * (point/last_sample))
             signal = sigfn(point)
             return gain * damp * signal
         while(written < size and current_sample < last_sample) 
