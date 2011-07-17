@@ -8,10 +8,11 @@ window.mixer =
     mix: (buf) ->
         done = []
         for fn in mixer.fns
-            b = mkbuf(buf.length)
+            b = mkbuf(buf.length / 2) # buf is two channels, b is one channel
             result = fn(b)
             for s, i in buf
-                buf[i] += b[i]
+                buf[i*2] += b[i]
+                buf[i*2+1] = b[i]
             if not result
                 done.push(fn)
         mixer.fns = _.difference(mixer.fns, done)
@@ -20,11 +21,8 @@ window.mixer =
 # Thanks to 'yury' from #audio@irc.mozilla.org
 $ ->
     try
-        window.dev = audioLib.AudioDevice(mixer.mix, 1, 3000, 44100)
-        if dev.type == "webkit" # hack for chrome's sample rate bug
-            window.srate = -> dev.sampleRate * 2
-        else
-            window.srate = -> dev.sampleRate
+        window.dev = audioLib.AudioDevice(mixer.mix, 2, 300, 44100)
+        window.srate = -> dev.sampleRate
         if dev.type == "dummy"
             $("#error_box").text("Your browser doesn't support Web Audio.").show()
             if $.browser.webkit
