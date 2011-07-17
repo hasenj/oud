@@ -26,7 +26,7 @@ $ ->
         if dev.type == "dummy"
             $("#error_box").text("Your browser doesn't support Web Audio.").show()
             if $.browser.webkit
-                $("#error_box").after("If you're using Chrome, enable web audio from <a href='about:flags'>about:flags</a>")
+                $("#error_box").after("If you're using Chrome, please enable web audio from <code>about:flags</code> (only available in beta versions)")
     catch error # not sure if the exception would happen here
         $("#error_box").text("Error initializing audio output").show()
         console.log "something failed:\n", error
