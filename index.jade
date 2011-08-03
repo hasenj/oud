@@ -9,10 +9,12 @@ table.layout
       div#maqam_section
 
         div.maqam_info
-            input#scale(type="input", value="0.5 1.5 0.5 1 0.5 1 1", onkeyup="updkeys()")
+            input.blur(type="text", value="", onfocus="this.blur()")
+            br
+            input#scale(type="text", value="", onkeyup="updkeys()")
             br
             label Starting tone
-            input#start(type="input", value="1", onkeyup="updkeys()")
+            input#start(type="text", value="1", onkeyup="updkeys()")
 
         div#presets.option_set
 

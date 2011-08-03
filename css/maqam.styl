@@ -30,11 +30,17 @@ input#scale
         box-shadow 0px 1px 2px gray inset
         &:focus
            box-shadow 0 0 2px 2px rgba(40, 120, 212, 0.2) inset, 0 0 2px 1px #2878D4, 0 1px 2px rgba(0, 0, 0, 0.3) inset
+        &.blur
+            border 0px
+            box-shadow none
+            height 2px
 
 
-bbg = hsl(100, 30%, 50%)
+bbg = hsl(243, 18%, 87%)
+b_text = hsl(170, 20%, 30%)
+b_cue = hsl(200, 20%, 30%)
 option-button()
-    smooth-button()
+    minimal-button(bg=bbg, text=b_text)
 
 .option_set
     width 320px
@@ -50,8 +56,8 @@ option-button()
         text-shadow 1px 1px 2px gray
         .shortcut
             font normal 0.7em monospace
-            color hsl(200, 20%, 90%)
-            text-shadow 1px 1px 1px gray
+            color b_cue
+            // text-shadow 1px 1px 1px gray
             position relative
             right 2px
             float right
