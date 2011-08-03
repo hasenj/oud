@@ -36,11 +36,11 @@ input#scale
             height 2px
 
 
-bbg = hsl(243, 18%, 87%)
-b_text = hsl(170, 20%, 30%)
-b_cue = hsl(200, 20%, 30%)
+bbg = hsl(220, 7%, 92%)
+b_text = hsl(170, 20%, 20%)
+b_cue = hsl(200, 17%, 42%)
 option-button()
-    minimal-button(bg=bbg, text=b_text)
+    minimal-button(bbg, b_text)
 
 .option_set
     width 320px
@@ -57,7 +57,7 @@ option-button()
         .shortcut
             font normal 0.7em monospace
             color b_cue
-            // text-shadow 1px 1px 1px gray
+            text-shadow 1px 1px 1px (silver * .6667)
             position relative
             right 2px
             float right
