@@ -11,3 +11,13 @@ app.get('/', (req, res) ->
     res.render("index")
 )
 
+app.get('/browsers', (req, res) ->
+    res.render("browsers")
+)
+
+app.get('/about', (req, res) ->
+    res.render("about")
+)
+app.get('/feedback', (req, res) ->
+    res.render("feedback")
+)

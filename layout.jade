@@ -12,11 +12,15 @@ html
     script(src="/audiolib.min.js", type="text/javascript")
   body
     #header Oriental Strings
-        h3 html5 music keyboard
+        // h3 html5 music keyboard
+        ul.tabs
+          // each val, key .. why is it backwards??
+          - each url, name in {'Home': '/', 'About': '/about', 'Feedback': '/feedback'}
+            li: a(href=url) #{name}
     #content !{body}
     footer
       :markdown
         By [hasenj](http://github.org/hasenj) | [code on github](http://github.org/hasenj/oud)  
-        This is an experimental project, consider it in alpha phase
+        This is an html5 experiment
 
 
