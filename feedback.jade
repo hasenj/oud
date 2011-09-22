@@ -1,13 +1,38 @@
 div.text_page
-  h3 Feedback form
+  h3 Tell me something
     form(name="feedback")
       div
-        input(name="name")
-        label optional
+        input#name(name="name")
+        label (optional)
       div
-        input(name="email")
-        label optional
+        input#email(name="email")
+        label (optional)
       div
-        textarea
+        textarea#feedback(name="feedback")
       div
-        input(type="button", value="Send")
+        input(type="button", value="Send", onclick="sendfeedback()")
+      div#status
+
+:coffeescript
+  window.sendfeedback = ->
+    form = $("form[name=feedback]")
+    data = {name: $("#name").val(), email: $("#email").val(), feedback: $("#feedback").val()}
+    $("#status").html("sending ..")
+    $.post '/feedback', data, (ret_data) ->
+      if ret_data.success
+        $("#status").html("sent!!")
+      else
+        $("#status").html("failed!! try again?")
+
+:stylus
+  form
+    input[type=text], textarea
+      width 300px
+    textarea
+      height 100px
+    label
+      color gray
+      font-size 0.8em
+      margin-left 10px
+    #status
+      color gray
