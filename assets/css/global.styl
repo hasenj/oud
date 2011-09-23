@@ -5,10 +5,12 @@ global-reset()
 body
     margin 0px
     padding 0px
-    user-select none
 
 div, p
     user-select text
+
+table.layout // the keyboard layout .. not the page layout
+    user-select none
 
 focuscol = silver
 
@@ -95,6 +97,8 @@ footer
         margin 0px 6px
 
 div.text_page
+  *
+    user-select text
   width 500px
   margin 10px 40px
   p
