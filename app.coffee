@@ -24,7 +24,7 @@ app.get('/feedback', (req, res) ->
     res.render("feedback")
 )
 
-mail = require('mail').Mail host: process.env.SMTP_HOST, username: process.env.SMTP_LOGIN
+mail = require('mail').Mail host: process.env.SMTP_HOST, username: process.env.SMTP_LOGIN, password: process.env.SMTP_PASSWORD
 # async/ajax
 app.post '/feedback', (req, res) ->
     mail.message({from: req.param("email") or process.env.EMAIL, to: process.env.EMAIL, subject: 'oud feedback from ' + req.param('name') or  '<user>'}).body(req.param('feedback')).send( (err) ->
