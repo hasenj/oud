@@ -2,12 +2,15 @@ div.text_page
   h3 Tell me something
     form(name="feedback")
       div
+        label Name:
         input#name(name="name")
-        label (optional)
+        span.opt (optional)
       div
+        label email:
         input#email(name="email")
-        label (optional)
+        span.opt (optional)
       div
+        label Message:
         textarea#feedback(name="feedback")
       div
         input(type="button", value="Send", onclick="sendfeedback()")
@@ -26,13 +29,20 @@ div.text_page
 
 :stylus
   form
+    margin-top 10px
     input[type=text], textarea
       width 300px
     textarea
       height 100px
     label
+      display inline-block
+      vertical-align top
+      width 80px
+      text-align right
+      padding-right 5px
+    span.opt
       color gray
       font-size 0.8em
-      margin-left 10px
+      margin-left 6px
     #status
       color gray
