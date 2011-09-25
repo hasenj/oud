@@ -59,11 +59,12 @@ fval = (id)-> $("#" + id).val() # field value
 
 window.keys = {}
 window.keyslayout = "1234567QWERTYUIOPASDF"
-updkeys = ->
+# entry point of this module (exposed below)
+updkeys = (maqam) ->
     # TODO: allow custom layout!!
     keys = keyslayout
-    scale = parse_scale fval("scale")
-    start = Number fval("start")
+    scale = maqam.scale
+    start = maqam.start
     tones = gentones scale, start, 40
     octave_bounds = get_octave_bounds tones, start
     note_enumer = note_enum_fn(start)
@@ -150,5 +151,4 @@ liftkey = (key) ->
     # div.animate({"background-color": "#fdfdfd"}, 300)
     div.removeClass("pressed").addClass("unpressed")
 
-$ updkeys
 

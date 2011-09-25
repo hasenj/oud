@@ -63,6 +63,15 @@ window.parse_scale = (scale_str) ->
             index++
     return scale
 
+Maqam = Backbone.Model.extend
+   initialize: ->
+       console.log "maqam created!!"
+    detauls:
+        start: 0
+        scale: parse_scale "1 1 0.5 1 1 1 0.5"
+
+new Maqam
+
 # From: http://www.mediacollege.com/internet/javascript/text/case-capitalize.html
 String.prototype.capitalize = ->
    @replace /(^|\s)([a-z])/g , (m,p1,p2) -> p1+p2.toUpperCase()
@@ -79,12 +88,16 @@ on_choose_maqam = (name) ->
     $("#scale").val(scale)
     $("#maqam_name").html("Maqam " + disp_name name)
     $.cookie('maqam', name)
-    updkeys()
+    maqam = 
+        start: start
+        scale: parse_scale scale
+    updkeys maqam
 
 init_maqams = ->
     p = $("#presets")
     maqam_btns = {}
     window.choose_maqam = (name) ->
+        console.log "choosing maqam: ", name
         b = maqam_btns[name]
         $(".active", p).removeClass("active")
         b.addClass("active")
