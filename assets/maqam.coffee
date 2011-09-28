@@ -65,12 +65,38 @@ window.parse_scale = (scale_str) ->
 
 Maqam = Backbone.Model.extend
    initialize: ->
-       console.log "maqam created!!"
-    detauls:
+   detauls:
         start: 0
+        name: 'scale'
         scale: parse_scale "1 1 0.5 1 1 1 0.5"
 
 new Maqam
+
+Maqamat = Backbone.Collection.extend
+    model: Maqam
+
+maqam_ctor = (name, start, scale_raw) ->
+    scale = parse_scale scale_raw
+    new Maqam {name, start, scale}
+
+_presets = [
+        ["ajam", "0", "1 1 0.5 1 1 1 0.5"]
+        ["kurd", "1", "0.5 1 1 1 0.5 1 ]-0.5 1"] # the -0.5 here is a cheat for rafat il hajjan!!
+        ["nahawand", "0", "1 0.5 1 1 0.5 ]-0.5 1.5 0.5"]
+        ["hijaz", "1", "0.5 1.5 0.5 1 ]+0.25 0.5 1 1"]
+        ["rast", "0", "1 0.75 0.75 1 1 ]-0.25 0.75 0.75"]
+        ["saba", "1", "0.75 0.75 0.5 1.5 0.5 1 ]-0.5 1"] # not sure what's the proper solution here
+        ["bayati", "1", "0.75 0.75 1 1 0.5 1 1"]
+        ["siga" , "1.75", "0.75 1 1 ]-0.25 0.75 0.75 1 0.75"]
+        ["huzam", "1.75", "0.75 1 0.5 1.5 0.5 1 0.75"] # same as hijaz form 2
+        ["jiharkah", "-2", "1 1 0.5 1 1 0.75 0.75"] # same as bayati
+        ["hijaz_kar", "0", "0.5 1.5 0.5 1 0.5 1.5 0.5"]
+        ["nawa_athar", "0", "1 0.5 1.5 0.5 0.5 1.5 0.5"]
+]
+
+maqamat = new Maqamat
+for [name, start, scale_raw] in _presets
+    maqamat.add maqam_ctor(name, start, scale_raw)
 
 # From: http://www.mediacollege.com/internet/javascript/text/case-capitalize.html
 String.prototype.capitalize = ->
