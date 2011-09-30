@@ -1,8 +1,12 @@
 mkbuf = (len) -> 
     new Float32Array(len)
 
+firefox_on_linux = ->
+    $.browser.mozilla and (navigator.platform.indexOf("Linux") != -1 or navigator.oscpu.indexOf("Linux") != -1)
+
 try
-    window.dev = Sink(null, 1)
+    prebuf_size = if firefox_on_linux() then (44100/2) else 5000
+    window.dev = Sink(null, 1, prebuf_size, 44100)
     window.srate = -> dev.sampleRate
     if dev.type == "dummy"
         $("#error_box").text("Your browser doesn't support Web Audio. Open this site in Firefox").show()
@@ -53,7 +57,7 @@ DURATION = 2.4
 GAIN = 0.14
 SIGNAL_LEN = DURATION * srate()
 
-dev.ringBuffer = mkbuf(5 * srate())
+dev.ringBuffer = mkbuf(7 * srate())
 
 dampness = (Math.pow(Math.E, -5 * (point/SIGNAL_LEN)) for point in [0..SIGNAL_LEN])
 
@@ -108,6 +112,6 @@ mk_ring_cleaner = ->
             point++
         prev_offset = offset
 
-setInterval(mk_ring_cleaner(), 200)
+setInterval(mk_ring_cleaner(), 1000)
 
 
