@@ -4,20 +4,21 @@ mkbuf = (len) ->
 firefox_on_linux = ->
     $.browser.mozilla and (navigator.platform.indexOf("Linux") != -1 or navigator.oscpu.indexOf("Linux") != -1)
 
-try
-    prebuf_size = if firefox_on_linux() then (44100/2) else 5000
-    window.dev = Sink(null, 1, prebuf_size, 44100)
-    window.srate = -> dev.sampleRate
-    if dev.type == "dummy"
-        $("#error_box").text("Your browser doesn't support Web Audio. Open this site in Firefox").show()
+mksink = (srate)->
+    try
+        prebuf_size = if firefox_on_linux() then (srate/2) else srate/10
+        Sink(null, 1, prebuf_size, srate)
+    catch error # not sure if the exception would happen here
+        $("#error_box").text("Your browser doesn't support Web Audio. Open this page in Firefox").show()
         if $.browser.webkit
-            $("#error_box").after("In Chrome, you can enable web audio from <code>about:flags</code> (only available in beta versions)")
-catch error # not sure if the exception would happen here
-    $("#error_box").text("Error initializing audio output").show()
-    console.log "something failed:\n", error
+            $("#error_box").after("In Chrome, you can enable web audio from <code>about:flags</code>" + 
+                "(only available in beta versions)")
+        {sampleRate: srate, ringOffset: 0}
+            
+window.dev = mksink(44100)
+SRATE = dev.sampleRate
 
-
-period_len = (freq) -> Math.round (srate()/freq)
+period_len = (freq) -> Math.round (SRATE/freq)
 
 avg = (a, b) -> (a + b) / 2
 
@@ -36,7 +37,7 @@ random_sample = ->
     2 * Math.random() - 1
 
 sine = (freq) ->
-    k = 2 * Math.PI * freq / srate()
+    k = 2 * Math.PI * freq / SRATE
     (point) -> Math.sin(k * point)
 
 sines = (freqs...) ->
@@ -55,9 +56,9 @@ precalc_table = _.once (fn, len=4000) ->
 
 DURATION = 2.4
 GAIN = 0.14
-SIGNAL_LEN = DURATION * srate()
+SIGNAL_LEN = DURATION * SRATE
 
-dev.ringBuffer = mkbuf(7 * srate())
+dev.ringBuffer = mkbuf(7 * SRATE)
 
 dampness = (Math.pow(Math.E, -5 * (point/SIGNAL_LEN)) for point in [0..SIGNAL_LEN])
 
