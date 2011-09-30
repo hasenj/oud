@@ -1,8 +1,5 @@
 mkbuf = (len) -> 
-    new audioLib.Float32Array(len)
-
-makeaudio = (mixer, channels, srate) ->
-    audioLib.AudioDevice(mixer.mix, 2, 3000, srate)
+    new Float32Array(len)
 
 makemixer = ->
     fns: []
@@ -24,7 +21,7 @@ makemixer = ->
 
 try
     window.mixer = makemixer()
-    dev = makeaudio(mixer, 2, 44100)
+    dev = Sink(mixer.mix)
     window.srate = -> dev.sampleRate
     if dev.type == "dummy"
         $("#error_box").text("Your browser doesn't support Web Audio. Open this site in Firefox").show()
@@ -114,7 +111,7 @@ window.playtone = (tone)->
     now_playing += 1
     generator = (out) -> 
         end = false
-        if(current_sample >= SIGNAL_LEN) or now_playing > 7
+        if(current_sample >= SIGNAL_LEN) or now_playing > 7 or current_sample >= SIGNAL_LEN
             now_playing -= 1
             return null
         size = out.length
