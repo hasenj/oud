@@ -13,14 +13,14 @@ window.mixer =
             for s, i in buf
                 # convert mono-channel signal to dual-channel
                 buf[i*2] += b[i]
-                buf[i*2+1] = b[i]
+                buf[i*2+1] += b[i]
             if not result
                 done.push(fn)
         mixer.fns = _.difference(mixer.fns, done)
         return true
 $ ->
     try
-        window.dev = audioLib.AudioDevice(mixer.mix, 2, 3000, 44100)
+        window.dev = audioLib.AudioDevice(mixer.mix, 2, 5000, 44100)
         window.srate = -> dev.sampleRate
         if dev.type == "dummy"
             $("#error_box").text("Your browser doesn't support Web Audio. Open this site in Firefox").show()
@@ -67,25 +67,23 @@ $ ->
             table[point] = fn(point)
         table
 
-    DURATION = 2.6
-    GAIN = 0.2
-    SAMPLE_LEN = DURATION * srate()
+    DURATION = 2.4
+    GAIN = 0.14
+    SIGNAL_LEN = DURATION * srate()
 
-    dampness = (Math.pow(Math.E, -5 * (point/SAMPLE_LEN)) for point in [0..SAMPLE_LEN])
+    dampness = (Math.pow(Math.E, -5 * (point/SIGNAL_LEN)) for point in [0..SIGNAL_LEN])
 
     # Base signal shape, which we later add white-noise to it
     sines_sig = precalc_table sines(2, 100, 390)
 
     # karplus strong algorithm
-    oudfn = (freq) ->
+    oud_signal_gen = (freq) ->
         samples = period_len freq
         table = new Float32Array(samples)
-        sampleat = (point) -> sines_sig[point] + ks_noise_sample(0.26)
-        getsample = (index) ->
+        for index in [0..SIGNAL_LEN]
             point = index % samples
             if index < samples
-                noise = sampleat(point)
-                table[point] = noise
+                table[point] = sines_sig[point] + ks_noise_sample(0.42)
             else
                 prev = (index - 1) % samples
                 table[point] = avg(table[point], table[prev])
@@ -96,34 +94,28 @@ $ ->
 
     window.tone_signal = {}
 
-    tone_fn = (tone) ->
+    tone_gen = (tone) ->
         if tone of tone_signal
             return tone_signal[tone]
         else
-            fn = oudfn(tonefreq(tone))
-            tone_signal[tone] = (fn(point) * dampness[point] * GAIN for point in [0..SAMPLE_LEN])
+            signal_raw = oud_signal_gen(tonefreq(tone))
+            tone_signal[tone] = (signal_raw[point] * dampness[point] * GAIN for point in [0..SIGNAL_LEN])
 
     now_playing = 0
 
     window.playtone = (tone)->
-        freq = tonefreq(tone)
         duration = DURATION
         current_sample = 0
-        last_sample = duration * srate()
-        signal = tone_fn(tone)
+        signal = tone_gen(tone)
         now_playing += 1
         generator = (out) -> 
             end = false
-            if(current_sample >= last_sample) 
-                end = true
-            if now_playing > 7
-                end = true
-            if end
+            if(current_sample >= SIGNAL_LEN) or now_playing > 7
                 now_playing -= 1
                 return null
             size = out.length
             written = 0
-            while(written < size and current_sample < last_sample) 
+            while(written < size and current_sample < SIGNAL_LEN) 
                 out[written] = signal[current_sample]
                 current_sample++
                 written++
