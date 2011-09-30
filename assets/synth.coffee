@@ -20,7 +20,7 @@ window.mixer =
         return true
 $ ->
     try
-        window.dev = audioLib.AudioDevice(mixer.mix, 2, 300, 44100)
+        window.dev = audioLib.AudioDevice(mixer.mix, 2, 3000, 44100)
         window.srate = -> dev.sampleRate
         if dev.type == "dummy"
             $("#error_box").text("Your browser doesn't support Web Audio. Open this site in Firefox").show()
@@ -67,6 +67,12 @@ $ ->
             table[point] = fn(point)
         table
 
+    DURATION = 2.6
+    GAIN = 0.2
+    SAMPLE_LEN = DURATION * srate()
+
+    dampness = (Math.pow(Math.E, -5 * (point/SAMPLE_LEN)) for point in [0..SAMPLE_LEN])
+
     # Base signal shape, which we later add white-noise to it
     sines_sig = precalc_table sines(2, 100, 390)
 
@@ -88,14 +94,23 @@ $ ->
        tones_per_octave = 6 # DON'T CHANGE!!
        return base * Math.pow(2, tone/tones_per_octave)
 
+    window.tone_signal = {}
+
+    tone_fn = (tone) ->
+        if tone of tone_signal
+            return tone_signal[tone]
+        else
+            fn = oudfn(tonefreq(tone))
+            tone_signal[tone] = (fn(point) * dampness[point] * GAIN for point in [0..SAMPLE_LEN])
+
     now_playing = 0
 
-    window.playtone = (tone, fn=oudfn, gain=0.16) ->
+    window.playtone = (tone)->
         freq = tonefreq(tone)
-        duration = 2.8
+        duration = DURATION
         current_sample = 0
         last_sample = duration * srate()
-        sigfn = fn(freq)
+        signal = tone_fn(tone)
         now_playing += 1
         generator = (out) -> 
             end = false
@@ -108,12 +123,8 @@ $ ->
                 return null
             size = out.length
             written = 0
-            sample_at = (point) ->
-                damp = Math.pow(Math.E, -5 * (point/last_sample))
-                signal = sigfn(point)
-                return gain * damp * signal
             while(written < size and current_sample < last_sample) 
-                out[written] = sample_at(current_sample)
+                out[written] = signal[current_sample]
                 current_sample++
                 written++
             return written
