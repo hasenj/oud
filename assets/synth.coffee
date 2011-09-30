@@ -1,27 +1,8 @@
 mkbuf = (len) -> 
     new Float32Array(len)
 
-makemixer = ->
-    fns: []
-    add: (fn) ->
-        @fns.push(fn)
-    mix: (buf) ->
-        done = []
-        for fn in mixer.fns
-            b = mkbuf(buf.length / 2) # buf is two channels, b is one channel
-            result = fn(b)
-            for s, i in buf
-                # convert mono-channel signal to dual-channel
-                buf[i*2] += b[i]
-                buf[i*2+1] += b[i]
-            if not result
-                done.push(fn)
-        mixer.fns = _.difference(mixer.fns, done)
-        return true
-
 try
-    window.mixer = makemixer()
-    dev = Sink(mixer.mix)
+    window.dev = Sink(null, 1)
     window.srate = -> dev.sampleRate
     if dev.type == "dummy"
         $("#error_box").text("Your browser doesn't support Web Audio. Open this site in Firefox").show()
@@ -97,30 +78,15 @@ window.tone_signal = {}
 
 tone_gen = (tone) ->
     if tone of tone_signal
-        return tone_signal[tone]
+        tone_signal[tone]
     else
         signal_raw = oud_signal_gen(tonefreq(tone))
-        tone_signal[tone] = (signal_raw[point] * dampness[point] * GAIN for point in [0..SIGNAL_LEN])
-
-now_playing = 0
+        signal = mkbuf(SIGNAL_LEN)
+        for point in [0..SIGNAL_LEN]
+            signal[point] = signal_raw[point] * dampness[point] * GAIN
+        tone_signal[tone] = signal
 
 window.playtone = (tone)->
-    duration = DURATION
-    current_sample = 0
     signal = tone_gen(tone)
-    now_playing += 1
-    generator = (out) -> 
-        end = false
-        if(current_sample >= SIGNAL_LEN) or now_playing > 7 or current_sample >= SIGNAL_LEN
-            now_playing -= 1
-            return null
-        size = out.length
-        written = 0
-        while(written < size and current_sample < SIGNAL_LEN) 
-            out[written] = signal[current_sample]
-            current_sample++
-            written++
-        return written
-
-    mixer.add(generator)
+    dev.writeBuffer(signal, 2)
 
