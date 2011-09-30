@@ -53,6 +53,8 @@ DURATION = 2.4
 GAIN = 0.14
 SIGNAL_LEN = DURATION * srate()
 
+dev.ringBuffer = mkbuf(5 * srate())
+
 dampness = (Math.pow(Math.E, -5 * (point/SIGNAL_LEN)) for point in [0..SIGNAL_LEN])
 
 # Base signal shape, which we later add white-noise to it
@@ -88,5 +90,24 @@ tone_gen = (tone) ->
 
 window.playtone = (tone)->
     signal = tone_gen(tone)
-    dev.writeBuffer(signal, 2)
+    start = dev.ringOffset
+    for s, i in signal
+        point = start + i
+        point = point % dev.ringBuffer.length
+        dev.ringBuffer[point] += s
+
+mk_ring_cleaner = ->
+    prev_offset = 0
+    len = dev.ringBuffer.length
+    clean_ring = ->
+        offset = dev.ringOffset
+        point = prev_offset
+        end = if offset < prev_offset then len + offset else offset
+        while point < end
+            dev.ringBuffer[point % len] = 0
+            point++
+        prev_offset = offset
+
+setInterval(mk_ring_cleaner(), 200)
+
 
