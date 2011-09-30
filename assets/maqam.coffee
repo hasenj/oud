@@ -123,7 +123,6 @@ init_maqams = ->
     p = $("#presets")
     maqam_btns = {}
     window.choose_maqam = (name) ->
-        console.log "choosing maqam: ", name
         b = maqam_btns[name]
         $(".active", p).removeClass("active")
         b.addClass("active")
