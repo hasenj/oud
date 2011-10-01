@@ -115,8 +115,14 @@ on_choose_maqam = (name) ->
     $("#maqam_name").html("Maqam " + disp_name name)
     $.cookie('maqam', name)
     maqam = 
-        start: start
+        start: Number start
         scale: parse_scale scale
+    updkeys maqam
+
+window.apply_user_maqam = -> # applies custom maqam ..
+    maqam =
+        start: Number $("#start").val()
+        scale: parse_scale $("#scale").val()
     updkeys maqam
 
 init_maqams = ->
