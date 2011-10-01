@@ -6,7 +6,7 @@ firefox_on_linux = ->
 
 mksink = (srate)->
     try
-        prebuf_size = if firefox_on_linux() then (srate/2) else srate/10
+        prebuf_size = if firefox_on_linux() then (srate/2) else srate/7
         Sink(null, 1, prebuf_size, srate)
     catch error # not sure if the exception would happen here
         $("#error_box").text("Your browser doesn't support Web Audio. Open this page in Firefox").show()
