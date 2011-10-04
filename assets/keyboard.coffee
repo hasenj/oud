@@ -139,14 +139,17 @@ $ init
 # ---- handle keyboard presses
 
 key_handler = (e, callback) ->
-    if e.ctrlKey
+    if e.ctrlKey or e.metaKey
         return
     special = 
         109: '-'
+        189: '-' # chrome
         61: '='
+        187: '=' # chrome
         219: '['
         221: ']'
         59: ';'
+        186: ';' # chrome
         222: '\''
     if e.which of special
         kbkey = special[e.which]
