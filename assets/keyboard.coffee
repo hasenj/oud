@@ -41,8 +41,8 @@ gen_key_row = (scale, start, backlimit, forelimit) ->
     row = s0.concat(s1).concat(s2)
     shift_notes_by(row, start)
 
-window.active_notes = [] # THE current piano notes, an array of rows, as returned by get_piano_rows
-window.alt_notes = [] # when shift is pressed
+window.active_tones = [] # THE current piano notes, an array of rows, as returned by get_piano_rows
+window.alt_tones = [] # when shift is pressed
 
 gen_piano_rows = (scale, start) ->
     [gen_key_row(scale, start-6, 2, 2)
@@ -52,8 +52,8 @@ gen_piano_rows = (scale, start) ->
 #console.log gen_piano_rows [1, 1, 0.5, 1, 1, 1, 0.5], 0
 
 set_maqam = (maqam) ->
-    window.active_notes = gen_piano_rows(maqam.scale, maqam.start)
-    window.alt_notes = gen_piano_rows(maqam.alt_scale, maqam.start)
+    window.active_tones = gen_piano_rows(maqam.scale, maqam.start)
+    window.alt_tones = gen_piano_rows(maqam.alt_scale, maqam.start)
 
 
 # ------ keyboard
@@ -61,7 +61,7 @@ set_maqam = (maqam) ->
 window.active_layout = {} # mapping from kb_keys to piano keys
 window.ui_kb_layout = {}
 
-pkey = (row, key) -> {row, key} # for indexing into actives notes .. active_notes[row][key]
+pkey = (row, key) -> {row, key} # for indexing into actives notes .. active_tones[row][key]
 
 gen_key_layout = (key_rows) ->
     layout = {}
@@ -95,35 +95,6 @@ pkey_id = (pkey) -> "pkey_" + pkey.row + "_" + pkey.key
     
 jid = (id) -> $("#" + id)
 
-update_ui = -> # assumes active_layout and active_notes are already set
-    # XXX
-    make_key = (p_key)->
-        id = pkey_id(p_key)
-        kb_key = ui_kb_layout[id] # TODO: a global var
-        tone = active_notes[p_key.row][p_key.key]
-        alt_tone = alt_notes[p_key.row][p_key.key]
-        note_name = get_note_name(tone) #"DO"
-        "<div id='#{id}' class='key unpressed'>
-            <div class='bk_key'>#{kb_key}</div>
-            <div class='tone'>#{tone}</div>
-            <div class='tone_shift'>#{alt_tone}</div>
-            <div class='note_name'>#{note_name}</div>
-        </div>"
-    jid("keys").text("")
-    for r, row in active_notes
-        el = $("<div class='row'>")
-        for k, key in r
-            el.append make_key pkey(row, key)
-        jid("keys").append(el)
-            
-init = ->
-    set_maqam( {scale: [1, 1, 0.5, 1, 1, 1, 0.5], alt_scale:[1, 0.75, 0.75, 1, 1, 0.75, 0.75], start: 0} )
-    set_kb_layout('qwerty')
-    update_ui()
-
-$ init
-
-
 get_note_name = (tone) ->
     std_tones = [0, 1, 2, 2.5, 3.5, 4.5, 5.5, 6]
     names = "DO RE MI FA SOL LA SI".split(" ")
@@ -136,6 +107,69 @@ get_note_name = (tone) ->
                 return names[index]
             else
                 return names[index+1]
+
+update_ui = -> # assumes active_layout and active_tones are already set
+    # XXX
+    make_key = (p_key)->
+        id = pkey_id(p_key)
+        kb_key = ui_kb_layout[id] # TODO: a global var
+        tone = active_tones[p_key.row][p_key.key]
+        alt_tone = alt_tones[p_key.row][p_key.key]
+        note_name = get_note_name(tone) #"DO"
+        "<div id='#{id}' class='key unpressed'>
+            <div class='bk_key'>#{kb_key}</div>
+            <div class='tone'>#{tone}</div>
+            <div class='tone_shift'>#{alt_tone}</div>
+            <div class='note_name'>#{note_name}</div>
+        </div>"
+    jid("keys").text("")
+    for r, row in active_tones
+        el = $("<div class='row'>")
+        for k, key in r
+            el.append make_key pkey(row, key)
+        jid("keys").append(el)
+            
+init = ->
+    set_maqam( {scale: [1, 1, 0.5, 1, 1, 1, 0.5], alt_scale:[1, 0.75, 0.75, 1, 1, 0.75, 0.75], start: 0} )
+    set_kb_layout('qwerty')
+    update_ui()
+
+$ init
+
+# ---- handle keyboard presses
+
+
+$(document).keydown( (e)->
+    special = 
+        109: '-'
+        61: '='
+        219: '['
+        221: ']'
+        59: ';'
+        222: '\''
+    if e.which of special
+        kbkey = special[e.which]
+    else
+        kbkey = String.fromCharCode(e.which).toLowerCase()
+    if not kbkey of active_layout
+        console.log "don't know how to handle", kbkey
+        return
+    e.preventDefault()
+    console.log kbkey
+    p_key = active_layout[kbkey]
+    console.log active_layout
+    console.log p_key
+    tone = active_tones[p_key.row][p_key.key]
+    playtone(tone)
+)
+
+
+
+
+    
+
+
+
 # --------------------------------------------------------------------------
 
 modulo = (index, length) ->
@@ -256,8 +290,8 @@ show_maqam_original = ->
     $(".tone_b").hide()
     $(".has_variation").parent().removeClass("vhint")
 
-$(document).bind('keydown', 'shift', show_maqam_variation)
-$(document).bind('keyup', 'shift', show_maqam_original)
+#$(document).bind('keydown', 'shift', show_maqam_variation)
+#$(document).bind('keyup', 'shift', show_maqam_original)
 
 getkeytone = (key) -> window.keys[key]
 
