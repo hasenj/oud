@@ -64,10 +64,13 @@ wave_shape_to_sample = (shape, len) ->
 
 oud_wave_shape = mk_wave_shape [
     mk_point 0.1, 0.8
-    mk_point 0.26, 0.72
+    mk_point 0.16, 0.82
+    mk_point 0.26, 0.76
     mk_point 0.4, 0.42
     mk_point 0.6, 0.84
-    mk_point 0.84, 0.3
+    mk_point 0.7, 0.74
+    mk_point 0.84, 0.4
+    mk_point 0.91, 0.3
 ]
 
 DURATION = 2.6
@@ -91,7 +94,7 @@ oud_signal_gen = (freq) ->
     for s, index in signal
         point = index % table_len
         if index < table_len
-            table[point] = base_sample[point] + ks_noise_sample(0.09)
+            table[point] = base_sample[point] + ks_noise_sample(0.08)
             signal[index] = table[point]
         else
             prev = (index - 1) % table_len
