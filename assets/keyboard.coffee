@@ -91,7 +91,7 @@ set_kb_layout = (layout_code) ->
     window.ui_kb_layout = gen_ui_kb_mapping(active_layout)
     
 
-pkey_id = (pkey) -> "pkey_" + pkey.row + "_" + pkey.key
+pkey_id = (p_key) -> "pkey_" + p_key.row + "_" + p_key.key
     
 jid = (id) -> $("#" + id)
 
@@ -138,8 +138,9 @@ $ init
 
 # ---- handle keyboard presses
 
-
-$(document).keydown( (e)->
+key_handler = (e, callback) ->
+    if e.ctrlKey
+        return
     special = 
         109: '-'
         61: '='
@@ -151,24 +152,42 @@ $(document).keydown( (e)->
         kbkey = special[e.which]
     else
         kbkey = String.fromCharCode(e.which).toLowerCase()
-    if not kbkey of active_layout
-        console.log "don't know how to handle", kbkey
-        return
     e.preventDefault()
-    console.log kbkey
     p_key = active_layout[kbkey]
-    console.log active_layout
-    console.log p_key
+    if not p_key?
+        return
+    callback(p_key)
+
+
+$(document).keydown( (e)-> key_handler(e, (p_key)->
     tone = active_tones[p_key.row][p_key.key]
     playtone(tone)
+    div = getkeydiv(p_key)
+    div.stop(true, true)
+    div.addClass("pressed").removeClass("unpressed")
+))
+
+$(document).keyup( (e)-> key_handler(e, (p_key)->
+    div = getkeydiv(p_key)
+    div.stop(true, true)
+    div.addClass("unpressed").removeClass("pressed")
+))
+
+activate_alt_tones = ->
+        [window.alt_tones, window.active_tones] = [window.active_tones, window.alt_tones]
+
+$(document).keydown('Shift', ->
+    activate_alt_tones()
+    $(".tone").hide()
+    $(".tone_shift").show()
 )
 
 
-
-
-    
-
-
+$(document).keyup('Shift', ->
+    activate_alt_tones()
+    $(".tone_shift").hide()
+    $(".tone").show()
+)
 
 # --------------------------------------------------------------------------
 
@@ -176,58 +195,6 @@ modulo = (index, length) ->
     while index < 0
         index += length
     index %= length
-
-window.cycle_index = (list, index) ->
-    index = modulo index, list.length
-    list[index]
-
-# array of tone objects. json objects with:
-#   w: the tone value (white)
-#   b: the super imposed tone value (black) 
-gentones = (scale, starttone, length) ->
-    starttone -= 6 # start an octave early!
-    ctor = (w) -> {w: w, b: w}
-    tones = []
-    tones.push ctor(starttone)
-    last = -> tones[tones.length-1]
-    for index in [0..length-1]
-      prev = last()
-      dist = cycle_index scale, index
-      w = prev.w + dist.dist1
-      b = w + dist.dist2
-      tones.push {w : w, b: b}
-    return tones
-
-get_octave_bounds = (tones, start) ->
-    bounds = [0]
-    while tones[0].w < start
-        start -= 6
-    for tone, i in tones
-        if tone.w >= start + 6 # 6 == octave length 
-            start += 6
-            bounds.push(i)
-    bounds
-
-# TODO fix this!!!!
-note_enum_fn = (start_tone) ->
-    canonical_notes = [0, 1, 2, 2.5, 3.5, 4.5, 5.5, 6]
-    note_names_C = "C D E F G A B".split(" ")
-    note_names_DO = "DO RE MI FA SOL LA SI".split(" ")
-    # find the start index accordin to starting tone
-    first_note = ->
-        start_tone = modulo start_tone, 6
-        for tone, index in canonical_notes
-            nexttone = canonical_notes[index+1]
-            if tone <= start_tone < nexttone
-                dist1 = Math.abs(start_tone - tone)
-                dist2 = Math.abs(nexttone - start_tone)
-                if dist1 < dist2
-                    return index
-                else
-                    return index + 1
-    index = first_note()
-    enumer = ->
-        note_names_DO[index++ % note_names_DO.length]
 
 fval = (id)-> $("#" + id).val() # field value
 
@@ -295,7 +262,7 @@ show_maqam_original = ->
 
 getkeytone = (key) -> window.keys[key]
 
-getkeydiv = (key) -> $("#" + genkeyid key)
+getkeydiv = (p_key) -> jid(pkey_id(p_key))
 
 downkeys = {}
 
