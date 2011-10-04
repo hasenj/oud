@@ -4,6 +4,9 @@ table.layout
       div#maqam_name
       div#keys
       div#error_box
+      div#record_btns
+        input#rec_btn(type="button", value="Record")
+        input#play_btn(type="button", value="Play", disabled)
 
     td
       div#maqam_section
@@ -20,6 +23,7 @@ table.layout
 
 
 script(type="text/javascript", src="/synth.js")
+script(type="text/javascript", src="/record.js")
 script(type="text/javascript", src="/maqam.js")
 script(type="text/javascript", src="/keyboard.js")
 
