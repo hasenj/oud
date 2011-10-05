@@ -15,8 +15,8 @@ transition()
     vendor('transition', arguments)
 
 vhintcolor = hsl(246, 30%, 85%)
-press_color = hsl(10, 20, 74)
-semipress_color = hsl(200, 30, 66)
+semipress_color = hsl(10, 0, 84)
+press_color = hsl(200, 10, 76)
 unpressed_color = hsl(200, 10, 95)
 
 btn_highlight(color)
@@ -56,9 +56,8 @@ btn_highlight(color)
             color #777
             text-shadow 0px 1px 1px white
         &.pressed, &.pressed.semi_pressed
-            box-shadow inset 0px -50px 40px -30px press_color 
             btn_highlight(press_color)
-            border-color silver * 0.7
+            border-color silver * 0.8
             color hsl(300, 20%, 10%)
             .tone
                 color silver * 0.9
@@ -66,8 +65,7 @@ btn_highlight(color)
                 color #666
         &.semi_pressed
             btn_highlight(semipress_color)
-            border-color silver * 0.8
-            color hsl(300, 20%, 10%)
+            color hsl(0, 0, 30)
         &.unpressed 
             btn_highlight(unpressed_color)
             // transition all 300ms ease-out
