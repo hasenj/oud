@@ -116,7 +116,8 @@ update_ui = -> # assumes active_layout and active_tones are already set
         tone = active_tones[p_key.row][p_key.key]
         alt_tone = alt_tones[p_key.row][p_key.key]
         note_name = get_note_name(tone) #"DO"
-        "<div id='#{id}' class='key unpressed'>
+        tone_cls = tone_class(tone)
+        "<div id='#{id}' class='key #{tone_cls}  unpressed'>
             <div class='bk_key'>#{kb_key}</div>
             <div class='tone'>#{tone}</div>
             <div class='tone_shift'>#{alt_tone}</div>
@@ -162,8 +163,13 @@ key_handler = (e, callback) ->
     callback(p_key)
 
 
+down_keys = {}
 $(document).keydown( (e)-> key_handler(e, (p_key)->
+    if down_keys[e.which] # already pressed, don't handle again
+        return false
+    down_keys[e.which] = true
     tone = active_tones[p_key.row][p_key.key]
+    press_tone(tone)
     playtone(tone)
     div = getkeydiv(p_key)
     div.stop(true, true)
@@ -171,10 +177,43 @@ $(document).keydown( (e)-> key_handler(e, (p_key)->
 ))
 
 $(document).keyup( (e)-> key_handler(e, (p_key)->
+    down_keys[e.which] = false
+    tone = active_tones[p_key.row][p_key.key]
+    unpress_tone(tone)
     div = getkeydiv(p_key)
     div.stop(true, true)
     div.addClass("unpressed").removeClass("pressed")
 ))
+
+pressed_tones = {}
+press_tone = (tone) ->
+    c = tone_class(tone)
+    if c not of pressed_tones
+        pressed_tones[c] = 0
+    pressed_tones[c] += 1
+    console.log "pressing", c
+    console.log pressed_tones
+    j_semipress(jcls(c))
+
+unpress_tone = (tone) ->
+    c = tone_class(tone)
+    pressed_tones[c] -= 1
+    console.log "unpressing", c
+    console.log pressed_tones
+    if not pressed_tones[c] or pressed_tones[c] < 1
+        pressed_tones[c] = 0 # hack fix for weird bugs
+        j_unpress(jcls(c))
+
+jcls = (cls) -> $('.' + cls)
+tone_class = (tone) ->
+    't_' + tone.toString().replace('.', '_')[0...10]
+
+j_press = (jq) ->
+    jq.removeClass("semi_pressed").removeClass("unpressed").addClass("pressed")
+j_semipress = (jq) ->
+    jq.removeClass("unpressed").not(".pressed").addClass("semi_pressed") # what if has class "pressed"??
+j_unpress = (jq) ->
+    jq.removeClass("pressed").removeClass("semi_pressed").addClass("unpressed")
 
 activate_alt_tones = ->
         [window.alt_tones, window.active_tones] = [window.active_tones, window.alt_tones]
