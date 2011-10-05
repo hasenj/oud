@@ -63,21 +63,9 @@ window.parse_scale = (scale_str) ->
             index++
     return scale
 
-Maqam = Backbone.Model.extend
-   initialize: ->
-   detauls:
-        start: 0
-        name: 'scale'
-        scale: parse_scale "1 1 0.5 1 1 1 0.5"
-
-new Maqam
-
-Maqamat = Backbone.Collection.extend
-    model: Maqam
-
 maqam_ctor = (name, start, scale_raw) ->
     scale = parse_scale scale_raw
-    new Maqam {name, start, scale}
+    {name, start, scale}
 
 _presets = [
         ["ajam", "0", "1 1 0.5 1 1 1 0.5"]
@@ -94,9 +82,9 @@ _presets = [
         ["nawa_athar", "0", "1 0.5 1.5 0.5 0.5 1.5 0.5"]
 ]
 
-maqamat = new Maqamat
+maqamat = []
 for [name, start, scale_raw] in _presets
-    maqamat.add maqam_ctor(name, start, scale_raw)
+    maqamat.push maqam_ctor(name, start, scale_raw)
 
 # From: http://www.mediacollege.com/internet/javascript/text/case-capitalize.html
 String.prototype.capitalize = ->
