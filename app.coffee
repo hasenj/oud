@@ -4,7 +4,7 @@ app = x.createServer()
 app.listen(9040)
 app.use x.bodyParser()
 app.use(x.static(__dirname + "/public"))
-app.use(require('connect-assets')(src:__dirname+'/assets'))
+app.use(require('connect-assets')())
 
 app.set 'views', __dirname # same directory!!
 app.set 'view engine', 'jade'

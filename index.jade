@@ -22,10 +22,11 @@ table.layout
         div#presets.option_set
 
 
-script(type="text/javascript", src="/synth.js")
-script(type="text/javascript", src="/record.js")
-script(type="text/javascript", src="/maqam.js")
-script(type="text/javascript", src="/keyboard.js")
+!= js('/events')
+!= js('/synth')
+!= js('/record')
+!= js('/maqam')
+!= js('/keyboard')
 
 footer
   br
