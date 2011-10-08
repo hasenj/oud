@@ -194,15 +194,11 @@ press_tone = (tone) ->
     if c not of pressed_tones
         pressed_tones[c] = 0
     pressed_tones[c] += 1
-    console.log "pressing", c
-    console.log pressed_tones
     j_semipress(jcls(c))
 
 unpress_tone = (tone) ->
     c = tone_class(tone)
     pressed_tones[c] -= 1
-    console.log "unpressing", c
-    console.log pressed_tones
     if not pressed_tones[c] or pressed_tones[c] < 1
         pressed_tones[c] = 0 # hack fix for weird bugs
         j_unpress(jcls(c))
