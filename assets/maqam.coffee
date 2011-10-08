@@ -1,90 +1,38 @@
 ####
 # maqam presets
+#   A scale is defined as a sequency of tone distances
+#   Some scales have the special property that they don't end in 6 full tones
+#   This is handled in keyboard.coffee in a way that works
+#
+#   A maqam is a scale + a starting point
+#
+#   Some maqams have "variations", aka alt_scale
 
-# maqam/scale language: extra keys are marked with +
-#   The scale is defined as a sequency of tones
-#   each tone is defined by its distance from the previous tone
-#   there are "extra" tones
-#   extra tones are like black keys on the piano
-#   more precisely, they are alternative versions of a certain tone.
-#   extra tones are imposed on other tones in the sense
-#   they are defined by: which tone they're imposed on, and how different
-#   are they from that tone. The value could be negative
-#   extra tones are denoted by either a [ or a ] before the tone
-#   [ means it's imposed on the previous tone
-#   ] means it's imposed on the next tone
-#   for example, ]-0.5 means imposed on next tone and is half a tone lower than it
-#   we assume a maqam takes exactly 7 elements (not counting imposition)
-#   Note: I don't yet have a specific plan on handling special maqams 
-#       but saba should be fine with just imposition
-#   note names are detected automatically; or rather:
-#   the first note is detected automatically
-#   the following notes just assume the sequence
-maqam_presets = 
-    ajam: ["0", "1 1 0.5 1 1 1 0.5"]
-    kurd: ["1", "0.5 1 1 1 0.5 1 ]-0.5 1"] # the -0.5 here is a cheat for rafat il hajjan!!
-    nahawand: ["0", "1 0.5 1 1 0.5 ]-0.5 1.5 0.5"]
-    hijaz: ["1", "0.5 1.5 0.5 1 ]+0.25 0.5 1 1"]
-    rast: ["0", "1 0.75 0.75 1 1 ]-0.25 0.75 0.75"]
-    saba: ["1", "0.75 0.75 0.5 1.5 0.5 1 ]-0.5 1"] # not sure what's the proper solution here
-    bayati: ["1", "0.75 0.75 1 1 0.5 1 1"]
-    siga:  ["1.75", "0.75 1 1 ]-0.25 0.75 0.75 1 0.75"]
-    huzam: ["1.75", "0.75 1 0.5 1.5 0.5 1 0.75"] # same as hijaz form 2
-    jiharkah: ["-2", "1 1 0.5 1 1 0.75 0.75"] # same as bayati
-    # husseini: ["1", "0.75 0.75 1 1 0.75 0.75 1"]
-    hijaz_kar: ["0", "0.5 1.5 0.5 1 0.5 1.5 0.5"]
-    # rahatelarwah: ["5.25", "0.75 1 0.5 1.5 0.5 1 0.75"] 
-    # iraq: ["5.25", "0.75 1 0.75 0.75 1 1 0.75"]
-    nawa_athar: ["0", "1 0.5 1.5 0.5 0.5 1.5 0.5"]
-    # c_major: ["0", "1 1 0.5 1 1 1 0.5"]
+maqam_ctor = (name, start, scale, alt_scale=null) ->
+    {name, start, scale, alt_scale}
 
-window.parse_scale = (scale_str) ->
-    # match [ ] and number tokens
-    toks = scale_str.match(/(\]|\[|(-?[\d.]+))/g) 
-    tonekey = (dist) -> { dist1: dist, dist2: 0 }
-    scale = []
-    sc_at = (index) ->
-        if index < 0
-            console.log "WARNING! bad scale"
-            return tonekey(0) # dummy object, punishment for being stupid
-        while index >= scale.length
-            scale.push tonekey(0)
-        return scale[index]
-    index = 0
-    while toks.length > 0
-        t = toks.shift()
-        if t == '['
-            sc_at(index - 1).dist2 = Number toks.shift()
-        else if t == ']'
-            # not index+1 .. index already points to the "next" point
-            sc_at(index).dist2 = Number toks.shift()
-        else
-            sc_at(index).dist1 = Number t
-            index++
-    return scale
-
-maqam_ctor = (name, start, scale_raw) ->
-    scale = parse_scale scale_raw
-    {name, start, scale}
-
-_presets = [
+presets = [
         ["ajam", "0", "1 1 0.5 1 1 1 0.5"]
-        ["kurd", "1", "0.5 1 1 1 0.5 1 ]-0.5 1"] # the -0.5 here is a cheat for rafat il hajjan!!
-        ["nahawand", "0", "1 0.5 1 1 0.5 ]-0.5 1.5 0.5"]
-        ["hijaz", "1", "0.5 1.5 0.5 1 ]+0.25 0.5 1 1"]
-        ["rast", "0", "1 0.75 0.75 1 1 ]-0.25 0.75 0.75"]
-        ["saba", "1", "0.75 0.75 0.5 1.5 0.5 1 ]-0.5 1"] # not sure what's the proper solution here
-        ["bayati", "1", "0.75 0.75 1 1 0.5 1 1"]
-        ["siga" , "1.75", "0.75 1 1 ]-0.25 0.75 0.75 1 0.75"]
-        ["huzam", "1.75", "0.75 1 0.5 1.5 0.5 1 0.75"] # same as hijaz form 2
-        ["jiharkah", "-2", "1 1 0.5 1 1 0.75 0.75"] # same as bayati
+        ["kurd", "1", "0.5 1 1 1 0.5 1 1"] # same as ajam, but keep it
+        ["nahawand", "0", "1 0.5 1 1 0.5 1.5 0.5", "1 0.5 1 1 0.5 1 1"]
+        ["hijaz", "1", "0.5 1.5 0.5 1 0.5 1 1",  "0.5 1.5 0.5 1 0.75 0.75 1"]
+        ["rast", "0", "1 0.75 0.75 1 1 0.75 0.75", "1 0.75 0.75 1 1 0.5 1"]
+        ["saba", "1", "0.75 0.75 0.5 1.5 0.5 1 1", "0.75 0.75 0.5 1.5 0.5 1 0.5"] # TODO check that it works!
+        ["bayati", "1", "0.75 0.75 1 1 0.5 1 1"] # same as rast1
+        #["siga" , "1.75", "0.75 1 1 0.75 0.75 1 0.75", "0.75 1 1 0.5 1 1 0.75"] # same as rast?
+        #["huzam", "1.75", "0.75 1 0.5 1.5 0.5 1 0.75"] # same as hijaz form 2
+        #["jiharkah", "-2", "1 1 0.5 1 1 0.75 0.75"] # same as bayati, hence rast
         ["hijaz_kar", "0", "0.5 1.5 0.5 1 0.5 1.5 0.5"]
         ["nawa_athar", "0", "1 0.5 1.5 0.5 0.5 1.5 0.5"]
 ]
 
 maqamat = []
-for [name, start, scale_raw] in _presets
-    maqamat.push maqam_ctor(name, start, scale_raw)
+for preset in presets
+    name = preset.shift()
+    start = Number preset.shift()
+    scale = preset.shift().split(" ")
+    scale_alt = if preset.length then preset.shift().split(" ") else null
+    maqamat.push maqam_ctor(name, start, scale, scale_alt)
 
 # From: http://www.mediacollege.com/internet/javascript/text/case-capitalize.html
 String.prototype.capitalize = ->
@@ -96,14 +44,13 @@ disp_name = (maqam_code) ->
 if not window.updkeys?
     window.updkeys = ->
 
-on_choose_maqam = (name) ->
-    [start, scale] = maqam_presets[name]
-    $("#start").val(start)
-    $("#scale").val(scale)
+on_choose_maqam = (maqam) ->
+    $("#start").val(maqam.start)
+    $("#scale").val(maqam.scale)
     $("#maqam_name").html("Maqam " + disp_name name)
     $.cookie('maqam', name)
     maqam = 
-        start: Number start
+        start: start
         scale: parse_scale scale
     updkeys maqam
 
@@ -113,6 +60,7 @@ window.apply_user_maqam = -> # applies custom maqam ..
         scale: parse_scale $("#scale").val()
     updkeys maqam
 
+# scratch this off ...
 init_maqams = ->
     p = $("#presets")
     maqam_btns = {}
@@ -144,4 +92,4 @@ init_maqams = ->
         m = 'ajam'
     choose_maqam m 
 
-$ init_maqams
+# $ init_maqams
