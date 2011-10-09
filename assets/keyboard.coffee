@@ -1,4 +1,4 @@
-std_scale = (scale, limit=false) ->
+window.std_scale = (scale, limit=false) ->
     # returns the scale applies to 0 as starting point
     # assumes 'scale' is nothing more than a list of distances
     scale = _.clone(scale)

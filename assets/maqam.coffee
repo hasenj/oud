@@ -94,7 +94,7 @@ init_maqams = ->
 
 jdiv = -> $("<div/>")
 
-class NumberStepper
+class StepperWidget
     constructor: (parent, @value=0, @step=0.25, @orientation='vertical') ->
         @el = jdiv()
         parent.append(@el)
@@ -105,6 +105,7 @@ class NumberStepper
         evt.trigger(this, "changed", @value)
     inc: => @_inc(@step)
     dec: => @_inc(-@step)
+    get_val: => @value
     render_ui: ->
         orn = @orientation
         first = 'inc'
@@ -127,8 +128,31 @@ class NumberStepper
     update_ui: =>
         $(".val", @el).html(@value)
 
+class ScaleWidget
+    constructor: (parent, scale) ->
+        console.log "init"
+        @el = jdiv()
+        parent.append(@el)
+        @steppers = ((new StepperWidget(@el, tone)) for tone in scale)
+        for s in @steppers
+            evt.bind(s, "changed", @on_change)
+        @render_ui()
+    get_val: =>
+        (s.get_val() for s in @steppers)
+    render_ui: =>
+        # steppers will auto-render 
+        @el.append("<div class='disp'> </div>") # just for test ..
+        @update_ui() # render the scale display
+    on_change: =>
+        @update_ui()
+    update_ui: =>
+        scale = @get_val()
+        ss = std_scale(scale)
+        $('.disp', @el).html(ss.join("&nbsp;&nbsp;&nbsp;"))
+        
+        
 
-ns1 = new NumberStepper $("#test_mv")
-ns2 = new NumberStepper $("#test_mv")
+
+$ -> tw = new ScaleWidget $("#test_mv"), [1,1,0.5,1,1,1,0.5]
 
 # $ init_maqams
