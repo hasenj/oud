@@ -2,22 +2,25 @@
 table = {}
 
 check = (obj, evtname) ->
-    if not obj of table
-        table[obj] = {}
-    if not evtname of table[obj]
-        table[obj][evtname] = []
+    if not obj.id?
+        obj.id = _.uniqueId("obj")
+    id = obj.id
+    if id not of table
+        table[id] = {}
+    if evtname not of table[id]
+        table[id][evtname] = []
 
 defer = (fn) ->
     setTimeout(fn, 0)
 
 bind = (obj, evtname, callback) ->
     check obj, evtname
-    table[obj][evtname] += callback
+    table[obj.id][evtname].push callback
 
 trigger = (obj, evtname, args...) ->
     check obj, evtname
     defer ->
-        for callback in table[obj][evtname]
+        for callback in table[obj.id][evtname]
             callback args...
 
 window.evt = {bind, trigger}
