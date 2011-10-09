@@ -92,4 +92,42 @@ init_maqams = ->
         m = 'ajam'
     choose_maqam m 
 
+jdiv = -> $("<div/>")
+
+class NumberStepper
+    constructor: (@value=0, @step=0.25, @orientation='vertical') ->
+        @el = jdiv()
+        $("#test_mv").append(@el)
+        @render_ui()
+        evt.bind(this, "changed", @update_ui)
+    _inc: (amt) =>
+        @value += amt
+        evt.trigger(this, "changed", @value)
+    inc: => @_inc(@step)
+    dec: => @_inc(-@step)
+    render_ui: ->
+        orn = @orientation
+        first = 'inc'
+        second = 'dec'
+        first_sym = '&#9650;'
+        second_sym = '&#9660;'
+        if orn == 'horizontal'
+            [first,second] = [second, first]
+            first_sym = '&#0017;'
+            second_sym = '&#0016;'
+        @el.html(
+            "<div class='#{@ortientation}'> 
+                <input type='button' class='#{first}' value='#{first_sym}'>
+                <div class='val'> #{@value} </div>
+                <input type='button' class='#{second}' value='#{second_sym}'>
+            </div>"
+        )
+        $(".inc", @el).click(@inc)
+        $(".dec", @el).click(@dec)
+    update_ui: =>
+        $(".val", @el).html(@value)
+
+
+ns = new NumberStepper
+
 # $ init_maqams
