@@ -95,9 +95,9 @@ init_maqams = ->
 jdiv = -> $("<div/>")
 
 class NumberStepper
-    constructor: (@value=0, @step=0.25, @orientation='vertical') ->
+    constructor: (parent, @value=0, @step=0.25, @orientation='vertical') ->
         @el = jdiv()
-        $("#test_mv").append(@el)
+        parent.append(@el)
         @render_ui()
         evt.bind(this, "changed", @update_ui)
     _inc: (amt) =>
@@ -115,12 +115,12 @@ class NumberStepper
             [first,second] = [second, first]
             first_sym = '&#0017;'
             second_sym = '&#0016;'
-        @el.html(
-            "<div class='#{@ortientation}'> 
-                <input type='button' class='#{first}' value='#{first_sym}'>
-                <div class='val'> #{@value} </div>
-                <input type='button' class='#{second}' value='#{second_sym}'>
-            </div>"
+        @el.addClass("widget_stepper")
+        @el.addClass(@orientation)
+        @el.html("
+            <div class='button #{first}'> #{first_sym} </div>
+            <div class='val'> #{@value} </div>
+            <div class='button #{second}'> #{second_sym} </div>"
         )
         $(".inc", @el).click(@inc)
         $(".dec", @el).click(@dec)
@@ -128,6 +128,7 @@ class NumberStepper
         $(".val", @el).html(@value)
 
 
-ns = new NumberStepper
+ns1 = new NumberStepper $("#test_mv")
+ns2 = new NumberStepper $("#test_mv")
 
 # $ init_maqams
