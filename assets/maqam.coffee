@@ -125,6 +125,9 @@ class StepperWidget
         )
         $(".inc", @el).click(@inc)
         $(".dec", @el).click(@dec)
+        $(".button", @el).css('visibility', 'hidden')
+        @el.mouseenter => $(".button", @el).css('visibility', 'visible')
+        @el.mouseleave => $(".button", @el).css('visibility', 'hidden')
     update_ui: =>
         $(".val", @el).html(@value)
 
