@@ -131,31 +131,62 @@ class StepperWidget
     update_ui: =>
         $(".val", @el).html(@value)
 
+class ScaleGraph
+    constructor: (parent) ->
+        @el = $("<canvas width='300px' height='40px'></canvas>")
+        parent.append(@el)
+        @canvas = @el.get(0)
+        @ctx = @canvas.getContext('2d')
+        @bg_color = "hsl(0,0%,80%)"
+        @fg_color = "hsl(0,0%,40%)"
+    draw_scale: (scale) =>
+        @ctx.clearRect(0, 0, @canvas.width, @canvas.height)
+        @draw_line(0, 6, @bg_color)
+        @draw_point(0, @bg_color)
+        @draw_point(6, @bg_color)
+        s = 0
+        @draw_point(s, @fg_color)
+        for p in scale
+            s += p
+            @draw_point(s, @fg_color)
+        @draw_line(0, s, @fg_color)
+    draw_point: (dist, color) =>
+        @ctx.fillStyle = color
+        @ctx.strokeStyle = color
+        @ctx.fillRect(@x_coord(dist)-2, 10, 5, 5)
+    draw_line: (start, end, color) =>
+        @ctx.fillStyle = color
+        @ctx.fillRect(@x_coord(start), 12, @x_coord(end) - @x_coord(start), 1)
+    x_coord: (point) =>
+        10 + point * 40
+
+
+
+
 class ScaleWidget
     constructor: (parent, scale) ->
-        console.log "init"
         @el = jdiv()
         parent.append(@el)
         @steppers = ((new StepperWidget(@el, tone)) for tone in scale)
         for s in @steppers
             evt.bind(s, "changed", @on_change)
+        @vis = new ScaleGraph @el
         @render_ui()
     get_val: =>
         (s.get_val() for s in @steppers)
     render_ui: =>
         # steppers will auto-render 
-        @el.append("<div class='disp'> </div>") # just for test ..
         @update_ui() # render the scale display
     on_change: =>
         @update_ui()
     update_ui: =>
         scale = @get_val()
-        ss = std_scale(scale)
-        $('.disp', @el).html(ss.join("&nbsp;&nbsp;&nbsp;"))
+        @vis.draw_scale(scale)
         
         
 
 
-$ -> tw = new ScaleWidget $("#test_mv"), [1,1,0.5,1,1,1,0.5]
+$ -> 
+    tw = new ScaleWidget $("#test_mv"), [1,1,0.5,1,1,1,0.5]
 
 # $ init_maqams
