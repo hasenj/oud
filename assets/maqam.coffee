@@ -28,18 +28,29 @@ presets = [
 
 maqamat = []
 for preset in presets
+    preset = _(preset).clone()
     name = preset.shift()
     start = Number preset.shift()
-    scale = preset.shift().split(" ")
-    scale_alt = if preset.length then preset.shift().split(" ") else null
+    scale = (Number n for n in preset.shift().split(" "))
+    scale_alt = if preset.length then (Number n for n in  preset.shift().split(" ")) else null
     maqamat.push maqam_ctor(name, start, scale, scale_alt)
+
+find_maqam_by_name = (name, def) ->
+    alt = null
+    for maqam in maqamat
+        if maqam.name == name
+            return maqam
+        if maqam.name == def
+            alt = maqam
+    return alt # didn't find name, return alternative as default
+            
 
 # From: http://www.mediacollege.com/internet/javascript/text/case-capitalize.html
 String.prototype.capitalize = ->
    @replace /(^|\s)([a-z])/g , (m,p1,p2) -> p1+p2.toUpperCase()
 
-disp_name = (maqam_code) ->
-    maqam_code.replace("_", " ").capitalize()
+disp_name = (maqam) ->
+    maqam.name.replace("_", " ").capitalize()
 
 if not window.updkeys?
     window.updkeys = ->
@@ -47,50 +58,40 @@ if not window.updkeys?
 on_choose_maqam = (maqam) ->
     $("#start").val(maqam.start)
     $("#scale").val(maqam.scale)
-    $("#maqam_name").html("Maqam " + disp_name name)
-    $.cookie('maqam', name)
-    maqam = 
-        start: start
-        scale: parse_scale scale
-    updkeys maqam
-
-window.apply_user_maqam = -> # applies custom maqam ..
-    maqam =
-        start: Number $("#start").val()
-        scale: parse_scale $("#scale").val()
+    $("#maqam_name").html("Maqam " + disp_name maqam)
+    $.cookie('maqam', maqam.name)
     updkeys maqam
 
 # scratch this off ...
 init_maqams = ->
     p = $("#presets")
     maqam_btns = {}
-    window.choose_maqam = (name) ->
-        b = maqam_btns[name]
+    window.choose_maqam = (maqam) ->
+        b = maqam_btns[maqam.name]
         $(".active", p).removeClass("active")
         b.addClass("active")
-        on_choose_maqam name
+        on_choose_maqam maqam
         return b
     # building preset list
     shkeys = "1234567890asdfghjvbnm"
-    for name, index in _.keys maqam_presets
-        disp = disp_name name
-        do(name) ->
-            clickfn = (e)-> 
+    for maqam, index in maqamat
+        disp = disp_name maqam
+        do(maqam) ->
+            clickfn = (e)=> 
                 e.preventDefault()
-                choose_maqam name
-            option = $("<div>").addClass("option").html(disp_name name)
+                choose_maqam maqam
+            option = $("<div>").addClass("option").html(disp_name maqam)
             if shkey = shkeys[index]
                 shortcut = 'ctrl+' + shkey
                 option.append $("<div>").addClass("shortcut").html('ctrl-' + shkey)
                 $(document).bind 'keydown', shortcut, clickfn
             option.click(clickfn)
             p.append(option)
-            maqam_btns[name] = option
+            maqam_btns[maqam.name] = option
     # remember last chosen maqam
     m = $.cookie('maqam') 
-    if not m or m not of maqam_presets
-        m = 'ajam'
-    choose_maqam m 
+    maqam = find_maqam_by_name(m, 'ajam')
+    choose_maqam maqam
 
 jdiv = -> $("<div/>")
 
@@ -189,4 +190,4 @@ class ScaleWidget
 $ -> 
     tw = new ScaleWidget $("#test_mv"), [1,1,0.5,1,1,1,0.5]
 
-# $ init_maqams
+$ init_maqams
