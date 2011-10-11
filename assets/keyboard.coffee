@@ -1,53 +1,42 @@
-window.std_scale = (scale, limit=false) ->
-    # returns the scale applies to 0 as starting point
-    # assumes 'scale' is nothing more than a list of distances
-    scale = _.clone(scale)
-    res = [0]
-    while scale.length
-        res.push(scale.shift() + res[res.length-1])
-    if limit
-        res[1...limit+1] # HACK: if we want a limit, we're making a continuation and we don't want to repeat the last note!!
-    else
-        res
+last = (array) -> 
+    array[array.length-1]
+
+from_end = (array, start, end) -> # subarray from end
+    # start and end must be given as negative numbers
+    len = array.length
+    array[len+start...len+end]
+
+window.std_scale = (scale, start=0) ->
+    # applies 'scale' (a list of tonal distances) to 'start' (a tone)
+    # and return a list of tones
+    res = [start]
+    for tone in scale
+        res.push(tone + last(res))
+    return res
 
 #console.log std_scale [1, 1, 0.5, 1, 1, 1, 0.5]
 #console.log std_scale [1, 1, 0.5, 1, 1, 0.5]
-
-rev_scale = (scale, limit) ->
-    scale = _.clone(scale)
-    scale.reverse()
-    res = [0]
-    while scale.length
-        res.push(res[res.length-1] - scale.shift())
-    if limit
-        res = res[1...limit+1]
-    else
-        res = res[1...res.length]
-    res.reverse()
-
-# unit tests?
-#console.log rev_scale [1,1,0.5, 1,1,0.5] # [-5, -4, -3, -2.5, -1.5, -0.5]
-#console.log rev_scale [1,1,0.5, 1,1,0.5], 3 # [-2.5, -1.5, -0.5]
-
-
-shift_notes_by = (notes, x) ->
-    n + x for n in notes
-
-gen_key_row = (scale, start, backlimit, forelimit) ->
-    s0 = rev_scale(scale, backlimit)
-    s1 = std_scale(scale)
-    s2 = std_scale(scale, forelimit)
-    s2 = shift_notes_by(s2, s1[s1.length-1])
-    row = s0.concat(s1).concat(s2)
-    shift_notes_by(row, start)
 
 window.active_tones = [] # THE current piano notes, an array of rows, as returned by get_piano_rows
 window.alt_tones = [] # when shift is pressed
 
 gen_piano_rows = (scale, start) ->
-    [gen_key_row(scale, start-6, 2, 2)
-    gen_key_row(scale, start, 2, 2)
-    gen_key_row(scale, start+6, 2, 1)]
+    octaves = {}
+    get_octave_start = (i) -> start + i * 6
+    octave_starts = (start + (i * 6) for i in [-2..2])
+    for i in [-2..2]
+        octave_start = get_octave_start(i)
+        octaves[octave_start] = std_scale(scale, octave_start)
+    get_row = (octave_start) ->
+        res = []
+        # last two keys of previous octave
+        prev_o = octaves[octave_start-6]
+        curr_o = octaves[octave_start]
+        next_o = octaves[octave_start+6]
+        res = from_end(prev_o, -3, -1).concat(curr_o).concat(next_o[1...3])
+
+    for i in [-1..1]
+        get_row(get_octave_start(i))
 
 #console.log gen_piano_rows [1, 1, 0.5, 1, 1, 1, 0.5], 0
 
@@ -134,7 +123,7 @@ update_ui = -> # assumes active_layout and active_tones are already set
         jid("keys").append(el)
             
 init = ->
-    set_maqam( {scale: [1, 1, 0.5, 1, 1, 1, 0.5], alt_scale:[1, 0.75, 0.75, 1, 1, 0.75, 0.75], start: 0} )
+    set_maqam( {scale: [0.75, 0.75, 0.5, 1.5, 0.5, 1, 1], alt_scale:[0.75, 0.75, 0.5, 1.5, 0.5, 1, 0.5], start: 1} )
     set_kb_layout('qwerty')
     update_ui()
 
@@ -203,6 +192,8 @@ unpress_tone = (tone) ->
         pressed_tones[c] = 0 # hack fix for weird bugs
         j_unpress(jcls(c))
 
+getkeydiv = (p_key) -> jid(pkey_id(p_key))
+
 jcls = (cls) -> $('.' + cls)
 tone_class = (tone) ->
     't_' + tone.toString().replace('.', '_')[0...10]
@@ -239,99 +230,6 @@ modulo = (index, length) ->
 
 fval = (id)-> $("#" + id).val() # field value
 
-window.keys = {}
-window.keyslayout = "1234567QWERTYUIOPASDF"
-# entry point of this module (exposed below)
-updkeys = (maqam) ->
-    return
-    # TODO: allow custom layout!!
-    keys = keyslayout
-    scale = maqam.scale
-    start = maqam.start
-    tones = gentones scale, start, 40
-    octave_bounds = get_octave_bounds tones, start
-    note_enumer = note_enum_fn(start)
-    $("#keys").text("")
-    for [key, tone], index in _.zip(keys, tones) when key? and tone?
-        if (j = _.indexOf(octave_bounds, index)) != -1
-            octavediv = $("<div>").addClass "octave"
-            if j % 2 == 0
-                octavediv.addClass "alt"
-            $("#keys").append(octavediv)
-        bindkeytone key, tone, note_enumer()
+updkeys = ->
 window.updkeys = _.debounce(updkeys, 400)
-
-bindhotkey = (key, downfn, upfn) ->
-    $(document).bind('keydown', key, downfn)
-    $(document).bind('keyup', key, upfn)
-    $(document).bind('keydown', 'Shift+'+key, downfn)
-    $(document).bind('keyup', 'Shift+'+key, upfn)
-
-genkeyid = (k) -> "key_" + k.charCodeAt(0)
-bindkeytone = (key, tone, notename) ->
-      window.keys[key] = tone
-      has_variation = tone.w != tone.b
-      downfn = (e) -> playkey(key, e.shiftKey)
-      upfn = (e) -> liftkey(key, e.shiftKey)
-      tone_e = $("<div/>").addClass("tone")
-      tone_w = $("<div/>").addClass("tone_w").html(tone.w)
-      tone_b = $("<div/>").addClass("tone_b").html(tone.b).hide()
-      tone_e.append(tone_w).append(tone_b)
-      notename_e = $("<div/>").addClass("notename").html(notename)
-      keydiv = $("<div/>").addClass("key unpressed").
-          attr("id", genkeyid key).html(key).
-          mousedown(downfn).mouseup(upfn).
-          append(tone_e).append(notename_e)
-      if has_variation
-          vhint = $("<div/>").addClass("has_variation").hide()
-          keydiv.append(vhint)
-      $("#keys > .octave:last").append(keydiv)
-      bindhotkey(key, downfn, upfn)
-
-show_maqam_variation = ->
-    $(".tone_w").hide()
-    $(".tone_b").show()
-    $(".has_variation").parent().addClass("vhint")
-
-show_maqam_original = ->
-    $(".tone_w").show()
-    $(".tone_b").hide()
-    $(".has_variation").parent().removeClass("vhint")
-
-#$(document).bind('keydown', 'shift', show_maqam_variation)
-#$(document).bind('keyup', 'shift', show_maqam_original)
-
-getkeytone = (key) -> window.keys[key]
-
-getkeydiv = (p_key) -> jid(pkey_id(p_key))
-
-downkeys = {}
-
-playkey = (key, black) ->
-    if downkeys[key]
-        return # already pressed
-    downkeys[key] = true
-    tone = getkeytone(key)
-    if not tone? 
-      return
-    if black
-        tone = tone.b
-    else
-        tone = tone.w
-    div = getkeydiv(key)
-    div.stop(true, true)
-    # div.css("background-color", "hsl(210, 95%, 95%)")
-    div.addClass("pressed").removeClass("unpressed")
-    playtone(tone)
-
-liftkey = (key) ->
-    downkeys[key] = false
-    tone = getkeytone(key)
-    if not tone?
-      return
-    div = getkeydiv(key)
-    div.stop(true, true)
-    # div.animate({"background-color": "#fdfdfd"}, 300)
-    div.removeClass("pressed").addClass("unpressed")
-
 
