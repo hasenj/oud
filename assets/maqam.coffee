@@ -57,7 +57,7 @@ if not window.updkeys?
     window.updkeys = ->
 
 on_choose_maqam = (maqam) ->
-    window.active_maqam = maqam
+    window.active_maqam = maqam # XXX not a clone, ok?
     scale_widget.set_val(maqam.scale)
     $("#maqam_name").html("Maqam " + disp_name maqam)
     $.cookie('maqam', maqam.name)
@@ -66,7 +66,7 @@ on_choose_maqam = (maqam) ->
 # closely coupled with on_choose_maqam
 # XXX interfering responsibilities
 on_user_change_scale = (scale) ->
-    active_maqam.scale = scale
+    active_maqam.scale = scale # this actually changes the scale for the default maqam directly!
     updkeys active_maqam
 #on_user_change_scale = _.debounce(on_user_change_scale, 800)
 
