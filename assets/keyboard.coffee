@@ -18,7 +18,6 @@ window.std_scale = (scale, start=0) ->
 #console.log std_scale [1, 1, 0.5, 1, 1, 0.5]
 
 window.active_tones = [] # THE current piano notes, an array of rows, as returned by get_piano_rows
-window.alt_tones = [] # when shift is pressed
 
 gen_piano_rows = (scale, start) ->
     octaves = {}
@@ -42,8 +41,6 @@ gen_piano_rows = (scale, start) ->
 
 set_maqam = (maqam) ->
     window.active_tones = gen_piano_rows(maqam.scale, maqam.start)
-    window.alt_tones = gen_piano_rows(maqam.alt_scale, maqam.start)
-
 
 # ------ keyboard
 
@@ -103,11 +100,9 @@ update_key_div_ui = (p_key) ->
     id = keydiv.attr("id")
     kb_key = ui_kb_layout[id] ? '&nbsp;'
     tone = active_tones[p_key.row][p_key.key]
-    alt_tone = alt_tones[p_key.row][p_key.key]
     note_name = get_note_name(tone) #"DO"
     $(".kb_key", keydiv).html(kb_key)
     $(".tone", keydiv).html(tone)
-    $(".tone_shift", keydiv).html(alt_tone)
     $(".note_name", keydiv).html(note_name)
 
 init_ui = -> # assumes active_layout and active_tones are already set
@@ -216,21 +211,6 @@ j_semipress = (jq) ->
 j_unpress = (jq) ->
     jq.removeClass("pressed").removeClass("semi_pressed").addClass("unpressed")
 
-activate_alt_tones = ->
-        [window.alt_tones, window.active_tones] = [window.active_tones, window.alt_tones]
-
-$(document).keydown('Shift', ->
-    activate_alt_tones()
-    $(".tone").hide()
-    $(".tone_shift").show()
-)
-
-
-$(document).keyup('Shift', ->
-    activate_alt_tones()
-    $(".tone_shift").hide()
-    $(".tone").show()
-)
 
 # --------------------------------------------------------------------------
 
