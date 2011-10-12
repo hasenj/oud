@@ -195,7 +195,6 @@ play_key = (p_key) ->
     press_tone(tone)
     playtone(tone)
     div = getkeydiv(p_key)
-    div.stop(true, true)
     j_press(div)
 
 $(document).keyup( (e)-> key_handler(e, (p_key)->
@@ -207,7 +206,6 @@ lift_key = (p_key) ->
     tone = active_tones[p_key.row][p_key.key]
     unpress_tone(tone)
     div = getkeydiv(p_key)
-    div.stop(true, true)
     j_unpress(div)
 
 press_tone = (tone) ->

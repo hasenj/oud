@@ -1,5 +1,4 @@
 @import 'nib'
-
 .octave
     display inline-block
     padding 6px 4px
@@ -14,13 +13,13 @@
 transition()
     vendor('transition', arguments)
 
-vhintcolor = hsl(246, 30%, 85%)
-semipress_color = hsl(10, 0, 84)
-press_color = hsl(200, 10, 76)
-unpressed_color = hsl(200, 10, 95)
+unpressed_color = hsl(20, 80, 99)
+semipress_color = hsl(40, 60, 87)
+press_color = hsl(40, 77, 80)
 
 btn_highlight(color)
-    box-shadow inset 0px -50px 40px -30px color 
+    // box-shadow inset 0px -50px 40px -30px color 
+    background-color color
 
 #keys
     margin 10px 30px
@@ -31,26 +30,27 @@ btn_highlight(color)
       margin 15px 4px
       .key
         link()
-        color hsl(0, 0%, 20%)
         display inline-block
-        padding 10px 1px
-        margin 3px 
+        padding 4px 2px
+        margin 4px 
         font normal 9pt sans
         text-align center
-        width 23px
+        width 25px
         overflow hidden
-        text-shadow 0px 1px 1px silver * 1.2
+        text-shadow 0px 0px 2px silver * 1.2
         .kb_key
           background-color #fdfdfd
-          background linear-gradient(left, #fafafa, #fff)
-          border 1px solid silver
+          border 2px solid hsl(40, 70, 50)
           border-radius 25px
-          padding 3px 0px
+          padding 5px 5px
+          font-family ubuntu
+          font-size 7pt
+          color hsl(50, 70, 30)
         .tone
             font normal 5pt sans
             padding-top 4px
             color silver
-            text-shadow 0px 0px 1px white
+            text-shadow 0px 0px 2px 1px hsl(50, 80, 90)
         .note_name
             font normal 7pt monospace
             padding-top 2px
@@ -60,7 +60,8 @@ btn_highlight(color)
             color hsl(300, 20%, 10%)
             .kb_key
               btn_highlight(press_color)
-              border-color silver * 0.6
+              border-color hsl(40, 70, 48) 
+              color hsl(50, 70, 20)
             .tone
                 color silver * 0.9
             .note_name
@@ -68,7 +69,8 @@ btn_highlight(color)
         &.semi_pressed
             .kb_key
               btn_highlight(semipress_color)
-              color hsl(0, 0, 30)
+              border-color hsl(40, 70, 52) 
+              color hsl(50, 70, 20)
         &.unpressed 
             .kb_key
               btn_highlight(unpressed_color)
