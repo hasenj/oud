@@ -37,10 +37,22 @@ gen_piano_rows = (scale, start) ->
     for i in [-1..1]
         get_row(get_octave_start(i))
 
+gen_tone_kb_map = (piano_rows) ->
+    map = {}
+    for p_key in get_all_pkeys(piano_rows)
+        keydiv = getkeydiv(p_key) # jquery object
+        tone = active_tones[p_key.row][p_key.key]
+        if tone not of map
+            map[tone] = keydiv
+        map[tone].add keydiv
+    return map
+
+
 #console.log gen_piano_rows [1, 1, 0.5, 1, 1, 1, 0.5], 0
 
 set_maqam = (maqam) ->
     window.active_tones = gen_piano_rows(maqam.scale, maqam.start)
+    window.tone_kb_map = gen_tone_kb_map(active_tones)
 
 # ------ keyboard
 
@@ -55,6 +67,13 @@ gen_key_layout = (key_rows) ->
         for k, key in r
             layout[k] = pkey(row, key)
     return layout
+
+get_all_pkeys = (piano_rows=window.active_tones) ->
+    res = []
+    for r, row in piano_rows
+        for k, key in r
+            res.push pkey(row, key)
+    return res
 
 #console.log gen_key_layout ["1234567890-=", "qwertyuiop[]", "asdfghjkl;'"]
 
@@ -171,7 +190,7 @@ $(document).keydown( (e)-> key_handler(e, (p_key)->
     playtone(tone)
     div = getkeydiv(p_key)
     div.stop(true, true)
-    div.addClass("pressed").removeClass("unpressed")
+    j_press(div)
 ))
 
 $(document).keyup( (e)-> key_handler(e, (p_key)->
@@ -180,23 +199,14 @@ $(document).keyup( (e)-> key_handler(e, (p_key)->
     unpress_tone(tone)
     div = getkeydiv(p_key)
     div.stop(true, true)
-    div.addClass("unpressed").removeClass("pressed")
+    j_unpress(div)
 ))
 
-pressed_tones = {}
 press_tone = (tone) ->
-    c = tone_class(tone)
-    if c not of pressed_tones
-        pressed_tones[c] = 0
-    pressed_tones[c] += 1
-    j_semipress(jcls(c))
+    j_semipress tone_kb_map[tone]
 
 unpress_tone = (tone) ->
-    c = tone_class(tone)
-    pressed_tones[c] -= 1
-    if not pressed_tones[c] or pressed_tones[c] < 1
-        pressed_tones[c] = 0 # hack fix for weird bugs
-        j_unpress(jcls(c))
+    j_unpress tone_kb_map[tone]
 
 getkeydiv = (p_key) -> jid(pkey_id(p_key))
 
