@@ -44,9 +44,9 @@ gen_tone_kb_map = (piano_rows) ->
         tone = active_tones[p_key.row][p_key.key]
         if tone not of map
             map[tone] = keydiv
-        map[tone].add keydiv
+        else
+            map[tone] = map[tone].add keydiv
     return map
-
 
 #console.log gen_piano_rows [1, 1, 0.5, 1, 1, 1, 0.5], 0
 
