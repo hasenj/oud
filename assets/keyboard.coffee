@@ -110,7 +110,7 @@ update_ui = -> # assumes active_layout and active_tones are already set
         if tone_cls != alt_tone_cls
             tone_cls += ' ' + alt_tone_cls
         "<div id='#{id}' class='key #{tone_cls}  unpressed' onclick='playtone(#{tone})'>
-            <div class='bk_key'>#{kb_key ? '#'}</div>
+            <div class='bk_key'>#{kb_key ? '&nbsp;'}</div>
             <div class='tone'>#{tone}</div>
             <div class='tone_shift'>#{alt_tone}</div>
             <div class='note_name'>#{note_name}</div>
