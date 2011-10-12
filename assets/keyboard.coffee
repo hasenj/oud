@@ -110,19 +110,11 @@ get_note_name = (tone) ->
             dist = (tone-t0) / (t1-t0)
             if dist < 0.5
                 return names[index]
-            else
+            else if dist == 0.5
+                return names[index] + ":" + names[index+1]
+            else # if dist > 0.5
                 return names[index+1]
 
-
-update_key_div_ui = (p_key) ->
-    keydiv = getkeydiv(p_key)
-    id = keydiv.attr("id")
-    kb_key = ui_kb_layout[id] ? '&nbsp;'
-    tone = active_tones[p_key.row][p_key.key]
-    note_name = get_note_name(tone) #"DO"
-    $(".kb_key", keydiv).html(kb_key)
-    $(".tone", keydiv).html(tone)
-    $(".note_name", keydiv).html(note_name)
 
 init_ui = -> # assumes active_layout and active_tones are already set
     # XXX
@@ -144,9 +136,26 @@ init_ui = -> # assumes active_layout and active_tones are already set
         jid("keys").append(el)
 
 update_ui = ->
-    for r, row in active_tones
-        for k, key in r
-            update_key_div_ui(pkey(row, key))
+    prev_note_name = ""
+    resolve_note_name = (name, prev) ->
+        if name.match ":"
+            [a,b] = name.split(":")
+            if a == prev then b else a
+        else name
+    update_key_div_ui = (p_key) ->
+        keydiv = getkeydiv(p_key)
+        id = keydiv.attr("id")
+        kb_key = ui_kb_layout[id] ? '&nbsp;'
+        tone = active_tones[p_key.row][p_key.key]
+        note_name = get_note_name(tone) #"DO"
+        note_name = resolve_note_name(note_name, prev_note_name) # in case of conflict
+        prev_note_name = note_name
+        $(".kb_key", keydiv).html(kb_key)
+        $(".tone", keydiv).html(tone)
+        $(".note_name", keydiv).html(note_name)
+
+    for p_key in get_all_pkeys()
+        update_key_div_ui p_key
             
 init = ->
     set_maqam( {scale: [0.75, 0.75, 0.5, 1.5, 0.5, 1, 1], alt_scale:[0.75, 0.75, 0.5, 1.5, 0.5, 1, 0.5], start: 1} )
