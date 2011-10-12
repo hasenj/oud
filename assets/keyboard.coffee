@@ -132,7 +132,6 @@ init_ui = -> # assumes active_layout and active_tones are already set
             "<div id='#{id}' class='key unpressed'>
                 <div class='kb_key'>&nbsp;</div>
                 <div class='tone'>&nbsp;</div>
-                <div class='tone_shift'>&nbsp;</div>
                 <div class='note_name'>&nbsp;</div>
             </div>")
         keydiv.mousedown(-> play_key(p_key))
