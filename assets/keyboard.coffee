@@ -128,12 +128,15 @@ init_ui = -> # assumes active_layout and active_tones are already set
     # XXX
     make_key = (p_key)->
         id = pkey_id(p_key)
-        "<div id='#{id}' class='key unpressed'>
-            <div class='kb_key'>&nbsp;</div>
-            <div class='tone'>&nbsp;</div>
-            <div class='tone_shift'>&nbsp;</div>
-            <div class='note_name'>&nbsp;</div>
-        </div>"
+        keydiv = jQuery(
+            "<div id='#{id}' class='key unpressed'>
+                <div class='kb_key'>&nbsp;</div>
+                <div class='tone'>&nbsp;</div>
+                <div class='tone_shift'>&nbsp;</div>
+                <div class='note_name'>&nbsp;</div>
+            </div>")
+        keydiv.mousedown(-> play_key(p_key))
+        keydiv.mouseup(-> lift_key(p_key))
     jid("keys").text("")
     for r, row in active_tones
         el = $("<div class='row'>")
@@ -185,22 +188,28 @@ $(document).keydown( (e)-> key_handler(e, (p_key)->
     if down_keys[e.which] # already pressed, don't handle again
         return false
     down_keys[e.which] = true
+    play_key(p_key)
+))
+
+play_key = (p_key) ->
     tone = active_tones[p_key.row][p_key.key]
     press_tone(tone)
     playtone(tone)
     div = getkeydiv(p_key)
     div.stop(true, true)
     j_press(div)
-))
 
 $(document).keyup( (e)-> key_handler(e, (p_key)->
     down_keys[e.which] = false
+    lift_key(p_key)
+))
+
+lift_key = (p_key) ->
     tone = active_tones[p_key.row][p_key.key]
     unpress_tone(tone)
     div = getkeydiv(p_key)
     div.stop(true, true)
     j_unpress(div)
-))
 
 press_tone = (tone) ->
     j_semipress tone_kb_map[tone]
