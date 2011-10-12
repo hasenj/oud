@@ -9,6 +9,7 @@
 #   Some maqams have "variations", aka alt_scale
 
 maqam_ctor = (name, start, scale, alt_scale=null) ->
+    alt_scale ?= scale
     {name, start, scale, alt_scale}
 
 presets = [
@@ -60,6 +61,7 @@ on_choose_maqam = (maqam) ->
     $("#scale").val(maqam.scale)
     $("#maqam_name").html("Maqam " + disp_name maqam)
     $.cookie('maqam', maqam.name)
+    scale_widget.set_val(maqam.scale)
     updkeys maqam
 
 # scratch this off ...
@@ -102,11 +104,13 @@ class StepperWidget
         @render_ui()
         evt.bind(this, "changed", @update_ui)
     _inc: (amt) =>
-        @value += amt
-        evt.trigger(this, "changed", @value)
+        @set_val(@get_val() + amt)
     inc: => @_inc(@step)
     dec: => @_inc(-@step)
     get_val: => @value
+    set_val: (val) =>
+        @value = val
+        evt.trigger(this, "changed", @value)
     render_ui: ->
         orn = @orientation
         first = 'inc'
@@ -161,9 +165,6 @@ class ScaleGraph
     x_coord: (point) =>
         10 + point * 40
 
-
-
-
 class ScaleWidget
     constructor: (parent, scale) ->
         @el = jdiv()
@@ -173,6 +174,9 @@ class ScaleWidget
             evt.bind(s, "changed", @on_change)
         @vis = new ScaleGraph @el
         @render_ui()
+    set_val: (scale) =>
+        for s, i in @steppers
+            s.set_val(scale[i])
     get_val: =>
         (s.get_val() for s in @steppers)
     render_ui: =>
@@ -183,11 +187,7 @@ class ScaleWidget
     update_ui: =>
         scale = @get_val()
         @vis.draw_scale(scale)
-        
-        
 
-
-$ -> 
-    tw = new ScaleWidget $("#test_mv"), [1,1,0.5,1,1,1,0.5]
+scale_widget = new ScaleWidget $("#test_mv"), [1,1,0.5,1,1,1,0.5]
 
 $ init_maqams
