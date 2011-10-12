@@ -97,23 +97,28 @@ get_note_name = (tone) ->
             else
                 return names[index+1]
 
-update_ui = -> # assumes active_layout and active_tones are already set
+
+update_key_div_ui = (p_key) ->
+    keydiv = getkeydiv(p_key)
+    id = keydiv.attr("id")
+    kb_key = ui_kb_layout[id] ? '&nbsp;'
+    tone = active_tones[p_key.row][p_key.key]
+    alt_tone = alt_tones[p_key.row][p_key.key]
+    note_name = get_note_name(tone) #"DO"
+    $(".kb_key", keydiv).html(kb_key)
+    $(".tone", keydiv).html(tone)
+    $(".tone_shift", keydiv).html(alt_tone)
+    $(".note_name", keydiv).html(note_name)
+
+init_ui = -> # assumes active_layout and active_tones are already set
     # XXX
     make_key = (p_key)->
         id = pkey_id(p_key)
-        kb_key = ui_kb_layout[id] # TODO: a global var
-        tone = active_tones[p_key.row][p_key.key]
-        alt_tone = alt_tones[p_key.row][p_key.key]
-        note_name = get_note_name(tone) #"DO"
-        tone_cls = tone_class(tone)
-        alt_tone_cls = tone_class(alt_tone)
-        if tone_cls != alt_tone_cls
-            tone_cls += ' ' + alt_tone_cls
-        "<div id='#{id}' class='key #{tone_cls}  unpressed' onclick='playtone(#{tone})'>
-            <div class='bk_key'>#{kb_key ? '&nbsp;'}</div>
-            <div class='tone'>#{tone}</div>
-            <div class='tone_shift'>#{alt_tone}</div>
-            <div class='note_name'>#{note_name}</div>
+        "<div id='#{id}' class='key unpressed'>
+            <div class='kb_key'>&nbsp;</div>
+            <div class='tone'>&nbsp;</div>
+            <div class='tone_shift'>&nbsp;</div>
+            <div class='note_name'>&nbsp;</div>
         </div>"
     jid("keys").text("")
     for r, row in active_tones
@@ -121,10 +126,16 @@ update_ui = -> # assumes active_layout and active_tones are already set
         for k, key in r
             el.append make_key pkey(row, key)
         jid("keys").append(el)
+
+update_ui = ->
+    for r, row in active_tones
+        for k, key in r
+            update_key_div_ui(pkey(row, key))
             
 init = ->
     set_maqam( {scale: [0.75, 0.75, 0.5, 1.5, 0.5, 1, 1], alt_scale:[0.75, 0.75, 0.5, 1.5, 0.5, 1, 0.5], start: 1} )
     set_kb_layout('qwerty')
+    init_ui()
     update_ui()
 
 $ init
@@ -230,9 +241,9 @@ modulo = (index, length) ->
 
 fval = (id)-> $("#" + id).val() # field value
 
-updkeys = (maqam) ->
+window.updkeys = (maqam) ->
     set_maqam(maqam)
     update_ui()
 
-window.updkeys = _.debounce(updkeys, 400)
+#window.updkeys = _.debounce(updkeys, 100)
 

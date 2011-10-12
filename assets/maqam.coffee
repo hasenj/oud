@@ -66,10 +66,9 @@ on_choose_maqam = (maqam) ->
 # closely coupled with on_choose_maqam
 # XXX interfering responsibilities
 on_user_change_scale = (scale) ->
-    console.log "setting scale:", scale
     active_maqam.scale = scale
     updkeys active_maqam
-on_user_change_scale = _.debounce(on_user_change_scale, 800)
+#on_user_change_scale = _.debounce(on_user_change_scale, 800)
 
 # scratch this off ...
 init_maqams = ->
