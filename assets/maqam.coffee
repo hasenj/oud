@@ -57,18 +57,25 @@ if not window.updkeys?
     window.updkeys = ->
 
 on_choose_maqam = (maqam) ->
-    $("#start").val(maqam.start)
-    $("#scale").val(maqam.scale)
+    window.active_maqam = maqam
+    scale_widget.set_val(maqam.scale)
     $("#maqam_name").html("Maqam " + disp_name maqam)
     $.cookie('maqam', maqam.name)
-    scale_widget.set_val(maqam.scale)
     updkeys maqam
+
+# closely coupled with on_choose_maqam
+# XXX interfering responsibilities
+on_user_change_scale = (scale) ->
+    console.log "setting scale:", scale
+    active_maqam.scale = scale
+    updkeys active_maqam
+on_user_change_scale = _.debounce(on_user_change_scale, 800)
 
 # scratch this off ...
 init_maqams = ->
     p = $("#presets")
     maqam_btns = {}
-    window.choose_maqam = (maqam) ->
+    ui_choose_maqam = (maqam) ->
         b = maqam_btns[maqam.name]
         $(".active", p).removeClass("active")
         b.addClass("active")
@@ -81,7 +88,7 @@ init_maqams = ->
         do(maqam) ->
             clickfn = (e)=> 
                 e.preventDefault()
-                choose_maqam maqam
+                ui_choose_maqam maqam
             option = $("<div>").addClass("option").html(disp_name maqam)
             if shkey = shkeys[index]
                 shortcut = 'ctrl+' + shkey
@@ -93,7 +100,8 @@ init_maqams = ->
     # remember last chosen maqam
     m = $.cookie('maqam') 
     maqam = find_maqam_by_name(m, 'ajam')
-    choose_maqam maqam
+    ui_choose_maqam maqam
+    evt.bind(scale_widget, "changed", on_user_change_scale)
 
 jdiv = -> $("<div/>")
 
@@ -171,7 +179,7 @@ class ScaleWidget
         parent.append(@el)
         @steppers = ((new StepperWidget(@el, tone)) for tone in scale)
         for s in @steppers
-            evt.bind(s, "changed", @on_change)
+            evt.bind(s, "changed", @on_stepper_change)
         @vis = new ScaleGraph @el
         @render_ui()
     set_val: (scale) =>
@@ -182,7 +190,8 @@ class ScaleWidget
     render_ui: =>
         # steppers will auto-render 
         @update_ui() # render the scale display
-    on_change: =>
+    on_stepper_change: =>
+        evt.trigger(this, "changed", @get_val())
         @update_ui()
     update_ui: =>
         scale = @get_val()
