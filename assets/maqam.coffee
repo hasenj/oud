@@ -200,6 +200,6 @@ class ScaleWidget
         scale = @get_val()
         @vis.draw_scale(scale)
 
-scale_widget = new ScaleWidget $("#test_mv"), [1,1,0.5,1,1,1,0.5]
+scale_widget = new ScaleWidget $("#maqam_ctrls"), [1,1,0.5,1,1,1,0.5]
 
 $ init_maqams
