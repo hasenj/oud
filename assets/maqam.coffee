@@ -130,8 +130,8 @@ class StepperWidget
         second_sym = '&#9660;'
         if orn == 'horizontal'
             [first,second] = [second, first]
-            first_sym = '&#0017;'
-            second_sym = '&#0016;'
+            second_sym = '&#0017;'
+            first_sym = '&#0016;'
         @el.addClass("widget_stepper")
         @el.addClass(@orientation)
         @el.html("
@@ -200,6 +200,18 @@ class ScaleWidget
         scale = @get_val()
         @vis.draw_scale(scale)
 
+class StartWidget
+    constructor: (parent, @value) ->
+        @el = jdiv()
+        parent.append(@el)
+        @el.append("Start:")
+        @stepper = new StepperWidget @el, @value, 0.25, 'horizontal'
+        @render_ui()
+    get_val: => @stepper.get_val()
+    render_ui: =>
+
+
 scale_widget = new ScaleWidget $("#maqam_ctrls"), [1,1,0.5,1,1,1,0.5]
+start_widget = new StartWidget $("#maqam_ctrls"), 0
 
 $ init_maqams
