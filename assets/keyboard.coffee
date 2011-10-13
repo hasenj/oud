@@ -100,7 +100,7 @@ pkey_id = (p_key) -> "pkey_" + p_key.row + "_" + p_key.key
     
 jid = (id) -> $("#" + id)
 
-get_note_name = (tone) ->
+window.get_note_name = (tone) ->
     std_tones = [0, 1, 2, 2.5, 3.5, 4.5, 5.5, 6]
     names = "DO RE MI FA SOL LA SI".split(" ")
     tone = modulo tone, 6

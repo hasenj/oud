@@ -68,14 +68,17 @@ on_choose_maqam = (maqam) ->
     updkeys maqam
 
 # closely coupled with on_choose_maqam
-# XXX interfering responsibilities
-on_user_change_scale = (scale) ->
-    active_maqam.scale = scale # this actually changes the scale for the default maqam directly!
+# XXX overlapping responsibilities
+on_user_change_scale = ->
+    active_maqam.scale = scale_widget.get_val() # this actually changes the scale for the default maqam directly!
+    active_maqam.start = start_widget.get_val()
     updkeys active_maqam
-#on_user_change_scale = _.debounce(on_user_change_scale, 800)
 
 # scratch this off ...
 init_maqams = ->
+    window.scale_widget = new ScaleWidget $("#maqam_ctrls"), [1,1,0.5,1,1,1,0.5]
+    window.start_widget = new StartWidget $("#maqam_ctrls"), 0
+
     p = $("#presets")
     maqam_btns = {}
     ui_choose_maqam = (maqam) ->
@@ -105,6 +108,7 @@ init_maqams = ->
     maqam = find_maqam_by_name(m, 'ajam')
     ui_choose_maqam maqam
     evt.bind(scale_widget, "changed", on_user_change_scale)
+    evt.bind(start_widget, "changed", on_user_change_scale)
 
 jdiv = -> $("<div/>")
 
@@ -204,14 +208,20 @@ class StartWidget
     constructor: (parent, @value) ->
         @el = jdiv()
         parent.append(@el)
-        @el.append("Start:")
+        @el.append("<span>Start:</span>")
         @stepper = new StepperWidget @el, @value, 0.25, 'horizontal'
-        @render_ui()
+        @el.append("<span class='note_name'></span>")
+        @update_ui()
+        evt.bind(@stepper, "changed", @on_stepper_change)
     get_val: => @stepper.get_val()
-    render_ui: =>
+    on_stepper_change: =>
+        evt.trigger(this, "changed", @get_val())
+        @update_ui()
+    update_ui: =>
+        # figure out the note name
+        note_name = get_note_name(@get_val())
+        $(".note_name", @el).html(note_name)
 
 
-scale_widget = new ScaleWidget $("#maqam_ctrls"), [1,1,0.5,1,1,1,0.5]
-start_widget = new StartWidget $("#maqam_ctrls"), 0
 
 $ init_maqams
