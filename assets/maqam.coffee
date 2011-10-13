@@ -207,10 +207,11 @@ class ScaleWidget
 class StartWidget
     constructor: (parent, @value) ->
         @el = jdiv()
+        @el.addClass("start_widget")
         parent.append(@el)
         @el.append("<span>Start:</span>")
         @stepper = new StepperWidget @el, @value, 0.25, 'horizontal'
-        @el.append("<span class='note_name'></span>")
+        @el.append("<span class='note_info'></span>")
         @update_ui()
         evt.bind(@stepper, "changed", @on_stepper_change)
     get_val: => @stepper.get_val()
@@ -219,8 +220,21 @@ class StartWidget
         @update_ui()
     update_ui: =>
         # figure out the note name
-        note_name = get_note_name(@get_val())
-        $(".note_name", @el).html(note_name)
+        info = get_note_info(@get_val())
+        diff_disp = (diff) ->
+            map = 
+                "-0.25" : "half bemol"
+                "-0.5"  : "bemole"
+                "0"     : "natural"
+                "0.25"  : "half diese"
+                "0.5"   : "diese"
+            if "" + diff of map
+                map[diff]
+            else if diff > 0
+                "+" + diff
+            else
+                "" + diff
+        $(".note_info", @el).html(info.note.name + "&nbsp;" + diff_disp info.diff)
 
 
 

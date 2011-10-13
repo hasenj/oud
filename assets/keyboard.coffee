@@ -100,20 +100,34 @@ pkey_id = (p_key) -> "pkey_" + p_key.row + "_" + p_key.key
     
 jid = (id) -> $("#" + id)
 
-window.get_note_name = (tone) ->
-    std_tones = [0, 1, 2, 2.5, 3.5, 4.5, 5.5, 6]
-    names = "DO RE MI FA SOL LA SI".split(" ")
-    tone = modulo tone, 6
-    for t0, index in std_tones
-        t1 = std_tones[index+1]
-        if t0 <= tone < t1
-            dist = (tone-t0) / (t1-t0)
-            if dist < 0.5
-                return names[index]
-            else if dist == 0.5
-                return names[index] + ":" + names[index+1]
-            else # if dist > 0.5
-                return names[index+1]
+(->
+    std_tones = _.zip(
+        [0, 1, 2, 2.5, 3.5, 4.5, 5.5, 6],
+        "DO RE MI FA SOL LA SI".split(" "))
+    std_tones = _(std_tones).map( (note) -> {tone: note[0], name: note[1]})
+    tone_to_note_scope = (tone, tones=std_tones) ->
+        if tones[1].tone > tone
+            [tones[0], tones[1]]
+        else
+            tone_to_note_scope(tone, tones[1...])
+    resolve_note_name = (first, second, prev) ->
+        # if a note has two possibilities, avoid conflict with previous
+        if first.name == prev then second else first
+    window.get_note_info = (tone, prev="") ->
+        tone = modulo tone, 6
+        [note0, note1] = tone_to_note_scope(tone)
+        dist = (tone-note0.tone) / (note1.tone-note0.tone)
+        ret_val = (note) ->
+            note = _(note).clone()
+            diff = tone - note.tone
+            {diff, note}
+        if dist < 0.5
+            ret_val note0
+        else if dist == 0.5
+            ret_val resolve_note_name note0, note1, prev
+        else # if dist > 0.5
+            ret_val note1
+)()
 
 
 init_ui = -> # assumes active_layout and active_tones are already set
@@ -137,18 +151,12 @@ init_ui = -> # assumes active_layout and active_tones are already set
 
 update_ui = ->
     prev_note_name = ""
-    resolve_note_name = (name, prev) ->
-        if name.match ":"
-            [a,b] = name.split(":")
-            if a == prev then b else a
-        else name
     update_key_div_ui = (p_key) ->
         keydiv = getkeydiv(p_key)
         id = keydiv.attr("id")
         kb_key = ui_kb_layout[id] ? '&nbsp;'
         tone = active_tones[p_key.row][p_key.key]
-        note_name = get_note_name(tone) #"DO"
-        note_name = resolve_note_name(note_name, prev_note_name) # in case of conflict
+        note_name = get_note_info(tone, prev_note_name).note.name #"DO"
         prev_note_name = note_name
         $(".kb_key", keydiv).html(kb_key)
         $(".tone", keydiv).html(tone)
