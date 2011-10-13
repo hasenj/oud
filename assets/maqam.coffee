@@ -111,6 +111,9 @@ init_maqams = ->
     evt.bind(start_widget, "changed", on_user_change_scale)
 
 jdiv = -> $("<div/>")
+jimg = (src) -> $("<img>").attr('src', src)
+
+arrow = (dir) -> jimg("/arr_#{dir}.png")
 
 class StepperWidget
     constructor: (parent, @value=0, @step=0.25, @orientation='vertical') ->
@@ -130,19 +133,17 @@ class StepperWidget
         orn = @orientation
         first = 'inc'
         second = 'dec'
-        first_sym = '&#9650;'
-        second_sym = '&#9660;'
+        first_sym = arrow('up')
+        second_sym = arrow('down')
         if orn == 'horizontal'
             [first,second] = [second, first]
-            second_sym = '&#0017;'
-            first_sym = '&#0016;'
+            second_sym = arrow('right')
+            first_sym = arrow('left')
         @el.addClass("widget_stepper")
         @el.addClass(@orientation)
-        @el.html("
-            <div class='button #{first}'> #{first_sym} </div>
-            <div class='val'> #{@value} </div>
-            <div class='button #{second}'> #{second_sym} </div>"
-        )
+        @el.append jdiv().addClass("button").addClass(first).append(first_sym)
+        @el.append jdiv().addClass("val").html(@value)
+        @el.append jdiv().addClass("button").addClass(second).append(second_sym)
         $(".inc", @el).click(@inc)
         $(".dec", @el).click(@dec)
         $(".button", @el).css('visibility', 'hidden')
