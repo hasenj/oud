@@ -63,6 +63,7 @@ if not window.updkeys?
 on_choose_maqam = (maqam) ->
     window.active_maqam = maqam # XXX not a clone, ok?
     scale_widget.set_val(maqam.scale)
+    start_widget.set_val(maqam.start)
     $("#maqam_name").html("Maqam " + disp_name maqam)
     $.cookie('maqam', maqam.name)
     updkeys maqam
@@ -216,6 +217,7 @@ class StartWidget
         @update_ui()
         evt.bind(@stepper, "changed", @on_stepper_change)
     get_val: => @stepper.get_val()
+    set_val: (val) => @stepper.set_val(val)
     on_stepper_change: =>
         evt.trigger(this, "changed", @get_val())
         @update_ui()
