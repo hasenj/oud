@@ -211,9 +211,9 @@ class StartWidget
         @el = jdiv()
         @el.addClass("start_widget")
         parent.append(@el)
-        @el.append("<span>Start:</span>")
+        @el.append("<span class='text'>On</span>")
         @stepper = new StepperWidget @el, @value, 0.25, 'horizontal'
-        @el.append("<span class='note_info'></span>")
+        @el.append("<span class='text note_info'></span>")
         @update_ui()
         evt.bind(@stepper, "changed", @on_stepper_change)
     get_val: => @stepper.get_val()
