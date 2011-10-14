@@ -13,31 +13,31 @@ input#scale
     color hsl(0, 0%, 32%)
     text-shadow 1px 1px 2px silver
 
+
 #maqam_section
-  margin 12px 7px
+  pad()
+  display inline-block
+  width 350px
+  margin 12px
   #maqam_ctrls
     margin-left 5px
   #presets
     margin-top 4px
 
+.maqam_list
+    margin-top 20px
+
 .maqam_btn
-    smooth-button()
+    smooth-button(bg=hsl(195, 34, 62))
     padding 7px
-    margin 4px
+    margin 7px
     display inline-block
     link()
+    width 54px
     text-align left
     text-shadow 1px 1px 2px gray
     border-radius 6px
-    font normal 11pt Ubuntu
-    .shortcut
-        font normal 0.7em monospace
-        color b_cue
-        text-shadow 1px 1px 1px (silver * .6667)
-        position relative
-        right 2px
-        float right
-        text-align right
+    font normal 11pt Play
 
 .widget_stepper
   font-size 0.8em

@@ -15,20 +15,20 @@ maqam_ctor = (name, start, scale, alt_scale=null) ->
 presets = [
         ["ajam", "0", "1 1 0.5 1 1 1 0.5"]
         ["kurd", "1", "0.5 1 1 1 0.5 1 1"] # same as ajam, but keep it
-        ["nahawand", "0", "1 0.5 1 1 0.5 1.5 0.5"]
-        ["nahawand2", "0", "1 0.5 1 1 0.5 1 1"]
+        ["nhwnd", "0", "1 0.5 1 1 0.5 1.5 0.5"]
+        ["nhwnd2", "0", "1 0.5 1 1 0.5 1 1"]
         ["hijaz", "1", "0.5 1.5 0.5 1 0.5 1 1"]
         ["hijaz2", "1", "0.5 1.5 0.5 1 0.75 0.75 1"]
         ["rast", "0", "1 0.75 0.75 1 1 0.75 0.75"]
         ["rast2", "0", "1 0.75 0.75 1 1 0.5 1"]
-        ["saba", "1", "0.75 0.75 0.5 1.5 0.5 1 1"] # TODO check that it works!
+        ["saba", "1", "0.75 0.75 0.5 1.5 0.5 1 1"] 
         ["saba2", "1", "0.75 0.75 0.5 1.5 0.5 1 0.5"] # TODO check that it works!
         #["bayati", "1", "0.75 0.75 1 1 0.5 1 1"] # same as rast1
         #["siga" , "1.75", "0.75 1 1 0.75 0.75 1 0.75", "0.75 1 1 0.5 1 1 0.75"] # same as rast?
         #["huzam", "1.75", "0.75 1 0.5 1.5 0.5 1 0.75"] # same as hijaz form 2
-        #["jiharkah", "-2", "1 1 0.5 1 1 0.75 0.75"] # same as bayati, hence rast
-        #["hijaz_kar", "0", "0.5 1.5 0.5 1 0.5 1.5 0.5"]
-        #["nawa_athar", "0", "1 0.5 1.5 0.5 0.5 1.5 0.5"]
+        #["jharga", "-2", "1 1 0.5 1 1 0.75 0.75"] # same as bayati, hence rast
+        ["hijaz_kar", "0", "0.5 1.5 0.5 1 0.5 1.5 0.5"]
+        ["nwathr", "0", "1 0.5 1.5 0.5 0.5 1.5 0.5"]
 ]
 
 maqamat = []
@@ -55,7 +55,7 @@ String.prototype.capitalize = ->
    @replace /(^|\s)([a-z])/g , (m,p1,p2) -> p1+p2.toUpperCase()
 
 disp_name = (maqam) ->
-    maqam.name.replace("_", " ").capitalize()
+    maqam.name.replace("_", " ").capitalize().replace(" ", "")
 
 if not window.updkeys?
     window.updkeys = ->
@@ -233,6 +233,7 @@ class MaqamBtn
 class MaqamList
     constructor: (parent, maqam_list, default_active_name) ->
         @el = jdiv()
+        @el.addClass("maqam_list")
         parent.append @el
         @maqam_btns = []
         for maqam in maqam_list
