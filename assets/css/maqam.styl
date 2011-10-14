@@ -20,32 +20,24 @@ input#scale
   #presets
     margin-top 4px
 
-bbg = hsl(220, 7%, 92%)
-b_text = hsl(170, 20%, 20%)
-b_cue = hsl(200, 17%, 42%)
-option-button()
-    minimal-button(bbg, b_text)
-
-.option_set
-    width 320px
-    .option
-        option-button()
-        padding 7px
-        margin 2px
-        display inline-block
-        width 120px
-        link()
-        font normal 10pt Georgia
-        text-align left
-        text-shadow 1px 1px 2px gray
-        .shortcut
-            font normal 0.7em monospace
-            color b_cue
-            text-shadow 1px 1px 1px (silver * .6667)
-            position relative
-            right 2px
-            float right
-            text-align right
+.maqam_btn
+    smooth-button()
+    padding 7px
+    margin 4px
+    display inline-block
+    link()
+    text-align left
+    text-shadow 1px 1px 2px gray
+    border-radius 6px
+    font normal 11pt Ubuntu
+    .shortcut
+        font normal 0.7em monospace
+        color b_cue
+        text-shadow 1px 1px 1px (silver * .6667)
+        position relative
+        right 2px
+        float right
+        text-align right
 
 .widget_stepper
   font-size 0.8em

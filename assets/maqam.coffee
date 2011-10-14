@@ -71,43 +71,18 @@ on_choose_maqam = (maqam) ->
 # closely coupled with on_choose_maqam
 # XXX overlapping responsibilities
 on_user_change_scale = ->
-    active_maqam.scale = scale_widget.get_val() # this actually changes the scale for the default maqam directly!
+    active_maqam.scale = scale_widget.get_val() # this actually changes the scale for the active maqam directly!
     active_maqam.start = start_widget.get_val()
     updkeys active_maqam
 
 # scratch this off ...
 init_maqams = ->
-    window.scale_widget = new ScaleWidget $("#maqam_ctrls"), [1,1,0.5,1,1,1,0.5]
-    window.start_widget = new StartWidget $("#maqam_ctrls"), 0
+    start_maqam = $.cookie('maqam') ? 'ajam'
+    ctrls = $("#maqam_ctrls")
+    window.scale_widget = new ScaleWidget ctrls, [1,1,0.5,1,1,1,0.5]
+    window.start_widget = new StartWidget ctrls, 0
+    window.maqam_list = new MaqamList ctrls, maqamat, start_maqam
 
-    p = $("#presets")
-    maqam_btns = {}
-    ui_choose_maqam = (maqam) ->
-        b = maqam_btns[maqam.name]
-        $(".active", p).removeClass("active")
-        b.addClass("active")
-        on_choose_maqam maqam
-        return b
-    # building preset list
-    shkeys = "1234567890asdfghjvbnm"
-    for maqam, index in maqamat
-        disp = disp_name maqam
-        do(maqam) ->
-            clickfn = (e)=> 
-                e.preventDefault()
-                ui_choose_maqam maqam
-            option = $("<div>").addClass("option").html(disp_name maqam)
-            if shkey = shkeys[index]
-                shortcut = 'ctrl+' + shkey
-                option.append $("<div>").addClass("shortcut").html('ctrl-' + shkey)
-                $(document).bind 'keydown', shortcut, clickfn
-            option.click(clickfn)
-            p.append(option)
-            maqam_btns[maqam.name] = option
-    # remember last chosen maqam
-    m = $.cookie('maqam') 
-    maqam = find_maqam_by_name(m, 'ajam')
-    ui_choose_maqam maqam
     evt.bind(scale_widget, "changed", on_user_change_scale)
     evt.bind(start_widget, "changed", on_user_change_scale)
 
@@ -239,6 +214,43 @@ class StartWidget
                 "" + diff
         $(".note_info", @el).html(info.note.name + "&nbsp;" + diff_disp info.diff)
 
+
+class MaqamBtn
+    constructor: (parent, @maqam) -> # TODO shortcuts?
+        @el = jdiv()
+        @el.addClass("maqam_btn")
+        @el.html(disp_name @maqam)
+        @el.click(@on_click)
+        parent.append(@el)
+    on_click: =>
+        evt.trigger(this, "clicked", this)
+    click: => # to be called by parent or other manager
+        @el.addClass("active")
+    unclick: => # ditto
+        @el.removeClass("active")
+
+
+class MaqamList
+    constructor: (parent, maqam_list, default_active_name) ->
+        @el = jdiv()
+        parent.append @el
+        @maqam_btns = []
+        for maqam in maqam_list
+            btn = new MaqamBtn @el, maqam
+            evt.bind(btn, "clicked", @on_btn_clicked)
+            @maqam_btns.push btn
+            if maqam.name == default_active_name
+                @active = btn
+        @active ?= @maqam_btns[0] # in case no cookie? 
+        @active.click()
+        on_choose_maqam(@active.maqam)
+    on_btn_clicked: (btn) =>
+        if btn is @active
+            return
+        @active.unclick()
+        btn.click()
+        @active = btn
+        on_choose_maqam(@active.maqam)
 
 
 $ init_maqams
