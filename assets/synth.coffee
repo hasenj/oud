@@ -63,23 +63,24 @@ wave_shape_to_sample = (shape, len) ->
     return sample
 
 oud_wave_shape = mk_wave_shape [
-    mk_point 0.1, 0.8
-    mk_point 0.16, 0.82
-    mk_point 0.26, 0.76
-    mk_point 0.4, 0.42
-    mk_point 0.6, 0.84
-    mk_point 0.7, 0.74
-    mk_point 0.84, 0.4
-    mk_point 0.91, 0.3
+    mk_point 0.1, 0.1
+    mk_point 0.16, 0.22
+    mk_point 0.26, -0.26
+    mk_point 0.4, -0.22
+    mk_point 0.5, 0.1
+    mk_point 0.6, 0.34
+    mk_point 0.7, 0.24
+    mk_point 0.84, 0
+    mk_point 0.91, -0.04
 ]
 
-DURATION = 2.6
-GAIN = 0.24
+DURATION = 2
+GAIN = 0.5
 SIGNAL_LEN = DURATION * SRATE
 
 dev.ringBuffer = mkbuf(7 * SRATE)
 
-dampness = (Math.pow(Math.E, -5 * (point/SIGNAL_LEN)) for point in [0..SIGNAL_LEN])
+dampness = (Math.pow(Math.E, -4 * (point/SIGNAL_LEN)) for point in [0..SIGNAL_LEN])
 
 # OLD
 # Base signal shape, which we later add white-noise to it
@@ -94,7 +95,7 @@ oud_signal_gen = (freq) ->
     for s, index in signal
         point = index % table_len
         if index < table_len
-            table[point] = base_sample[point] + ks_noise_sample(0.08)
+            table[point] = base_sample[point] + ks_noise_sample(0.06)
             signal[index] = table[point]
         else
             prev = (index - 1) % table_len
@@ -124,6 +125,7 @@ window.playtone = (tone)->
     for s, i in signal
         point = start + i
         point = point % dev.ringBuffer.length
+        dev.ringBuffer[point] *= 0.9
         dev.ringBuffer[point] += s
 
 mk_ring_cleaner = ->
