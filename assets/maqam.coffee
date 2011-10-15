@@ -60,7 +60,7 @@ disp_name = (maqam) ->
 if not window.updkeys?
     window.updkeys = ->
 
-on_choose_maqam = (maqam) ->
+choose_maqam = (maqam) ->
     window.active_maqam = maqam # XXX not a clone, ok?
     scale_widget.set_val(maqam.scale)
     start_widget.set_val(maqam.start)
@@ -68,7 +68,7 @@ on_choose_maqam = (maqam) ->
     $.cookie('maqam', maqam.name)
     updkeys maqam
 
-# closely coupled with on_choose_maqam
+# closely coupled with choose_maqam
 # XXX overlapping responsibilities
 on_user_change_scale = ->
     active_maqam.scale = scale_widget.get_val() # this actually changes the scale for the active maqam directly!
@@ -231,7 +231,7 @@ class MaqamBtn
 
 
 class MaqamList
-    constructor: (parent, maqam_list, default_active_name) ->
+    constructor: (parent, maqam_list, default_active_name="") ->
         @el = jdiv()
         @el.addClass("maqam_list")
         parent.append @el
@@ -241,17 +241,16 @@ class MaqamList
             evt.bind(btn, "clicked", @on_btn_clicked)
             @maqam_btns.push btn
             if maqam.name == default_active_name
-                @active = btn
-        @active ?= @maqam_btns[0] # in case no cookie? 
-        @active.click()
-        on_choose_maqam(@active.maqam)
-    on_btn_clicked: (btn) =>
-        if btn is @active
-            return
-        @active.unclick()
-        btn.click()
+                @activate_btn(btn)
+        if not @active?
+            @activate_btn @maqam_btns[0] # in case no default provided
+    activate_btn: (btn) =>
+        @active?.unclick()
         @active = btn
-        on_choose_maqam(@active.maqam)
+        @active.click()
+        choose_maqam(@active.maqam)
+    on_btn_clicked: (btn) =>
+        @activate_btn(btn)
 
 
 $ init_maqams
