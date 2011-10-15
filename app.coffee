@@ -1,3 +1,4 @@
+process.chdir(__dirname)
 require "./config"
 x = require "express"
 app = x.createServer()
