@@ -27,8 +27,10 @@ presets = [
         #["siga" , "1.75", "0.75 1 1 0.75 0.75 1 0.75", "0.75 1 1 0.5 1 1 0.75"] # same as rast?
         #["huzam", "1.75", "0.75 1 0.5 1.5 0.5 1 0.75"] # same as hijaz form 2
         #["jharga", "-2", "1 1 0.5 1 1 0.75 0.75"] # same as bayati, hence rast
-        ["hijaz_kar", "0", "0.5 1.5 0.5 1 0.5 1.5 0.5"]
-        ["nwathr", "0", "1 0.5 1.5 0.5 0.5 1.5 0.5"]
+        #["hijaz_kar", "0", "0.5 1.5 0.5 1 0.5 1.5 0.5"]
+        #["nwathr", "0", "1 0.5 1.5 0.5 0.5 1.5 0.5"]
+        ["user1", $.cookie("user1-start") ? "1",$.cookie("user1-scale") ? "0.5 1.5 0.5 1 0.75 0.75 1"]
+        ["user2", $.cookie("user2-start") ? "1",$.cookie("user2-scale") ? "0.75 0.75 1 1 0.5 1 1"]
 ]
 
 maqamat = []
@@ -73,6 +75,9 @@ choose_maqam = (maqam) ->
 on_user_change_scale = ->
     active_maqam.scale = scale_widget.get_val() # this actually changes the scale for the active maqam directly!
     active_maqam.start = start_widget.get_val()
+    if active_maqam.name.match(/^user\d/)
+        $.cookie(active_maqam.name + "-start", active_maqam.start)
+        $.cookie(active_maqam.name + "-scale", active_maqam.scale.join(" "))
     updkeys active_maqam
 
 # scratch this off ...
