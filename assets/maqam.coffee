@@ -31,6 +31,10 @@ presets = [
         #["nwathr", "0", "1 0.5 1.5 0.5 0.5 1.5 0.5"]
         ["user1", $.cookie("user1-start") ? "1",$.cookie("user1-scale") ? "0.5 1.5 0.5 1 0.75 0.75 1"]
         ["user2", $.cookie("user2-start") ? "1",$.cookie("user2-scale") ? "0.75 0.75 1 1 0.5 1 1"]
+        ["user3", $.cookie("user3-start") ? "-2",$.cookie("user3-scale") ? "1 1 0.5 1 1 0.75 0.75"]
+        ["user4", $.cookie("user4-start") ? "0",$.cookie("user4-scale") ? "0.5 1.5 0.5 1 0.5 1.5 0.5"]
+        ["user5", $.cookie("user5-start") ? "1",$.cookie("user5-scale") ? "0.75 0.75 1 1 0.5 1 1"]
+        ["user6", $.cookie("user6-start") ? "1",$.cookie("user6-scale") ? "0.75 0.75 1 1 0.5 1 1"]
 ]
 
 maqamat = []
