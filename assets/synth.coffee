@@ -82,10 +82,6 @@ dev.ringBuffer = mkbuf(7 * SRATE)
 
 dampness = (Math.pow(Math.E, -4 * (point/SIGNAL_LEN)) for point in [0..SIGNAL_LEN])
 
-# OLD
-# Base signal shape, which we later add white-noise to it
-# sines_sig = precalc_table sines(2, 100, 390)
-
 # karplus strong algorithm
 oud_signal_gen = (freq) ->
     table_len = period_len freq
@@ -107,7 +103,7 @@ tonefreq = (tone, base=130.82) ->
    tones_per_octave = 6 # DON'T CHANGE!!
    return base * Math.pow(2, tone/tones_per_octave)
 
-window.tone_signal = {}
+tone_signal = {}
 
 tone_gen = (tone) ->
     if tone of tone_signal
@@ -140,6 +136,6 @@ mk_ring_cleaner = ->
             point++
         prev_offset = offset
 
-setInterval(mk_ring_cleaner(), 1000)
+setInterval(mk_ring_cleaner(), 300)
 
 
