@@ -7,7 +7,7 @@ firefox_on_linux = ->
 mksink = (srate)->
     try
         prebuf_size = if firefox_on_linux() then (srate/2) else srate/7
-        Sink(null, 1, prebuf_size, srate)
+        Sink(null, 2, prebuf_size, srate)
     catch error # not sure if the exception would happen here
         $("#error_box").text("Your browser doesn't support Web Audio. Open this page in Firefox").show()
         if $.browser.webkit
@@ -74,13 +74,15 @@ oud_wave_shape = mk_wave_shape [
     mk_point 0.91, -0.04
 ]
 
-DURATION = 2
+DURATION = 1.5
 GAIN = 0.5
 SIGNAL_LEN = DURATION * SRATE
 
-dev.ringBuffer = mkbuf(7 * SRATE)
+dev.ringBuffer = mkbuf(7 * 2 * SRATE)
 
-dampness = (Math.pow(Math.E, -4 * (point/SIGNAL_LEN)) for point in [0..SIGNAL_LEN])
+# just for the dampness
+down = (val) -> Math.max 0, val - 0.13
+dampness = (down(Math.pow(Math.E, -2 * (point/SIGNAL_LEN))) for point in [0..SIGNAL_LEN])
 
 # karplus strong algorithm
 oud_signal_gen = (freq) ->
@@ -115,14 +117,28 @@ tone_gen = (tone) ->
             signal[point] = signal_raw[point] * dampness[point] * GAIN
         tone_signal[tone] = signal
 
+make_dual_channel = (signal) ->
+    signal2 = mkbuf(signal.length * 2)
+    for s, index in signal2
+        signal2[index] = signal[Math.floor(index/2)]
+    signal2
+
 window.playtone = (tone)->
     signal = tone_gen(tone)
-    start = dev.ringOffset
-    for s, i in signal
-        point = start + i
+    play_signal signal
+
+play_signal = (signal) ->
+    write_sample = (point, sample) ->
         point = point % dev.ringBuffer.length
         dev.ringBuffer[point] *= 0.9
-        dev.ringBuffer[point] += s
+        dev.ringBuffer[point] += sample
+    point = dev.ringOffset
+    for sample in signal
+        point++
+        write_sample(point, sample)
+        point++
+        write_sample(point, sample)
+    true
 
 mk_ring_cleaner = ->
     prev_offset = 0
@@ -136,6 +152,6 @@ mk_ring_cleaner = ->
             point++
         prev_offset = offset
 
-setInterval(mk_ring_cleaner(), 300)
+setInterval(mk_ring_cleaner(), 800)
 
 
