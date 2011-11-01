@@ -115,7 +115,7 @@ tone_gen = (tone) ->
         signal = mkbuf(SIGNAL_LEN)
         for s, point in signal
             signal[point] = signal_raw[point] * dampness[point] * GAIN
-        tone_signal[tone] = signal
+        tone_signal[tone] = make_dual_channel signal
 
 make_dual_channel = (signal) ->
     signal2 = mkbuf(signal.length * 2)
@@ -128,16 +128,12 @@ window.playtone = (tone)->
     play_signal signal
 
 play_signal = (signal) ->
-    write_sample = (point, sample) ->
-        point = point % dev.ringBuffer.length
+    point = dev.ringOffset
+    ringlen = dev.ringBuffer.length
+    for sample in signal
+        point = (point + 1) % ringlen
         dev.ringBuffer[point] *= 0.9
         dev.ringBuffer[point] += sample
-    point = dev.ringOffset
-    for sample in signal
-        point++
-        write_sample(point, sample)
-        point++
-        write_sample(point, sample)
     true
 
 mk_ring_cleaner = ->
