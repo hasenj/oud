@@ -5,24 +5,21 @@
 #   This is handled in keyboard.coffee in a way that works
 #
 #   A maqam is a scale + a starting point
-#
-#   Some maqams have "variations", aka alt_scale
 
-maqam_ctor = (name, start, scale, alt_scale=null) ->
-    alt_scale ?= scale
-    {name, start, scale, alt_scale}
+maqam_ctor = (name, start, scale) ->
+    {name, start, scale}
 
 presets = [
         ["ajam", "0", "1 1 0.5 1 1 1 0.5"]
         ["kurd", "1", "0.5 1 1 1 0.5 1 1"] # same as ajam, but keep it
         ["nhwnd", "0", "1 0.5 1 1 0.5 1.5 0.5"]
-        ["nhwnd2", "0", "1 0.5 1 1 0.5 1 1"]
+        ["nhwnd2", "0", "1 0.5 1 1 0.5 1 1"] # also same as ajam
         ["hijaz", "1", "0.5 1.5 0.5 1 0.5 1 1"]
         ["hijaz2", "1", "0.5 1.5 0.5 1 0.75 0.75 1"]
         ["rast", "0", "1 0.75 0.75 1 1 0.75 0.75"]
         ["rast2", "0", "1 0.75 0.75 1 1 0.5 1"]
         ["saba", "1", "0.75 0.75 0.5 1.5 0.5 1 1"] 
-        ["saba2", "1", "0.75 0.75 0.5 1.5 0.5 1 0.5"] # TODO check that it works!
+        ["saba2", "1", "0.75 0.75 0.5 1.5 0.5 1 0.5"] # TODO seems to work, but should check with professionals
         #["bayati", "1", "0.75 0.75 1 1 0.5 1 1"] # same as rast1
         #["siga" , "1.75", "0.75 1 1 0.75 0.75 1 0.75", "0.75 1 1 0.5 1 1 0.75"] # same as rast?
         #["huzam", "1.75", "0.75 1 0.5 1.5 0.5 1 0.75"] # same as hijaz form 2
@@ -43,18 +40,7 @@ for preset in presets
     name = preset.shift()
     start = Number preset.shift()
     scale = (Number n for n in preset.shift().split(" "))
-    scale_alt = if preset.length then (Number n for n in  preset.shift().split(" ")) else null
-    maqamat.push maqam_ctor(name, start, scale, scale_alt)
-
-find_maqam_by_name = (name, def) ->
-    alt = null
-    for maqam in maqamat
-        if maqam.name == name
-            return maqam
-        if maqam.name == def
-            alt = maqam
-    return alt # didn't find name, return alternative as default
-            
+    maqamat.push maqam_ctor(name, start, scale)
 
 # From: http://www.mediacollege.com/internet/javascript/text/case-capitalize.html
 String.prototype.capitalize = ->
@@ -66,7 +52,7 @@ disp_name = (maqam) ->
 if not window.updkeys?
     window.updkeys = ->
 
-choose_maqam = (maqam) ->
+set_active_maqam = (maqam) ->
     window.active_maqam = maqam # XXX not a clone, ok?
     scale_widget.set_val(maqam.scale)
     start_widget.set_val(maqam.start)
@@ -74,7 +60,7 @@ choose_maqam = (maqam) ->
     $.cookie('maqam', maqam.name)
     updkeys maqam
 
-# closely coupled with choose_maqam
+# closely coupled with set_active_maqam
 # XXX overlapping responsibilities
 on_user_change_scale = ->
     active_maqam.scale = scale_widget.get_val() # this actually changes the scale for the active maqam directly!
@@ -84,13 +70,12 @@ on_user_change_scale = ->
         $.cookie(active_maqam.name + "-scale", active_maqam.scale.join(" "))
     updkeys active_maqam
 
-# scratch this off ...
 init_maqams = ->
-    start_maqam = $.cookie('maqam') ? 'ajam'
+    default_maqam = $.cookie('maqam') ? 'ajam'
     ctrls = $("#maqam_ctrls")
     window.scale_widget = new ScaleWidget ctrls, [1,1,0.5,1,1,1,0.5]
     window.start_widget = new StartWidget ctrls, 0
-    window.maqam_list = new MaqamList ctrls, maqamat, start_maqam
+    window.maqam_list = new MaqamList ctrls, maqamat, default_maqam
 
     evt.bind(scale_widget, "changed", on_user_change_scale)
     evt.bind(start_widget, "changed", on_user_change_scale)
@@ -257,7 +242,7 @@ class MaqamList
         @active?.unclick()
         @active = btn
         @active.click()
-        choose_maqam(@active.maqam)
+        set_active_maqam(@active.maqam)
     on_btn_clicked: (btn) =>
         @activate_btn(btn)
 
