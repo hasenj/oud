@@ -19,8 +19,10 @@ bind = (obj, evtname, callback) ->
 
 trigger = (obj, evtname, args...) ->
     check obj, evtname
-    defer ->
-        for callback in table[obj.id][evtname]
-            callback args...
+    # set all listeners to be invoked "next" ..
+    # undefined order, I guess
+    for callback in table[obj.id][evtname]
+        do(callback) ->
+            defer -> callback args...
 
 window.evt = {bind, trigger}
