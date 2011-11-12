@@ -74,14 +74,14 @@ oud_wave_shape = mk_wave_shape [
     mk_point 0.91, -0.04
 ]
 
-DURATION = 1.5
-GAIN = 0.5
+DURATION = 1.6
+GAIN = 0.8
 SIGNAL_LEN = DURATION * SRATE
 
 dev.ringBuffer = mkbuf(7 * 2 * SRATE)
 
 # just for the dampness
-down = (val) -> Math.max 0, val - 0.13
+down = (val) -> Math.max 0, val - 0.2
 dampness = (down(Math.pow(Math.E, -2 * (point/SIGNAL_LEN))) for point in [0..SIGNAL_LEN])
 
 # karplus strong algorithm
@@ -93,7 +93,7 @@ oud_signal_gen = (freq) ->
     for s, index in signal
         point = index % table_len
         if index < table_len
-            table[point] = base_sample[point] + ks_noise_sample(0.06)
+            table[point] = base_sample[point] + ks_noise_sample(0.038)
             signal[index] = table[point]
         else
             prev = (index - 1) % table_len
@@ -132,7 +132,6 @@ play_signal = (signal) ->
     ringlen = dev.ringBuffer.length
     for sample in signal
         point = (point + 1) % ringlen
-        dev.ringBuffer[point] *= 0.9
         dev.ringBuffer[point] += sample
     true
 
