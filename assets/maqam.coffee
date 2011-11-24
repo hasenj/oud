@@ -124,30 +124,38 @@ class StepperWidget
 
 class ScaleGraph
     constructor: (parent) ->
-        @el = $("<canvas width='300px' height='40px'></canvas>")
+        @el = $("<canvas id='scale_graph_cvs' width='300px' height='40px'></canvas>")
         parent.append(@el)
         @canvas = @el.get(0)
         @ctx = @canvas.getContext('2d')
         @bg_color = "hsl(0,0%,80%)"
         @fg_color = "hsl(0,0%,40%)"
+        @line_color = "hsl(0, 0%, 60%)"
     draw_scale: (scale) =>
         @ctx.clearRect(0, 0, @canvas.width, @canvas.height)
+        #draw bg line and points
         @draw_line(0, 6, @bg_color)
         @draw_point(0, @bg_color)
         @draw_point(6, @bg_color)
+        # draw a line from start to the last point on scale
+        s = 0
+        for p in scale
+            s += p
+        @draw_line(0, s, @line_color)
+        #start drawing points
         s = 0
         @draw_point(s, @fg_color)
         for p in scale
             s += p
             @draw_point(s, @fg_color)
-        @draw_line(0, s, @fg_color)
     draw_point: (dist, color) =>
-        @ctx.fillStyle = color
-        @ctx.strokeStyle = color
-        @ctx.fillRect(@x_coord(dist)-2, 10, 5, 5)
+        #@ctx.fillStyle = color
+        #@ctx.strokeStyle = color
+        #@ctx.fillRect(@x_coord(dist)-2, 10, 5, 5)
+        artisan.drawCircle('scale_graph_cvs', @x_coord(dist), 13, 3, color, 0, color, 10)
     draw_line: (start, end, color) =>
         @ctx.fillStyle = color
-        @ctx.fillRect(@x_coord(start), 12, @x_coord(end) - @x_coord(start), 1)
+        @ctx.fillRect(@x_coord(start), 12, @x_coord(end) - @x_coord(start), 2)
     x_coord: (point) =>
         10 + point * 40
 
