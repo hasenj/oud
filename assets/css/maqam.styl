@@ -18,7 +18,7 @@ input#scale
   pad()
   standout()
   display inline-block
-  width 350px
+  width 380px
   #maqam_ctrls
     margin-left 5px
   #presets
@@ -26,18 +26,6 @@ input#scale
 
 .maqam_list
     margin-top 20px
-
-.maqam_btn
-    smooth-button(bg=hsl(195, 34, 62))
-    padding 7px
-    margin 7px
-    display inline-block
-    link()
-    width 54px
-    text-align left
-    text-shadow 1px 1px 2px gray
-    border-radius 6px
-    font normal 11pt Play
 
 .widget_stepper
   font-size 0.8em
@@ -64,3 +52,39 @@ input#scale
   span.text
     font-size 10pt
     
+maqam-button(bghue=230)
+  -reset()
+  outer_border(lite=0)
+    outer_shadow_color = hsl(((bghue+20) % 360), 3, 40+lite)
+    // box-shadow 0px 0px 1px 1px outer_shadow_color
+    border 1px solid (outer_shadow_color * 1.6)
+  cursor pointer
+  box-shadow 0px 0px 1px 1px hsl(bghue, 1, 90) inset
+  outer_border()
+  display inline-block
+  border-radius 5px
+  padding 5px 10px
+  font-size 0.9em
+  text-shadow 0px 0px 1px hsl(150, 30, 86)
+  color hsl(300,20,20)
+  grad(lite=89, to=1.1)
+    g1 = hsl(bghue,30,lite)
+    g2 = hsl(bghue,20,lite*0.96)
+    g3 = hsl(bghue,20,lite*to)
+    background linear-gradient(top, g1 60%, g2 50%, g3)
+  grad()
+  &:hover
+  &.hover
+    outer_border(-14)
+    grad(92, 1.5)
+  &:active
+  &.active
+    grad(85)
+    outer_border(-8)
+
+
+.maqam_btn
+  maqam-button()
+  width 54px
+  margin 8px
+
