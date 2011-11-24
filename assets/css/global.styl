@@ -2,9 +2,31 @@
 
 global-reset()
 
+footer_height = 40px
+
+bgcol = hsl(200, 5, 94)
+footer_bgcol = hsl(200, 6, 90)
 body
     margin 0px
     padding 0px
+    background-color bgcol
+
+html, body
+    height 100%
+
+.content_wrapper
+  min-height 100%
+  position relative
+
+footer
+  position absolute
+  bottom 0
+  height footer_height
+  display block
+  width 100%
+  box-shadow 0px 0px 2px 2px silver
+  border-top 1px solid silver
+  background-color footer_bgcol
 
 div, p
     user-select text
@@ -21,6 +43,9 @@ focuscol = silver
 pad()
     padding 20px 12px
 
+standout()
+    margin 10px 50px
+
 link()
     cursor pointer
     -moz-user-select none
@@ -28,6 +53,8 @@ link()
     user-select none
 
 table.layout
+    padding 14px 20px
+    // box-shadow 0px 0px 2px 2px silver
     tr, td
         vertical-align top
 
@@ -35,9 +62,23 @@ table.layout
     background linear-gradient(bottom, hsl(280, 35%, 20%) 5%, hsl(283, 25%, 30%))
     text-shadow 0 1px 1px black
     color hsl(360 - 283, 16%, 80%)
-    font normal 18pt Ubuntu
-    pad()
-    h3
+    padding-top 6px
+    padding-bottom 2px
+    box-shadow 0px 0px 5px 3px gray
+    border-bottom 1px solid black
+    a
+      text-decoration none
+      color inherit
+    .logo
+      display inline-block
+      width 240px
+      // border 1px solid silver
+      text-align center
+      padding 4px
+      h1
+        font normal 18pt Ubuntu
+        display inline-block
+      h3
         font normal 10pt Ubuntu
         line-height 1em
         margin 4px 10px 
@@ -60,11 +101,11 @@ table.layout
           font-size 9pt
           color hsl(100, 30, 90)
           text-decoration none
-
 #content
     pad()
     font normal 12pt Ubuntu
     color hsl(0, 0%, 20%)
+    padding-bottom footer_height
 
 #error_box
     border 2px solid red
@@ -80,15 +121,23 @@ table.layout
 code
     font-family monospace
 
-footer
-    margin 40px
-    color hsl(160, 10%, 30%)
-    font normal 8pt/1.3 monospace
-    text-align center
+.footer_content
+  padding-top 10px
+  margin-left 30px
+  color hsl(160, 10%, 30%)
+  font-size 14px
+  div
+    display inline-block
+    vertical-align middle
+  div.link
+    padding 5px
+    margin-right 8px
     a
-        color: hsl(240, 10%, 30%)
-    .links a
-        margin 0px 6px
+      color: hsl(240, 10%, 30%)
+      text-shadow 0 1px 1px white
+      text-decoration none
+      font-family Ubuntu
+    
 
 div.text_page
   *

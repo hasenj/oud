@@ -13,11 +13,22 @@ html
     script(src="/ga.js", type="text/javascript")
     link(rel="stylesheet", type="text/css", href="http://fonts.googleapis.com/css?family=Ubuntu|Play")
   body
-    #header Oriental Strings
-        // h3 html5 music keyboard
-        ul.tabs
-          // each val, key .. why is it backwards??
-          - each url, name in {'Home': '/', 'About': '/about', 'Feedback': '/feedback'}
-            li: a(href=url) #{name}
+    .content_wrapper
+      links = {'About': '/about', 'Feedback': '/feedback', 'Code':"http://github.com/hasenj/oud"}
+      #header 
+          a(href="/")
+            .logo
+               h1 Oriental Strings
+               h3 Music Keyboard + Arabic Maqam
+          //
+            ul.tabs
+              for url, name in links
+                li: a(href=url) #{name}
+      #content !{body}
+      footer
+        .footer_content
+          for url, name in links
+            div.link
+              a(href=url) #{name}
           include like_btns
-    #content !{body}
+      
