@@ -1,6 +1,3 @@
-last = (array) -> 
-    array[array.length-1]
-
 from_end = (array, start, end) -> # subarray from end
     # start and end must be given as negative numbers
     len = array.length
@@ -233,7 +230,6 @@ unpress_tone = (tone) ->
 
 getkeydiv = (p_key) -> jid(pkey_id(p_key))
 
-jcls = (cls) -> $('.' + cls)
 tone_class = (tone) ->
     't_' + tone.toString().replace('.', '_')[0...10]
 

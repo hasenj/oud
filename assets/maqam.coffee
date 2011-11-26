@@ -80,7 +80,6 @@ init_maqams = ->
     evt.bind(scale_widget, "changed", on_user_change_scale)
     evt.bind(start_widget, "changed", on_user_change_scale)
 
-jdiv = -> $("<div/>")
 jimg = (src) -> $("<img>").attr('src', src)
 
 arrow = (dir) -> jimg("/arr_#{dir}.png")

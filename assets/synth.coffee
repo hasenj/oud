@@ -6,13 +6,12 @@ firefox_on_linux = ->
 
 mksink = (srate)->
     try
+        if $.browser.mozilla
+            issue_warning("This app works better in Chrome")
         prebuf_size = if firefox_on_linux() then (srate/2) else srate/7
         Sink(null, 2, prebuf_size, srate)
     catch error # not sure if the exception would happen here
-        $("#error_box").text("Your browser doesn't support Web Audio. Open this page in Firefox").show()
-        if $.browser.webkit
-            $("#error_box").after("In Chrome, you can enable web audio from <code>about:flags</code>" + 
-                "(only available in beta versions)")
+        issue_error("Your browser doesn't support Web Audio. Please open this page in Google Chrome")
         {sampleRate: srate, ringOffset: 0}
             
 window.dev = mksink(44100)

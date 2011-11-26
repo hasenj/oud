@@ -108,15 +108,20 @@ table.layout
     padding-bottom footer_height
 
 #error_box
-    border 2px solid red
-    border-radius 6px
-    background-color hsl(10, 70%, 90%)
-    color hsl(20, 80%, 10%)
+  div, span
     font normal 12pt sans
     padding 8px
     margin 10px
     width 90%
-    display none
+    border-radius 6px
+  .error
+    border 2px solid red
+    background-color hsl(10, 70, 90)
+    color hsl(20, 80, 10)
+  .warning
+    border 2px solid orange
+    background-color hsl(70, 70, 90)
+    color hsl(80, 80, 10)
 
 code
     font-family monospace
