@@ -92,7 +92,7 @@ oud_signal_gen = (freq) ->
     for s, index in signal
         point = index % table_len
         if index < table_len
-            table[point] = base_sample[point] + ks_noise_sample(0.038)
+            table[point] = base_sample[point] + ks_noise_sample(0.1)
             signal[index] = table[point]
         else
             prev = (index - 1) % table_len
