@@ -4,12 +4,14 @@ mkbuf = (len) ->
 firefox_on_linux = ->
     $.browser.mozilla and (navigator.platform.indexOf("Linux") != -1 or navigator.oscpu.indexOf("Linux") != -1)
 
+CHANNELS = 2
+
 mksink = (srate)->
     try
         if $.browser.mozilla
             issue_warning("This app works better in Chrome")
         prebuf_size = if firefox_on_linux() then (srate/2) else srate/7
-        Sink(null, 2, prebuf_size, srate)
+        Sink(null, CHANNELS, prebuf_size, srate)
     catch error # not sure if the exception would happen here
         issue_error("Your browser doesn't support Web Audio. Please open this page in Google Chrome")
         {sampleRate: srate, ringOffset: 0}
@@ -73,15 +75,19 @@ oud_wave_shape = mk_wave_shape [
     mk_point 0.91, -0.04
 ]
 
-DURATION = 1.6
-GAIN = 0.8
-SIGNAL_LEN = DURATION * SRATE
+DURATION = 1
+GAIN = 1.5
+SIGNAL_LEN = DURATION * SRATE * CHANNELS
 
-dev.ringBuffer = mkbuf(7 * 2 * SRATE)
+dev.ringBuffer = mkbuf(7 * CHANNELS * SRATE)
 
 # just for the dampness
-down = (val) -> Math.max 0, val - 0.2
-dampness = (down(Math.pow(Math.E, -2 * (point/SIGNAL_LEN))) for point in [0..SIGNAL_LEN])
+dampness = (->
+    down = (val) -> Math.max 0, val - 0.3
+    # e ^ (-2x) - 0.2 # (without going below 0)
+    for point in [0..SIGNAL_LEN]
+        down(Math.pow(Math.E, -2 * (point/SIGNAL_LEN)))
+)()
 
 # karplus strong algorithm
 oud_signal_gen = (freq) ->
