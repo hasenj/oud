@@ -58,11 +58,12 @@
  * @author Klaus Hartl/klaus.hartl@stilbuero.de
  */
 jQuery.cookie = function (key, value, options) {
+
     
     // key and at least value given, set cookie...
     if (arguments.length > 1 && String(value) !== "[object Object]") {
-        var default_options = {expires: 30, secure: true};
-        options = jQuery.extend(default_options, options);
+        var default_options = {expires: 30};
+        options = jQuery.extend(options, default_options)
 
         if (value === null || value === undefined) {
             options.expires = -1;
