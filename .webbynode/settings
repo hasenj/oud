@@ -1,3 +1,4 @@
-nodejs_proxy=Y
 engine=nodejs
+nodejs_proxy=Y
+dns_alias='oud.hasenj.org www.awtar.me'
 nodejs_port=9040
