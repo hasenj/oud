@@ -1,4 +1,5 @@
-nodejs_proxy=Y
+dns_alias='www.awtar.me oud.hasnej.org'
 engine=nodejs
+nodejs_proxy=Y
 nodejs_port=9040
 dns_alias='www.awtar.me'
