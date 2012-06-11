@@ -3,6 +3,7 @@ html
   head
     title أوتار
     include like_btns_headers
+    include chartbeat_header
     link(rel="icon", type="image/png", href="/icon.png")
     != css('index')
     script(src="/jquery.js", type="text/javascript")
@@ -36,4 +37,5 @@ html
             div.link
               a(href=url) #{name}
           // include like_btns
+          include chartbeat_body
       
