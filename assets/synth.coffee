@@ -13,6 +13,7 @@ mksink = (srate)->
         if $.browser.webkit
             issue_warning("There's a known issue with Chrome at this time")
         prebuf_size = if firefox_on_linux() then (srate/2) else srate/7
+        prebuf_size = 4096 / 8
         Sink(null, CHANNELS, prebuf_size, srate)
     catch error # not sure if the exception would happen here
         issue_error("It looks like your browser doesn't support Web Audio. Try opening this site in Firefox")
@@ -77,7 +78,7 @@ oud_wave_shape = mk_wave_shape [
     mk_point 0.91, -0.04
 ]
 
-DURATION = 1
+DURATION = 1.1
 GAIN = 1.5
 SIGNAL_LEN = DURATION * SRATE * CHANNELS
 
@@ -135,6 +136,7 @@ window.playtone = (tone)->
     play_signal signal
 
 play_signal = (signal) ->
+    console.log "Playing Signal"
     point = dev.ringOffset
     ringlen = dev.ringBuffer.length
     for sample in signal
@@ -154,6 +156,6 @@ mk_ring_cleaner = ->
             point++
         prev_offset = offset
 
-setInterval(mk_ring_cleaner(), 800)
+setInterval(mk_ring_cleaner(), 100)
 
 
