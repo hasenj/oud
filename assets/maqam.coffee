@@ -9,6 +9,23 @@
 maqam_ctor = (name, start, scale) ->
     {name, start, scale}
 
+ajnas = {
+    "ajam": "1 1 0.5",
+    "rast": "1 0.75 0.75",
+    "nhwnd": "1 0.5 1",
+    "nawather": "1 0.5 1",
+    "bayati": "0.75 0.75 1",
+    "hijaz": "0.5 1.5 0.5",
+    "saba": "0.75 0.75 0.5",
+    "kurd": "0.5 1 1",
+    "siga": "0.75 1 1",
+    "iraq": "0.75 1 0.75",
+    "huzam": "0.75 1 0.5",
+}
+
+for key, val in ajnas
+    ajnas[key] = (Number n for n in val.split(" "))
+
 presets = [
         ["ajam", "0", "1 1 0.5 1 1 1 0.5"]
         ["kurd", "1", "0.5 1 1 1 0.5 1 1"] # same as ajam, but keep it
