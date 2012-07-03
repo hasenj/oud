@@ -1,5 +1,5 @@
 mkbuf = (len) -> 
-    new Float32Array(len)
+    new Float32Array Math.floor len
 
 firefox_on_linux = ->
     $.browser.mozilla and (navigator.platform.indexOf("Linux") != -1 or navigator.oscpu.indexOf("Linux") != -1)
@@ -9,11 +9,13 @@ CHANNELS = 2
 mksink = (srate)->
     try
         # if $.browser.mozilla
-            #issue_warning("This app works better in Chrome")
-        if $.browser.webkit
-            issue_warning("There's a known issue with Chrome at this time")
+        #    issue_warning("This app works better in Chrome")
         prebuf_size = if firefox_on_linux() then (srate/2) else srate/7
-        prebuf_size = 4096 / 8
+        if $.browser.webkit
+            prebuf_size = 4096 / 8
+            issue_warning("There's a known issue with Chrome at this time")
+        prebuf_size = Math.floor(prebuf_size)
+        console.log "buffer:", prebuf_size
         Sink(null, CHANNELS, prebuf_size, srate)
     catch error # not sure if the exception would happen here
         issue_error("It looks like your browser doesn't support Web Audio. Try opening this site in Firefox")
@@ -156,6 +158,5 @@ mk_ring_cleaner = ->
             point++
         prev_offset = offset
 
-setInterval(mk_ring_cleaner(), 100)
-
+setInterval(mk_ring_cleaner(), 200)
 
