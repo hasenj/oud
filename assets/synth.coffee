@@ -8,12 +8,14 @@ CHANNELS = 2
 
 mksink = (srate)->
     try
-        if $.browser.mozilla
-            issue_warning("This app works better in Chrome")
+        # if $.browser.mozilla
+            #issue_warning("This app works better in Chrome")
+        if $.browser.webkit
+            issue_warning("There's a known issue with Chrome at this time")
         prebuf_size = if firefox_on_linux() then (srate/2) else srate/7
         Sink(null, CHANNELS, prebuf_size, srate)
     catch error # not sure if the exception would happen here
-        issue_error("Your browser doesn't support Web Audio. Please open this page in Google Chrome")
+        issue_error("It looks like your browser doesn't support Web Audio. Try opening this site in Firefox")
         {sampleRate: srate, ringOffset: 0}
             
 window.dev = mksink(44100)
