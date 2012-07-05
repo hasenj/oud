@@ -6,32 +6,52 @@
 #
 #   A maqam is a scale + a starting point
 
-maqam_ctor = (name, start, scale) ->
-    {name, start, scale}
+maqam_ctor = (name, start, jins1, jins2) ->
+    {name, start, jins1, jins2}
 
-ajnas = {
-    "ajam": "1 1 0.5",
-    "rast": "1 0.75 0.75",
-    "nhwnd": "1 0.5 1",
-    "nawather": "1 0.5 1",
-    "bayati": "0.75 0.75 1",
-    "hijaz": "0.5 1.5 0.5",
-    "saba": "0.75 0.75 0.5",
-    "kurd": "0.5 1 1",
-    "siga": "0.75 1 1",
-    "iraq": "0.75 1 0.75",
-    "huzam": "0.75 1 0.5",
-}
+ajnas_defs =
+    "ajam": "1 1 0.5"
+    "rast": "1 0.75 0.75"
+    "nhwnd": "1 0.5 1"
+    "nawather": "1 0.5 1"
+    "bayati": "0.75 0.75 1"
+    "hijaz": "0.5 1.5 0.5"
+    "saba": "0.75 0.75 0.5"
+    "kurd": "0.5 1 1"
+    "siga": "0.75 1 1"
+    "iraq": "0.75 1 0.75"
+    "huzam": "0.75 1 0.5"
+    "zamzama": "0.5 1 0.5"
 
-for key, val in ajnas
+ajnas = {}
+for key, val of ajnas_defs
     ajnas[key] = (Number n for n in val.split(" "))
+
+# The `ajnas` dict maps jins name to a list representation of the tetrachord
+
+# a maqam def is starting point and 2 jins
+maqam_defs =
+    "ajam": "0 ajam ajam"
+    "kurd": "1 kurd kurd"
+    "nhwnd": "0 nhwnd hijaz"
+    "hijaz": "1 hijaz kurd"
+    "saba": "1 saba zamzama"
+
+maqamat = []
+for name, def of maqam_defs
+    parts = def.split(" ")
+    start = Number parts.shift()
+    jins1 = ajnas[parts.shift()]
+    jins2 = ajnas[parts.shift()]
+    maqamat.push maqam_ctor(name, start, jins1, jins2)
+
 
 presets = [
         ["ajam", "0", "1 1 0.5 1 1 1 0.5"]
         ["kurd", "1", "0.5 1 1 1 0.5 1 1"] # same as ajam, but keep it
         ["nhwnd", "0", "1 0.5 1 1 0.5 1.5 0.5"]
         # ["nhwnd2", "0", "1 0.5 1 1 0.5 1 1"] # also same as ajam
-        ["hijaz", "1", "0.5 1.5 0.5 1 0.5 1 1"]
+        ["hijaz", "1", "0.6 1.3 0.6 1 0.5 1 1"]
         #["hijaz2", "1", "0.5 1.5 0.5 1 0.75 0.75 1"]
         ["rast", "0", "1 0.75 0.75 1 1 0.75 0.75"]
         # ["rast2", "0", "1 0.75 0.75 1 1 0.5 1"]
@@ -50,18 +70,6 @@ presets = [
         # ["user5", $.cookie("user5-start") ? "1",$.cookie("user5-scale") ? "0.75 0.75 1 1 0.5 1 1"]
         # ["user6", $.cookie("user6-start") ? "1",$.cookie("user6-scale") ? "0.75 0.75 1 1 0.5 1 1"]
 ]
-
-maqamat = []
-for preset in presets
-    preset = _(preset).clone()
-    name = preset.shift()
-    start = Number preset.shift()
-    scale = (Number n for n in preset.shift().split(" "))
-    maqamat.push maqam_ctor(name, start, scale)
-
-# From: http://www.mediacollege.com/internet/javascript/text/case-capitalize.html
-String.prototype.capitalize = ->
-   @replace /(^|\s)([a-z])/g , (m,p1,p2) -> p1+p2.toUpperCase()
 
 disp_name = (maqam) ->
     map = {
@@ -84,8 +92,8 @@ if not window.updkeys?
 
 set_active_maqam = (maqam) ->
     window.active_maqam = maqam # XXX not a clone, ok?
-    scale_widget.set_val(maqam.scale)
-    start_widget.set_val(maqam.start)
+    # scale_widget.set_val(maqam.scale)
+    # start_widget.set_val(maqam.start)
     $("#maqam_name").html("مقام ال" + disp_name maqam)
     $.cookie('maqam', maqam.name)
     updkeys maqam
