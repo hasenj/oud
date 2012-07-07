@@ -22,28 +22,16 @@ window.active_tones = [] # THE current piano notes, an array of rows, as returne
 # from the given maqam
 # returns a list of tones
 gen_piano_rows = (maqam) ->
-    gen_tones = (start, distances) ->
-        res = [start]
-        for displacement in distances
-            res.push(u.last(res) + displacement)
-        res
-    # get octave plus 4 notes
-    gen_oct_plus = (start, jins1, jins2) ->
-        # generate the octave by alternately applying jins1 and jins2 and
-        # separating them by a perfect fifth
-        fifth = 3.5 # distance for the perfect fifth
-        seg1 = gen_tones(start, jins1)
-        seg2 = gen_tones(start + fifth, jins2)
-        seg3 = gen_tones(start + fifth + fifth, jins1)
-        return seg1.concat(seg2).concat(seg3)
-    octave_dist = 6
     octaves = []
-    for octave_index in [-2..3]
-        start = maqam.start + (octave_dist * octave_index)
-        octave = gen_oct_plus(start, maqam.jins1, maqam.jins2)
-        octaves.push(octave)
-
-    return octaves[1..3]
+    for octave_index in [-1..1]
+        segments = maqam.gen_fn(octave_index)
+        trailing = u.last(segments[-1], 3) # we want last 2 keys, but the very last key is the same as the first key, so we take 3
+        console.log "Segments:", segments
+        console.log "Trailing:", trailing
+        octave = u.union(trailing, segments[0], segments[1], segments[2])
+        console.log("octave:", octave)
+        octaves.unshift(octave)
+    return octaves
 
 gen_tone_kb_map = (piano_rows) ->
     map = {}

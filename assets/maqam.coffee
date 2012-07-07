@@ -1,3 +1,4 @@
+u = _
 ####
 # maqam presets
 #   A scale is defined as a sequency of tone distances
@@ -23,6 +24,54 @@ ajnas_defs =
     "huzam": "0.75 1 0.5"
     "zamzama": "0.5 1 0.5"
 
+
+# helper function for note generators
+gen_tones = (start, distances) ->
+    res = [start]
+    for displacement in distances
+        res.push(u.last(res) + displacement)
+    res
+
+FIFTH = 3.5
+OCTAVE = 6
+
+# Generic function that generates the notes for a maqam on a given octave
+# octave_index is how many octaves higher/lower than the maqam's starting point
+# e.g if maqam starts on 1, and octave_index is -1, then generate starting from -5
+# if octave_index is 0, generate from 1
+# if octave_index is 1, generate from 7
+# and so on
+# This is the function that works on most maqams (except for saba)
+#
+# @returns a list of segments indexed from -1 to 2
+# segment 0 is the start of the maqam 
+# segment -1 is the previous segment
+# segment 1 is the second part of the maqam
+# and so on ..
+# this is all just for this one octave
+# naturally, segment -1 is the trailing part of the previous octave
+# segment 2 is the starting part of the next octave
+generate_maqam_notes_generic = (maqam, octave_index) ->
+    start = maqam.start - OCTAVE * octave_index
+    seg_info = {
+        '-1': 
+            start: start - OCTAVE + FIFTH
+            dists: maqam.jins2
+        '0': 
+            start: start
+            dists: maqam.jins1
+        '1': 
+            start: start + FIFTH
+            dists: maqam.jins2
+        '2': 
+            start: start + OCTAVE
+            dists: maqam.jins1
+        }
+    segments = {}
+    for key, val of seg_info
+        segments[key] = gen_tones(val.start, val.dists)
+    return segments
+
 ajnas = {}
 for key, val of ajnas_defs
     ajnas[key] = (Number n for n in val.split(" "))
@@ -45,6 +94,11 @@ for name, def of maqam_defs
     jins2 = ajnas[parts.shift()]
     maqamat.push maqam_ctor(name, start, jins1, jins2)
 
+for maqam in maqamat
+    do (maqam) ->
+        maqam.gen_fn = (octave_index) -> generate_maqam_notes_generic(maqam, octave_index)
+        if maqam.name == 'saba' 
+            maqam.is_saba = true # XXX pass/placeholder, we need a saba generator here ..
 
 presets = [
         ["ajam", "0", "1 1 0.5 1 1 1 0.5"]
