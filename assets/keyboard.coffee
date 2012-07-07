@@ -26,9 +26,8 @@ gen_piano_rows = (maqam) ->
     for octave_index in [-1..1]
         segments = maqam.gen_fn(octave_index)
         trailing = u.last(segments[-1], 3) # we want last 2 keys, but the very last key is the same as the first key, so we take 3
-        console.log "Segments:", segments
-        console.log "Trailing:", trailing
-        octave = u.union(trailing, segments[0], segments[1], segments[2])
+        following = u.first(segments[2], 3) # 2 keys from next octave, using 3 for same reason as above
+        octave = u.union(trailing, segments[0], segments[1], following)
         console.log("octave:", octave)
         octaves.unshift(octave)
     return octaves

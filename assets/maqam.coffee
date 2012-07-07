@@ -54,18 +54,40 @@ OCTAVE = 6
 generate_maqam_notes_generic = (maqam, octave_index) ->
     start = maqam.start - OCTAVE * octave_index
     seg_info = {
-        '-1': 
+        '-1':
             start: start - OCTAVE + FIFTH
             dists: maqam.jins2
-        '0': 
+        '0':
             start: start
             dists: maqam.jins1
-        '1': 
+        '1':
             start: start + FIFTH
             dists: maqam.jins2
-        '2': 
+        '2':
             start: start + OCTAVE
             dists: maqam.jins1
+        }
+    segments = {}
+    for key, val of seg_info
+        segments[key] = gen_tones(val.start, val.dists)
+    return segments
+
+# special generator for saba
+generate_saba_notes = (maqam, octave_index) ->
+    start = maqam.start - OCTAVE * octave_index
+    seg_info = {
+        '-1':
+            start: start - OCTAVE + FIFTH
+            dists: ajnas['kurd']
+        '0':
+            start: start
+            dists: maqam.jins1
+        '1':
+            start: start + FIFTH
+            dists: maqam.jins2
+        '2':
+            start: start + FIFTH + FIFTH
+            dists: ajnas['hijaz']
         }
     segments = {}
     for key, val of seg_info
@@ -98,7 +120,7 @@ for maqam in maqamat
     do (maqam) ->
         maqam.gen_fn = (octave_index) -> generate_maqam_notes_generic(maqam, octave_index)
         if maqam.name == 'saba' 
-            maqam.is_saba = true # XXX pass/placeholder, we need a saba generator here ..
+            maqam.gen_fn = (octave_index) -> generate_saba_notes(maqam, octave_index)
 
 presets = [
         ["ajam", "0", "1 1 0.5 1 1 1 0.5"]
