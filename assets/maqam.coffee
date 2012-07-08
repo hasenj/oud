@@ -343,6 +343,7 @@ class MaqamList
                 @activate_btn(btn)
         if not @active?
             @activate_btn @maqam_btns[0] # in case no default provided
+        @el.find(".maqam_btn:last").addClass("last")
     activate_btn: (btn) =>
         @active?.unclick()
         @active = btn

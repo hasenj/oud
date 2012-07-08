@@ -20,11 +20,17 @@ input#scale
   // position absolute
   // right 0
   // top 80px
+  text-align right
+  direction rtl
 
 maqam-button(bghue=230)
   -reset()
   cursor pointer
-  box-shadow 0px 0px 1px 1px hsl(bghue, 1, 90) inset
+  box-shadow 0px 0px 11px 2px hsl(bghue, 1, 96) inset
+  border solid 1px hsl(bghue, 20, 85)
+  border-bottom none
+  &.last
+    border-bottom solid 1px hsl(bghue, 20, 85)
   background-color white
   display inline-block
   width 100%
@@ -36,10 +42,11 @@ maqam-button(bghue=230)
   margin 0px
   &:hover
   &.hover
-    backbround-color hsl(0, 0, 90)
+    background-color hsl(190, 20, 90)
   &:active
   &.active
-    backbround-color hsl(0, 0, 70)
+    background-color hsl(190, 20, 80)
+    text-shadow 1px 1px 2px hsl(150, 40, 90)
     
 .maqam_list
     direction rtl
