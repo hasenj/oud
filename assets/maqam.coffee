@@ -15,7 +15,7 @@ ajnas_defs =
     "rast": "9 7 6"
     "nhwnd": "9 4 9"
     "bayati": "6 7 9"
-    "hijaz": "5 13 5"
+    "hijaz": "5 13 4"
     "saba": "6 7 5"
     "kurd": "4 9 9"
     "sega": "6 9 9"
