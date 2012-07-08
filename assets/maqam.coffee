@@ -11,21 +11,17 @@ maqam_ctor = (name, start, jins1, jins2) ->
     {name, start, jins1, jins2}
 
 ajnas_defs =
-    #"ajam": "1 1 0.5"
-    "ajam": "1 0.9 0.6" # maqam world says third note is lower than usual
-    "rast": "1 0.75 0.75"
-    "nhwnd": "1 0.5 1"
-    "nawather": "1 0.5 1"
-    #"bayati": "0.75 0.75 1"
-    "bayati": "0.7 0.8 1" #mw says second note is lower
-    #"hijaz": "0.5 1.5 0.5"
-    "hijaz": "0.6 1.3 0.6"
-    "saba": "0.75 0.75 0.5"
-    "kurd": "0.5 1 1"
-    "sega": "0.75 1 1"
-    "iraq": "0.75 1 0.75"
-    "huzam": "0.75 1 0.5"
-    "zamzama": "0.5 1 0.5"
+    "ajam": "9 8 5"
+    "rast": "9 7 6"
+    "nhwnd": "9 4 9"
+    "bayati": "6 7 9"
+    "hijaz": "5 13 5"
+    "saba": "6 7 5"
+    "kurd": "4 9 9"
+    "sega": "6 9 9"
+    "iraq": "7 9 6"
+    "huzam": "7 9 4"
+    "zamzama": "4 9 5"
 
 
 # helper function for note generators
@@ -36,8 +32,8 @@ gen_tones = (start, distances) ->
     stabilize = (num) -> Number num.toFixed(2)
     u.map(res, stabilize)
 
-FIFTH = 3.5
-OCTAVE = 6
+FIFTH = 31
+OCTAVE = 53
 
 ajnas = {}
 for key, val of ajnas_defs
@@ -48,15 +44,15 @@ for key, val of ajnas_defs
 # a maqam def is starting point and 2 jins
 maqam_defs =
     "ajam": "0 ajam ajam"
-    "kurd": "1 kurd kurd"
+    "kurd": "9 kurd kurd"
     "nhwnd": "0 nhwnd hijaz"
     "rast1": "0 rast rast"
     "rast2": "0 rast nhwnd"
-    "bayati": "1 bayati kurd"
-    "sega": "1.75 sega iraq"
-    "hijaz1": "1 hijaz bayati"
-    "hijaz2": "1 hijaz kurd"
-    "saba": "1 saba zamzama"
+    "bayati": "9 bayati kurd"
+    "sega": "16 sega iraq"
+    "hijaz1": "9 hijaz bayati"
+    "hijaz2": "9 hijaz kurd"
+    "saba": "9 saba zamzama"
 
 maqamat = []
 for name, def of maqam_defs

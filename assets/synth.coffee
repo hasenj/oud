@@ -110,8 +110,8 @@ oud_signal_gen = (freq) ->
             signal[index] = table[point]
     return signal
 
-tonefreq = (tone, base=130.82) ->
-   tones_per_octave = 6 # DON'T CHANGE!!
+tonefreq = (tone, base=130.67) ->
+   tones_per_octave = 53 # comma system
    return base * Math.pow(2, tone/tones_per_octave)
 
 tone_signal = {}
