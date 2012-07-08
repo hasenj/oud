@@ -11,12 +11,15 @@ maqam_ctor = (name, start, jins1, jins2) ->
     {name, start, jins1, jins2}
 
 ajnas_defs =
-    "ajam": "1 1 0.5"
+    #"ajam": "1 1 0.5"
+    "ajam": "1 0.9 0.6" # maqam world says third note is lower than usual
     "rast": "1 0.75 0.75"
     "nhwnd": "1 0.5 1"
     "nawather": "1 0.5 1"
-    "bayati": "0.75 0.75 1"
-    "hijaz": "0.5 1.5 0.5"
+    #"bayati": "0.75 0.75 1"
+    "bayati": "0.7 0.8 1" #mw says second note is lower
+    #"hijaz": "0.5 1.5 0.5"
+    "hijaz": "0.6 1.3 0.6"
     "saba": "0.75 0.75 0.5"
     "kurd": "0.5 1 1"
     "siga": "0.75 1 1"

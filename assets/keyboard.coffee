@@ -144,7 +144,7 @@ update_ui = ->
         note_name = get_note_info(tone, prev_note_name).note.name #"DO"
         prev_note_name = note_name
         $(".kb_key", keydiv).html(kb_key)
-        $(".tone", keydiv).html(tone)
+        $(".tone", keydiv).html(tone.toFixed(2))
         $(".note_name", keydiv).html(note_name)
 
     for p_key in get_all_pkeys()
