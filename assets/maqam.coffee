@@ -35,6 +35,30 @@ gen_tones = (start, distances) ->
 FIFTH = 3.5
 OCTAVE = 6
 
+ajnas = {}
+for key, val of ajnas_defs
+    ajnas[key] = (Number n for n in val.split(" "))
+
+# The `ajnas` dict maps jins name to a list representation of the tetrachord
+
+# a maqam def is starting point and 2 jins
+maqam_defs =
+    "ajam": "0 ajam ajam"
+    "rast": "0 rast rast"
+    "kurd": "1 kurd kurd"
+    "nhwnd": "0 nhwnd hijaz"
+    "bayati": "1 bayati kurd"
+    "hijaz": "1 hijaz kurd"
+    "saba": "1 saba zamzama"
+
+maqamat = []
+for name, def of maqam_defs
+    parts = def.split(" ")
+    start = Number parts.shift()
+    jins1 = ajnas[parts.shift()]
+    jins2 = ajnas[parts.shift()]
+    maqamat.push maqam_ctor(name, start, jins1, jins2)
+
 # Generic function that generates the notes for a maqam on a given octave
 # octave_index is how many octaves higher/lower than the maqam's starting point
 # e.g if maqam starts on 1, and octave_index is -1, then generate starting from -5
@@ -93,28 +117,6 @@ generate_saba_notes = (maqam, octave_index) ->
     for key, val of seg_info
         segments[key] = gen_tones(val.start, val.dists)
     return segments
-
-ajnas = {}
-for key, val of ajnas_defs
-    ajnas[key] = (Number n for n in val.split(" "))
-
-# The `ajnas` dict maps jins name to a list representation of the tetrachord
-
-# a maqam def is starting point and 2 jins
-maqam_defs =
-    "ajam": "0 ajam ajam"
-    "kurd": "1 kurd kurd"
-    "nhwnd": "0 nhwnd hijaz"
-    "hijaz": "1 hijaz kurd"
-    "saba": "1 saba zamzama"
-
-maqamat = []
-for name, def of maqam_defs
-    parts = def.split(" ")
-    start = Number parts.shift()
-    jins1 = ajnas[parts.shift()]
-    jins2 = ajnas[parts.shift()]
-    maqamat.push maqam_ctor(name, start, jins1, jins2)
 
 for maqam in maqamat
     do (maqam) ->
