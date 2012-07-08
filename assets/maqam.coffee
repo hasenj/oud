@@ -48,12 +48,14 @@ for key, val of ajnas_defs
 # a maqam def is starting point and 2 jins
 maqam_defs =
     "ajam": "0 ajam ajam"
-    "rast": "0 rast rast"
     "kurd": "1 kurd kurd"
     "nhwnd": "0 nhwnd hijaz"
+    "rast1": "0 rast rast"
+    "rast2": "0 rast nhwnd"
     "bayati": "1 bayati kurd"
     "sega": "1.75 sega iraq"
-    "hijaz": "1 hijaz kurd"
+    "hijaz1": "1 hijaz bayati"
+    "hijaz2": "1 hijaz kurd"
     "saba": "1 saba zamzama"
 
 maqamat = []
@@ -159,8 +161,10 @@ disp_name = (maqam) ->
         "ajam" : "عجم",
         "kurd": "كرد",
         "nhwnd": "نهاوند",
-        "hijaz": "حجاز",
-        "rast": "راست",
+        "hijaz1": "حجاز صعودا",
+        "hijaz2": "حجاز هبوطا",
+        "rast1": "راست صعودا",
+        "rast2": "راست هبوطا",
         "sega" : "سيكاه",
         "bayati" : "بياتي",
         "saba" : "صبا"
