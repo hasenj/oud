@@ -83,8 +83,8 @@ jid = (id) -> $("#" + id)
 
 (->
     std_tones = u.zip(
-        [0, 1, 2, 2.5, 3.5, 4.5, 5.5, 6],
-        "DO RE MI FA SOL LA SI".split(" "))
+        [0, 9, 16, 23, 31, 40, 47, 53]
+        "DO RE MI FA SOL LA SI DO".split(" "))
     std_tones = _(std_tones).map( (note) -> {tone: note[0], name: note[1]})
     tone_to_note_scope = (tone, tones=std_tones) ->
         if tones[1].tone > tone
@@ -95,7 +95,7 @@ jid = (id) -> $("#" + id)
         # if a note has two possibilities, avoid conflict with previous
         if first.name == prev then second else first
     window.get_note_info = (tone, prev="") ->
-        tone = modulo tone, 6
+        tone = modulo tone, 53
         [note0, note1] = tone_to_note_scope(tone)
         dist = (tone-note0.tone) / (note1.tone-note0.tone)
         ret_val = (note) ->
@@ -144,7 +144,8 @@ update_ui = ->
         note_name = get_note_info(tone, prev_note_name).note.name #"DO"
         prev_note_name = note_name
         $(".kb_key", keydiv).html(kb_key)
-        $(".tone", keydiv).html(tone.toFixed(2))
+        tone_in_6 = Number((tone/9).toFixed(2))
+        $(".tone", keydiv).html(tone_in_6)
         $(".note_name", keydiv).html(note_name)
 
     for p_key in get_all_pkeys()
