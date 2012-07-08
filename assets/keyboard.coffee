@@ -28,7 +28,6 @@ gen_piano_rows = (maqam) ->
         trailing = u.last(segments[-1], 3) # we want last 2 keys, but the very last key is the same as the first key, so we take 3
         following = u.first(segments[2], 3) # 2 keys from next octave, using 3 for same reason as above
         octave = u.union(trailing, segments[0], segments[1], following)
-        console.log("octave:", octave)
         octaves.unshift(octave)
     return octaves
 
@@ -159,10 +158,10 @@ update_ui = ->
         update_key_div_ui p_key
             
 init = ->
-    # set_maqam( {start: 0, name: "ajam", jins1: [1, 1, 0.5], jins2: [1, 1, 0.5]} )
-    set_kb_layout('qwerty')
     init_ui()
-    update_ui()
+    set_kb_layout('qwerty')
+    console.log 'init keyboard module'
+    updkeys(window.active_maqam) # HACK/RACE
 
 $ init
 
@@ -247,6 +246,7 @@ modulo = (index, length) ->
 fval = (id)-> $("#" + id).val() # field value
 
 window.updkeys = (maqam) ->
+    console.log 'Updating keyboard'
     set_maqam(maqam)
     update_ui()
 

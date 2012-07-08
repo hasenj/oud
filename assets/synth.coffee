@@ -15,7 +15,6 @@ mksink = (srate)->
             prebuf_size = 4096 / 8
             issue_warning("There's a known issue with Chrome at this time")
         prebuf_size = Math.floor(prebuf_size)
-        console.log "buffer:", prebuf_size
         Sink(null, CHANNELS, prebuf_size, srate)
     catch error # not sure if the exception would happen here
         issue_error("It looks like your browser doesn't support Web Audio. Try opening this site in Firefox")
@@ -138,7 +137,6 @@ window.playtone = (tone)->
     play_signal signal
 
 play_signal = (signal) ->
-    console.log "Playing Signal"
     point = dev.ringOffset
     ringlen = dev.ringBuffer.length
     for sample in signal
