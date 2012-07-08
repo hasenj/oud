@@ -12,22 +12,42 @@ input#scale
     font normal 3em amiri
     color hsl(0, 0%, 32%)
     text-shadow 1px 1px 2px silver
+    direction rtl
+    text-align right
 
 
 #maqam_section
-  pad()
-  standout()
-  display inline-block
-  width 380px
-  #maqam_ctrls
-    margin-left 5px
-  #presets
-    margin-top 4px
+  // position absolute
+  // right 0
+  // top 80px
 
+maqam-button(bghue=230)
+  -reset()
+  cursor pointer
+  box-shadow 0px 0px 1px 1px hsl(bghue, 1, 90) inset
+  background-color white
+  display inline-block
+  width 100%
+  text-align center
+  direction rtl
+  font-family amiri
+  font-size 1.5em
+  text-shadow 1px 1px 2px hsl(150, 40, 60)
+  margin 0px
+  &:hover
+  &.hover
+    backbround-color hsl(0, 0, 90)
+  &:active
+  &.active
+    backbround-color hsl(0, 0, 70)
+    
 .maqam_list
-    margin-top 20px
     direction rtl
     text-align right
+    width 120px
+    .maqam_btn
+      maqam-button()
+
 
 .widget_stepper
   font-size 0.8em
@@ -53,8 +73,8 @@ input#scale
   margin-left 20px
   span.text
     font-size 10pt
-    
-maqam-button(bghue=230)
+
+aqua-button(bghue=230)
   -reset()
   outer_border(lite=0)
     outer_shadow_color = hsl(((bghue+20) % 360), 3, 40+lite)
@@ -84,14 +104,4 @@ maqam-button(bghue=230)
     grad(85)
     outer_border(-8)
 
-
-.maqam_btn
-  maqam-button()
-  width 54px
-  margin 8px
-  direction rtl
-  text-align right
-  font-family amiri
-  font-size 1.5em
-  text-shadow 1px 1px 2px hsl(150, 40, 60)
 

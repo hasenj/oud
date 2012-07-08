@@ -168,31 +168,15 @@ if not window.updkeys?
 
 set_active_maqam = (maqam) ->
     window.active_maqam = maqam # XXX not a clone, ok?
-    # scale_widget.set_val(maqam.scale)
-    # start_widget.set_val(maqam.start)
     $("#maqam_name").html("مقام ال" + disp_name maqam)
     $.cookie('maqam', maqam.name)
     updkeys maqam
 
-# closely coupled with set_active_maqam
-# XXX overlapping responsibilities
-on_user_change_scale = ->
-    active_maqam.scale = scale_widget.get_val() # this actually changes the scale for the active maqam directly!
-    active_maqam.start = start_widget.get_val()
-    if active_maqam.name.match(/^user\d/)
-        $.cookie(active_maqam.name + "-start", active_maqam.start)
-        $.cookie(active_maqam.name + "-scale", active_maqam.scale.join(" "))
-    updkeys active_maqam
-
 init_maqams = ->
     default_maqam = $.cookie('maqam') ? 'ajam'
-    ctrls = $("#maqam_ctrls")
-    window.scale_widget = new ScaleWidget ctrls, [1,1,0.5,1,1,1,0.5]
-    window.start_widget = new StartWidget ctrls, 0
-    window.maqam_list = new MaqamList ctrls, maqamat, default_maqam
-
-    evt.bind(scale_widget, "changed", on_user_change_scale)
-    evt.bind(start_widget, "changed", on_user_change_scale)
+    el = $("#maqam_section")
+    # window.start_widget = new StartWidget el, 0
+    window.maqam_list = new MaqamList el, maqamat, default_maqam
 
 jimg = (src) -> $("<img>").attr('src', src)
 
