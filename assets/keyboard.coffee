@@ -5,17 +5,6 @@ from_end = (array, start, end) -> # subarray from end
     len = array.length
     array[len+start...len+end]
 
-window.std_scale = (scale, start=0) ->
-    # applies 'scale' (a list of tonal distances) to 'start' (a tone)
-    # and return a list of tones
-    res = [start]
-    for tone in scale
-        res.push(tone + last(res))
-    return res
-
-#console.log std_scale [1, 1, 0.5, 1, 1, 1, 0.5]
-#console.log std_scale [1, 1, 0.5, 1, 1, 0.5]
-
 window.active_tones = [] # THE current piano notes, an array of rows, as returned by get_piano_rows
 
 # Generates the pressable keys that the user uses to play the music
@@ -26,8 +15,8 @@ gen_piano_rows = (maqam) ->
     for octave_index in [-1..1]
         segments = maqam.gen_fn(octave_index)
         trailing = u.last(segments[-1], 3) # we want last 2 keys, but the very last key is the same as the first key, so we take 3
-        following = u.first(segments[2], 3) # 2 keys from next octave, using 3 for same reason as above
-        octave = u.union(trailing, segments[0], segments[1], following)
+        octave = u.union(trailing, segments[0], segments[1], segments[2])
+        octave = u.first(octave, 12) # pick first 12 keys (discard more keys if they appear for whatever reason (special maqams like saba, etc))
         octaves.unshift(octave)
     return octaves
 
@@ -138,7 +127,11 @@ init_ui = -> # assumes active_layout and active_tones are already set
     for r, row in active_tones
         el = $("<div class='row'>")
         for k, key in r
-            el.append make_key pkey(row, key)
+            keydiv = make_key pkey(row, key)
+            is_outside_octave_bounds = key not in [2..8]
+            if is_outside_octave_bounds
+                keydiv.addClass("outside_octave")
+            el.append keydiv
         jid("keys").append(el)
 
 update_ui = ->
