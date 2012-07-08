@@ -229,7 +229,7 @@ j_unpress = (jq) ->
     jq.removeClass("pressed").removeClass("semi_pressed").addClass("unpressed")
 
 
-# --------------------------------------------------------------------------
+# -------------------------
 
 modulo = (index, length) ->
     while index < 0
