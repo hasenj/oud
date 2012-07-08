@@ -22,7 +22,7 @@ ajnas_defs =
     "hijaz": "0.6 1.3 0.6"
     "saba": "0.75 0.75 0.5"
     "kurd": "0.5 1 1"
-    "siga": "0.75 1 1"
+    "sega": "0.75 1 1"
     "iraq": "0.75 1 0.75"
     "huzam": "0.75 1 0.5"
     "zamzama": "0.5 1 0.5"
@@ -51,6 +51,7 @@ maqam_defs =
     "kurd": "1 kurd kurd"
     "nhwnd": "0 nhwnd hijaz"
     "bayati": "1 bayati kurd"
+    "sega": "1.75 sega iraq"
     "hijaz": "1 hijaz kurd"
     "saba": "1 saba zamzama"
 
@@ -139,7 +140,7 @@ presets = [
         ["saba", "1", "0.75 0.75 0.5 1.5 0.5 1 1"] 
         # ["saba2", "1", "0.75 0.75 0.5 1.5 0.5 1 0.5"] # TODO seems to work, but should check with professionals
         #["bayati", "1", "0.75 0.75 1 1 0.5 1 1"] # same as rast1
-        #["siga" , "1.75", "0.75 1 1 0.75 0.75 1 0.75", "0.75 1 1 0.5 1 1 0.75"] # same as rast?
+        #["sega" , "1.75", "0.75 1 1 0.75 0.75 1 0.75", "0.75 1 1 0.5 1 1 0.75"] # same as rast?
         #["huzam", "1.75", "0.75 1 0.5 1.5 0.5 1 0.75"] # same as hijaz form 2
         #["jharga", "-2", "1 1 0.5 1 1 0.75 0.75"] # same as bayati, hence rast
         #["hijaz_kar", "0", "0.5 1.5 0.5 1 0.5 1.5 0.5"]
@@ -159,7 +160,7 @@ disp_name = (maqam) ->
         "nhwnd": "نهاوند",
         "hijaz": "حجاز",
         "rast": "راست",
-        "siga" : "سيكاه",
+        "sega" : "سيكاه",
         "bayati" : "بياتي",
         "saba" : "صبا"
     }
