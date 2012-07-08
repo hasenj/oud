@@ -33,7 +33,8 @@ gen_tones = (start, distances) ->
     res = [start]
     for displacement in distances
         res.push(u.last(res) + displacement)
-    res
+    stabilize = (num) -> Number num.toFixed(2)
+    u.map(res, stabilize)
 
 FIFTH = 3.5
 OCTAVE = 6
