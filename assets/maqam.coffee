@@ -45,7 +45,8 @@ for key, val of ajnas_defs
 maqam_defs =
     "ajam": "0 ajam ajam"
     "kurd": "9 kurd kurd"
-    "nhwnd": "0 nhwnd hijaz"
+    "nhwnd1": "0 nhwnd hijaz"
+    "nhwnd2": "0 nhwnd kurd"
     "rast1": "0 rast rast"
     "rast2": "0 rast nhwnd"
     "bayati": "9 bayati kurd"
@@ -156,11 +157,12 @@ disp_name = (maqam) ->
     map = {
         "ajam" : "عجم",
         "kurd": "كرد",
-        "nhwnd": "نهاوند",
+        "nhwnd1": "نهاوند صعودا",
+        "nhwnd2": "نهاوند هبوطا",
         "hijaz1": "حجاز صعودا",
         "hijaz2": "حجاز هبوطا",
-        "rast1": "راست صعودا",
-        "rast2": "راست هبوطا",
+        "rast1": "رست صعودا",
+        "rast2": "رست هبوطا",
         "sega" : "سيكاه",
         "bayati" : "بياتي",
         "saba" : "صبا"
