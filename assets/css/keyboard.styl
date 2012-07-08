@@ -25,7 +25,7 @@ btn_highlight(color)
       .key
         link()
         display inline-block
-        padding 20px 4px
+        padding 45px 9px
         margin 1px 
         background-color hsl(20, 30, 90)
         font normal 9pt sans
@@ -48,12 +48,14 @@ btn_highlight(color)
             color silver
             text-shadow 0px 0px 2px 1px hsl(50, 80, 90)
         .note_name
-            font normal 7pt monospace
+            font normal 10px monospace
+            line-height 25px
             padding-top 2px
             color #777
             text-shadow 0px 1px 1px white
         &.pressed
             color hsl(300, 20%, 10%)
+            background-color hsl(90, 40, 80)
             .kb_key
               btn_highlight(press_color)
               border-color hsl(40, 70, 48) 
@@ -62,7 +64,10 @@ btn_highlight(color)
                 color silver * 0.9
             .note_name
               text-shadow 0px 0px 3px silver
+              font-size 12px
+              line-height 25px
         &.semi_pressed
+            background-color hsl(90, 20, 90)
             .kb_key
               btn_highlight(semipress_color)
               border-color hsl(40, 70, 52) 
