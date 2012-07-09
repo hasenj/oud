@@ -84,7 +84,7 @@ jid = (id) -> $("#" + id)
 (->
     std_tones = u.zip(
         [0, 9, 16, 23, 31, 40, 47, 53]
-        "DO RE MI FA SOL LA SI DO".split(" "))
+        "دو ري مي فا صول لا سي دو".split(" "))
     std_tones = _(std_tones).map( (note) -> {tone: note[0], name: note[1]})
     tone_to_note_scope = (tone, tones=std_tones) ->
         if tones[1].tone > tone
