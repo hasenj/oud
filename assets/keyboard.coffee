@@ -1,9 +1,24 @@
-u = _
+#
+#   Virtual Keyboard
+#
+#   There are 3 components here:
+#
+#        - The physical keyboard (computer keyboard)
+#        - The virtual keyboard (onscreen keyboard)
+#        - The current note layout
+#
+#    The virtual keyboard essentially maps physical key strokes to notes on the current active layout.
+#
+#    The note layout is defined in terms of the virtual keyboard; i.e. which note is associated with each virtual key.
+#
+#    To facilitate this mapping, we use a very simple convention:
+#
+#    The virtual keyboard consists of rows, each row consists of keys
+#
+#    Thus, each virtual key can be identified by 2 numbers (a la coordinates) row number, and key number
+#
 
-from_end = (array, start, end) -> # subarray from end
-    # start and end must be given as negative numbers
-    len = array.length
-    array[len+start...len+end]
+u = _
 
 window.active_tones = [] # THE current piano notes, an array of rows, as returned by get_piano_rows
 
