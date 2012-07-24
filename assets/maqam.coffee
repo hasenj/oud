@@ -23,6 +23,7 @@ ajnas_defs =
     "huzam": "7 9 4"
     "jiharkah": "8 8 6"
     "zamzama": "4 9 5"
+    "ushaq": "9 3 10"
 
 
 # helper function for note generators
@@ -56,6 +57,7 @@ maqam_defs =
     "saba": "9 saba zamzama"
     #"sega": "16 sega iraq"
     "jiharkah": "9 jiharkah jiharkah"
+    "ushaq": "9 ushaq bayati"
 
 maqamat = []
 for name, def of maqam_defs
@@ -144,6 +146,7 @@ disp_name = (maqam) ->
         "bayati" : "بياتي",
         "saba" : "صبا"
         "jiharkah": "جهاركاه"
+        "ushaq": "عشاق"
     }
     if maqam.name of map
         map[maqam.name]
