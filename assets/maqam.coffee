@@ -45,16 +45,17 @@ for key, val of ajnas_defs
 # a maqam def is starting point and 2 jins
 maqam_defs =
     "ajam": "0 ajam ajam"
-    "kurd": "9 kurd kurd"
-    "nhwnd1": "0 nhwnd hijaz"
-    "nhwnd2": "0 nhwnd kurd"
-    "rast1": "0 rast rast"
-    "rast2": "0 rast nhwnd"
-    "bayati": "9 bayati kurd"
-    "sega": "16 sega iraq"
     "hijaz1": "9 hijaz bayati"
     "hijaz2": "9 hijaz kurd"
+    "rast1": "0 rast rast"
+    "rast2": "0 rast nhwnd"
+    "nhwnd1": "0 nhwnd hijaz"
+    "nhwnd2": "0 nhwnd kurd"
+    "kurd": "9 kurd kurd"
+    "bayati": "9 bayati kurd"
     "saba": "9 saba zamzama"
+    #"sega": "16 sega iraq"
+    "jiharkah": "9 jiharkah jiharkah"
 
 maqamat = []
 for name, def of maqam_defs
@@ -129,31 +130,6 @@ for maqam in maqamat
         if maqam.name == 'saba' 
             maqam.gen_fn = (octave_index) -> generate_saba_notes(maqam, octave_index)
 
-presets = [
-        ["ajam", "0", "1 1 0.5 1 1 1 0.5"]
-        ["kurd", "1", "0.5 1 1 1 0.5 1 1"] # same as ajam, but keep it
-        ["nhwnd", "0", "1 0.5 1 1 0.5 1.5 0.5"]
-        # ["nhwnd2", "0", "1 0.5 1 1 0.5 1 1"] # also same as ajam
-        ["hijaz", "1", "0.6 1.3 0.6 1 0.5 1 1"]
-        #["hijaz2", "1", "0.5 1.5 0.5 1 0.75 0.75 1"]
-        ["rast", "0", "1 0.75 0.75 1 1 0.75 0.75"]
-        # ["rast2", "0", "1 0.75 0.75 1 1 0.5 1"]
-        ["saba", "1", "0.75 0.75 0.5 1.5 0.5 1 1"] 
-        # ["saba2", "1", "0.75 0.75 0.5 1.5 0.5 1 0.5"] # TODO seems to work, but should check with professionals
-        #["bayati", "1", "0.75 0.75 1 1 0.5 1 1"] # same as rast1
-        #["sega" , "1.75", "0.75 1 1 0.75 0.75 1 0.75", "0.75 1 1 0.5 1 1 0.75"] # same as rast?
-        #["huzam", "1.75", "0.75 1 0.5 1.5 0.5 1 0.75"] # same as hijaz form 2
-        #["jharga", "-2", "1 1 0.5 1 1 0.75 0.75"] # same as bayati, hence rast
-        #["hijaz_kar", "0", "0.5 1.5 0.5 1 0.5 1.5 0.5"]
-        #["nwathr", "0", "1 0.5 1.5 0.5 0.5 1.5 0.5"]
-        # ["user1", $.cookie("user1-start") ? "1",$.cookie("user1-scale") ? "0.5 1.5 0.5 1 0.75 0.75 1"]
-        # ["user2", $.cookie("user2-start") ? "1",$.cookie("user2-scale") ? "0.75 0.75 1 1 0.5 1 1"]
-        # ["user3", $.cookie("user3-start") ? "-2",$.cookie("user3-scale") ? "1 1 0.5 1 1 0.75 0.75"]
-        # ["user4", $.cookie("user4-start") ? "0",$.cookie("user4-scale") ? "0.5 1.5 0.5 1 0.5 1.5 0.5"]
-        # ["user5", $.cookie("user5-start") ? "1",$.cookie("user5-scale") ? "0.75 0.75 1 1 0.5 1 1"]
-        # ["user6", $.cookie("user6-start") ? "1",$.cookie("user6-scale") ? "0.75 0.75 1 1 0.5 1 1"]
-]
-
 disp_name = (maqam) ->
     map = {
         "ajam" : "عجم",
@@ -167,6 +143,7 @@ disp_name = (maqam) ->
         "sega" : "سيكاه",
         "bayati" : "بياتي",
         "saba" : "صبا"
+        "jiharkah": "جهاركاه"
     }
     if maqam.name of map
         map[maqam.name]
