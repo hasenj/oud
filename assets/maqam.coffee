@@ -11,17 +11,15 @@ maqam_ctor = (name, start, jins1, jins2) ->
     {name, start, jins1, jins2}
 
 ajnas_defs =
-    "ajam": "9 8 5"
+    "ajam": "9 9 4"
     "rast": "9 7 6"
     "nhwnd": "9 4 9"
     "bayati": "6 7 9"
     "hijaz": "5 12 5"
     "saba": "6 7 5"
     "kurd": "4 9 9"
-    "sega": "6 9 9"
-    "iraq": "7 9 6"
     "huzam": "7 9 4"
-    "jiharkah": "8 8 6"
+    "jiharkah": "9 8 5"
     "zamzama": "4 9 5"
     "ushaq": "9 3 10"
 
@@ -55,7 +53,6 @@ maqam_defs =
     "kurd": "9 kurd kurd"
     "bayati": "9 bayati kurd"
     "saba": "9 saba zamzama"
-    #"sega": "16 sega iraq"
     "jiharkah": "9 jiharkah jiharkah"
     "ushaq": "9 ushaq bayati"
 
@@ -142,7 +139,6 @@ disp_name = (maqam) ->
         "hijaz2": "حجاز هبوطا",
         "rast1": "رست صعودا",
         "rast2": "رست هبوطا",
-        "sega" : "سيكاه",
         "bayati" : "بياتي",
         "saba" : "صبا"
         "jiharkah": "جهاركاه"
