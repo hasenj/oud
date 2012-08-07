@@ -44,13 +44,13 @@ for key, val of ajnas_defs
 # a maqam def is starting point and 2 jins
 maqam_defs =
     "ajam": "0 ajam ajam"
+    "kurd": "9 kurd kurd"
     "hijaz1": "9 hijaz bayati"
     "hijaz2": "9 hijaz kurd"
     "rast1": "0 rast rast"
     "rast2": "0 rast nhwnd"
     "nhwnd1": "0 nhwnd hijaz"
     "nhwnd2": "0 nhwnd kurd"
-    "kurd": "9 kurd kurd"
     "bayati": "9 bayati kurd"
     "saba": "9 saba zamzama"
     "jiharkah": "9 jiharkah jiharkah"
@@ -351,4 +351,4 @@ make_div_floating = (div, topvalue, float_top_value) ->
     )
 
 $ ->
-    make_div_floating($(".maqam_list"), 100, 20)
+    make_div_floating($(".maqam_list"), 150, 40)

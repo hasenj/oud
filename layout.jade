@@ -2,22 +2,21 @@
 html
   head
     title أوتار
-    include like_btns_headers
-    // include chartbeat_header
     link(rel="icon", type="image/png", href="/icon.png")
     != css('index')
     script(src="/jquery.js", type="text/javascript")
     script(src="/underscore-min.js", type="text/javascript")
     script(src="/jquery.hotkeys.js", type="text/javascript")
     script(src="/jquery.cookie.js", type="text/javascript")
-    script(src="/artisan-min.js", type="text/javascript")
     script(src="/sink.js", type="text/javascript")
-    script(src="/ga.js", type="text/javascript")
-    link(rel="stylesheet", type="text/css", href="http://fonts.googleapis.com/css?family=Ubuntu|Play")
+    script(src="/ko.js", type="text/javascript")
+    link(rel="stylesheet", type="text/css", href="http://fonts.googleapis.com/earlyaccess/amiri.css")
   body
     .content_wrapper
       #header 
-        .logo
-          h1 أَوْتَاْر
-          h3 للعزف بالمقامات العربية
+        .tr
+          .logo.td
+            h1 أَوْتَاْر
+            h3 للعزف بالمقامات العربية
+          #maqam_name.td(data-bind="text: maqamName")
       #content !{body}
