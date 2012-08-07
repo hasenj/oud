@@ -16,26 +16,8 @@ html
     link(rel="stylesheet", type="text/css", href="http://fonts.googleapis.com/css?family=Ubuntu|Play")
   body
     .content_wrapper
-      links = {'About': '/about', 'Feedback': '/feedback', 'Code':"http://github.com/hasenj/oud"}
       #header 
-          a(href="/")
-            .logo
-               h1 Arabic Strings
-               h3 Music Keyboard + Arabic Maqam
-          a(href="/", class="arabic")
-            .logo
-              h1 أَوْتَاْر
-              h3 للعزف بالمقامات العربية
-          //
-            ul.tabs
-              for url, name in links
-                li: a(href=url) #{name}
+        .logo
+          h1 أَوْتَاْر
+          h3 للعزف بالمقامات العربية
       #content !{body}
-      footer
-        .footer_content
-          for url, name in links
-            div.link
-              a(href=url) #{name}
-          // include like_btns
-          // include chartbeat_body
-      
