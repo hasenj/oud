@@ -11,9 +11,14 @@ btn_highlight(color)
     // box-shadow inset 0px -50px 40px -30px color 
     background-color color
 
+.ib
+    display inline-block
+
 #keys
     *
         user-select none
+    .outside_octave
+        background-image url('/wood.png')
     .row
       // margin 1px 4px
       .key
@@ -22,8 +27,8 @@ btn_highlight(color)
         background-repeat no-repeat
         background-position-x center
         display inline-block
-        width 52px
-        height 132px
+        width 49px
+        height 130px
         font normal 9pt sans
         text-align center
         text-shadow 0px 0px 2px silver * 1.2
@@ -50,8 +55,6 @@ btn_highlight(color)
             color hsl(270, 20, 60)
             height 60px
             line-height 50px
-        &.outside_octave
-            background-color hsl(170, 20, 85)
         &.pressed
             color hsl(300, 20, 10)
             background-image url('/key-pressed.png')

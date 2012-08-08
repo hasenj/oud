@@ -131,10 +131,12 @@ init_ui = -> # assumes active_layout and active_tones are already set
     make_key = (p_key)->
         id = pkey_id(p_key)
         keydiv = jQuery(
-            "<div id='#{id}' class='key unpressed'>
-                <div class='kb_key'>&nbsp;</div>
-                <div class='tone'>&nbsp;</div>
-                <div class='note_name'>&nbsp;</div>
+            "<div class='ib'>
+                <div id='#{id}' class='key unpressed'>
+                    <div class='kb_key'>&nbsp;</div>
+                    <div class='tone'>&nbsp;</div>
+                    <div class='note_name'>&nbsp;</div>
+                </div>
             </div>")
         keydiv.mousedown(-> play_key(p_key))
         keydiv.mouseup(-> lift_key(p_key))
