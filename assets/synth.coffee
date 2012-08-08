@@ -107,9 +107,23 @@ oud_signal_gen = (freq) ->
             signal[index] = table[point]
     return signal
 
-tonefreq = (tone, base=130) ->
-   tones_per_octave = 53 # turkish comma system
-   return base * Math.pow(2, tone/tones_per_octave)
+tonefreq = (tone, base=128) ->
+    # use DO=128 (2^7) as a base reference
+    # TODO: provide UI to change value
+    # It should be noted that:
+    #
+    #   130.39 would create a LA frequency of ~ 220.00 which is the standard in
+    #   western music
+    #
+    #   130.81 is the western value for the DO note, but would (on our Ajam
+    #   scale) create a LA tone with frequency 220.71 which is a bit off from
+    #   the western standard
+    #
+    #   The value of 128 for DO causes the LA note to have a frequency of
+    #   215.97 which is rather different from the western LA note of 220
+    #
+    tones_per_octave = 53 # turkish comma system
+    return base * Math.pow(2, tone/tones_per_octave)
 
 tone_signal = {}
 
