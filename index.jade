@@ -5,13 +5,14 @@ table.layout
   tr.header
     td.logo
     td.maqam_name
-      div#maqam_name(data-bind="text: maqamName")
+      div#maqam_name
   tr.middle
     td.maqam_list
       div#maqam_section
     td.keyboard
       div#keys
 
+include help_tips.html
 
 != js('/utils')
 != js('/events')

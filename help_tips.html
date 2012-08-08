@@ -1,0 +1,19 @@
+<div id="#tips_container">
+    <div data-bind="with: current_tip">
+        <div class="tip">
+            <p data-bind="text: text">
+            </p>
+            <button data-bind="click: next, visible: has_next" value="الخطوة التالية"/>
+            <button data-bind="click: close" value="اغلق" />
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+var Tips = function() {
+    this.current_tip = ko.observable()
+    return this;
+}
+
+ko.applyBindings(new Tips(), $("#tips_container")[0])
+</script>
