@@ -97,32 +97,35 @@ pkey_id = (p_key) -> "pkey_" + p_key.row + "_" + p_key.key
 jid = (id) -> $("#" + id)
 
 (->
+    note_names = "دو ري مي فا صول لا سي دو".split(" ")
     std_tones = u.zip(
         [0, 9, 16, 23, 31, 40, 47, 53]
-        "دو ري مي فا صول لا سي دو".split(" "))
+        note_names)
     std_tones = _(std_tones).map( (note) -> {tone: note[0], name: note[1]})
     tone_to_note_scope = (tone, tones=std_tones) ->
         if tones[1].tone > tone
             [tones[0], tones[1]]
         else
             tone_to_note_scope(tone, tones[1...])
-    resolve_note_name = (first, second, prev) ->
-        # if a note has two possibilities, avoid conflict with previous
-        if first.name == prev then second else first
-    window.get_note_info = (tone, prev="") ->
+    window.get_note_name = (tone) ->
         tone = modulo tone, 53
         [note0, note1] = tone_to_note_scope(tone)
         dist = (tone-note0.tone) / (note1.tone-note0.tone)
-        ret_val = (note) ->
-            note = _(note).clone()
-            diff = tone - note.tone
-            {diff, note}
         if dist < 0.5
-            ret_val note0
-        else if dist == 0.5
-            ret_val resolve_note_name note0, note1, prev
-        else # if dist > 0.5
-            ret_val note1
+            note0.name
+        else # if dist >= 0.5
+            note1.name
+    window.get_note_info = (base_tone) ->
+        base_note = get_note_name(base_tone)
+        base_note_index = note_names.indexOf(base_note)
+        {by_index: (index) ->
+            index += base_note_index
+            if index < 0
+                index += 7
+            if index > 7
+                index %= 7
+            return note_names[index]
+        }
 )()
 
 
@@ -152,14 +155,15 @@ init_ui = -> # assumes active_layout and active_tones are already set
         jid("keys").append(el)
 
 update_ui = ->
-    prev_note_name = ""
+    base_tone = window.active_tones[1][2] # hack/coupling with kb layout
+    note_name_helper = get_note_info(base_tone)
     update_key_div_ui = (p_key) ->
         keydiv = getkeydiv(p_key)
         id = keydiv.attr("id")
         kb_key = ui_kb_layout[id] ? '&nbsp;'
         tone = active_tones[p_key.row][p_key.key]
-        note_name = get_note_info(tone, prev_note_name).note.name #"DO"
-        prev_note_name = note_name
+        note_index = p_key.key - 2 # coupling with kb layout
+        note_name = note_name_helper.by_index(note_index)
         $(".kb_key", keydiv).html(kb_key)
         $(".tone", keydiv).html(tone)
         $(".note_name", keydiv).html(note_name)
