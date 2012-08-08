@@ -341,14 +341,3 @@ class MaqamList
 
 $ init_maqams
 
-make_div_floating = (div, topvalue, float_top_value) ->
-    $(window).on('scroll', ->
-        console.log("we're scrolling!")
-        if $(window).scrollTop() > topvalue - float_top_value
-            div.css({position: "fixed", top: float_top_value})
-        else
-            div.css({position: "absolute", top: topvalue})
-    )
-
-$ ->
-    make_div_floating($(".maqam_list"), 150, 40)
