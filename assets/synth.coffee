@@ -10,7 +10,7 @@ mksink = (srate)->
     try
         # if $.browser.mozilla
         #    issue_warning("This app works better in Chrome")
-        prebuf_size = if firefox_on_linux() then (srate/2) else 1024
+        prebuf_size = if firefox_on_linux() then (srate/2) else 2048
         prebuf_size = Math.floor(prebuf_size)
         Sink(null, CHANNELS, prebuf_size, srate)
     catch error # not sure if the exception would happen here
