@@ -1,5 +1,5 @@
 <div id="#tips_container">
-    <button data-bind="click: demo">Demo </button>
+    <button data-bind="click: intro"> كيفية العزف </button>
     <div data-bind="with: tour">
         <div class="tip">
             <p data-bind="html: html"> </p>
@@ -13,10 +13,11 @@
 <script type="text/javascript">
 jQuery(function() {
     var TipsViewModel = function() {
+        var self = this;
         this.tour = ko.observable();
 
-        this.demo = function() {
-        var t = new Tour(["مرحبا في موقع اوتار.\n" +
+        this.intro = function() {
+            var t = new Tour(["مرحبا في موقع اوتار.\n" +
             "تستطيع عن طريق الموقع ان تعزف على المقامات الموسيقية العربية. \nلنأخذ جولة سريعة لنتعلم كيفية استخدام الموقع"
             ,"في الوسط عندنا ازرار العزف و نستطيع من خلالها عزف اي نغمة عن طريق الضغط على ازرار الكيبورد\n" +
 
@@ -24,6 +25,17 @@ jQuery(function() {
             ]);
             this.tour(t);
         };
+
+        this.firstTimeIntro = function() {
+            var key = "first_time_intro";
+            var intro_seen = $.cookie(key)
+            if(!intro_seen) {
+                $.cookie(key, 1)
+                self.intro();
+            }
+        };
+
+
         return this;
     };
 
@@ -53,8 +65,10 @@ jQuery(function() {
         return this;
     };
 
-    var tipsVM = new TipsViewModel()
+    var tipsVM = new TipsViewModel();
 
     ko.applyBindings(tipsVM, $("#tips_container")[0])
+
+    tipsVM.firstTimeIntro();
 });
 </script>
