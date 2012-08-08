@@ -10,6 +10,7 @@
     </div>
 </div>
 
+<script type="text/javascript" src="/tips_data.js"></script>
 <script type="text/javascript">
 jQuery(function() {
     var TipsViewModel = function() {
@@ -17,13 +18,7 @@ jQuery(function() {
         this.tour = ko.observable();
 
         this.intro = function() {
-            var t = new Tour(["مرحبا في موقع اوتار.\n" +
-            "تستطيع عن طريق الموقع ان تعزف على المقامات الموسيقية العربية. \nلنأخذ جولة سريعة لنتعلم كيفية استخدام الموقع"
-            ,"في الوسط عندنا ازرار العزف و نستطيع من خلالها عزف اي نغمة عن طريق الضغط على ازرار الكيبورد\n" +
-
-            "جرب مثلا الضغط على زر E ثم زر R "
-            ]);
-            this.tour(t);
+            this.tour(new Tour(window.tips_data.intro));
         };
 
         this.firstTimeIntro = function() {
