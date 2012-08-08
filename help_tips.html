@@ -1,19 +1,38 @@
 <div id="#tips_container">
+    <button data-bind="click: demo">Demo </button>
     <div data-bind="with: current_tip">
         <div class="tip">
             <p data-bind="text: text">
             </p>
-            <button data-bind="click: next, visible: has_next" value="الخطوة التالية"/>
-            <button data-bind="click: close" value="اغلق" />
+            <!--<button data-bind-n="click: next, visible: has_next"/>الخطوة التالية</button>-->
+            <button data-bind="click: close"/>اغلق</button>
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
-var Tips = function() {
-    this.current_tip = ko.observable()
-    return this;
-}
+jQuery(function() {
+    var Tips = function() {
+        this.current_tip = ko.observable();
 
-ko.applyBindings(new Tips(), $("#tips_container")[0])
+        this.demo = function() {
+            var t = new Tip("مرحبا في موقع اوتار. تستطيع عن طريق الموقع ان تعزف على المقامات الموسيقية العربية. لنأخذ جولة سريعة لنتعلم كيفية استخدام الموقع");
+            this.current_tip(t);
+        };
+        return this;
+    };
+
+    var Tip = function(text, next_fn) {
+        var self = this;
+        this.text = ko.observable(text)
+        this.close = function() {
+            tips.current_tip(null)
+        };
+        return this;
+    };
+
+    var tips = new Tips()
+
+    ko.applyBindings(tips, $("#tips_container")[0])
+});
 </script>
