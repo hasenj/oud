@@ -22,27 +22,23 @@ btn_highlight(color)
         background-repeat no-repeat
         background-position-x center
         display inline-block
-        width 50px
-        height 145px
-        margin 1px 
-        // background-color hsl(20, 30, 90)
+        width 52px
+        height 132px
         font normal 9pt sans
         text-align center
         text-shadow 0px 0px 2px silver * 1.2
         .kb_key
           margin-top 20px
-          // background-color #fdfdfd
-          border 2px solid hsl(40, 70, 50)
-          border-radius 25px
           display inline-block
           width 30px
           height 28px
           line-height 28px
           text-align center
-          // font-family Helvetica
+          font-family Helvetica
           font-size 16px
           font-weight normal
-          color hsl(70, 40, 40)
+          color hsl(120, 20, 30)
+          border 1px solid silver
         .tone
             font normal 5pt sans
             padding-top 4px
@@ -55,25 +51,17 @@ btn_highlight(color)
             height 60px
             line-height 50px
         &.outside_octave
-           // background-color hsl(20, 30, 85)
+            background-color hsl(170, 20, 85)
         &.pressed
             color hsl(300, 20, 10)
-            // background-color hsl(90, 40, 80)
             background-image url('/key-pressed.png')
             .kb_key
-              btn_highlight(press_color)
-              border-color hsl(40, 70, 48) 
+              border-color gray
               color hsl(50, 70, 20)
             .note_name
               color hsl(270, 20, 40)
         &.semi_pressed
             background-image url('/key-semi-pressed.png')
-            // background-color hsl(90, 10, 84)
             .kb_key
-              btn_highlight(semipress_color)
-              // border-color hsl(40, 70, 52) 
               color hsl(50, 70, 20)
-        &.unpressed 
-            .kb_key
-              btn_highlight(unpressed_color)
 
