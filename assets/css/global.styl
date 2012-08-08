@@ -2,8 +2,6 @@
 
 global-reset()
 
-footer_height = 40px
-
 bgcol = hsl(200, 5, 94)
 footer_bgcol = hsl(200, 6, 90)
 body
@@ -13,25 +11,12 @@ body
 
 html, body
     height 100%
-
-.content_wrapper
-  min-height 100%
-  position relative
-
-footer
-  position absolute
-  bottom 0
-  height footer_height
-  display block
-  width 100%
-  box-shadow 0px 0px 2px 2px silver
-  border-top 1px solid silver
-  background-color footer_bgcol
+    direction rtl
 
 div, p
     user-select text
 
-table.layout // the keyboard layout .. not the page layout
+div#keys
     user-select none
 
 focuscol = silver
@@ -54,55 +39,45 @@ link()
 
 table.layout
     padding 0
-    margin 0
-    width 100%
-    // box-shadow 0px 0px 2px 2px silver
+    margin 0 auto
+    width 1000px
     tr, td
         padding 0
         margin 0
         vertical-align top
-    td#keyboard
-        padding 0px 40px
-    td#maqams
-        width 120px
-        user-select none
 
-#header
+tr.header
     font-family Amiri
     text-align center
-    direction rtl
     color hsl(270, 30, 30)
     text-shadow 0px 1px 2px silver
     margin-bottom 10px
-    padding 20px
-    z-index 10
-    display table
     width 100%
-    .tr
-        display table-row
-        .td
-            display table-cell
-        .logo
-            width 400px
-            h1
-                font-size 2.8em
-                display inline-block
-            h3
-                font-size 1.2em
-                margin 7px 30px 
-                display inline-block
-        #maqam_name
-            font normal 2.7em amiri
-            text-shadow 0 1px 1px black
-            color hsl(243, 16, 30)
-            direction rtl
-            text-align center
+    td.logo
+        width 400px
+        h1
+            font-size 2.8em
+            display inline-block
+        h3
+            font-size 1.2em
+            margin 7px 30px 
+            display inline-block
+    td.maqam_name
+        font normal 2.7em amiri
+        text-shadow 0 1px 1px black
+        color hsl(243, 16, 30)
+        direction rtl
+        text-align center
 
-#content
+tr.middle
+    td.keyboard
+        direction ltr
+        width 800px
+
+body
     pad()
     font normal 12pt Ubuntu
     color hsl(0, 0%, 20%)
-    padding-bottom footer_height
 
 #error_box
   div, span

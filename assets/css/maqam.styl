@@ -9,9 +9,6 @@ input#scale
 
 
 #maqam_section
-  // position absolute
-  // right 0
-  // top 80px
   text-align right
   direction rtl
 
@@ -20,9 +17,6 @@ maqam-button(bghue=230)
   cursor pointer
   box-shadow 0px 0px 11px 2px hsl(bghue, 1, 96) inset
   border solid 1px hsl(bghue, 20, 85)
-  border-bottom none
-  &.last
-    border-bottom solid 1px hsl(bghue, 20, 85)
   background-color white
   display inline-block
   width 120px
@@ -43,7 +37,6 @@ maqam-button(bghue=230)
 .maqam_list
     direction rtl
     text-align right
-    width 300px
     .maqam_btn
       maqam-button()
 
