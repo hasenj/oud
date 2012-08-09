@@ -3,9 +3,9 @@
     <div data-bind="with: tour">
         <div class="tip">
             <p data-bind="html: html"> </p>
-            <button data-bind="click: close">اغلق</button>
-            <button data-bind="click: nextStep, enable: hasNext">الخطوة التالية</button>
-            <button data-bind="click: prevStep, enable: hasPrev">الخطوة السابقة</button>
+            <button class="close" data-bind="click: close">اغلق</button>
+            <button class="next" data-bind="click: nextStep, enable: hasNext">الخطوة التالية</button>
+            <button class="prev" data-bind="click: prevStep, enable: hasPrev">الخطوة السابقة</button>
             <button data-bind="click: close, visible: !hasNext()">النهاية</button>
         </div>
     </div>

@@ -1,8 +1,10 @@
+@import 'nib'
+
 .tip
     position: fixed
     top: 200px
     right 40%
-    width: 400px
+    width: 490px
     margin-left: -200px
     z-index 10
     background-color hsl(220, 10, 90)
@@ -10,11 +12,36 @@
     border-radius 12px
     border 1ps solid silver
     box-shadow 0px 0px 7px 2px hsl(220, 10, 30)
-    padding 20px
+    padding 20px 80px
+    min-height 200px
 
     p
         padding 10px
         text-align right
+
+    button
+        z-index 12
+        opacity 0.8
+        border-radius 20px
+        background-color hsl(220, 20, 90)
+        box-shadow 0px 0px 3px 2px gray
+        line-height 11px
+        border 0px
+        padding 12px
+
+    button.next
+        absolute top 100px left 0px
+        width 42px
+        border-radius 0px 20px 20px 0px
+
+    button.prev
+        absolute top 100px right 0px
+        width 42px
+        border-radius 20px 0px 0px 20px
+
+    button.close
+        absolute top -2px left -2px
+        border-radius 12px 0px 0px 0px
 
 
 
