@@ -1,5 +1,5 @@
 mkbuf = (len) -> 
-    new Float32Array(len)
+    new Float32Array Math.floor len
 
 firefox_on_linux = ->
     $.browser.mozilla and (navigator.platform.indexOf("Linux") != -1 or navigator.oscpu.indexOf("Linux") != -1)
@@ -8,12 +8,13 @@ CHANNELS = 2
 
 mksink = (srate)->
     try
-        if $.browser.mozilla
-            issue_warning("This app works better in Chrome")
-        prebuf_size = if firefox_on_linux() then (srate/2) else 4096
+        # if $.browser.mozilla
+        #    issue_warning("This app works better in Chrome")
+        prebuf_size = if firefox_on_linux() then (srate/2) else 2048
+        prebuf_size = Math.floor(prebuf_size)
         Sink(null, CHANNELS, prebuf_size, srate)
     catch error # not sure if the exception would happen here
-        issue_error("Your browser doesn't support Web Audio. Please open this page in Google Chrome")
+        issue_error("الرجاء فتح الموقع فيمتصفح كووكل كروم")
         {sampleRate: srate, ringOffset: 0}
             
 window.dev = mksink(44100)
@@ -75,7 +76,7 @@ oud_wave_shape = mk_wave_shape [
     mk_point 0.91, -0.04
 ]
 
-DURATION = 1
+DURATION = 1.1
 GAIN = 1.5
 SIGNAL_LEN = DURATION * SRATE * CHANNELS
 
@@ -106,9 +107,23 @@ oud_signal_gen = (freq) ->
             signal[index] = table[point]
     return signal
 
-tonefreq = (tone, base=130.82) ->
-   tones_per_octave = 6 # DON'T CHANGE!!
-   return base * Math.pow(2, tone/tones_per_octave)
+tonefreq = (tone, base=128) ->
+    # use DO=128 (2^7) as a base reference
+    # TODO: provide UI to change value
+    # It should be noted that:
+    #
+    #   130.39 would create a LA frequency of ~ 220.00 which is the standard in
+    #   western music
+    #
+    #   130.81 is the western value for the DO note, but would (on our Ajam
+    #   scale) create a LA tone with frequency 220.71 which is a bit off from
+    #   the western standard
+    #
+    #   The value of 128 for DO causes the LA note to have a frequency of
+    #   215.97 which is rather different from the western LA note of 220
+    #
+    tones_per_octave = 53 # turkish comma system
+    return base * Math.pow(2, tone/tones_per_octave)
 
 tone_signal = {}
 
@@ -152,6 +167,5 @@ mk_ring_cleaner = ->
             point++
         prev_offset = offset
 
-setInterval(mk_ring_cleaner(), 800)
-
+setInterval(mk_ring_cleaner(), 200)
 

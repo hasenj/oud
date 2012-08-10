@@ -2,8 +2,6 @@
 
 global-reset()
 
-footer_height = 40px
-
 bgcol = hsl(200, 5, 94)
 footer_bgcol = hsl(200, 6, 90)
 body
@@ -13,25 +11,12 @@ body
 
 html, body
     height 100%
-
-.content_wrapper
-  min-height 100%
-  position relative
-
-footer
-  position absolute
-  bottom 0
-  height footer_height
-  display block
-  width 100%
-  box-shadow 0px 0px 2px 2px silver
-  border-top 1px solid silver
-  background-color footer_bgcol
+    direction rtl
 
 div, p
     user-select text
 
-table.layout // the keyboard layout .. not the page layout
+div#keys
     user-select none
 
 focuscol = silver
@@ -53,65 +38,47 @@ link()
     user-select none
 
 table.layout
-    padding 14px 20px
-    // box-shadow 0px 0px 2px 2px silver
+    padding 0
+    margin 0 auto
+    width 1000px
+    background-image url('/logo.png')
+    background-repeat no-repeat
+    background-position top right
+
     tr, td
+        padding 0
+        margin 0
         vertical-align top
 
-#header
-    background linear-gradient(bottom, hsl(280, 35%, 20%) 5%, hsl(283, 25%, 30%))
-    background url('/hbg.png')
-    text-shadow 0 1px 1px black
-    color hsl(360 - 283, 16%, 80%)
-    padding-top 6px
-    padding-bottom 2px
-    box-shadow 0px 0px 5px 3px gray
-    border-bottom 1px solid black
-    a
-      text-decoration none
-      color inherit
-      &.arabic
-          direction rtl
-          float right
-          h1
-              font-family Arial
-    .logo
-      display inline-block
-      width 240px
-      // border 1px solid silver
-      text-align center
-      padding 4px
-      h1
-        font normal 1.8em Ubuntu
-        display block
-      h3
-        font normal 10pt Ubuntu
-        line-height 1em
-        margin 4px 10px 
-        display inline-block
-    ul.tabs
-      margin-left 40px
-      display inline-block
-      vertical-align middle
-      li
-        margin 5px 12px
-        padding 3px 6px
-        display inline-block
+tr.header
+    font-family Amiri
+    text-align center
+    color hsl(270, 30, 30)
+    text-shadow 0px 1px 2px silver
+    margin-bottom 10px
+    width 100%
+    td.logo
+        width 300px
+
+    td.maqam_name
+        width 700px
+        font normal 2.7em amiri
+        text-shadow 0 1px 1px black
+        color hsl(243, 16, 30)
+        direction rtl
+        text-align center
+
+tr.middle
+    td.maqam_list
+        width 300px
         vertical-align middle
-        // background-color hsl(300, 11, 40)
-        background linear-gradient(top, hsl(300, 15, 37) 5%, hsl(310, 8, 43))
-        border-radius 4px
-        list-style none
-        a
-          display block // get rid of weird spacing inside the li element
-          font-size 9pt
-          color hsl(100, 30, 90)
-          text-decoration none
-#content
-    pad()
+    td.keyboard
+        direction ltr
+        width 700px
+
+body
     font normal 12pt Ubuntu
     color hsl(0, 0%, 20%)
-    padding-bottom footer_height
 
 #error_box
   div, span

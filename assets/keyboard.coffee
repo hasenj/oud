@@ -1,38 +1,39 @@
-from_end = (array, start, end) -> # subarray from end
-    # start and end must be given as negative numbers
-    len = array.length
-    array[len+start...len+end]
+#
+#   Virtual Keyboard
+#
+#   There are 3 components here:
+#
+#        - The physical keyboard (computer keyboard)
+#        - The virtual keyboard (onscreen keyboard)
+#        - The current note layout
+#
+#    The virtual keyboard essentially maps physical key strokes to notes on the current active layout.
+#
+#    The note layout is defined in terms of the virtual keyboard; i.e. which note is associated with each virtual key.
+#
+#    To facilitate this mapping, we use a very simple convention:
+#
+#    The virtual keyboard consists of rows, each row consists of keys
+#
+#    Thus, each virtual key can be identified by 2 numbers (a la coordinates) row number, and key number
+#
 
-window.std_scale = (scale, start=0) ->
-    # applies 'scale' (a list of tonal distances) to 'start' (a tone)
-    # and return a list of tones
-    res = [start]
-    for tone in scale
-        res.push(tone + last(res))
-    return res
-
-#console.log std_scale [1, 1, 0.5, 1, 1, 1, 0.5]
-#console.log std_scale [1, 1, 0.5, 1, 1, 0.5]
+u = _
 
 window.active_tones = [] # THE current piano notes, an array of rows, as returned by get_piano_rows
 
-gen_piano_rows = (scale, start) ->
-    octaves = {}
-    get_octave_start = (i) -> start + i * 6
-    octave_starts = (start + (i * 6) for i in [-2..2])
-    for i in [-2..2]
-        octave_start = get_octave_start(i)
-        octaves[octave_start] = std_scale(scale, octave_start)
-    get_row = (octave_start) ->
-        res = []
-        # last two keys of previous octave
-        prev_o = octaves[octave_start-6]
-        curr_o = octaves[octave_start]
-        next_o = octaves[octave_start+6]
-        res = from_end(prev_o, -3, -1).concat(curr_o).concat(next_o[1...3])
-
-    for i in [-1..1]
-        get_row(get_octave_start(i))
+# Generates the pressable keys that the user uses to play the music
+# from the given maqam
+# returns a list of tones
+gen_piano_rows = (maqam) ->
+    octaves = []
+    for octave_index in [-1..1]
+        segments = maqam.gen_fn(octave_index)
+        trailing = u.last(segments[-1], 3) # we want last 2 keys, but the very last key is the same as the first key, so we take 3
+        octave = u.union(trailing, segments[0], segments[1], segments[2])
+        octave = u.first(octave, 12) # pick first 12 keys (discard more keys if they appear for whatever reason (special maqams like saba, etc))
+        octaves.unshift(octave)
+    return octaves
 
 gen_tone_kb_map = (piano_rows) ->
     map = {}
@@ -45,10 +46,8 @@ gen_tone_kb_map = (piano_rows) ->
             map[tone] = map[tone].add keydiv
     return map
 
-#console.log gen_piano_rows [1, 1, 0.5, 1, 1, 1, 0.5], 0
-
 set_maqam = (maqam) ->
-    window.active_tones = gen_piano_rows(maqam.scale, maqam.start)
+    window.active_tones = gen_piano_rows(maqam)
     window.tone_kb_map = gen_tone_kb_map(active_tones)
 
 # ------ keyboard
@@ -98,32 +97,35 @@ pkey_id = (p_key) -> "pkey_" + p_key.row + "_" + p_key.key
 jid = (id) -> $("#" + id)
 
 (->
-    std_tones = _.zip(
-        [0, 1, 2, 2.5, 3.5, 4.5, 5.5, 6],
-        "DO RE MI FA SOL LA SI".split(" "))
+    note_names = "دو ري مي فا صول لا سي دو".split(" ")
+    std_tones = u.zip(
+        [0, 9, 16, 23, 31, 40, 47, 53]
+        note_names)
     std_tones = _(std_tones).map( (note) -> {tone: note[0], name: note[1]})
     tone_to_note_scope = (tone, tones=std_tones) ->
         if tones[1].tone > tone
             [tones[0], tones[1]]
         else
             tone_to_note_scope(tone, tones[1...])
-    resolve_note_name = (first, second, prev) ->
-        # if a note has two possibilities, avoid conflict with previous
-        if first.name == prev then second else first
-    window.get_note_info = (tone, prev="") ->
-        tone = modulo tone, 6
+    window.get_note_name = (tone) ->
+        tone = modulo tone, 53
         [note0, note1] = tone_to_note_scope(tone)
         dist = (tone-note0.tone) / (note1.tone-note0.tone)
-        ret_val = (note) ->
-            note = _(note).clone()
-            diff = tone - note.tone
-            {diff, note}
         if dist < 0.5
-            ret_val note0
-        else if dist == 0.5
-            ret_val resolve_note_name note0, note1, prev
-        else # if dist > 0.5
-            ret_val note1
+            note0.name
+        else # if dist >= 0.5
+            note1.name
+    window.get_note_info = (base_tone) ->
+        base_note = get_note_name(base_tone)
+        base_note_index = note_names.indexOf(base_note)
+        {by_index: (index) ->
+            index += base_note_index
+            if index < 0
+                index += 7
+            if index > 7
+                index %= 7
+            return note_names[index]
+        }
 )()
 
 
@@ -132,10 +134,12 @@ init_ui = -> # assumes active_layout and active_tones are already set
     make_key = (p_key)->
         id = pkey_id(p_key)
         keydiv = jQuery(
-            "<div id='#{id}' class='key unpressed'>
-                <div class='kb_key'>&nbsp;</div>
-                <div class='tone'>&nbsp;</div>
-                <div class='note_name'>&nbsp;</div>
+            "<div class='ib'>
+                <div id='#{id}' class='key unpressed'>
+                    <div class='kb_key'>&nbsp;</div>
+                    <div class='tone'>&nbsp;</div>
+                    <div class='note_name'>&nbsp;</div>
+                </div>
             </div>")
         keydiv.mousedown(-> play_key(p_key))
         keydiv.mouseup(-> lift_key(p_key))
@@ -143,18 +147,23 @@ init_ui = -> # assumes active_layout and active_tones are already set
     for r, row in active_tones
         el = $("<div class='row'>")
         for k, key in r
-            el.append make_key pkey(row, key)
+            keydiv = make_key pkey(row, key)
+            is_outside_octave_bounds = key not in [2..8]
+            if is_outside_octave_bounds
+                keydiv.addClass("outside_octave")
+            el.append keydiv
         jid("keys").append(el)
 
 update_ui = ->
-    prev_note_name = ""
+    base_tone = window.active_tones[1][2] # hack/coupling with kb layout
+    note_name_helper = get_note_info(base_tone)
     update_key_div_ui = (p_key) ->
         keydiv = getkeydiv(p_key)
         id = keydiv.attr("id")
         kb_key = ui_kb_layout[id] ? '&nbsp;'
         tone = active_tones[p_key.row][p_key.key]
-        note_name = get_note_info(tone, prev_note_name).note.name #"DO"
-        prev_note_name = note_name
+        note_index = p_key.key - 2 # coupling with kb layout
+        note_name = note_name_helper.by_index(note_index)
         $(".kb_key", keydiv).html(kb_key)
         $(".tone", keydiv).html(tone)
         $(".note_name", keydiv).html(note_name)
@@ -163,10 +172,10 @@ update_ui = ->
         update_key_div_ui p_key
             
 init = ->
-    set_maqam( {scale: [0.75, 0.75, 0.5, 1.5, 0.5, 1, 1], alt_scale:[0.75, 0.75, 0.5, 1.5, 0.5, 1, 0.5], start: 1} )
-    set_kb_layout('qwerty')
     init_ui()
-    update_ui()
+    set_kb_layout('qwerty')
+    console.log 'init keyboard module'
+    updkeys(window.active_maqam) # HACK/RACE
 
 $ init
 
@@ -241,7 +250,7 @@ j_unpress = (jq) ->
     jq.removeClass("pressed").removeClass("semi_pressed").addClass("unpressed")
 
 
-# --------------------------------------------------------------------------
+# -------------------------
 
 modulo = (index, length) ->
     while index < 0
@@ -251,8 +260,9 @@ modulo = (index, length) ->
 fval = (id)-> $("#" + id).val() # field value
 
 window.updkeys = (maqam) ->
+    console.log 'Updating keyboard'
     set_maqam(maqam)
     update_ui()
 
-#window.updkeys = _.debounce(updkeys, 100)
+#window.updkeys = u.debounce(updkeys, 100)
 

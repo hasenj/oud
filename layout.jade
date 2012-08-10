@@ -2,38 +2,14 @@
 html
   head
     title أوتار
-    include like_btns_headers
     link(rel="icon", type="image/png", href="/icon.png")
     != css('index')
     script(src="/jquery.js", type="text/javascript")
     script(src="/underscore-min.js", type="text/javascript")
     script(src="/jquery.hotkeys.js", type="text/javascript")
     script(src="/jquery.cookie.js", type="text/javascript")
-    script(src="/artisan-min.js", type="text/javascript")
     script(src="/sink.js", type="text/javascript")
-    script(src="/ga.js", type="text/javascript")
-    link(rel="stylesheet", type="text/css", href="http://fonts.googleapis.com/css?family=Ubuntu|Play")
+    script(src="/ko.js", type="text/javascript")
+    link(rel="stylesheet", type="text/css", href="http://fonts.googleapis.com/earlyaccess/amiri.css")
   body
-    .content_wrapper
-      links = {'About': '/about', 'Feedback': '/feedback', 'Code':"http://github.com/hasenj/oud"}
-      #header 
-          a(href="/")
-            .logo
-               h1 Arabic Strings
-               h3 Music Keyboard + Arabic Maqam
-          a(href="/", class="arabic")
-            .logo
-              h1 أَوْتَاْر
-              h3 للعزف بالمقامات العربية
-          //
-            ul.tabs
-              for url, name in links
-                li: a(href=url) #{name}
-      #content !{body}
-      footer
-        .footer_content
-          for url, name in links
-            div.link
-              a(href=url) #{name}
-          // include like_btns
-      
+      !{body}

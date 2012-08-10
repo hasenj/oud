@@ -1,18 +1,18 @@
 
+div#error_box // notifications
+
 table.layout
-  tr
-    td
+  tr.header
+    td.logo
+    td.maqam_name
       div#maqam_name
-      div#keys
-      div#error_box
-      //div#record_btns
-        input#rec_btn(type="button", value="Record")
-        input#play_btn(type="button", value="Play", disabled)
-
-    td
+  tr.middle
+    td.maqam_list
       div#maqam_section
-        div#maqam_ctrls
+    td.keyboard
+      div#keys
 
+include help_tips.html
 
 != js('/utils')
 != js('/events')

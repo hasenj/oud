@@ -1,3 +1,4 @@
+u = _
 ####
 # maqam presets
 #   A scale is defined as a sequency of tone distances
@@ -6,79 +7,162 @@
 #
 #   A maqam is a scale + a starting point
 
-maqam_ctor = (name, start, scale) ->
-    {name, start, scale}
+maqam_ctor = (name, start, jins1, jins2) ->
+    {name, start, jins1, jins2}
 
-presets = [
-        ["ajam", "0", "1 1 0.5 1 1 1 0.5"]
-        ["kurd", "1", "0.5 1 1 1 0.5 1 1"] # same as ajam, but keep it
-        ["nhwnd", "0", "1 0.5 1 1 0.5 1.5 0.5"]
-        ["nhwnd2", "0", "1 0.5 1 1 0.5 1 1"] # also same as ajam
-        ["hijaz", "1", "0.5 1.5 0.5 1 0.5 1 1"]
-        ["hijaz2", "1", "0.5 1.5 0.5 1 0.75 0.75 1"]
-        ["rast", "0", "1 0.75 0.75 1 1 0.75 0.75"]
-        ["rast2", "0", "1 0.75 0.75 1 1 0.5 1"]
-        ["saba", "1", "0.75 0.75 0.5 1.5 0.5 1 1"] 
-        ["saba2", "1", "0.75 0.75 0.5 1.5 0.5 1 0.5"] # TODO seems to work, but should check with professionals
-        #["bayati", "1", "0.75 0.75 1 1 0.5 1 1"] # same as rast1
-        #["siga" , "1.75", "0.75 1 1 0.75 0.75 1 0.75", "0.75 1 1 0.5 1 1 0.75"] # same as rast?
-        #["huzam", "1.75", "0.75 1 0.5 1.5 0.5 1 0.75"] # same as hijaz form 2
-        #["jharga", "-2", "1 1 0.5 1 1 0.75 0.75"] # same as bayati, hence rast
-        #["hijaz_kar", "0", "0.5 1.5 0.5 1 0.5 1.5 0.5"]
-        #["nwathr", "0", "1 0.5 1.5 0.5 0.5 1.5 0.5"]
-        ["user1", $.cookie("user1-start") ? "1",$.cookie("user1-scale") ? "0.5 1.5 0.5 1 0.75 0.75 1"]
-        ["user2", $.cookie("user2-start") ? "1",$.cookie("user2-scale") ? "0.75 0.75 1 1 0.5 1 1"]
-        ["user3", $.cookie("user3-start") ? "-2",$.cookie("user3-scale") ? "1 1 0.5 1 1 0.75 0.75"]
-        ["user4", $.cookie("user4-start") ? "0",$.cookie("user4-scale") ? "0.5 1.5 0.5 1 0.5 1.5 0.5"]
-        ["user5", $.cookie("user5-start") ? "1",$.cookie("user5-scale") ? "0.75 0.75 1 1 0.5 1 1"]
-        ["user6", $.cookie("user6-start") ? "1",$.cookie("user6-scale") ? "0.75 0.75 1 1 0.5 1 1"]
-]
+ajnas_defs =
+    "ajam": "9 9 4"
+    "rast": "9 7 6"
+    "nhwnd": "9 4 9"
+    "bayati": "6 7 9"
+    "hijaz": "5 13 4"
+    "saba": "6 7 5"
+    "kurd": "4 9 9"
+    "huzam": "7 9 4"
+    "jiharkah": "9 8 5"
+    "zamzama": "4 9 5"
+    "ushaq": "9 3 10"
+
+
+# helper function for note generators
+gen_tones = (start, distances) ->
+    res = [start]
+    for displacement in distances
+        res.push(u.last(res) + displacement)
+    stabilize = (num) -> Number num.toFixed(2)
+    u.map(res, stabilize)
+
+FIFTH = 31
+OCTAVE = 53
+
+ajnas = {}
+for key, val of ajnas_defs
+    ajnas[key] = (Number n for n in val.split(" "))
+
+# The `ajnas` dict maps jins name to a list representation of the tetrachord
+
+# a maqam def is starting point and 2 jins
+maqam_defs =
+    "ajam": "0 ajam ajam"
+    "kurd": "9 kurd kurd"
+    "hijaz1": "9 hijaz bayati"
+    "hijaz2": "9 hijaz kurd"
+    "rast1": "0 rast rast"
+    "rast2": "0 rast nhwnd"
+    "nhwnd1": "0 nhwnd hijaz"
+    "nhwnd2": "0 nhwnd kurd"
+    "bayati": "9 bayati kurd"
+    "saba": "9 saba zamzama"
+    "jiharkah": "9 jiharkah jiharkah"
+    "ushaq": "9 ushaq bayati"
 
 maqamat = []
-for preset in presets
-    preset = _(preset).clone()
-    name = preset.shift()
-    start = Number preset.shift()
-    scale = (Number n for n in preset.shift().split(" "))
-    maqamat.push maqam_ctor(name, start, scale)
+for name, def of maqam_defs
+    parts = def.split(" ")
+    start = Number parts.shift()
+    jins1 = ajnas[parts.shift()]
+    jins2 = ajnas[parts.shift()]
+    maqamat.push maqam_ctor(name, start, jins1, jins2)
 
-# From: http://www.mediacollege.com/internet/javascript/text/case-capitalize.html
-String.prototype.capitalize = ->
-   @replace /(^|\s)([a-z])/g , (m,p1,p2) -> p1+p2.toUpperCase()
+# Generic function that generates the notes for a maqam on a given octave
+# octave_index is how many octaves higher/lower than the maqam's starting point
+# e.g if maqam starts on 1, and octave_index is -1, then generate starting from -5
+# if octave_index is 0, generate from 1
+# if octave_index is 1, generate from 7
+# and so on
+# This is the function that works on most maqams (except for saba)
+#
+# @returns a list of segments indexed from -1 to 2
+# segment 0 is the start of the maqam 
+# segment -1 is the previous segment
+# segment 1 is the second part of the maqam
+# and so on ..
+# this is all just for this one octave
+# naturally, segment -1 is the trailing part of the previous octave
+# segment 2 is the starting part of the next octave
+generate_maqam_notes_generic = (maqam, octave_index) ->
+    start = maqam.start - OCTAVE * octave_index
+    seg_info = {
+        '-1':
+            start: start - OCTAVE + FIFTH
+            dists: maqam.jins2
+        '0':
+            start: start
+            dists: maqam.jins1
+        '1':
+            start: start + FIFTH
+            dists: maqam.jins2
+        '2':
+            start: start + OCTAVE
+            dists: maqam.jins1
+        }
+    segments = {}
+    for key, val of seg_info
+        segments[key] = gen_tones(val.start, val.dists)
+    return segments
+
+# special generator for saba
+generate_saba_notes = (maqam, octave_index) ->
+    start = maqam.start - OCTAVE * octave_index
+    seg_info = {
+        '-1':
+            start: start - OCTAVE + FIFTH
+            dists: ajnas['kurd']
+        '0':
+            start: start
+            dists: maqam.jins1
+        '1':
+            start: start + FIFTH
+            dists: maqam.jins2
+        '2':
+            start: start + FIFTH + FIFTH
+            dists: ajnas['hijaz']
+        }
+    segments = {}
+    for key, val of seg_info
+        segments[key] = gen_tones(val.start, val.dists)
+    return segments
+
+for maqam in maqamat
+    do (maqam) ->
+        maqam.gen_fn = (octave_index) -> generate_maqam_notes_generic(maqam, octave_index)
+        if maqam.name == 'saba' 
+            maqam.gen_fn = (octave_index) -> generate_saba_notes(maqam, octave_index)
 
 disp_name = (maqam) ->
-    maqam.name.replace("_", " ").capitalize().replace(" ", "")
+    map = {
+        "ajam" : "عجم",
+        "kurd": "كرد",
+        "nhwnd1": "نهاوند صعودا",
+        "nhwnd2": "نهاوند هبوطا",
+        "hijaz1": "حجاز صعودا",
+        "hijaz2": "حجاز هبوطا",
+        "rast1": "رست صعودا",
+        "rast2": "رست هبوطا",
+        "bayati" : "بياتي",
+        "saba" : "صبا"
+        "jiharkah": "جهاركاه"
+        "ushaq": "عشاق"
+    }
+    if maqam.name of map
+        map[maqam.name]
+    else
+        maqam.name
 
 if not window.updkeys?
     window.updkeys = ->
 
 set_active_maqam = (maqam) ->
     window.active_maqam = maqam # XXX not a clone, ok?
-    scale_widget.set_val(maqam.scale)
-    start_widget.set_val(maqam.start)
-    $("#maqam_name").html("Maqam " + disp_name maqam)
+    $("#maqam_name").html("مقام ال" + disp_name maqam)
     $.cookie('maqam', maqam.name)
     updkeys maqam
 
-# closely coupled with set_active_maqam
-# XXX overlapping responsibilities
-on_user_change_scale = ->
-    active_maqam.scale = scale_widget.get_val() # this actually changes the scale for the active maqam directly!
-    active_maqam.start = start_widget.get_val()
-    if active_maqam.name.match(/^user\d/)
-        $.cookie(active_maqam.name + "-start", active_maqam.start)
-        $.cookie(active_maqam.name + "-scale", active_maqam.scale.join(" "))
-    updkeys active_maqam
-
 init_maqams = ->
     default_maqam = $.cookie('maqam') ? 'ajam'
-    ctrls = $("#maqam_ctrls")
-    window.scale_widget = new ScaleWidget ctrls, [1,1,0.5,1,1,1,0.5]
-    window.start_widget = new StartWidget ctrls, 0
-    window.maqam_list = new MaqamList ctrls, maqamat, default_maqam
-
-    evt.bind(scale_widget, "changed", on_user_change_scale)
-    evt.bind(start_widget, "changed", on_user_change_scale)
+    el = $("#maqam_section")
+    # window.start_widget = new StartWidget el, 0
+    window.maqam_list = new MaqamList el, maqamat, default_maqam
 
 jimg = (src) -> $("<img>").attr('src', src)
 
@@ -245,6 +329,7 @@ class MaqamList
                 @activate_btn(btn)
         if not @active?
             @activate_btn @maqam_btns[0] # in case no default provided
+        @el.find(".maqam_btn:last").addClass("last")
     activate_btn: (btn) =>
         @active?.unclick()
         @active = btn
@@ -255,3 +340,4 @@ class MaqamList
 
 
 $ init_maqams
+

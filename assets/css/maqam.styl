@@ -7,25 +7,39 @@ input#scale
     width 300px
     word-spacing 1em
 
-#maqam_name
-    padding 8px
-    font normal 22pt Ubuntu
-    color hsl(0, 0%, 32%)
-    text-shadow 1px 1px 2px silver
-
 
 #maqam_section
-  pad()
-  standout()
-  display inline-block
-  width 380px
-  #maqam_ctrls
-    margin-left 5px
-  #presets
-    margin-top 4px
+  text-align right
+  direction rtl
 
+maqam-button(bghue=230)
+  -reset()
+  cursor pointer
+  box-shadow 0px 0px 11px 2px hsl(bghue, 1, 96) inset
+  border solid 1px hsl(bghue, 20, 85)
+  background-color white
+  display inline-block
+  width 120px
+  text-align center
+  direction rtl
+  font-family amiri
+  font-size 1.5em
+  text-shadow 1px 1px 2px hsl(150, 40, 60)
+  margin 0px
+  &:hover
+  &.hover
+    background-color hsl(190, 20, 90)
+  &:active
+  &.active
+    background-color hsl(190, 20, 80)
+    text-shadow 1px 1px 2px hsl(150, 40, 90)
+    
 .maqam_list
-    margin-top 20px
+    direction rtl
+    text-align right
+    .maqam_btn
+      maqam-button()
+
 
 .widget_stepper
   font-size 0.8em
@@ -51,8 +65,8 @@ input#scale
   margin-left 20px
   span.text
     font-size 10pt
-    
-maqam-button(bghue=230)
+
+aqua-button(bghue=230)
   -reset()
   outer_border(lite=0)
     outer_shadow_color = hsl(((bghue+20) % 360), 3, 40+lite)
@@ -82,9 +96,4 @@ maqam-button(bghue=230)
     grad(85)
     outer_border(-8)
 
-
-.maqam_btn
-  maqam-button()
-  width 54px
-  margin 8px
 
