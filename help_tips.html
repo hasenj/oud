@@ -1,5 +1,6 @@
 <div id="#tips_container">
-    <button data-bind="click: intro"> كيفية العزف </button>
+    <button data-bind="click: basic_usage"> كيفية العزف </button>
+    <button data-bind="click: notes"> العلامات الموسيقية </button>
     <div data-bind="with: tour">
         <div class="tip">
             <p data-bind="html: html"> </p>
@@ -20,6 +21,14 @@ jQuery(function() {
 
         this.intro = function() {
             this.tour(new Tour(window.tips_data.intro));
+        };
+
+        this.basic_usage = function() {
+            this.tour(new Tour(window.tips_data.basic_usage));
+        };
+
+        this.notes = function() {
+            this.tour(new Tour(window.tips_data.notes));
         };
 
         this.firstTimeIntro = function() {
