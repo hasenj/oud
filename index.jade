@@ -1,23 +1,24 @@
+extends layout
 
-div#error_box // notifications
+block content
 
-table.layout
-  tr.header
-    td.logo
-    td.maqam_name
-      div#maqam_name
-  tr.middle
-    td.maqam_list
-      div#maqam_section
-    td.keyboard
-      div#keys
+    table.layout
+      tr.header
+        td.logo
+        td.maqam_name
+          div#maqam_name
+      tr.middle
+        td.maqam_list
+          div#maqam_section
+        td.keyboard
+          div#keys
 
-include help_tips.html
+    include help_tips.html
 
-!= js('/utils')
-!= js('/events')
-!= js('/synth')
-//!= js('/record')
-!= js('/maqam')
-!= js('/keyboard')
+    != js('/utils')
+    != js('/events')
+    != js('/synth')
+    //!= js('/record')
+    != js('/maqam')
+    != js('/keyboard')
 
