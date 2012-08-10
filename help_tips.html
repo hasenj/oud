@@ -25,7 +25,7 @@ jQuery(function() {
         this.firstTimeIntro = function() {
             var key = "first_time_intro";
             var intro_seen = $.cookie(key)
-            intro_seen = false; // XXX HACK DEBUG
+            // intro_seen = false; // XXX HACK DEBUG
             if(!intro_seen) {
                 $.cookie(key, 1)
                 self.intro();
