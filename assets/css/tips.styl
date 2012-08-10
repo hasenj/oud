@@ -14,6 +14,10 @@
     box-shadow 0px 0px 7px 2px hsl(220, 10, 30)
     padding 20px 45px
     min-height 160px
+    font-family amiri
+    font-size 20px
+    color hsl(220, 20, 20)
+    text-shadow 0px 0px 1px hsl(220, 10, 79)
 
     p
         padding 10px
@@ -23,17 +27,18 @@
         z-index 12
         opacity 0.8
         border-radius 20px
-        background-color hsl(220, 20, 90)
+        background-color hsl(220, 50, 90)
         color hsl(220, 20, 10)
-        box-shadow 0px 0px 3px 2px gray
+        box-shadow 0px 0px 4px 2px gray
         line-height 11px
         border 0px
         height 40px
         text-align center
         vertical-align middle
         padding 2px 8px
+        cursor pointer
         &:hover
-            background-color hsl(220, 20, 80)
+            background-color hsl(220, 80, 86)
             color hsl(220, 20, 6)
 
     button.next, button.end
@@ -47,8 +52,14 @@
         border-radius 20px 0px 0px 20px
 
     button.close
-        absolute top 0px left -2px
+        absolute top 0px left 0px
         border-radius 12px 0px 12px 0px
+        width 60px
+        padding 0px
+        margin 0px
+        background-color hsl(0, 50, 90)
+        &:hover
+            background-color hsl(0, 80, 86)
 
 
 
