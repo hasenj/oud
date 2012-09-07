@@ -15,7 +15,7 @@ ajnas_defs =
     "rast": "9 7 6"
     "nhwnd": "9 4 9"
     "bayati": "6 7 9"
-    "hijaz": "5 13 4"
+    "hijaz": "5 12 5"
     "saba": "6 7 5"
     "kurd": "4 9 9"
     "huzam": "7 9 4"
@@ -116,7 +116,7 @@ generate_saba_notes = (maqam, octave_index) ->
             dists: maqam.jins2
         '2':
             start: start + FIFTH + FIFTH
-            dists: ajnas['hijaz']
+            dists: ajnas['kurd']
         }
     segments = {}
     for key, val of seg_info
