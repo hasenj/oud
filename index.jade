@@ -12,11 +12,12 @@ block content
           div#maqam_section
         td.keyboard
           div#keys
+            include keyboard.html
       tr.footer
         td.author
           include author.html
         td.tips 
-          include help_tips.html
+          // include help_tips.html
 
     != js('/utils')
     != js('/events')

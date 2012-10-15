@@ -1,0 +1,9 @@
+<div id="#keys" data-bind="foreach: kb_rows">
+    <div class="row" data-bind="foreach: $data">
+        <div class="key unpressed">
+            <div class='kb_key' data-bind="text: letter">&nbsp;</div>
+            <div class='tone' data-bind="text: tone">&nbsp;</div>
+            <div class='note_name' data-bind-x="text: note_name">&nbsp;</div>
+        </div>
+    </div>
+</div>

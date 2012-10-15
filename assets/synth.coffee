@@ -77,7 +77,7 @@ oud_wave_shape = mk_wave_shape [
 ]
 
 DURATION = 1.1
-GAIN = 1.5
+GAIN = 0.7
 SIGNAL_LEN = DURATION * SRATE * CHANNELS
 
 dev.ringBuffer = mkbuf(7 * CHANNELS * SRATE)
@@ -132,9 +132,10 @@ tone_gen = (tone) ->
         tone_signal[tone]
     else
         signal_raw = oud_signal_gen(tonefreq(tone))
+        signal_raw2 = oud_signal_gen(tonefreq(tone))
         signal = mkbuf(SIGNAL_LEN)
         for s, point in signal
-            signal[point] = signal_raw[point] * dampness[point] * GAIN
+            signal[point] = (signal_raw[point] + signal_raw2[point]) * dampness[point] * GAIN
         tone_signal[tone] = make_dual_channel signal
 
 make_dual_channel = (signal) ->

@@ -16,30 +16,58 @@ ajnas_defs =
     "nhwnd": "9 4 9"
     "bayati": "6 7 9"
     "hijaz": "5 12 5"
-    "saba": "6 7 5"
+    # "saba": "6 7 5" # will be defined as a broken bayati
     "kurd": "4 9 9"
-    "huzam": "7 9 4"
     "jiharkah": "9 8 5"
-    "zamzama": "4 9 5"
-    "ushaq": "9 3 10"
 
-
-# helper function for note generators
-gen_tones = (start, distances) ->
-    res = [start]
-    for displacement in distances
-        res.push(u.last(res) + displacement)
-    stabilize = (num) -> Number num.toFixed(2)
-    u.map(res, stabilize)
-
+FORTH = 22
 FIFTH = 31
 OCTAVE = 53
 
+class Jins
+    constructor: (@p1, @p2, @p3) ->
+        total = @p1 + @p2 + @p3
+        if total not in [18, 22]
+            console.log "Bad Jins", @p1, @p2, @p3, " total:", total
+
+    # return a Jins that's 18 units long (2 full tones) instead of 22
+    broken: ->
+        return new Jins(@p1, @p2, 18-(@p1+@p2))
+
+    isBroken: ->
+        return @p1 + @p2 + @p3 < FORTH
+
+    genTones: (start) ->
+        distances = [@p1, @p2, @p3]
+        res = [start]
+        for displacement in distances
+            res.push(u.last(res) + displacement)
+        stabilize = (num) -> Number num.toFixed(2)
+        u.map(res, stabilize)
+
+class Mode # maqam/scale with a starting point
+    constructor: (@base, @jins1, @jins2) ->
+
+    genTones: (octave) ->
+        start = @base + (octave * OCTAVE)
+        result = []
+        result.contact @jins1.genTones(start)
+        result.contact @jins2.genTones(start + FIFTH)
+        if @jins2.isBroken
+            result.concat @jins2.genTones(start + FIFTH + FIFTH)
+
+
+window.Mode = Mode
+
+
+
+
 ajnas = {}
 for key, val of ajnas_defs
-    ajnas[key] = (Number n for n in val.split(" "))
+    args = (Number n for n in val.split(" "))
+    ajnas[key] = new Jins(args...)
 
-# The `ajnas` dict maps jins name to a list representation of the tetrachord
+# The `ajnas` dict maps jins name to a Jins object
 
 # a maqam def is starting point and 2 jins
 maqam_defs =
@@ -52,82 +80,19 @@ maqam_defs =
     "nhwnd1": "0 nhwnd hijaz"
     "nhwnd2": "0 nhwnd kurd"
     "bayati": "9 bayati kurd"
-    "saba": "9 saba zamzama"
+    # "saba": "9 saba zamzama" # to be defined as a broken bayati
     "jiharkah": "9 jiharkah jiharkah"
-    "ushaq": "9 ushaq bayati"
 
-maqamat = []
+window.maqamat = {}
 for name, def of maqam_defs
     parts = def.split(" ")
     start = Number parts.shift()
     jins1 = ajnas[parts.shift()]
     jins2 = ajnas[parts.shift()]
-    maqamat.push maqam_ctor(name, start, jins1, jins2)
+    maqamat[name] = new Mode(start, jins2, jins2)
 
-# Generic function that generates the notes for a maqam on a given octave
-# octave_index is how many octaves higher/lower than the maqam's starting point
-# e.g if maqam starts on 1, and octave_index is -1, then generate starting from -5
-# if octave_index is 0, generate from 1
-# if octave_index is 1, generate from 7
-# and so on
-# This is the function that works on most maqams (except for saba)
-#
-# @returns a list of segments indexed from -1 to 2
-# segment 0 is the start of the maqam 
-# segment -1 is the previous segment
-# segment 1 is the second part of the maqam
-# and so on ..
-# this is all just for this one octave
-# naturally, segment -1 is the trailing part of the previous octave
-# segment 2 is the starting part of the next octave
-generate_maqam_notes_generic = (maqam, octave_index) ->
-    start = maqam.start - OCTAVE * octave_index
-    seg_info = {
-        '-1':
-            start: start - OCTAVE + FIFTH
-            dists: maqam.jins2
-        '0':
-            start: start
-            dists: maqam.jins1
-        '1':
-            start: start + FIFTH
-            dists: maqam.jins2
-        '2':
-            start: start + OCTAVE
-            dists: maqam.jins1
-        }
-    segments = {}
-    for key, val of seg_info
-        segments[key] = gen_tones(val.start, val.dists)
-    return segments
-
-# special generator for saba
-generate_saba_notes = (maqam, octave_index) ->
-    start = maqam.start - OCTAVE * octave_index
-    seg_info = {
-        '-1':
-            start: start - OCTAVE + FIFTH
-            dists: ajnas['kurd']
-        '0':
-            start: start
-            dists: maqam.jins1
-        '1':
-            start: start + FIFTH
-            dists: maqam.jins2
-        '2':
-            start: start + FIFTH + FIFTH
-            dists: ajnas['kurd']
-        }
-    segments = {}
-    for key, val of seg_info
-        segments[key] = gen_tones(val.start, val.dists)
-    return segments
-
-for maqam in maqamat
-    do (maqam) ->
-        maqam.gen_fn = (octave_index) -> generate_maqam_notes_generic(maqam, octave_index)
-        if maqam.name == 'saba' 
-            maqam.gen_fn = (octave_index) -> generate_saba_notes(maqam, octave_index)
+#saba
+maqamat["saba"] = (new Mode(9, ajnas["bayati"].broken(), ajnas["kurd"].broken()))
 
 disp_name = (maqam) ->
     map = {
@@ -142,7 +107,6 @@ disp_name = (maqam) ->
         "bayati" : "بياتي",
         "saba" : "صبا"
         "jiharkah": "جهاركاه"
-        "ushaq": "عشاق"
     }
     if maqam.name of map
         map[maqam.name]
@@ -168,6 +132,7 @@ jimg = (src) -> $("<img>").attr('src', src)
 
 arrow = (dir) -> jimg("/arr_#{dir}.png")
 
+# TODO get rid of this crap
 class StepperWidget
     constructor: (parent, @value=0, @step=0.25, @orientation='vertical') ->
         @el = jdiv()
@@ -339,5 +304,5 @@ class MaqamList
         @activate_btn(btn)
 
 
-$ init_maqams
+# $ init_maqams
 
