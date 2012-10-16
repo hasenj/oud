@@ -28,7 +28,6 @@ function OctaveVM(octave, koMaqam) {
     // koMaqam is the observable active maqam
     var self = this;
     self.tones = ko.computed(function() {
-        console.log("gnerating tones for octave:", octave)
         var maqam = koMaqam();
         if (maqam) {
             return maqam.genTones(octave);
@@ -50,22 +49,19 @@ function MaqamVM(mode) {
 
     // find the tone for the key in the octave, returning null if one can't be found
     self.octaveKeyTone = function(octave, key) {
-        console.log("looking for specific tone");
         var ovm = self.octaves[octave]
         if(!ovm) {
             return null;
         }
-        console.log("found octave")
 
         var keys = ovm.tones()
         if(!keys) {
             return null;
         }
 
-        console.log("found keys", keys)
         var tone = keys[key]
         if(tone == null) {
-            if(key > 8) {
+            if(key > 7) {
                 // find the key from the next octave ..
                 return self.octaveKeyTone(octave+1, key-7);
             } else if(key < 0) {
@@ -75,7 +71,6 @@ function MaqamVM(mode) {
                 return null;
             }
         }
-        console.log("found tone")
         return tone
     }
 
@@ -107,6 +102,10 @@ function VirtualKeyVM(row, column, viewmodel) {
             return "semi_pressed";
         }
         return "unpressed";
+    })
+
+    self.el_class = ko.computed(function() {
+        return "key " + self.state_class();
     })
 
     self.play = function() {
@@ -159,9 +158,9 @@ function GlobalViewModel() {
 
     key_list = []
     self.vkb_rows = []
-    for(var i = 0; i <= 2; i++) {
+    for(var i = 0; i < 3; i++) {
         self.vkb_rows.push([])
-        for(var j=0; j <= 12; j++) {
+        for(var j=0; j < 12; j++) {
             var kvm = new VirtualKeyVM(i, j, self)
             self.vkb_rows[i].push(kvm)
             key_list.push(kvm)
@@ -268,11 +267,11 @@ $(document).keydown(function(ev) {
             return false
         }
         for(var i = 0; i < secondary_keys.length; i++) {
-            key = secondary_keys[i];
+            var key = secondary_keys[i];
             key.semi_press()
         }
-        key.press()
-        key.play()
+        keyvm.press()
+        keyvm.play()
     }
     key_handler(ev, handler)
 })
@@ -280,10 +279,10 @@ $(document).keydown(function(ev) {
 $(document).keyup(function(ev) {
     var handler = function(keyvm, secondary_keys) {
         for(var i = 0; i < secondary_keys.length; i++) {
-            key = secondary_keys[i];
+            var key = secondary_keys[i];
             key.unsemi_press()
         }
-        key.unpress()
+        keyvm.unpress()
     }
     key_handler(ev, handler)
 })

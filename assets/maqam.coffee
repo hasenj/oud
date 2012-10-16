@@ -53,9 +53,8 @@ class Mode # maqam/scale with a starting point
         result = []
         result = result.concat @jins1.genTones(start)
         result = result.concat @jins2.genTones(start + FIFTH)
-        if @jins2.isBroken
+        if @jins2.isBroken()
             result = result.concat @jins2.genTones(start + FIFTH + FIFTH)
-        console.log(result)
         return result
 
 
