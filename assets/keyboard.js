@@ -27,7 +27,7 @@ function OctaveVM(octave, koMaqam) {
     // octave is the octave index
     // koMaqam is the observable active maqam
     var self = this;
-    self.tones = ko.computed( function() {
+    self.tones = ko.computed(function() {
         var maqam = koMaqam();
         if (maqam) {
             return maqam.tones();
@@ -35,7 +35,7 @@ function OctaveVM(octave, koMaqam) {
         else {
             return [];
         }
-    }
+    })
     return self;
 }
 
@@ -54,7 +54,7 @@ function MaqamVM() {
             return null;
         }
 
-        var keys = ovm.keys()
+        var keys = ovm.tones()
         if(!keys) {
             return null;
         }
@@ -64,7 +64,7 @@ function MaqamVM() {
             if(key > 8) {
                 // find the key from the next octave ..
                 return self.octaveKeyTone(octave+1, key-7);
-            } else(if key < 0) {
+            } else if(key < 0) {
                 // find the key from the previous octave
                 return self.octaveKeyTone(octave-1, key+7);
             } else {
@@ -77,97 +77,115 @@ function MaqamVM() {
     return self;
 }
 
-class VirtualKeyVM
-    constructor: (row, column) ->
-        # first row is "previous" octave
-        @octave_index = row - 1
-        # we shift the keyboard by 2 keys
-        @key_index = column - 2
+function VirtualKeyVM(row, column, viewmodel) {
+    var self = this;
+    // first row is "previous" octave
+    self.octave_index = row - 1;
+    // we shift the keyboard by 2 keys
+    self.key_index = column - 2;
 
-        self = this
+    self.tone = ko.computed(function() {
+        return viewmodel.maqam().octaveKeyTone(self.octave_index, self.key_index);
+    })
+    self.letter = ko.computed(function() {
+        return viewmodel.kbLayout().letterAt(row, column)
+    })
 
-        @tone = ko.computed ->
-            return viewmodel.maqam().octaveKeyTone(self.octave_index, self.key_index)
-        @letter = ko.computed ->
-            viewmodel.kbLayout().letter(row, column)
+    self.pressed = ko.observable(false)
+    self.semi_pressed = ko.observable(false)
 
-        @pressed = ko.observable(false)
-        @semi_pressed = ko.observable(false)
+    self.state_class = ko.computed(function() {
+        if(self.pressed()) {
+            return "pressed";
+        }
+        if(self.semi_pressed()) {
+            return "semi_pressed";
+        }
+        return "unpressed";
+    })
 
-        @state_class = ko.computed ->
-            if @pressed()
-                return "pressed"
-            if @semi_pressed()
-                return "semi_pressed"
-            return "unpressed"
+    self.play = function() {
+        playtone(self.tone());
+    }
 
-    play: ->
-        playtone(@tone())
+    self.press = function() {
+        self.pressed(true)
+    }
+    self.unpress = function() {
+        self.pressed(false)
+    }
 
-    press: ->
-        @pressed(true)
-    unpress: ->
-        @pressed(false)
+    self.semi_press = function() {
+        self.semi_pressed(true)
+    }
+    self.unsemi_press = function() {
+        self.semi_pressed(false)
+    }
 
-    semi_press: ->
-        @semi_pressed(true)
-    unsemi_press: ->
-        @semi_pressed(false)
+    return self;
+}
 
-class KeyboardLayout
-    constructor: (@rows) ->
-
-    letter: (row_index, col_index) ->
-        row = @rows[row_index]
-        if not row
-            return ""
+function KeyboardLayout(rows) {
+    var self = this;
+    self.letterAt = function(row_index, col_index){
+        var row = rows[row_index];
+        if(!row) {
+            return "";
+        }
         val = row[col_index]
-        if not val
-            return ""
-        return val
+        if(!val) {
+            return "";
+        }
+        return val;
+    }
 
-std_layouts = {} # standard keyboard layouts .. to choose from; e.g. qwerty, azerty, .. etc
-std_layouts['qwerty'] = ["1234567890-=", "qwertyuiop[]", "asdfghjkl;'"]
+    return self;
+}
 
-qwerty = new KeyboardLayout(std_layouts['qwerty'])
+var kb_layouts = {} // standard keyboard layouts .. to choose from; e.g. qwerty, azerty, .. etc
+kb_layouts['qwerty'] = new KeyboardLayout(["1234567890-=", "qwertyuiop[]", "asdfghjkl;'"])
 
-class GlobalViewModel
-    constructor: ->
-        default_maqam = $.cookie('maqam') ? 'ajam'
-        @maqam = ko.observable(maqamat[default_maqam])
-        @kbLayout = ko.observable(qwerty)
+function GlobalViewModel() {
+    var self = this;
+    default_maqam = $.cookie('maqam') || 'ajam';
+    maqamvm = new MaqamVM(maqamat[default_maqam])
+    self.maqam = ko.observable(maqamvm)
+    self.kbLayout = ko.observable(kb_layouts['qwerty'])
 
-        key_list = []
-        @vkb_rows = []
-        for i in [0..2]
-            @vkb_rows.push([])
-            for j in [0..12]
-                kvm = new VirtualKeyVM(i, j)
-                @vkb_rows[i].push(kvm)
-                key_list.push(kvm)
+    key_list = []
+    self.vkb_rows = []
+    for(var i = 0; i <= 2; i++) {
+        self.vkb_rows.push([])
+        for(var j=0; j <= 12; j++) {
+            var kvm = new VirtualKeyVM(i, j, self)
+            self.vkb_rows[i].push(kvm)
+            key_list.push(kvm)
+        }
+    }
+
+    self.findKey = function(letter) {
+        return u.find(key_list, function(key) {
+            return key.letter() == letter;
+        })
+    };
+
+    self.findKeysByTone = function(tone) {
+        return u.filter(key_list, function(key) {
+            return key.tone() == tone;
+        });
+    };
+
+    return self;
+}
 
         
 
-$ ->
-    window.viewmodel = new GlobalViewModel()
-    ko.applyBindings(window.viewmodel)
+$(function() {
+    window.viewmodel = new GlobalViewModel();
+    ko.applyBindings(window.viewmodel);
+});
 
-# Generates the pressable keys that the user uses to play the music
-# from the given maqam
-# returns a list of tones
-gen_piano_rows = (maqam) ->
-    octaves = []
-    for octave_index in [-1..1]
-        segments = maqam.gen_fn(octave_index)
-        trailing = u.last(segments[-1], 3) # we want last 2 keys, but the very last key is the same as the first key, so we take 3
-        octave = u.union(trailing, segments[0], segments[1], segments[2])
-        octave = u.first(octave, 12) # pick first 12 keys (discard more keys if they appear for whatever reason (special maqams like saba, etc))
-        octaves.unshift(octave)
-    return octaves
-
-# ------ keyboard
-
-
+/*
 # what is this mess OMG
 (->
     note_names = "دو ري مي فا صول لا سي دو".split(" ")
@@ -201,76 +219,72 @@ gen_piano_rows = (maqam) ->
                 return note_names[index]
         }
 )()
+*/
 
-init_ui = -> # assumes active_layout and active_tones are already set
-    # XXX
-    make_key = (p_key)->
-        id = pkey_id(p_key)
-        keydiv = jQuery(
-            "<div class='ib'>
-                <div id='#{id}' class='key unpressed'>
-                    <div class='kb_key'>&nbsp;</div>
-                    <div class='tone'>&nbsp;</div>
-                    <div class='note_name'>&nbsp;</div>
-                </div>
-            </div>")
-        keydiv.mousedown(-> play_key(p_key))
-        keydiv.mouseup(-> lift_key(p_key))
-    jid("keys").text("")
-    for r, row in active_tones
-        el = $("<div class='row'>")
-        for k, key in r
-            keydiv = make_key pkey(row, key)
-            is_outside_octave_bounds = key not in [2..8]
-            if is_outside_octave_bounds
-                keydiv.addClass("outside_octave")
-            el.append keydiv
-        jid("keys").append(el)
+// ---- handle keyboard presses
 
-# ---- handle keyboard presses
-
-key_handler = (e, callback) ->
-    if e.ctrlKey or e.metaKey
+key_handler = function(e, callback){
+    if(e.ctrlKey || e.metaKey) {
         return
-    special = 
-        109: '-'
-        189: '-' # chrome
-        61: '='
-        187: '=' # chrome
-        219: '['
-        221: ']'
-        59: ';'
-        186: ';' # chrome
-        222: '\''
-    if e.which of special
+    }
+    special = {
+        109: '-',
+        189: '-', // chrome
+        61: '=',
+        187: '=',  // chrome
+        219: '[',
+        221: ']',
+        59: ';',
+        186: ';',  // chrome
+        222: '\'',
+    }
+    var kbkey;
+    if(e.which in special) {
         kbkey = special[e.which]
-    else
+    } else {
         kbkey = String.fromCharCode(e.which).toLowerCase()
+    }
     e.preventDefault()
-    keyvm = viewmodel.findKey(kbkey)
-    if not keyvm
+    var keyvm = viewmodel.findKey(kbkey)
+    if (!keyvm) {
         return
+    }
     tone = keyvm.tone()
-    if not tone
+    if(!tone) {
         return
+    }
     tone_keys = viewmodel.findKeysByTone(tone)
     callback(keyvm, tone_keys)
+}
 
-$(document).keydown( (e)-> key_handler(e, (keyvm, secondary_keys)->
-    if keyvm.pressed() # already pressed, don't handle again
-        return false
-    for key in secondary_keys
-        key.semi_press()
-    key.press()
-    key.play()
-))
+$(document).keydown(function(ev) {
+    var handler = function(keyvm, secondary_keys) {
+        if(keyvm.pressed()) { // already pressed, don't handle again
+            return false
+        }
+        for(var i = 0; i <= secondary_keys.length; i++) {
+            key = secondary_keys[i];
+            key.semi_press()
+        }
+        key.press()
+        key.play()
+    }
+    key_handler(ev, handler)
+})
 
-$(document).keyup( (e)-> key_handler(e, (keyvm, secondary_keys)->
-    for key in secondary_keys
-        key.unsemi_press()
-    key.unpress()
-))
+$(document).keyup(function(ev) {
+    var handler = function(keyvm, secondary_keys) {
+        for(var i = 0; i <= secondary_keys.length; i++) {
+            key = secondary_keys[i];
+            key.unsemi_press()
+        }
+        key.unpress()
+    }
+    key_handler(ev, handler)
+})
 
+
+/*
 # -------------------------
 
 modulo = (index, length) ->
@@ -278,4 +292,4 @@ modulo = (index, length) ->
         index += length
     index %= length
 
-
+*/
