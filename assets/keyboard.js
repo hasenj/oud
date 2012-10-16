@@ -90,10 +90,10 @@ function VirtualKeyVM(row, column, viewmodel) {
     // first row is "previous" octave
     self.octave_index = row - 1;
     // we shift the keyboard by 2 keys
-    self.key_index = column - 2;
+    self.key_index = column - 1;
 
     self.tone = ko.computed(function() {
-        return viewmodel.maqam().octaveKeyTone(self.octave_index, self.key_index);
+        return active_maqam.octaveKeyTone(self.octave_index, self.key_index);
     })
     self.letter = ko.computed(function() {
         return viewmodel.kbLayout().letterAt(row, column)
@@ -178,12 +178,15 @@ function KeyboardLayout(rows) {
 var kb_layouts = {} // standard keyboard layouts .. to choose from; e.g. qwerty, azerty, .. etc
 kb_layouts['qwerty'] = new KeyboardLayout(["1234567890-=", "QWERTYUIOP[]", "ASDFGHJKL;'"])
 
+default_maqam = $.cookie('maqam') || 'ajam';
+window.active_maqam = new MaqamVM(default_maqam)
+
 function GlobalViewModel() {
     var self = this;
-    default_maqam = $.cookie('maqam') || 'ajam';
-    maqamvm = new MaqamVM(default_maqam)
-    self.maqam = ko.observable(maqamvm)
+    self.maqam = active_maqam
     self.kbLayout = ko.observable(kb_layouts['qwerty'])
+
+    self.maqam_list = ko.observableArray(u.values(window.maqamat))
 
     key_list = []
     self.vkb_rows = []

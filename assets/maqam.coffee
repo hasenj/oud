@@ -7,9 +7,26 @@ u = _
 #
 #   A maqam is a scale + a starting point
 
-maqam_ctor = (name, start, jins1, jins2) ->
-    {name, start, jins1, jins2}
+disp_name = (maqam_code) ->
+    map = {
+        "ajam" : "عجم",
+        "kurd": "كرد",
+        "nhwnd1": "نهاوند صعودا",
+        "nhwnd2": "نهاوند هبوطا",
+        "hijaz1": "حجاز صعودا",
+        "hijaz2": "حجاز هبوطا",
+        "rast1": "رست صعودا",
+        "rast2": "رست هبوطا",
+        "bayati" : "بياتي",
+        "saba" : "صبا"
+        "jiharkah": "جهاركاه"
+    }
+    if maqam_code of map
+        map[maqam_code]
+    else
+        maqam_code
 
+window.disp_name = disp_name
 ajnas_defs =
     "ajam": "9 9 4"
     "rast": "9 7 6"
@@ -46,7 +63,23 @@ class Jins
         u.map(res, stabilize)
 
 class Mode # maqam/scale with a starting point
-    constructor: (@base, @jins1, @jins2) ->
+    constructor: (@name, @base, @jins1, @jins2) ->
+        self = this
+
+        self.disp_name = ko.computed ->
+            disp_name(self.name)
+
+        self.isActive = ko.computed ->
+            # active_maqam.name() == self.name
+            $.cookie('maqam') == self.name
+
+        # for the maqam button
+        self.el_class = ko.computed ->
+            if self.isActive()
+                "maqam_btn active"
+            else
+                "maqam_btn"
+
 
     genTones: (octave) ->
         start = @base + (octave * OCTAVE)
@@ -57,11 +90,12 @@ class Mode # maqam/scale with a starting point
             result = result.concat @jins2.genTones(start + FIFTH + FIFTH)
         return result
 
+    select: ->
+        $.cookie('maqam', @name)
+        active_maqam.name(@name)
+
 
 window.Mode = Mode
-
-
-
 
 ajnas = {}
 for key, val of ajnas_defs
@@ -90,86 +124,13 @@ for name, def of maqam_defs
     start = Number parts.shift()
     jins1 = ajnas[parts.shift()]
     jins2 = ajnas[parts.shift()]
-    maqamat[name] = new Mode(start, jins2, jins2)
+    maqamat[name] = new Mode(name, start, jins1, jins2)
 
 #saba
-maqamat["saba"] = (new Mode(9, ajnas["bayati"].broken(), ajnas["kurd"].broken()))
+maqamat["saba"] = (new Mode("saba", 9, ajnas["bayati"].broken(), ajnas["kurd"].broken()))
 
-window.disp_name = (maqam_code) ->
-    map = {
-        "ajam" : "عجم",
-        "kurd": "كرد",
-        "nhwnd1": "نهاوند صعودا",
-        "nhwnd2": "نهاوند هبوطا",
-        "hijaz1": "حجاز صعودا",
-        "hijaz2": "حجاز هبوطا",
-        "rast1": "رست صعودا",
-        "rast2": "رست هبوطا",
-        "bayati" : "بياتي",
-        "saba" : "صبا"
-        "jiharkah": "جهاركاه"
-    }
-    if maqam_code of map
-        map[maqam_code]
-    else
-        maqam_code
-
-if not window.updkeys?
-    window.updkeys = ->
-
-set_active_maqam = (maqam) ->
-    window.active_maqam = maqam # XXX not a clone, ok?
-    $("#maqam_name").html("مقام ال" + disp_name maqam)
-    $.cookie('maqam', maqam.name)
-    updkeys maqam
-
-init_maqams = ->
-    default_maqam = $.cookie('maqam') ? 'ajam'
-    el = $("#maqam_section")
-    # window.start_widget = new StartWidget el, 0
-    window.maqam_list = new MaqamList el, maqamat, default_maqam
-
-jimg = (src) -> $("<img>").attr('src', src)
-
-arrow = (dir) -> jimg("/arr_#{dir}.png")
 
 # TODO get rid of this crap
-class StepperWidget
-    constructor: (parent, @value=0, @step=0.25, @orientation='vertical') ->
-        @el = jdiv()
-        parent.append(@el)
-        @render_ui()
-        evt.bind(this, "changed", @update_ui)
-    _inc: (amt) =>
-        @set_val(@get_val() + amt)
-    inc: => @_inc(@step)
-    dec: => @_inc(-@step)
-    get_val: => @value
-    set_val: (val) =>
-        @value = val
-        evt.trigger(this, "changed", @value)
-    render_ui: ->
-        orn = @orientation
-        first = 'inc'
-        second = 'dec'
-        first_sym = arrow('up')
-        second_sym = arrow('down')
-        if orn == 'horizontal'
-            [first,second] = [second, first]
-            second_sym = arrow('right')
-            first_sym = arrow('left')
-        @el.addClass("widget_stepper")
-        @el.addClass(@orientation)
-        @el.append jdiv().addClass("button").addClass(first).append(first_sym)
-        @el.append jdiv().addClass("val").html(@value)
-        @el.append jdiv().addClass("button").addClass(second).append(second_sym)
-        $(".inc", @el).click(@inc)
-        $(".dec", @el).click(@dec)
-        $(".button", @el).css('visibility', 'hidden')
-        @el.mouseenter => $(".button", @el).css('visibility', 'visible')
-        @el.mouseleave => $(".button", @el).css('visibility', 'hidden')
-    update_ui: =>
-        $(".val", @el).html(@value)
 
 class ScaleGraph
     constructor: (parent) ->
@@ -207,103 +168,4 @@ class ScaleGraph
         @ctx.fillRect(@x_coord(start), 12, @x_coord(end) - @x_coord(start), 2)
     x_coord: (point) =>
         10 + point * 40
-
-class ScaleWidget
-    constructor: (parent, scale) ->
-        @el = jdiv()
-        parent.append(@el)
-        @steppers = ((new StepperWidget(@el, tone)) for tone in scale)
-        for s in @steppers
-            evt.bind(s, "changed", @on_stepper_change)
-        @vis = new ScaleGraph @el
-        @render_ui()
-    set_val: (scale) =>
-        for s, i in @steppers
-            s.set_val(scale[i])
-    get_val: =>
-        (s.get_val() for s in @steppers)
-    render_ui: =>
-        # steppers will auto-render 
-        @update_ui() # render the scale display
-    on_stepper_change: =>
-        evt.trigger(this, "changed", @get_val())
-        @update_ui()
-    update_ui: =>
-        scale = @get_val()
-        @vis.draw_scale(scale)
-
-class StartWidget
-    constructor: (parent, @value) ->
-        @el = jdiv()
-        @el.addClass("start_widget")
-        parent.append(@el)
-        @el.append("<span class='text'>On</span>")
-        @stepper = new StepperWidget @el, @value, 0.25, 'horizontal'
-        @el.append("<span class='text note_info'></span>")
-        @update_ui()
-        evt.bind(@stepper, "changed", @on_stepper_change)
-    get_val: => @stepper.get_val()
-    set_val: (val) => @stepper.set_val(val)
-    on_stepper_change: =>
-        evt.trigger(this, "changed", @get_val())
-        @update_ui()
-    update_ui: =>
-        # figure out the note name
-        info = get_note_info(@get_val())
-        diff_disp = (diff) ->
-            map = 
-                "-0.25" : "half bemol"
-                "-0.5"  : "bemole"
-                "0"     : "natural"
-                "0.25"  : "half diese"
-                "0.5"   : "diese"
-            if "" + diff of map
-                map[diff]
-            else if diff > 0
-                "+" + diff
-            else
-                "" + diff
-        $(".note_info", @el).html(info.note.name + "&nbsp;" + diff_disp info.diff)
-
-
-class MaqamBtn
-    constructor: (parent, @maqam) -> # TODO shortcuts?
-        @el = jdiv()
-        @el.addClass("maqam_btn")
-        @el.html(disp_name @maqam)
-        @el.click(@on_click)
-        parent.append(@el)
-    on_click: =>
-        evt.trigger(this, "clicked", this)
-    click: => # to be called by parent or other manager
-        @el.addClass("active")
-    unclick: => # ditto
-        @el.removeClass("active")
-
-
-class MaqamList
-    constructor: (parent, maqam_list, default_active_name="") ->
-        @el = jdiv()
-        @el.addClass("maqam_list")
-        parent.append @el
-        @maqam_btns = []
-        for maqam in maqam_list
-            btn = new MaqamBtn @el, maqam
-            evt.bind(btn, "clicked", @on_btn_clicked)
-            @maqam_btns.push btn
-            if maqam.name == default_active_name
-                @activate_btn(btn)
-        if not @active?
-            @activate_btn @maqam_btns[0] # in case no default provided
-        @el.find(".maqam_btn:last").addClass("last")
-    activate_btn: (btn) =>
-        @active?.unclick()
-        @active = btn
-        @active.click()
-        set_active_maqam(@active.maqam)
-    on_btn_clicked: (btn) =>
-        @activate_btn(btn)
-
-
-# $ init_maqams
 

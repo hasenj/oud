@@ -6,10 +6,10 @@ block content
       tr.header
         td.logo
         td.maqam_name
-          div#maqam_name(data-bind="html: maqam().disp_name")
+          div#maqam_name(data-bind="html: active_maqam.disp_name")
       tr.middle
         td.maqam_list
-          div#maqam_section
+          include maqam_list.html
         td.keyboard
           include keyboard.html
       tr.footer
