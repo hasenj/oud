@@ -51,10 +51,12 @@ class Mode # maqam/scale with a starting point
     genTones: (octave) ->
         start = @base + (octave * OCTAVE)
         result = []
-        result.contact @jins1.genTones(start)
-        result.contact @jins2.genTones(start + FIFTH)
+        result = result.concat @jins1.genTones(start)
+        result = result.concat @jins2.genTones(start + FIFTH)
         if @jins2.isBroken
-            result.concat @jins2.genTones(start + FIFTH + FIFTH)
+            result = result.concat @jins2.genTones(start + FIFTH + FIFTH)
+        console.log(result)
+        return result
 
 
 window.Mode = Mode
