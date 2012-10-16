@@ -95,7 +95,7 @@ for name, def of maqam_defs
 #saba
 maqamat["saba"] = (new Mode(9, ajnas["bayati"].broken(), ajnas["kurd"].broken()))
 
-disp_name = (maqam) ->
+window.disp_name = (maqam_code) ->
     map = {
         "ajam" : "عجم",
         "kurd": "كرد",
@@ -109,10 +109,10 @@ disp_name = (maqam) ->
         "saba" : "صبا"
         "jiharkah": "جهاركاه"
     }
-    if maqam.name of map
-        map[maqam.name]
+    if maqam_code of map
+        map[maqam_code]
     else
-        maqam.name
+        maqam_code
 
 if not window.updkeys?
     window.updkeys = ->

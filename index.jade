@@ -6,7 +6,7 @@ block content
       tr.header
         td.logo
         td.maqam_name
-          div#maqam_name
+          div#maqam_name(data-bind="html: maqam().disp_name")
       tr.middle
         td.maqam_list
           div#maqam_section

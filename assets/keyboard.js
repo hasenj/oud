@@ -39,9 +39,17 @@ function OctaveVM(octave, koMaqam) {
     return self;
 }
 
-function MaqamVM(mode) {
+function MaqamVM(name) {
     var self = this
-    self.maqam = ko.observable(mode)
+    self.name = ko.observable(name)
+    self.maqam = ko.computed(function() {
+        return maqamat[self.name()]
+    });
+
+    self.disp_name = ko.computed(function() {
+        return "مقام ال" + disp_name(self.name())
+    });
+
     self.octaves = {}
     for(var i = -1; i <= 1; i++) {
         self.octaves[i] = new OctaveVM(i, self.maqam)
@@ -173,7 +181,7 @@ kb_layouts['qwerty'] = new KeyboardLayout(["1234567890-=", "QWERTYUIOP[]", "ASDF
 function GlobalViewModel() {
     var self = this;
     default_maqam = $.cookie('maqam') || 'ajam';
-    maqamvm = new MaqamVM(maqamat[default_maqam])
+    maqamvm = new MaqamVM(default_maqam)
     self.maqam = ko.observable(maqamvm)
     self.kbLayout = ko.observable(kb_layouts['qwerty'])
 
