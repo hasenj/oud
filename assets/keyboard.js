@@ -91,6 +91,15 @@ function VirtualKeyVM(row, column, viewmodel) {
         return viewmodel.kbLayout().letterAt(row, column)
     })
 
+    self.disp_tone = ko.computed(function() {
+        var t = self.tone();
+        return t == null? "&nbsp;" : t;
+    });
+
+    self.disp_letter = ko.computed(function() {
+        return self.letter() || "&nbsp;"
+    });
+
     self.pressed = ko.observable(false)
     self.semi_pressed = ko.observable(false)
 
@@ -117,7 +126,11 @@ function VirtualKeyVM(row, column, viewmodel) {
     })
 
     self.play = function() {
-        playtone(self.tone());
+        var t = self.tone();
+        if(t==null) {
+            return
+        }
+        playtone(t);
     }
 
     self.press = function() {
@@ -155,7 +168,7 @@ function KeyboardLayout(rows) {
 }
 
 var kb_layouts = {} // standard keyboard layouts .. to choose from; e.g. qwerty, azerty, .. etc
-kb_layouts['qwerty'] = new KeyboardLayout(["1234567890-=", "qwertyuiop[]", "asdfghjkl;'"])
+kb_layouts['qwerty'] = new KeyboardLayout(["1234567890-=", "QWERTYUIOP[]", "ASDFGHJKL;'"])
 
 function GlobalViewModel() {
     var self = this;
@@ -254,7 +267,7 @@ key_handler = function(e, callback){
     if(e.which in special) {
         kbkey = special[e.which]
     } else {
-        kbkey = String.fromCharCode(e.which).toLowerCase()
+        kbkey = String.fromCharCode(e.which).toUpperCase()
     }
     e.preventDefault()
     var keyvm = viewmodel.findKey(kbkey)
