@@ -108,6 +108,14 @@ function VirtualKeyVM(row, column, viewmodel) {
         return "key " + self.state_class();
     })
 
+    self.container_class = ko.computed(function() {
+        var cls = "ib ";
+        if(self.key_index < 0 || self.key_index > 7) {
+            cls += "outside_octave";
+        }
+        return cls;
+    })
+
     self.play = function() {
         playtone(self.tone());
     }
