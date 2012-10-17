@@ -70,15 +70,14 @@ class Mode # maqam/scale with a starting point
             disp_name(self.name)
 
         self.isActive = ko.computed ->
-            # active_maqam.name() == self.name
-            $.cookie('maqam') == self.name
+            selected_maqam() == self.name
 
         # for the maqam button
         self.el_class = ko.computed ->
+            cls = "maqam_btn"
             if self.isActive()
-                "maqam_btn active"
-            else
-                "maqam_btn"
+                cls += " active"
+            return cls
 
 
     genTones: (octave) ->
@@ -91,8 +90,8 @@ class Mode # maqam/scale with a starting point
         return result
 
     select: ->
-        $.cookie('maqam', @name)
-        active_maqam.name(@name)
+        selected_maqam(@name)
+
 
 
 window.Mode = Mode
@@ -117,6 +116,12 @@ maqam_defs =
     "bayati": "9 bayati kurd"
     # "saba": "9 saba zamzama" # to be defined as a broken bayati
     "jiharkah": "9 jiharkah jiharkah"
+
+window.selected_maqam = ko.observable($.cookie('maqam') || 'ajam')
+
+selected_maqam.subscribe( (val) ->
+    $.cookie('maqam', val)
+)
 
 window.maqamat = {}
 for name, def of maqam_defs

@@ -41,7 +41,7 @@ function OctaveVM(octave, koMaqam) {
 
 function MaqamVM(name) {
     var self = this
-    self.name = ko.observable(name)
+    self.name = name // it's an observable
     self.maqam = ko.computed(function() {
         return maqamat[self.name()]
     });
@@ -90,7 +90,7 @@ function VirtualKeyVM(row, column, viewmodel) {
     // first row is "previous" octave
     self.octave_index = row - 1;
     // we shift the keyboard by 2 keys
-    self.key_index = column - 1;
+    self.key_index = column - 2;
 
     self.tone = ko.computed(function() {
         return active_maqam.octaveKeyTone(self.octave_index, self.key_index);
@@ -178,8 +178,7 @@ function KeyboardLayout(rows) {
 var kb_layouts = {} // standard keyboard layouts .. to choose from; e.g. qwerty, azerty, .. etc
 kb_layouts['qwerty'] = new KeyboardLayout(["1234567890-=", "QWERTYUIOP[]", "ASDFGHJKL;'"])
 
-default_maqam = $.cookie('maqam') || 'ajam';
-window.active_maqam = new MaqamVM(default_maqam)
+window.active_maqam = new MaqamVM(selected_maqam)
 
 function GlobalViewModel() {
     var self = this;
