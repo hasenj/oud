@@ -61,7 +61,6 @@ function MaqamVM(name) {
             firstNoteIndex = 1;
         }
         var noteIndex = keyIndex + firstNoteIndex;
-        console.log("key:", keyIndex, "note:", noteIndex);
         return modIndex(stdNoteNames(), noteIndex)
     }
 
