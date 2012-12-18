@@ -39,6 +39,11 @@ function OctaveVM(octave, koMaqam) {
     return self;
 }
 
+doReMeArabic = "دو ري مي فا صول لا سي".split(" ")
+doReMeLatin = "DO RE ME FA SOL LA SI".split(" ")
+CDELatin = "C D E F G A B".split(" ")
+stdNoteNames = ko.observable(doReMeArabic)
+
 function MaqamVM(name) {
     var self = this
     self.name = name // it's an observable
@@ -49,6 +54,16 @@ function MaqamVM(name) {
     self.disp_name = ko.computed(function() {
         return "مقام ال" + disp_name(self.name())
     });
+
+    self.noteName = function(keyIndex) {
+        var firstNoteIndex = 0;
+        if(self.maqam().base == 9) { // HACK! works because we only use either 0 or 9 as a first note so far XXX
+            firstNoteIndex = 1;
+        }
+        var noteIndex = keyIndex + firstNoteIndex;
+        console.log("key:", keyIndex, "note:", noteIndex);
+        return modIndex(stdNoteNames(), noteIndex)
+    }
 
     self.octaves = {}
     for(var i = -1; i <= 1; i++) {
@@ -99,13 +114,33 @@ function VirtualKeyVM(row, column, viewmodel) {
         return viewmodel.kbLayout().letterAt(row, column)
     })
 
+    self.enabled = ko.computed(function() {
+        return self.tone() != null;
+    });
+
     self.disp_tone = ko.computed(function() {
         var t = self.tone();
         return t == null? "&nbsp;" : t;
     });
 
     self.disp_letter = ko.computed(function() {
-        return self.letter() || "&nbsp;"
+        if(self.enabled()) {
+            return self.letter() || "&nbsp;"
+        } else {
+            return "&nbsp;"
+        }
+    });
+
+    self.note_name = ko.computed(function() {
+        return active_maqam.noteName(self.key_index);
+    });
+
+    self.disp_note_name = ko.computed(function() {
+        if(self.enabled()) {
+            return self.note_name();
+        } else {
+            return "&nbsp;";
+        }
     });
 
     self.pressed = ko.observable(false)
@@ -319,12 +354,14 @@ $(document).keyup(function(ev) {
 })
 
 
-/*
-# -------------------------
-
-modulo = (index, length) ->
-    while index < 0
+_modulo = function(index, length) {
+    while(index < 0) {
         index += length
-    index %= length
+    }
+    return index % length
+}
 
-*/
+modIndex = function(list, index) {
+    return list[_modulo(index, list.length)]
+}
+
