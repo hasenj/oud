@@ -61,27 +61,27 @@ function MaqamVM(name) {
             firstNoteIndex = 1;
         }
         var noteIndex = keyIndex + firstNoteIndex;
-        return modIndex(stdNoteNames(), noteIndex)
+        return modIndex(stdNoteNames(), noteIndex);
     }
 
     self.octaves = {}
     for(var i = -1; i <= 1; i++) {
-        self.octaves[i] = new OctaveVM(i, self.maqam)
+        self.octaves[i] = new OctaveVM(i, self.maqam);
     }
 
     // find the tone for the key in the octave, returning null if one can't be found
     self.octaveKeyTone = function(octave, key) {
-        var ovm = self.octaves[octave]
+        var ovm = self.octaves[octave];
         if(!ovm) {
             return null;
         }
 
-        var keys = ovm.tones()
+        var keys = ovm.tones();
         if(!keys) {
             return null;
         }
 
-        var tone = keys[key]
+        var tone = keys[key];
         if(tone == null) {
             if(key > 7) {
                 // find the key from the next octave ..
@@ -93,7 +93,7 @@ function MaqamVM(name) {
                 return null;
             }
         }
-        return tone
+        return tone;
     }
 
     return self;
@@ -110,7 +110,7 @@ function VirtualKeyVM(row, column, viewmodel) {
         return active_maqam.octaveKeyTone(self.octave_index, self.key_index);
     })
     self.letter = ko.computed(function() {
-        return viewmodel.kbLayout().letterAt(row, column)
+        return viewmodel.kbLayout().letterAt(row, column);
     })
 
     self.enabled = ko.computed(function() {
@@ -124,7 +124,7 @@ function VirtualKeyVM(row, column, viewmodel) {
 
     self.disp_letter = ko.computed(function() {
         if(self.enabled()) {
-            return self.letter() || "&nbsp;"
+            return self.letter() || "&nbsp;";
         } else {
             return "&nbsp;"
         }
@@ -142,8 +142,8 @@ function VirtualKeyVM(row, column, viewmodel) {
         }
     });
 
-    self.pressed = ko.observable(false)
-    self.semi_pressed = ko.observable(false)
+    self.pressed = ko.observable(false);
+    self.semi_pressed = ko.observable(false);
 
     self.state_class = ko.computed(function() {
         if(self.pressed()) {
