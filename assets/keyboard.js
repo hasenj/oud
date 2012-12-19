@@ -57,8 +57,15 @@ function MaqamVM(name) {
 
     self.noteName = function(keyIndex) {
         var firstNoteIndex = 0;
-        if(self.maqam().base == 9) { // HACK! works because we only use either 0 or 9 as a first note so far XXX
-            firstNoteIndex = 1;
+        var noteIndexMap = {
+            0: 0,
+            9: 1,
+            22: 3,
+            31: 4,
+        }
+        // HACK! works because we only use either 0 or 9 as a first note so far XXX
+        if(self.maqam()) {
+            firstNoteIndex = noteIndexMap[self.maqam().base]
         }
         var noteIndex = keyIndex + firstNoteIndex;
         return modIndex(stdNoteNames(), noteIndex);
