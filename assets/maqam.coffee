@@ -29,7 +29,7 @@ disp_name = (maqam_code) ->
 window.disp_name = disp_name
 ajnas_defs =
     "ajam": "9 9 4"
-    "rast": "8 7 7"
+    "rast": "9 7 6"
     "nhwnd": "9 4 9"
     "bayati": "6 7 9"
     "hijaz": "5 12 5"
