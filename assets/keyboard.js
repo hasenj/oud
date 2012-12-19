@@ -22,6 +22,19 @@
 
 u = _
 
+
+_modulo = function(index, length) {
+    while(index < 0) {
+        index += length
+    }
+    return index % length
+}
+
+modIndex = function(list, index) {
+    return list[_modulo(index, list.length)]
+}
+
+
 // octave row
 function OctaveVM(octave, koMaqam) { 
     // octave is the octave index
@@ -42,7 +55,28 @@ function OctaveVM(octave, koMaqam) {
 doReMeArabic = "دو ري مي فا صول لا سي".split(" ")
 doReMeLatin = "DO RE ME FA SOL LA SI".split(" ")
 CDELatin = "C D E F G A B".split(" ")
-stdNoteNames = ko.observable(doReMeArabic)
+window.stdNoteNames = ko.observable(doReMeArabic)
+
+noteIndexMap = {
+    '-13': -2,
+    0: 0,
+    9: 1,
+    22: 3,
+    31: 4,
+}
+
+// option list for starting note along with its name
+noteNames = ko.computed(function() {
+    var res = [];
+    for(note in noteIndexMap) {
+        var item = {
+            note: parseInt(note),
+            name: "" + note + ": " + modIndex(stdNoteNames(), noteIndexMap[note])
+        };
+        res.push(item);
+    }
+    return res;
+})
 
 function MaqamVM(name) {
     var self = this
@@ -57,15 +91,9 @@ function MaqamVM(name) {
 
     self.noteName = function(keyIndex) {
         var firstNoteIndex = 0;
-        var noteIndexMap = {
-            0: 0,
-            9: 1,
-            22: 3,
-            31: 4,
-        }
-        // HACK! works because we only use either 0 or 9 as a first note so far XXX
+        // HACK! works because we only use a starting note from the map above
         if(self.maqam()) {
-            firstNoteIndex = noteIndexMap[self.maqam().base]
+            firstNoteIndex = noteIndexMap[self.maqam().base()]
         }
         var noteIndex = keyIndex + firstNoteIndex;
         return modIndex(stdNoteNames(), noteIndex);
@@ -223,19 +251,20 @@ window.active_maqam = new MaqamVM(selected_maqam)
 
 function GlobalViewModel() {
     var self = this;
-    self.maqam = active_maqam
-    self.kbLayout = ko.observable(kb_layouts['qwerty'])
+    self.maqam = active_maqam;
+    self.noteNames = noteNames;
+    self.kbLayout = ko.observable(kb_layouts['qwerty']);
 
-    self.maqam_list = ko.observableArray(u.values(window.maqamat))
+    self.maqam_list = ko.observableArray(u.values(window.maqamat));
 
-    key_list = []
-    self.vkb_rows = []
+    key_list = [];
+    self.vkb_rows = [];
     for(var i = 0; i < 3; i++) {
-        self.vkb_rows.push([])
+        self.vkb_rows.push([]);
         for(var j=0; j < 12; j++) {
-            var kvm = new VirtualKeyVM(i, j, self)
-            self.vkb_rows[i].push(kvm)
-            key_list.push(kvm)
+            var kvm = new VirtualKeyVM(i, j, self);
+            self.vkb_rows[i].push(kvm);
+            key_list.push(kvm);
         }
     }
 
@@ -359,15 +388,4 @@ $(document).keyup(function(ev) {
     key_handler(ev, handler)
 })
 
-
-_modulo = function(index, length) {
-    while(index < 0) {
-        index += length
-    }
-    return index % length
-}
-
-modIndex = function(list, index) {
-    return list[_modulo(index, list.length)]
-}
 

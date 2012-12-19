@@ -65,8 +65,10 @@ class Jins
 window.selected_maqam = ko.observable($.cookie('maqam') || 'ajam')
 
 class Mode # maqam/scale with a starting point
-    constructor: (@name, @base, @jins1, @jins2) ->
+    constructor: (@name, base, @jins1, @jins2) ->
         self = this
+
+        self.base = ko.observable(base)
 
         self.disp_name = ko.computed ->
             disp_name(self.name)
@@ -83,7 +85,7 @@ class Mode # maqam/scale with a starting point
 
 
     genTones: (octave) ->
-        start = @base + (octave * OCTAVE)
+        start = @base() + (octave * OCTAVE)
         result = []
         result = result.concat @jins1.genTones(start)
         result = result.concat @jins2.genTones(start + FIFTH)
