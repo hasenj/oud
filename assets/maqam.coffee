@@ -19,7 +19,8 @@ disp_name = (maqam_code) ->
         "rast2": "رست هبوطا",
         "bayati" : "بياتي",
         "saba" : "صبا"
-        "cherga": "جهرگا"
+        "mahuri": "ماهوري"
+        "huseni": "حسيني"
     }
     if maqam_code of map
         map[maqam_code]
@@ -35,7 +36,6 @@ ajnas_defs =
     "hijaz": "5 12 5"
     # "saba": "6 7 5" # will be defined as a broken bayati
     "kurd": "4 9 9"
-    "cherga": "9 8 5"
 
 FORTH = 22
 FIFTH = 31
@@ -107,7 +107,7 @@ for key, val of ajnas_defs
 maqam_defs =
     "ajam": "0 ajam ajam"
     "kurd": "9 kurd kurd"
-    "cherga": "22 cherga cherga"
+    "mahuri": "0 ajam nhwnd"
     "rast1": "0 rast rast"
     "rast2": "0 rast nhwnd"
     "bayati": "9 bayati kurd"
@@ -116,6 +116,7 @@ maqam_defs =
     "saba": "9 bayati kurd" # saba -- will be overriden later; here for ordering purposes only
     "nhwnd1": "0 nhwnd hijaz"
     "nhwnd2": "0 nhwnd kurd"
+    "huseni": "31 bayati bayati"
 
 window.selected_maqam = ko.observable($.cookie('maqam') || 'ajam')
 
