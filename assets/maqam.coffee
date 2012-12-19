@@ -107,15 +107,15 @@ for key, val of ajnas_defs
 maqam_defs =
     "ajam": "0 ajam ajam"
     "kurd": "9 kurd kurd"
-    "hijaz1": "9 hijaz bayati"
-    "hijaz2": "9 hijaz kurd"
+    "jiharkah": "9 jiharkah jiharkah"
     "rast1": "0 rast rast"
     "rast2": "0 rast nhwnd"
+    "bayati": "9 bayati kurd"
+    "hijaz1": "9 hijaz bayati"
+    "hijaz2": "9 hijaz kurd"
+    "saba": "9 bayati kurd" # saba -- will be overriden later; here for ordering purposes only
     "nhwnd1": "0 nhwnd hijaz"
     "nhwnd2": "0 nhwnd kurd"
-    "bayati": "9 bayati kurd"
-    # "saba": "9 saba zamzama" # to be defined as a broken bayati
-    "jiharkah": "9 jiharkah jiharkah"
 
 window.selected_maqam = ko.observable($.cookie('maqam') || 'ajam')
 

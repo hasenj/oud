@@ -1,4 +1,5 @@
 @import 'nib'
+@import 'nib/gradients'
 
 input#start
     width 40px
@@ -15,31 +16,28 @@ input#scale
 maqam-button(bghue=230)
   -reset()
   cursor pointer
-  box-shadow 0px 0px 11px 2px hsl(bghue, 1, 96) inset
+  // box-shadow 0px 0px 11px 2px hsl(bghue, 1, 96) inset
   border solid 1px hsl(bghue, 20, 85)
-  background-color white
+  // background-color white
   display inline-block
-  width 120px
+  width 90px
   text-align center
   direction rtl
   font-family amiri
-  font-size 1.5em
+  font-size 1.1em
   text-shadow 1px 1px 2px hsl(150, 40, 60)
-  margin 0px
+  background: linear-gradient(top, 20% white, 280% hsl(0,0,92))
+  border-radius 5px
   &:hover
   &.hover
-    background-color hsl(190, 20, 90)
+    background: linear-gradient(top, white, 180% hsl(0,0,92))
   &:active
   &.active
-    background-color hsl(190, 20, 80)
+    // background-color hsl(190, 20, 80)
+    background: linear-gradient(top, hsl(0,0,88), hsl(0,0,98))
     text-shadow 1px 1px 2px hsl(150, 40, 90)
+    font-size 1.09em
     
-.maqam_list
-    direction rtl
-    text-align right
-    .maqam_btn
-      maqam-button()
-
 
 .widget_stepper
   font-size 0.8em
@@ -96,4 +94,8 @@ aqua-button(bghue=230)
     grad(85)
     outer_border(-8)
 
+
+.maqam_btn
+  maqam-button()
+  margin: 5px
 
