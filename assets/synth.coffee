@@ -84,7 +84,7 @@ dev.ringBuffer = mkbuf(7 * CHANNELS * SRATE)
 
 # just for the dampness
 dampness = (->
-    down = (val) -> Math.max 0, val - 0.1
+    down = (val) -> Math.max 0, val - 0.24
     # e ^ (-2x) - 0.2 # (without going below 0)
     for point in [0..SIGNAL_LEN]
         down(Math.pow(Math.E, -2 * (point/SIGNAL_LEN)))
