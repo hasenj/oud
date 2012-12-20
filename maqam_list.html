@@ -3,5 +3,9 @@
     </div>
 </div>
 <div class="maqam_info">
-    <select data-bind="options: noteNames, optionsText: 'name', optionsValue: 'note', value: maqam.maqam().base"></select>
+    <!-- First note -->
+    <div class="section">
+        <label class="label"> نغمة البداية: </label>
+        <select class="def" data-bind="options: noteNames, optionsText: 'name', optionsValue: 'note', value: maqam.maqam().base"></select>
+    </div>
 </div>
