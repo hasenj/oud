@@ -29,13 +29,13 @@ disp_name = (maqam_code) ->
 
 window.disp_name = disp_name
 ajnas_defs =
-    "ajam": "9 9 4"
-    "rast": "9 7 6"
-    "nhwnd": "9 4 9"
-    "bayati": "6 7 9"
+    "ajam": "9 8 5"
+    "rast": "8 7 7"
+    "nhwnd": "9 5 8"
+    "bayati": "7 7 8"
     "hijaz": "5 12 5"
     # "saba": "6 7 5" # will be defined as a broken bayati
-    "kurd": "4 9 9"
+    "kurd": "5 8 9"
 
 FORTH = 22
 FIFTH = 31
