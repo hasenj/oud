@@ -42,14 +42,14 @@ FIFTH = 31
 OCTAVE = 53
 
 class Jins
-    constructor: (@p1, @p2, @p3) ->
+    constructor: (@name, @p1, @p2, @p3) ->
         total = @p1 + @p2 + @p3
         if total not in [18, 22]
             console.log "Bad Jins", @p1, @p2, @p3, " total:", total
 
     # return a Jins that's 18 units long (2 full tones) instead of 22
     broken: ->
-        return new Jins(@p1, @p2, 18-(@p1+@p2))
+        return new Jins(@name, @p1, @p2, 18-(@p1+@p2))
 
     isBroken: ->
         return @p1 + @p2 + @p3 < FORTH
@@ -103,7 +103,7 @@ window.Mode = Mode
 ajnas = {}
 for key, val of ajnas_defs
     args = (Number n for n in val.split(" "))
-    ajnas[key] = new Jins(args...)
+    ajnas[key] = new Jins(key, args...)
 
 # The `ajnas` dict maps jins name to a Jins object
 
