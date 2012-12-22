@@ -32,10 +32,10 @@ ajnas_defs =
     "ajam": "9 8 5"
     "rast": "9 7 6"
     "nhwnd": "9 5 8"
-    "bayati": "6 7 9"
+    "bayati": "7 7 8"
     "hijaz": "5 12 5"
     # "saba": "6 7 5" # will be defined as a broken bayati
-    "kurd": "5 8 9"
+    "kurd": "5 9 8"
 
 FORTH = 22
 FIFTH = 31
@@ -44,12 +44,12 @@ OCTAVE = 53
 class Jins
     constructor: (@name, @p1, @p2, @p3) ->
         total = @p1 + @p2 + @p3
-        if total not in [18, 22]
+        if total not in [19, 22]
             console.log "Bad Jins", @p1, @p2, @p3, " total:", total
 
-    # return a Jins that's 18 units long (2 full tones) instead of 22
+    # return a Jins that's 19 units long (2 full tones) instead of 22
     broken: ->
-        return new Jins(@name, @p1, @p2, 18-(@p1+@p2))
+        return new Jins(@name, @p1, @p2, 19-(@p1+@p2))
 
     isBroken: ->
         return @p1 + @p2 + @p3 < FORTH
