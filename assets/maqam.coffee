@@ -41,15 +41,17 @@ FORTH = 22
 FIFTH = 31
 OCTAVE = 53
 
+BROKEN_FORTH = 19
+
 class Jins
     constructor: (@name, @p1, @p2, @p3) ->
         total = @p1 + @p2 + @p3
-        if total not in [19, 22]
+        if total not in [FORTH, BROKEN_FORTH]
             console.log "Bad Jins", @p1, @p2, @p3, " total:", total
 
-    # return a Jins that's 19 units long (2 full tones) instead of 22
+    # return a Jins with a broken forth
     broken: ->
-        return new Jins(@name, @p1, @p2, 19-(@p1+@p2))
+        return new Jins(@name + "-broken", @p1, @p2, BROKEN_FORTH-(@p1+@p2))
 
     isBroken: ->
         return @p1 + @p2 + @p3 < FORTH
