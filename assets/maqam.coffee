@@ -32,10 +32,10 @@ ajnas_defs =
     "ajam": "9 8 5"
     "rast": "9 7 6"
     "nhwnd": "9 5 8"
-    "bayati": "7 7 8"
+    "bayati": "6 7 9"
     "hijaz": "5 12 5"
     # "saba": "6 7 5" # will be defined as a broken bayati
-    "kurd": "5 9 8"
+    "kurd": "5 8 9"
 
 FORTH = 22
 FIFTH = 31
@@ -46,12 +46,14 @@ BROKEN_FORTH = 19
 class Jins
     constructor: (@name, @p1, @p2, @p3) ->
         total = @p1 + @p2 + @p3
-        if total not in [FORTH, BROKEN_FORTH]
-            console.log "Bad Jins", @p1, @p2, @p3, " total:", total
 
     # return a Jins with a broken forth
     broken: ->
-        return new Jins(@name + "-broken", @p1, @p2, BROKEN_FORTH-(@p1+@p2))
+        if @p3 <= 5
+            console.log "Jins can't be broken!"
+            # return a copy of self!
+            return new Jins(@name, @p1, @p2, @p3)
+        return new Jins(@name + "-broken", @p1, @p2, 5)
 
     isBroken: ->
         return @p1 + @p2 + @p3 < FORTH
