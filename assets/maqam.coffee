@@ -59,6 +59,8 @@ class Jins
         self = this
         self.disp_name = ko.computed ->
             disp_name(self.name)
+        self.disp_intervals = ko.computed ->
+            [self.p1, self.p2, self.p3].join("-")
 
     # return a Jins with a broken forth
     broken: ->
