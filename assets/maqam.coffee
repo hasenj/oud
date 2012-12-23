@@ -15,12 +15,15 @@ disp_name = (maqam_code) ->
         "nhwnd2": "نهاوند هبوطا",
         "hijaz1": "حجاز صعودا",
         "hijaz2": "حجاز هبوطا",
+        "hijazkar": "حجاز كار"
         "rast1": "رست صعودا",
         "rast2": "رست هبوطا",
         "bayati" : "بياتي",
         "saba" : "صبا"
         "mahuri": "ماهوري"
         "huseni": "حسيني"
+        "chaharga": "چهرگاه"
+        "nairuz": "نيروز"
     }
     if maqam_code of map
         map[maqam_code]
@@ -121,10 +124,13 @@ maqam_defs =
     "bayati": "9 bayati kurd"
     "hijaz1": "9 hijaz bayati"
     "hijaz2": "9 hijaz kurd"
-    "saba": "9 bayati kurd" # saba -- will be overriden later; here for ordering purposes only
+    "hijazkar": "9 hijaz hijaz"
     "nhwnd1": "0 nhwnd hijaz"
     "nhwnd2": "0 nhwnd kurd"
+    "saba": "9 bayati kurd" # saba -- will be overriden later; here for ordering purposes only
     "huseni": "31 bayati bayati"
+    "chaharga": "22 ajam rast"
+    "nairuz": "0 rast bayati"
 
 window.maqamat = {}
 for name, def of maqam_defs
