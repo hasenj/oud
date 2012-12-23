@@ -11,11 +11,14 @@ disp_name = (maqam_code) ->
     map = {
         "ajam" : "عجم",
         "kurd": "كرد",
+        "nhwnd": "نهاوند"
         "nhwnd1": "نهاوند صعودا",
         "nhwnd2": "نهاوند هبوطا",
+        "hijaz": "حجاز"
         "hijaz1": "حجاز صعودا",
         "hijaz2": "حجاز هبوطا",
         "hijazkar": "حجاز كار"
+        "rast": "رست"
         "rast1": "رست صعودا",
         "rast2": "رست هبوطا",
         "bayati" : "بياتي",
@@ -24,6 +27,10 @@ disp_name = (maqam_code) ->
         "huseni": "حسيني"
         "chaharga": "چهرگاه"
         "nairuz": "نيروز"
+
+        # saba strings
+        "bayati-broken": "بياتي ناقص"
+        "kurd-broken": "كرد ناقص"
     }
     if maqam_code of map
         map[maqam_code]
@@ -49,6 +56,9 @@ BROKEN_FORTH = 19
 class Jins
     constructor: (@name, @p1, @p2, @p3) ->
         total = @p1 + @p2 + @p3
+        self = this
+        self.disp_name = ko.computed ->
+            disp_name(self.name)
 
     # return a Jins with a broken forth
     broken: ->
