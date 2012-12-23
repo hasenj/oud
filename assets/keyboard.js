@@ -57,6 +57,7 @@ doReMeLatin = "DO RE ME FA SOL LA SI".split(" ")
 CDELatin = "C D E F G A B".split(" ")
 window.stdNoteNames = ko.observable(doReMeArabic)
 
+// maps a note number to a note name index
 noteIndexMap = {
     '-13': -2,
     0: 0,
@@ -65,13 +66,27 @@ noteIndexMap = {
     31: 4,
 }
 
+zfill = function(str, len) {
+    while(str.length < len) {
+        str = str + String.fromCharCode(160);
+    }
+    return str;
+}
+
 // option list for starting note along with its name
 noteNames = ko.computed(function() {
+    // helper functions
+    var intfn = function(n) { return parseInt(n); };
+    var sortfn = function(a, b) { return a > b; };
     var res = [];
-    for(note in noteIndexMap) {
+    var sortedKeys = u.keys(noteIndexMap).map(intfn).sort(sortfn);
+    for(i in sortedKeys) {
+        var note = sortedKeys[i];
+        var name = modIndex(stdNoteNames(), noteIndexMap[note]);
         var item = {
             note: parseInt(note),
-            name: "" + note + ": " + modIndex(stdNoteNames(), noteIndexMap[note])
+            //name: zfill(name, 10) + note
+            name: name
         };
         res.push(item);
     }
