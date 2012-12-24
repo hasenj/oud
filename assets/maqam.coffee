@@ -37,6 +37,17 @@ disp_name = (maqam_code) ->
     else
         maqam_code
 
+maqam_desc =
+    "ajam": "و هو مماثل لسلم الميجور الغربي"
+    "kurd": ""
+    "rast": "ابو المقامات الشرقية"
+    "bayati": ""
+    "hijaz": ""
+    "saba": "المقام الحزين المنكسر"
+    "nhwnd": ""
+    "huseni": ""
+    "mahuri": "من مشتقات العجم، و يستعمل في العراق في الاعياد في التكبيرات و قرائة القرآن"
+
 window.disp_name = disp_name
 ajnas_defs =
     "ajam": "9 8 5"
@@ -91,6 +102,12 @@ class Mode # maqam/scale with a starting point
 
         self.disp_name = ko.computed ->
             disp_name(self.name)
+
+        self.disp_desc = ko.computed ->
+            if self.name of maqam_desc
+                maqam_desc[self.name]
+            else
+                ""
 
         self.isActive = ko.computed ->
             selected_maqam() == self.name

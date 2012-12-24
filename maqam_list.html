@@ -19,6 +19,10 @@
         <label class="label"> نغمة البداية: </label>
         <select class="def" data-bind="options: noteNames, optionsText: 'name', optionsValue: 'note', value: maqam.maqam().base"></select>
     </div>
+    <!-- short description -->
+    <div class="section">
+        <p class="desc" data-bind="text: maqam.maqam().disp_desc"></p>
+    </div>
 </div>
 
 <!-- For this template, assume current bound data is a jins object -->
