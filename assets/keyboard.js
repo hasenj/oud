@@ -100,10 +100,6 @@ function MaqamVM(name) {
         return maqamat[self.name()]
     });
 
-    self.disp_name = ko.computed(function() {
-        return "مقام ال" + disp_name(self.name())
-    });
-
     self.noteName = function(keyIndex) {
         var firstNoteIndex = 0;
         // HACK! works because we only use a starting note from the map above
@@ -113,6 +109,11 @@ function MaqamVM(name) {
         var noteIndex = keyIndex + firstNoteIndex;
         return modIndex(stdNoteNames(), noteIndex);
     }
+
+    self.disp_name = ko.computed(function() {
+        return "سلم ال" + disp_name(self.name()) + " على ال" + self.noteName(0);
+    });
+
 
     self.octaves = {}
     for(var i = -1; i <= 1; i++) {
