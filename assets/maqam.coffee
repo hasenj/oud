@@ -51,7 +51,7 @@ maqam_desc =
 window.disp_name = disp_name
 ajnas_defs =
     "ajam": "9 8 5"
-    "rast": "9 7 6"
+    "rast": "9 6 7"
     "nhwnd": "9 5 8"
     "bayati": "6 7 9"
     "hijaz": "5 12 5"
