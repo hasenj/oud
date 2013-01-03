@@ -1,0 +1,8 @@
+To run test, open run.html in the browser (chrome).
+
+To test a module, include it in run.html and include its test file in run.hmtl
+
+Make sure to include the thing you want to test before the test file!
+
+See existing tests for examples of how to write test files.
+
