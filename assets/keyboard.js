@@ -136,7 +136,7 @@ function MaqamVM(name) {
     return self;
 }
 
-function VirtualKeyVM(row, column, viewmodel) {
+function VirtualKeyVM(row, column, piano) {
     var self = this;
     // first row is "previous" octave
     self.octave_index = row - 1;
@@ -147,7 +147,7 @@ function VirtualKeyVM(row, column, viewmodel) {
         return active_maqam.octaveKeyTone(self.octave_index, self.key_index);
     })
     self.letter = ko.computed(function() {
-        return viewmodel.kbLayout().letterAt(row, column);
+        return piano.kbLayout().letterAt(row, column);
     })
 
     self.enabled = ko.computed(function() {
@@ -249,10 +249,11 @@ function KeyboardLayout(rows) {
 var kb_layouts = {} // standard keyboard layouts .. to choose from; e.g. qwerty, azerty, .. etc
 kb_layouts['qwerty'] = new KeyboardLayout(["1234567890-=", "QWERTYUIOP[]", "ASDFGHJKL;'"])
 
-window.active_maqam = new MaqamVM(selected_maqam)
+window.active_maqam = new MaqamVM(selected_maqam);
 
-function GlobalViewModel() {
+function PianoMode() {
     var self = this;
+
     self.maqam = active_maqam;
     self.noteNames = noteNames;
     self.kbLayout = ko.observable(kb_layouts['qwerty']);
@@ -283,6 +284,16 @@ function GlobalViewModel() {
     };
 
     return self;
+}
+
+piano = new PianoMode();
+
+
+function GlobalViewModel() {
+    var self = this;
+
+    self.mode = ko.observable("piano");
+    self.piano = piano;
 }
 
         
@@ -352,7 +363,7 @@ key_handler = function(e, callback){
         kbkey = String.fromCharCode(e.which).toUpperCase()
     }
     e.preventDefault()
-    var keyvm = viewmodel.findKey(kbkey)
+    var keyvm = piano.findKey(kbkey)
     if (!keyvm) {
         return
     }
@@ -360,7 +371,7 @@ key_handler = function(e, callback){
     if(tone == null) {
         return
     }
-    tone_keys = viewmodel.findKeysByTone(tone)
+    tone_keys = piano.findKeysByTone(tone)
     callback(keyvm, tone_keys)
 }
 

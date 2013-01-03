@@ -2,24 +2,20 @@ extends layout
 
 block content
 
-    table.layout
-      tr.header
-        td.logo
-        td.maqam_name
-          div#maqam_name(data-bind="html: active_maqam.disp_name")
-      tr.app
-        td.maqam_list
-          include maqam_list.html
-        td.keyboard
-          include keyboard.html
-      tr.guide
-        td(colspan=2)
-          include guide.html
-      tr.footer
-        td.author
-          // include author.html
-        td.tips 
-          // include help_tips.html
+    div(data-bind="if: mode() == 'piano'")
+        table.layout(data-bind="with: piano")
+          tr.header
+            td.logo
+            td.maqam_name
+              div#maqam_name(data-bind="html: active_maqam.disp_name")
+          tr.app
+            td.maqam_list
+              include maqam_list.html
+            td.keyboard
+              include keyboard.html
+          tr.guide
+            td(colspan=2)
+              include guide.html
 
     != js('/utils')
     != js('/events')
