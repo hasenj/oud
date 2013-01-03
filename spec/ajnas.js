@@ -38,6 +38,47 @@ describe("Ratio", function() {
     });
 });
 
+describe("Note", function() {
+
+    var baseNote = new Note(128);
+
+    it("Has a frequency", function() {
+        expect(baseNote.freq()).toBeDefined();
+        expect(baseNote.freq()).toEqual(128);
+    });
+
+    it("Can create a new note by applying a ratio", function() {
+        var n5 = baseNote.addRatio(Ratio(3, 2));
+        expect(n5.freq()).toEqual(128 * 3 / 2);
+    });
+
+    it("Notes calculated that way are lazy", function() {
+        // lazy meaning they never store their "frequency" internally;
+        // they just calculated it when requested via .freq()
+        expect(baseNote.frequency).toBeDefined();
+        var n5 = baseNote.addRatio(Ratio(3, 2));
+        expect(n5.frequency).toBeUndefined();
+        expect(n5.baseNote).toBeDefined();
+        expect(n5.ratio).toBeDefined();
+    });
+
+});
+
+describe("JinsRow", function() {
+
+    var baseNote = new Note(128);
+    var jinsRow = new JinsRow(ko.observable(baseNote));
+
+    it("Contains 4 groups of keys", function() {
+        expect(jinsRow.groups).toBeDefined();
+        expect(jinsRow.groups()).toBeDefined();
+        expect(jinsRow.groups().length).toEqual(4);
+    });
+
+    it("Each group contains some keys", function() {
+        expect(jinsRow.groups()[0].keys().length > 0).toBe(true);
+    });
+});
 
 describe("OctaveRow", function() {
     var ocrow;
@@ -67,9 +108,19 @@ describe("OctaveRow", function() {
         var checkFifths = function(jins_list){
             var prev = jins_list.shift();
             jins_list.each(function(cur) {
-                expect(cur.distanceTo(prev)).toEqual(Ratio(3, 2));
-            });
+                var ratio = cur.baseNote().ratioTo(prev.baseNote());
+                var perfectFifth = Ratio(3, 2);
+                expect(ratio.equals(perfectFifth)).toBe(true);
+                prev = cur;
+            }, 0, true);
         }
+
+        checkFifths(ocrow.ajnas());
+        // should remain true even after we add ajnas
+        ocrow.addJinsRow();
+        checkFifths(ocrow.ajnas());
+        ocrow.addJinsRow();
+        checkFifths(ocrow.ajnas());
     });
 });
 
