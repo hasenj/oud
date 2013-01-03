@@ -15,21 +15,26 @@ describe("Ratio", function() {
         var r2 = Ratio(4,3);
 
         var res = r1.add(r2);
-        expect(res).toEqual(Ratio(2, 1));
+        var expected = Ratio(2, 1);
+        expect(res.equals(expected)).toBe(true);
     });
 
     it("Can be split into other ratios", function() {
         var r = Ratio(3, 2);
-        var parts = r1.split(2);
+        var parts = r.split(2);
         expect(parts.length).toEqual(2);
-        expect(parts[0].add(parts[1])).toEqual(r);
-        expect(parts).toContain(Ratio(6,5));
-        expect(parts).toContain(Ratio(5,4));
+        expect(parts[0].add(parts[1]).equals(r)).toBe(true);
+        parts = parts.map('toString');
+        expect(parts).toContain("6:5");
+        expect(parts).toContain("5:4");
     });
 
 
     it("Is always normalized", function() {
-        expect(Ratio(3, 2)).toEqual(Ratio(6, 4));
+        var r = Ratio(6, 4);
+        expect(r.a).toEqual(3);
+        expect(r.b).toEqual(2);
+        expect(r.toString()).toEqual("3:2");
     });
 });
 
