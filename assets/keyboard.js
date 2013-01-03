@@ -289,6 +289,7 @@ function PianoMode() {
 piano = new PianoMode();
 
 
+// this should go else where - not in keyboard.js
 function GlobalViewModel() {
     var self = this;
 
