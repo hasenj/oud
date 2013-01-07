@@ -32,10 +32,11 @@ et = function(amount, steps) {
         var self = this;
         self.value = Math.pow(2, amount/steps);
         self.linear = Math.log(self.value) / Math.log(2);
+        self.commas = (self.linear * 53).toFixed(2);
         self.semitones = (self.linear * 12).toFixed(2);
 
         self.repr = function() {
-            return self.value.toFixed(4) + " | " + self.semitones + " ET semitones";
+            return self.value.toFixed(4) + " | " + self.semitones + " ET semitones" + " | " + self.commas + " ET commas";
         }
     }
     return new ctor();
