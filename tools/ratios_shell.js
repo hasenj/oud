@@ -56,21 +56,37 @@ if (in_repl) {
     small_tone = major_third.sub(tone);
     diatone = tone.add(tone);
     pysemi = forth.sub(diatone) // pythagrean semitone
+    neutral_second = minor_third.split(2)[0];
 
     demo("Tone", tone);
     demo("Smaller Tone", small_tone)
     demo("Semitone", semitone);
+    demo("Neutral Second", neutral_second);
 
     demo("Minor Third", minor_third);
     demo("Major Third", major_third);
 
-    demo("Neutral second(s); three-quarter tones", minor_third.split(2));
+    // demo("Neutral second(s); three-quarter tones", minor_third.split(2));
     demo("Hijaz one-half interval", major_third.sub(semitone));
-    demo("Practical three-quarter tones", tone.add(pysemi).split(2));
+    // demo("Practical three-quarter tones", tone.add(pysemi).split(2));
 
-    hijaz_just = Ratio(13,11); // hand-picked by me from the anatomy
-    // demo("Nicer hijaz interval", hijaz_just);
-    // demo("Semitone(s) derived from said interval", forth.sub(hijaz_just).split(2));
+show_oud = function(len) { // show oud places with proposed watar length
+    var places = [
+        ["Semitone", semitone],
+        ["Neutral Second", neutral_second],
+        ["Whole Tone", tone],
+        ["Minor Third", minor_third],
+        ["Major Third", major_third],
+        ["Diminished Forth", minor_third.add(semitone)],
+        ["Forth", forth]
+    ];
+    places.forEach(function(place) {
+        var title = place[0];
+        var interval = place[1];
+        console.log(title + ":", interval.oud(len).toFixed(2));
+    });
+}
+
 
     // drop into a repl!
     try {
