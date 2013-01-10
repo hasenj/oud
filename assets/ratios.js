@@ -36,6 +36,16 @@ RatioCtor = function(a, b) {
         return Ratio(self.a * other.b, self.b * other.a);
     }
 
+    self.mul = function(times) {
+        // XXX only accepts positive numbers!!
+        var n = self;
+        while(times > 1) {
+            times--;
+            n = n.add(self);
+        }
+        return n;
+    }
+
     self.inverse = function() {
         return Ratio(self.b, self.a);
     }
@@ -196,7 +206,7 @@ NoteName = function(index) {
     self.index = index;
 
     self.name = ko.computed(function() {
-        noteNameSystems[noteNameSystem()][self.index];
+        return noteNameSystems[noteNameSystem()][self.index];
     });
 
     self.next = function() {

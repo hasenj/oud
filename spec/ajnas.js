@@ -76,65 +76,37 @@ describe("Instrument", function() {
 
     var diwan = instrument.diwans().first();
     describe("Diwan", function() {
-        it("contains a bunch of awtar jins", function() {
+        it("contains a list of awtar jins", function() {
             expect(diwan.ajnas).toBeDefined();
             expect(diwan.ajnas()).toBeDefined();
-            expect(diwan.ajnas().length >= 2).toBeTrue();
+            expect(diwan.ajnas().length >= 2).toBe(true);
         });
 
         var jins = diwan.ajnas().first();
         describe("WatarJins", function() {
             it("Contains 4 groups of keys", function() {
                 expect(jins.groups).toBeDefined();
-                expect(jins.groups()).toBeDefined();
-                expect(jins.groups().length).toEqual(4);
+                expect(jins.groups.length).toEqual(4);
             });
 
             it("Each group contains some keys", function() {
-                expect(jins.groups()[0].keys().length > 0).toBe(true);
+                expect(jins.groups[0].keys().length > 0).toBe(true);
             });
         });
     });
 });
 
 // this should get moved inside the instrument suite
-describe("JinsRow", function() {
-
-    var baseNote = new Note(128);
-    var jinsRow = new JinsRow(ko.observable(baseNote));
-
-    it("Contains 4 groups of keys", function() {
-        expect(jinsRow.groups).toBeDefined();
-        expect(jinsRow.groups()).toBeDefined();
-        expect(jinsRow.groups().length).toEqual(4);
-    });
-
-    it("Each group contains some keys", function() {
-        expect(jinsRow.groups()[0].keys().length > 0).toBe(true);
-    });
-});
-
 describe("OctaveRow", function() {
     var ocrow;
 
-    beforeEach( function() {
-        ocrow = new OctaveRow();
-    });
-
-    it("Contains a list of ajnas", function() {
-        expect(ocrow.ajnas).toBeDefined();
-        expect(ocrow.ajnas()).toBeDefined();
-        // TODO: expect it to be a list!!
-    });
-
+    /*
     it("Contains always at least 2 ajnas", function() {
-        expect(ocrow.ajnas().length).toEqual(2);
+        expect(false).toBe(true);
     });
 
     it("Can add extra ajnas, overflowing outside the octave boundary", function() {
-        expect(ocrow.ajnas().length).toEqual(2);
-        ocrow.addJinsRow();
-        expect(ocrow.ajnas().length).toEqual(3);
+        expect(false).toBe(true);
     });
 
     it("The ajnas are always separated by perfect fifths", function() {
@@ -156,5 +128,6 @@ describe("OctaveRow", function() {
         ocrow.addJinsRow();
         checkFifths(ocrow.ajnas());
     });
+    */
 });
 

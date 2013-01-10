@@ -55,11 +55,17 @@ ButtonGroup = function(watarJins, index, intervals) {
 
 // WatarJins = Tetrachord String
 // a series of groups of a buttons that represent "frets" on this string
-WatarJins = function(diwan, baseNote, noteName) {
+WatarJins = function(diwan, index) {
     var self = this;
 
-    self.baseNote = baseNote;
-    self.noteName = noteName;
+    var index1 = index+1; // 1-based index
+    self.baseNote = ko.computed(function() {
+        return diwan.baseNote().addRatio(intervals.fifth.mul(index1));
+    });
+    self.noteName = ko.computed(function() {
+        return diwan.noteName().add(index1 * 4);
+    });
+
     self.diwan = diwan;
 
     self.groups = [
@@ -80,31 +86,35 @@ WatarJins = function(diwan, baseNote, noteName) {
     });
 
     self.nextJins = function() {
-        return new WatarJins(diwan, self.baseNote().add(intervals.fifth), noteName.add(4));
+        return new WatarJins(diwan, index+1);
     }
 
     // index of this "watar" on the instrument
-    self.index = ko.computed(function() {
-        return diwan.index() + diwan.ajnas.indexOf(self);
-    });
+    self.index = diwan.index + index;
 }
 
 // AwtarDiwan = Octave Strings
 // a series of Tetrachord strings, separated by a perfect fifth 3:2
 // param oud: the instrument
-AwtarDiwan = function(oud, baseNote, noteName) {
+AwtarDiwan = function(oud, index) {
     var self = this;
 
     self.oud = oud;
-    self.baseNote = baseNote;
-    self.noteName = noteName;
 
-    self.index = ko.computed(function() {
-        return oud.diwans().indexOf(self);
+    var index1 = index+1;
+    self.baseNote = ko.computed(function() {
+        return oud.baseNote().addRatio(intervals.octave.mul(index1));
     });
 
-    var first = new WatarJins(self, self.baseNote, self.noteName);
-    self.ajnas = ko.observableArray([first, first.nextJins()]); // start with 2 ajnas
+    self.noteName = ko.computed(function() {
+        return oud.noteName();
+    });
+
+    self.index = index;
+
+    self.ajnas = ko.observableArray();
+    var first = new WatarJins(self, 0);
+    self.ajnas([first, first.nextJins()]); // start with 2 ajnas
 
     // how many awtar we have; i.e. self.ajnas.length
     self.count = ko.computed(function() {
@@ -123,11 +133,7 @@ AwtarDiwan = function(oud, baseNote, noteName) {
     }
 
     self.nextDiwan = function() {
-        return new AwtarDiwan(self.oud, self.baseNote().addRatio(intervals.octave), self.noteName);
-    }
-
-    self.prevDiwan = function() {
-        return new AwtarDiwan(self.oud, self.baseNote().subRatio(intervals.octave), self.noteName);
+        return new AwtarDiwan(self.oud, index + 1);
     }
 }
 
@@ -137,14 +143,15 @@ AwtarDiwan = function(oud, baseNote, noteName) {
 Instrument = function(baseNote, noteName) {
     var self = this;
 
-    self.baseNote = ko.observable(baseNote);
+    self.baseNote = ko.observable(baseNote.addRatio(intervals.octave.inverse())); // bring it one octave down!
     self.noteName = ko.observable(noteName);
 
-    // create 3 diwans .. one as the previous octave, one as current, one as next!
-    var middleDiwan = new AwtarDiwan(self, self.baseNote, self.noteName);
+    self.diwans = ko.observableArray();
 
-    self.diwans = ko.observableArray([middleDiwan.prevDiwan(), middleDiwan, middleDiwan.nextDiwan()]);
-
+    var first = new AwtarDiwan(self, 0);
+    var second = first.nextDiwan();
+    var third = second.nextDiwan();
+    self.diwans([first, second, third])
 }
 
 
