@@ -32,26 +32,35 @@
 
  */
 
+WatarKey = function(jins, interval) {
+    var self = this;
+
+    self.note = ko.computed(function() {
+        return jins.baseNote().addRatio(interval);
+    });
+}
+
 ButtonGroup = function(watarJins, index, intervals) {
     var self = this;
 
-    self.noteName = watarJins.noteName.add(index);
+    self.noteName = watarJins.noteName().add(index);
     self.keys = ko.computed(function() {
         var keys = [];
         for(var i = 0; i < intervals.length; i++) {
-            keys.push(new Key(watarJins.baseNote().addRatio(intervals[i])));
+            keys.push(new WatarKey(watarJins, intervals[i]));
         }
         return keys;
-    }
+    });
 }
 
 // WatarJins = Tetrachord String
 // a series of groups of a buttons that represent "frets" on this string
-WatarJins = function(baseNote, noteName) {
+WatarJins = function(diwan, baseNote, noteName) {
     var self = this;
 
     self.baseNote = baseNote;
     self.noteName = noteName;
+    self.diwan = diwan;
 
     self.groups = [
         new ButtonGroup(self, 0, [intervals.identity]), // First: identity 
@@ -60,31 +69,42 @@ WatarJins = function(baseNote, noteName) {
         new ButtonGroup(self, 3, [intervals.diminishedForth, intervals.forth]),
     ];
 
+    self.buttons = ko.computed(function() {
+        var result = [];
+        self.groups.each(function(g) {
+            g.keys().each(function(key) {
+                result.push(key);
+            }, 0, true);
+        }, 0, true);
+        return result;
+    });
+
     self.nextJins = function() {
-        return new WatarJins(self.baseNote().add(intervals.fifth), noteName.add(4));
+        return new WatarJins(diwan, self.baseNote().add(intervals.fifth), noteName.add(4));
     }
 
+    // index of this "watar" on the instrument
+    self.index = ko.computed(function() {
+        return diwan.index() + diwan.ajnas.indexOf(self);
+    });
 }
 
 // AwtarDiwan = Octave Strings
 // a series of Tetrachord strings, separated by a perfect fifth 3:2
-AwtarDiwan = function(baseNote, noteName) {
+// param oud: the instrument
+AwtarDiwan = function(oud, baseNote, noteName) {
     var self = this;
+
+    self.oud = oud;
     self.baseNote = baseNote;
     self.noteName = noteName;
-    var first = new WatarJins(self.baseNote, self.noteName);
-    self.ajnas = ko.observableArray([first, first.nextJins()]); // start with 2 ajnas
-
-    // previous diwan on the keyboard/intstrument
-    self.prev = ko.observable(null);
 
     self.index = ko.computed(function() {
-        if(prev()) {
-            return prev().index() + prev().count();
-        } else {
-            return 0
-        }
+        return oud.diwans().indexOf(self);
     });
+
+    var first = new WatarJins(self, self.baseNote, self.noteName);
+    self.ajnas = ko.observableArray([first, first.nextJins()]); // start with 2 ajnas
 
     // how many awtar we have; i.e. self.ajnas.length
     self.count = ko.computed(function() {
@@ -101,4 +121,75 @@ AwtarDiwan = function(baseNote, noteName) {
         }
         self.ajnas.pop();
     }
+
+    self.nextDiwan = function() {
+        return new AwtarDiwan(self.oud, self.baseNote().addRatio(intervals.octave), self.noteName);
+    }
+
+    self.prevDiwan = function() {
+        return new AwtarDiwan(self.oud, self.baseNote().subRatio(intervals.octave), self.noteName);
+    }
 }
+
+// The oud instrument constructor
+// baseNote and noteName here are observables they are plain values! but inside
+// diwan and jins they should be observables!
+Instrument = function(baseNote, noteName) {
+    var self = this;
+
+    self.baseNote = ko.observable(baseNote);
+    self.noteName = ko.observable(noteName);
+
+    // create 3 diwans .. one as the previous octave, one as current, one as next!
+    var middleDiwan = new AwtarDiwan(self, self.baseNote, self.noteName);
+
+    self.diwans = ko.observableArray([middleDiwan.prevDiwan(), middleDiwan, middleDiwan.nextDiwan()]);
+
+}
+
+
+// a list of [frequency, name] pairs
+Do = new Note(128);
+Re = Do.addRatio(intervals.tone);
+Fa = Do.addRatio(intervals.forth);
+Sol = Do.addRatio(intervals.fifth);
+La = Re.subRatio(intervals.forth);
+
+StartNoteChoices = [
+    [La, new NoteName(6)],
+    [Do, new NoteName(0)],
+    [Re, new NoteName(1)],
+    [Fa, new NoteName(4)],
+    [Sol, new NoteName(5)],
+];
+
+KeyboardWindow = function() {
+    // querty
+    var qwerty_rows = [
+        "12345678",
+        "qwertyui",
+        "asdfghjk",
+        "zxcvbnm,",
+        ];
+
+    self.rows = ko.observable(qwerty_rows);
+    self.index = ko.observable(1); // start on the second jins from the first diwan
+
+    self.move = function(offset) {
+        var newIndex = self.index() + offset;
+        if(newIndex < 0) {
+            self.index(0);
+            return;
+        }
+        if(newIndex > 5) {
+            self.index(5);
+            return;
+        }
+        self.index(newIndex);
+    }
+}
+
+keyboardWindow = new KeyboardWindow();
+
+var startNoteTuple = StartNoteChoices[1];
+instrument = new Instrument(startNoteTuple[0], startNoteTuple[1]);

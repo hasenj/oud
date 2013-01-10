@@ -52,6 +52,7 @@ describe("Note", function() {
         expect(n5.freq()).toEqual(128 * 3 / 2);
     });
 
+    /* // let's not do this idea .. (at least for now)
     it("Notes calculated that way are lazy", function() {
         // lazy meaning they never store their "frequency" internally;
         // they just calculated it when requested via .freq()
@@ -61,9 +62,42 @@ describe("Note", function() {
         expect(n5.baseNote).toBeDefined();
         expect(n5.ratio).toBeDefined();
     });
+    */
 
 });
 
+describe("Instrument", function() {
+    // there's a global 'instrument'; no need to make an instant ourselves
+    var instrument = window.instrument;
+    it("Contains a list of diwans; 'octave-string-groups'", function() {
+        expect(instrument.diwans).toBeDefined();
+        expect(instrument.diwans()).toBeDefined();
+    });
+
+    var diwan = instrument.diwans().first();
+    describe("Diwan", function() {
+        it("contains a bunch of awtar jins", function() {
+            expect(diwan.ajnas).toBeDefined();
+            expect(diwan.ajnas()).toBeDefined();
+            expect(diwan.ajnas().length >= 2).toBeTrue();
+        });
+
+        var jins = diwan.ajnas().first();
+        describe("WatarJins", function() {
+            it("Contains 4 groups of keys", function() {
+                expect(jins.groups).toBeDefined();
+                expect(jins.groups()).toBeDefined();
+                expect(jins.groups().length).toEqual(4);
+            });
+
+            it("Each group contains some keys", function() {
+                expect(jins.groups()[0].keys().length > 0).toBe(true);
+            });
+        });
+    });
+});
+
+// this should get moved inside the instrument suite
 describe("JinsRow", function() {
 
     var baseNote = new Note(128);

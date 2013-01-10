@@ -8,7 +8,6 @@
 
 u = _
 
-
 _modulo = function(index, length) {
     while(index < 0) {
         index += length

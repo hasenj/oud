@@ -36,6 +36,10 @@ RatioCtor = function(a, b) {
         return Ratio(self.a * other.b, self.b * other.a);
     }
 
+    self.inverse = function() {
+        return Ratio(self.b, self.a);
+    }
+
     // @param count: how many parts to split into
     self.split = function(count) {
         var ntop = self.a * count;
@@ -119,14 +123,30 @@ Ratio = function(a, b) {
 var intervals = {
     identity: Ratio(1, 1),
     octave: Ratio(2, 1),
-    fifth: Ratio(3, 2)
+    fifth: Ratio(3, 2),
     forth: Ratio(4, 3),
     majorThird: Ratio(5, 4),
     minorThird: Ratio(6, 5),
-    tone: intervals.fifth.sub(intervals.forth),
-    semitone: intervals.minorThird.sub(intervals.tone),
-    neutralSecond: intervals.minorThird.split(2)[0], // XXX assuming the bigger part comes first!! this should be Ratio(12, 11) maybe we should have "ratio_max" function
-    diminishedForth: intervals.minorThird.add(intervals.semitone),
+}
+intervals.tone = intervals.fifth.sub(intervals.forth);
+intervals.semitone = intervals.minorThird.sub(intervals.tone);
+intervals.neutralSecond = intervals.minorThird.split(2)[0]; // XXX assuming the smaller part comes first!! this should be Ratio(12, 11) maybe we should have "ratio_min" function
+intervals.diminishedForth = intervals.minorThird.add(intervals.semitone);
+
+
+// ----------- utils -----------
+
+
+// XXX duplicate code!!
+_modulo = function(index, length) {
+    while(index < 0) {
+        index += length
+    }
+    return index % length
+}
+
+modIndex = function(list, index) {
+    return list[_modulo(index, list.length)]
 }
 
 
@@ -146,5 +166,48 @@ Note = function(frequency) {
     self.addRatio = function(ratio) {
         return new Note(self.freq() * ratio.value());
     }
+
+    self.subRatio = function(ratio) {
+        return new Note(self.freq() * ratio.inverse().value());
+    }
+
+    var signal = null;
+    self.play = function() {
+        if(!signal) {
+            signal = tone_gen_from_freq(self.freq());
+        }
+        play_signal(signal);
+    }
 }
 
+noteNameSystems = {
+    'doremi_arabic': "دو ري مي فا صول لا سي".split(" "),
+    'doremi_latin': "DO RE ME FA SOL LA SI".split(" "),
+    'cde_latin': "C D E F G A B".split(" ")
+}
+
+noteNameSystem = ko.observable('doremi_arabic');
+
+NoteName = function(index) {
+    var self = this;
+
+    index = _modulo(index, 7);
+    // assert 0 <= index < 7
+    self.index = index;
+
+    self.name = ko.computed(function() {
+        noteNameSystems[noteNameSystem()][self.index];
+    });
+
+    self.next = function() {
+        return self.add(1);
+    }
+
+    self.prev = function() {
+        return self.add(-1);
+    }
+
+    self.add = function(offset) {
+        return new NoteName(_modulo(self.index + offset, 7));
+    }
+}

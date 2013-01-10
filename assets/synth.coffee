@@ -131,12 +131,15 @@ tone_gen = (tone) ->
     if tone of tone_signal
         tone_signal[tone]
     else
-        signal_raw = oud_signal_gen(tonefreq(tone))
-        signal_raw2 = oud_signal_gen(tonefreq(tone))
-        signal = mkbuf(SIGNAL_LEN)
-        for s, point in signal
-            signal[point] = (signal_raw[point] + signal_raw2[point]) * dampness[point] * GAIN
-        tone_signal[tone] = make_dual_channel signal
+        tone_signal[tone] = tone_gen_from_freq(tonefreq(tone))
+
+window.tone_gen_from_freq = (freq) ->
+    signal_raw = oud_signal_gen(freq)
+    signal_raw2 = oud_signal_gen(freq)
+    signal = mkbuf(SIGNAL_LEN)
+    for s, point in signal
+        signal[point] = (signal_raw[point] + signal_raw2[point]) * dampness[point] * GAIN
+    make_dual_channel signal
 
 make_dual_channel = (signal) ->
     signal2 = mkbuf(signal.length * 2)
@@ -148,7 +151,7 @@ window.playtone = (tone)->
     signal = tone_gen(tone)
     play_signal signal
 
-play_signal = (signal) ->
+window.play_signal = (signal) ->
     point = dev.ringOffset
     ringlen = dev.ringBuffer.length
     for sample in signal
