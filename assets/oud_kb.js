@@ -43,7 +43,14 @@ WatarKey = function(jins, key_index, interval) {
 ButtonGroup = function(watarJins, index, intervals) {
     var self = this;
 
-    self.noteName = watarJins.noteName().add(index);
+    self.noteName = ko.computed(function() {
+        return watarJins.noteName().add(index);
+    });
+
+    self.dispNoteName = ko.computed(function() {
+        return self.noteName().name();
+    });
+
     self.keys = ko.computed(function() {
         var keys = [];
         for(var i = 0; i < intervals.length; i++) {

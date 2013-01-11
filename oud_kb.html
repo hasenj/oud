@@ -1,0 +1,21 @@
+<div id="oud_kb" data-bind="with: oud">
+    <div data-bind="foreach: instrument.diwans">
+        <div class="diwan">
+            Diwan!
+            <!-- ko foreach: ajnas -->
+            <div>
+                Jins:
+                <!-- ko foreach: groups -->
+                    <span>Group</span>
+                    <span data-bind="text: dispNoteName"></span>
+                    <!-- ko foreach: keys -->
+                        
+                    <!-- /ko -->
+
+                <!-- /ko -->
+            </div>
+
+            <!-- /ko -->
+        </div>
+    </div>
+</div>
