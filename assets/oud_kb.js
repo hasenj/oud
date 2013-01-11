@@ -85,9 +85,8 @@ ButtonGroup = function(watarJins, index, intervals) {
 WatarJins = function(diwan, index) {
     var self = this;
 
-    var index1 = index+1; // 1-based index
     self.baseNote = ko.computed(function() {
-        return diwan.baseNote().addRatio(intervals.fifth.mul(index1));
+        return diwan.baseNote().addRatio(intervals.fifth.mul(index));
     });
     self.noteName = ko.computed(function() {
         return diwan.noteName().add(index * 4);
