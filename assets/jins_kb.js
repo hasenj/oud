@@ -32,12 +32,34 @@
 
  */
 
-WatarKey = function(jins, interval) {
+WatarKey = function(jins, key_index, interval) {
     var self = this;
 
     self.note = ko.computed(function() {
         return jins.baseNote().addRatio(interval);
     });
+
+    /*
+    self.key = ko.computed(function() {
+        console.log(jins);
+        var row = jins.keyboardRow();
+        if(key_index <= row.length) {
+            return row[key_index]; // the character associated with this key!
+        } else {
+            return "";
+        }
+    });
+    */
+
+    console.log("Key:", self, self.key());
+
+    self.handlesKey = function(keychar) {
+        if(self.key() == keychar) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 ButtonGroup = function(watarJins, index, intervals) {
@@ -47,7 +69,7 @@ ButtonGroup = function(watarJins, index, intervals) {
     self.keys = ko.computed(function() {
         var keys = [];
         for(var i = 0; i < intervals.length; i++) {
-            keys.push(new WatarKey(watarJins, intervals[i]));
+            keys.push(new WatarKey(watarJins, index + i + 1, intervals[i]));
         }
         return keys;
     });
@@ -66,8 +88,25 @@ WatarJins = function(diwan, index) {
         return diwan.noteName().add(index1 * 4);
     });
 
+
+    // index of this "watar" on the instrument
+    self.index = diwan.index + index;
+
+    /*
+    // return a string of keys; an item in keyboard.rows()
+    self.keyboardRow = ko.computed(function() {
+        var rowIndex = self.index - keyboardWindow.index();
+        var rows = keyboardWindow.rows();
+        if(rowIndex < 0 || rowIndex >= rows.length) {
+            return "";
+        }
+        return rows[rowIndex];
+    });
+    */
+
     self.diwan = diwan;
 
+    // this has to come after keyboardRow def
     self.groups = [
         new ButtonGroup(self, 0, [intervals.identity]), // First: identity 
         new ButtonGroup(self, 1, [intervals.semitone, intervals.neutralSecond, intervals.tone]), // seconds: semitone, neutral, tone
@@ -88,9 +127,6 @@ WatarJins = function(diwan, index) {
     self.nextJins = function() {
         return new WatarJins(diwan, index+1);
     }
-
-    // index of this "watar" on the instrument
-    self.index = diwan.index + index;
 }
 
 // AwtarDiwan = Octave Strings
@@ -171,6 +207,8 @@ StartNoteChoices = [
 ];
 
 KeyboardWindow = function() {
+    var self = this;
+
     // querty
     var qwerty_rows = [
         "12345678",
@@ -194,9 +232,27 @@ KeyboardWindow = function() {
         }
         self.index(newIndex);
     }
+
+    self.instrument = ko.observable();
+    self.bindToPhysicalKeyboard = function() {
+    };
 }
 
-keyboardWindow = new KeyboardWindow();
+OudMode = function() {
+    var self = this;
 
-var startNoteTuple = StartNoteChoices[1];
-instrument = new Instrument(startNoteTuple[0], startNoteTuple[1]);
+    var startNoteTuple = StartNoteChoices[1];
+    self.instrument = new Instrument(startNoteTuple[0], startNoteTuple[1]);
+    self.keyboardWindow = new KeyboardWindow();
+
+    self.keydown = function(kbkey) {
+        // TODO
+    };
+
+    self.keyup = function(kbkey) {
+        // TODO
+    };
+
+}
+
+

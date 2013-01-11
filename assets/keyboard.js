@@ -282,11 +282,50 @@ function PianoMode() {
         });
     };
 
+    self.keydown = function(kbkey) {
+        // TODO
+        var keyvm = piano.findKey(kbkey)
+        if (!keyvm) {
+            return
+        }
+        var tone = keyvm.tone()
+        if(tone == null) {
+            return
+        }
+        var secondary_keys = piano.findKeysByTone(tone)
+        if(keyvm.pressed()) { // already pressed, don't handle again
+            return false
+        }
+        for(var i = 0; i < secondary_keys.length; i++) {
+            var key = secondary_keys[i];
+            key.semi_press()
+        }
+        keyvm.press()
+        keyvm.play()
+    };
+
+    self.keyup = function(kbkey) {
+        // TODO
+        var keyvm = piano.findKey(kbkey)
+        if (!keyvm) {
+            return
+        }
+        var tone = keyvm.tone()
+        if(tone == null) {
+            return
+        }
+        var secondary_keys = piano.findKeysByTone(tone)
+        for(var i = 0; i < secondary_keys.length; i++) {
+            var key = secondary_keys[i];
+            key.unsemi_press()
+        }
+        keyvm.unpress()
+    };
+
     return self;
 }
 
 piano = new PianoMode();
-
 
 // this should go else where - not in keyboard.js
 function GlobalViewModel() {
@@ -294,6 +333,33 @@ function GlobalViewModel() {
 
     self.mode = ko.observable("piano");
     self.piano = piano;
+    self.active_instrument = ko.computed(function() {
+        var mode = self.mode();
+        var instrument = self[mode];
+        if(instrument) {
+            return instrument;
+        } else {
+            return null;
+        }
+    });
+
+    self.bindKeyboard = function() {
+        $(document).keydown(function(e) {
+            e.preventDefault();
+            var kbkey = kb_key_from_event(e);
+            if(self.active_instrument()) {
+                self.active_instrument().keydown(kbkey); 
+            }
+        });
+
+        $(document).keyup(function(e) {
+            e.preventDefault();
+            var kbkey = kb_key_from_event(e);
+            if(self.active_instrument()) {
+                self.active_instrument().keyup(kbkey); 
+            }
+        });
+    };
 }
 
         
@@ -301,47 +367,10 @@ function GlobalViewModel() {
 $(function() {
     window.viewmodel = new GlobalViewModel();
     ko.applyBindings(window.viewmodel);
+    viewmodel.bindKeyboard();
 });
 
-/*
-# what is this mess OMG
-(->
-    note_names = "دو ري مي فا صول لا سي دو".split(" ")
-    std_tones = u.zip(
-        [0, 9, 16, 23, 31, 40, 47, 53]
-        note_names)
-    std_tones = _(std_tones).map( (note) -> {tone: note[0], name: note[1]})
-    tone_to_note_scope = (tone, tones=std_tones) ->
-        if tones[1].tone > tone
-            [tones[0], tones[1]]
-        else
-            tone_to_note_scope(tone, tones[1...])
-    window.get_note_name = (tone) ->
-        tone = modulo tone, 53
-        [note0, note1] = tone_to_note_scope(tone)
-        dist = (tone-note0.tone) / (note1.tone-note0.tone)
-        if dist < 0.5
-            note0.name
-        else # if dist >= 0.5
-            note1.name
-    window.get_note_info = (base_tone) ->
-        base_note = get_note_name(base_tone)
-        base_note_index = note_names.indexOf(base_note)
-        {
-            by_index: (index) ->
-                index += base_note_index
-                if index < 0
-                    index += 7
-                if index > 7
-                    index %= 7
-                return note_names[index]
-        }
-)()
-*/
-
-// ---- handle keyboard presses
-
-key_handler = function(e, callback){
+kb_key_from_event = function(e){
     if(e.ctrlKey || e.metaKey) {
         return
     }
@@ -362,43 +391,6 @@ key_handler = function(e, callback){
     } else {
         kbkey = String.fromCharCode(e.which).toUpperCase()
     }
-    e.preventDefault()
-    var keyvm = piano.findKey(kbkey)
-    if (!keyvm) {
-        return
-    }
-    tone = keyvm.tone()
-    if(tone == null) {
-        return
-    }
-    tone_keys = piano.findKeysByTone(tone)
-    callback(keyvm, tone_keys)
+    return kbkey;
 }
-
-$(document).keydown(function(ev) {
-    var handler = function(keyvm, secondary_keys) {
-        if(keyvm.pressed()) { // already pressed, don't handle again
-            return false
-        }
-        for(var i = 0; i < secondary_keys.length; i++) {
-            var key = secondary_keys[i];
-            key.semi_press()
-        }
-        keyvm.press()
-        keyvm.play()
-    }
-    key_handler(ev, handler)
-})
-
-$(document).keyup(function(ev) {
-    var handler = function(keyvm, secondary_keys) {
-        for(var i = 0; i < secondary_keys.length; i++) {
-            var key = secondary_keys[i];
-            key.unsemi_press()
-        }
-        keyvm.unpress()
-    }
-    key_handler(ev, handler)
-})
-
 
