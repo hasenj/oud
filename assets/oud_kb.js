@@ -38,6 +38,17 @@ WatarKey = function(jins, key_index, interval) {
     self.note = ko.computed(function() {
         return jins.baseNote().addRatio(interval);
     });
+
+    self.is_down = ko.observable(false);
+    self.kb_letter = ko.observable("");
+    self.down = function() {
+        if(self.is_down()) return;
+        self.note().play();
+        self.is_down(true);
+    }
+    self.up = function() {
+        self.is_down(false);
+    }
 }
 
 ButtonGroup = function(watarJins, index, intervals) {
@@ -70,7 +81,7 @@ WatarJins = function(diwan, index) {
         return diwan.baseNote().addRatio(intervals.fifth.mul(index1));
     });
     self.noteName = ko.computed(function() {
-        return diwan.noteName().add(index1 * 4);
+        return diwan.noteName().add(index * 4);
     });
 
 
@@ -223,11 +234,11 @@ KeyboardWindow = function() {
 OudMode = function() {
     var self = this;
 
-    var startNoteTuple = StartNoteChoices[1];
+    var startNoteTuple = StartNoteChoices[2];
     self.instrument = new Instrument(startNoteTuple[0], startNoteTuple[1]);
     self.keyboardWindow = new KeyboardWindow();
 
-    self.keydown = function(kbkey) {
+    var findWatarKey = function(kbkey) {
         // find the key and play its note!
         var rows = self.keyboardWindow.rows();
         for(var i = 0; i < rows.length; i++) {
@@ -238,14 +249,24 @@ OudMode = function() {
             var instrumentRowIndex = i + self.keyboardWindow.index();
             var watar = self.instrument.awtar()[instrumentRowIndex]
             var key = watar.buttons()[keyIndex]
-            key.note().play()
+            return key;
         }
-        // XXX TODO
+        return null;
+    }
 
+    self.keydown = function(kbkey) {
+        // find the key and play its note!
+        var key = findWatarKey(kbkey);
+        if(key) {
+            key.down();
+        }
     };
 
     self.keyup = function(kbkey) {
-        // TODO
+        var key = findWatarKey(kbkey);
+        if(key) {
+            key.up();
+        }
     };
 
 }

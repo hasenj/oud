@@ -3,13 +3,15 @@
         <div class="diwan">
             Diwan!
             <!-- ko foreach: ajnas -->
-            <div>
+            <div class="watar">
                 Jins:
                 <!-- ko foreach: groups -->
                     <span>Group</span>
                     <span data-bind="text: dispNoteName"></span>
                     <!-- ko foreach: keys -->
-                        
+                        <div class="key" data-bind="css: {pressed: is_down}">
+                            key
+                        </div>
                     <!-- /ko -->
 
                 <!-- /ko -->
