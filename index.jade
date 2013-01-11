@@ -16,11 +16,13 @@ block content
           tr.guide
             td(colspan=2)
               include guide.html
+    div(data-bind="if: mode() == 'oud'")
+          include oud_kb.html
 
     != js('/utils')
     != js('/synth')
     != js('/maqam')
     != js('/keyboard')
     != js('/ratios')
-    != js('/jins_kb')
+    != js('/oud_kb')
 
