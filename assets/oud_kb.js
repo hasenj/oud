@@ -45,11 +45,15 @@ WatarKey = function(jins, interval) {
     self.down = function() {
         if(self.is_down()) return;
         self.note().play();
-        console.log("Playing frequency:", self.note().freq());
         self.is_down(true);
     }
     self.up = function() {
         self.is_down(false);
+    }
+
+    self.click = function() {
+        self.down();
+        setTimeout(self.up, 200);
     }
 
 

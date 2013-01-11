@@ -10,7 +10,7 @@
                     <div class="note_name" data-bind="text: dispNoteName"></div>
                     <br>
                     <!-- ko foreach: keys -->
-                        <div class="key" data-bind="html: boundChar, css: {pressed: is_down}">
+                        <div class="key" data-bind="html: boundChar, css: {pressed: is_down}, click: click">
                         </div>
                     <!-- /ko -->
                     </div>
