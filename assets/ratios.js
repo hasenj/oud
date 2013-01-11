@@ -37,13 +37,20 @@ RatioCtor = function(a, b) {
     }
 
     self.mul = function(times) {
-        // XXX only accepts positive numbers!!
-        var n = self;
+        if(times == 0) {
+            return Ratio(1, 1);
+        }
+        var m = self;
+        if(times < 0) {
+            times = Math.abs(times);
+            m = m.inverse();
+        }
+        var res = m;
         while(times > 1) {
             times--;
-            n = n.add(self);
+            res = res.add(m);
         }
-        return n;
+        return res;
     }
 
     self.inverse = function() {

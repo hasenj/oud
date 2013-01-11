@@ -103,9 +103,8 @@ AwtarDiwan = function(oud, index) {
 
     self.oud = oud;
 
-    var index1 = index+1;
     self.baseNote = ko.computed(function() {
-        return oud.baseNote().addRatio(intervals.octave.mul(index1));
+        return oud.baseNote().addRatio(intervals.octave.mul(index));
     });
 
     self.noteName = ko.computed(function() {
