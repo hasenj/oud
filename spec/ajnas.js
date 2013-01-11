@@ -68,7 +68,7 @@ describe("Note", function() {
 
 describe("Instrument", function() {
     // there's a global 'instrument'; no need to make an instant ourselves
-    var instrument = window.instrument;
+    var instrument = window.oud.instrument;
     it("Contains a list of diwans; 'octave-string-groups'", function() {
         expect(instrument.diwans).toBeDefined();
         expect(instrument.diwans()).toBeDefined();

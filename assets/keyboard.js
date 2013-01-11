@@ -333,6 +333,7 @@ function GlobalViewModel() {
 
     self.mode = ko.observable("piano");
     self.piano = piano;
+    self.oud = oud;
     self.active_instrument = ko.computed(function() {
         var mode = self.mode();
         var instrument = self[mode];

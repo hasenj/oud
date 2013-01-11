@@ -38,28 +38,6 @@ WatarKey = function(jins, key_index, interval) {
     self.note = ko.computed(function() {
         return jins.baseNote().addRatio(interval);
     });
-
-    /*
-    self.key = ko.computed(function() {
-        console.log(jins);
-        var row = jins.keyboardRow();
-        if(key_index <= row.length) {
-            return row[key_index]; // the character associated with this key!
-        } else {
-            return "";
-        }
-    });
-    */
-
-    console.log("Key:", self, self.key());
-
-    self.handlesKey = function(keychar) {
-        if(self.key() == keychar) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }
 
 ButtonGroup = function(watarJins, index, intervals) {
@@ -91,18 +69,6 @@ WatarJins = function(diwan, index) {
 
     // index of this "watar" on the instrument
     self.index = diwan.index + index;
-
-    /*
-    // return a string of keys; an item in keyboard.rows()
-    self.keyboardRow = ko.computed(function() {
-        var rowIndex = self.index - keyboardWindow.index();
-        var rows = keyboardWindow.rows();
-        if(rowIndex < 0 || rowIndex >= rows.length) {
-            return "";
-        }
-        return rows[rowIndex];
-    });
-    */
 
     self.diwan = diwan;
 
@@ -187,7 +153,17 @@ Instrument = function(baseNote, noteName) {
     var first = new AwtarDiwan(self, 0);
     var second = first.nextDiwan();
     var third = second.nextDiwan();
-    self.diwans([first, second, third])
+    self.diwans([first, second, third]);
+
+    self.awtar = ko.computed(function() {
+        var result = [];
+        self.diwans().each(function(diwan) {
+            diwan.ajnas().each(function(watarJins) {
+                result.push(watarJins);
+            });
+        }, 0, true);
+        return result;
+    });
 }
 
 
@@ -212,9 +188,9 @@ KeyboardWindow = function() {
     // querty
     var qwerty_rows = [
         "12345678",
-        "qwertyui",
-        "asdfghjk",
-        "zxcvbnm,",
+        "QWERTYUI",
+        "ASDFGHJK",
+        "ZXCVBNM,",
         ];
 
     self.rows = ko.observable(qwerty_rows);
@@ -246,7 +222,20 @@ OudMode = function() {
     self.keyboardWindow = new KeyboardWindow();
 
     self.keydown = function(kbkey) {
-        // TODO
+        // find the key and play its note!
+        var rows = self.keyboardWindow.rows();
+        for(var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            var keyIndex = row.indexOf(kbkey);
+            if(keyIndex == -1) continue; // skip this one
+            // console.log("Row:", i, "Key:", keyIndex);
+            var instrumentRowIndex = i + self.keyboardWindow.index();
+            var watar = self.instrument.awtar()[instrumentRowIndex]
+            var key = watar.buttons()[keyIndex]
+            key.note().play()
+        }
+        // XXX TODO
+
     };
 
     self.keyup = function(kbkey) {
@@ -255,4 +244,4 @@ OudMode = function() {
 
 }
 
-
+oud = new OudMode();
