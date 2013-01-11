@@ -346,16 +346,18 @@ function GlobalViewModel() {
 
     self.bindKeyboard = function() {
         $(document).keydown(function(e) {
-            e.preventDefault();
             var kbkey = kb_key_from_event(e);
+            if(!kbkey) return;
+            e.preventDefault();
             if(self.active_instrument()) {
                 self.active_instrument().keydown(kbkey); 
             }
         });
 
         $(document).keyup(function(e) {
-            e.preventDefault();
             var kbkey = kb_key_from_event(e);
+            if(!kbkey) return;
+            e.preventDefault();
             if(self.active_instrument()) {
                 self.active_instrument().keyup(kbkey); 
             }
@@ -378,13 +380,16 @@ kb_key_from_event = function(e){
     special = {
         109: '-',
         189: '-', // chrome
-        61: '=',
+        173: '-', // ffox
+        61: '=', // ffox
         187: '=',  // chrome
         219: '[',
         221: ']',
         59: ';',
         186: ';',  // chrome
-        222: '\'',
+        188: ',',
+        190: '.',
+        222: '\'', // apostrophe
     }
     var kbkey;
     if(e.which in special) {

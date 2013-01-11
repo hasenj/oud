@@ -32,23 +32,32 @@
 
  */
 
-WatarKey = function(jins, key_index, interval) {
+WatarKey = function(jins, interval) {
     var self = this;
 
     self.note = ko.computed(function() {
         return jins.baseNote().addRatio(interval);
     });
+    self.jins = jins;
 
     self.is_down = ko.observable(false);
     self.kb_letter = ko.observable("");
     self.down = function() {
         if(self.is_down()) return;
         self.note().play();
+        console.log("Playing frequency:", self.note().freq());
         self.is_down(true);
     }
     self.up = function() {
         self.is_down(false);
     }
+
+
+    self.kbkey = ko.observable("");
+
+    self.boundChar = ko.computed(function() {
+        return self.kbkey() || "&nbsp;";
+    });
 }
 
 ButtonGroup = function(watarJins, index, intervals) {
@@ -65,7 +74,7 @@ ButtonGroup = function(watarJins, index, intervals) {
     self.keys = ko.computed(function() {
         var keys = [];
         for(var i = 0; i < intervals.length; i++) {
-            keys.push(new WatarKey(watarJins, index + i + 1, intervals[i]));
+            keys.push(new WatarKey(watarJins, intervals[i]));
         }
         return keys;
     });
@@ -86,27 +95,30 @@ WatarJins = function(diwan, index) {
 
 
     // index of this "watar" on the instrument
-    self.index = diwan.index + index;
+    // self.index = diwan.index + index;
 
     self.diwan = diwan;
 
     // this has to come after keyboardRow def
-    self.groups = [
-        new ButtonGroup(self, 0, [intervals.identity]), // First: identity 
-        new ButtonGroup(self, 1, [intervals.semitone, intervals.neutralSecond, intervals.tone]), // seconds: semitone, neutral, tone
-        new ButtonGroup(self, 2, [intervals.minorThird, intervals.majorThird]),
-        new ButtonGroup(self, 3, [intervals.diminishedForth, intervals.forth]),
-    ];
-
+    self.groups = ko.observable([]);
+    
     self.buttons = ko.computed(function() {
         var result = [];
-        self.groups.each(function(g) {
+        self.groups().each(function(g) {
             g.keys().each(function(key) {
                 result.push(key);
             }, 0, true);
         }, 0, true);
         return result;
     });
+
+    self.groups([
+        new ButtonGroup(self, 0, [intervals.identity]), // First: identity 
+        new ButtonGroup(self, 1, [intervals.semitone, intervals.neutralSecond, intervals.tone]), // seconds: semitone, neutral, tone
+        new ButtonGroup(self, 2, [intervals.minorThird, intervals.majorThird]),
+        new ButtonGroup(self, 3, [intervals.diminishedForth, intervals.forth]),
+    ]);;
+
 
     self.nextJins = function() {
         return new WatarJins(diwan, index+1);
@@ -115,18 +127,18 @@ WatarJins = function(diwan, index) {
 
 // AwtarDiwan = Octave Strings
 // a series of Tetrachord strings, separated by a perfect fifth 3:2
-// param oud: the instrument
-AwtarDiwan = function(oud, index) {
+// param inst: the instrument
+AwtarDiwan = function(inst, index) {
     var self = this;
 
-    self.oud = oud;
+    self.inst = inst;
 
     self.baseNote = ko.computed(function() {
-        return oud.baseNote().addRatio(intervals.octave.mul(index));
+        return inst.baseNote().addRatio(intervals.octave.mul(index));
     });
 
     self.noteName = ko.computed(function() {
-        return oud.noteName();
+        return inst.noteName();
     });
 
     self.index = index;
@@ -152,18 +164,19 @@ AwtarDiwan = function(oud, index) {
     }
 
     self.nextDiwan = function() {
-        return new AwtarDiwan(self.oud, index + 1);
+        return new AwtarDiwan(self.inst, index + 1);
     }
 }
 
 // The oud instrument constructor
 // baseNote and noteName here are observables they are plain values! but inside
 // diwan and jins they should be observables!
-Instrument = function(baseNote, noteName) {
+Instrument = function(oud, baseNote, noteName) {
     var self = this;
 
     self.baseNote = ko.observable(baseNote.addRatio(intervals.octave.inverse())); // bring it one octave down!
     self.noteName = ko.observable(noteName);
+    self.oud = oud;
 
     self.diwans = ko.observableArray();
 
@@ -213,6 +226,19 @@ KeyboardWindow = function() {
     self.rows = ko.observable(qwerty_rows);
     self.index = ko.observable(1); // start on the second jins from the first diwan
 
+    // what's the char for the key at x,y?
+    self.char_at = function(rowIndex, keyIndex) {
+        var rows = self.rows();
+        if(rowIndex < 0 || rowIndex >= rows.length) {
+            return '';
+        }
+        var row = rows[rowIndex];
+        if(keyIndex < 0 || keyIndex >= row.length) {
+            return '';
+        }
+        return row[keyIndex];
+    }
+
     self.move = function(offset) {
         var newIndex = self.index() + offset;
         if(newIndex < 0) {
@@ -227,16 +253,45 @@ KeyboardWindow = function() {
     }
 
     self.instrument = ko.observable();
-    self.bindToPhysicalKeyboard = function() {
+
+    // 'paint' watar keys with the character they represent
+    self.paintWatarKeys = function() {
+        var awtar = self.instrument().awtar();
+        for(var watarIndex = 0; watarIndex < awtar.length; watarIndex++) {
+            var keys = awtar[watarIndex].buttons();
+            for(var keyIndex = 0; keyIndex < keys.length; keyIndex++) {
+                var key = keys[keyIndex];
+                var chr = self.char_at(watarIndex - self.index(), keyIndex);
+                key.kbkey(chr);
+            }
+        }
     };
+
+    self.bindToInstrument = function(inst) {
+        self.instrument(inst);
+        self.paintWatarKeys();
+
+        // hack for dependencies
+        self.key_layout = ko.computed(function() {
+            self.instrument().awtar();
+            self.index();
+        });
+
+        self.key_layout.subscribe(self.paintWatarKeys);
+    };
+
 }
 
 OudMode = function() {
     var self = this;
 
-    var startNoteTuple = StartNoteChoices[2];
-    self.instrument = new Instrument(startNoteTuple[0], startNoteTuple[1]);
+    // this should come before defining the instrument?
     self.keyboardWindow = new KeyboardWindow();
+
+    var startNoteTuple = StartNoteChoices[2];
+    self.instrument = new Instrument(self, startNoteTuple[0], startNoteTuple[1]);
+
+    self.keyboardWindow.bindToInstrument(self.instrument);
 
     var findWatarKey = function(kbkey) {
         // find the key and play its note!

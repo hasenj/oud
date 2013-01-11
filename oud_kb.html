@@ -1,18 +1,19 @@
 <div id="oud_kb" data-bind="with: oud">
     <div data-bind="foreach: instrument.diwans">
         <div class="diwan">
-            Diwan!
+            Diwan:
             <!-- ko foreach: ajnas -->
             <div class="watar">
                 Jins:
                 <!-- ko foreach: groups -->
-                    <span>Group</span>
-                    <span data-bind="text: dispNoteName"></span>
+                    <div class="group">
+                    <div class="note_name" data-bind="text: dispNoteName"></div>
+                    <br>
                     <!-- ko foreach: keys -->
-                        <div class="key" data-bind="css: {pressed: is_down}">
-                            key
+                        <div class="key" data-bind="html: boundChar, css: {pressed: is_down}">
                         </div>
                     <!-- /ko -->
+                    </div>
 
                 <!-- /ko -->
             </div>
