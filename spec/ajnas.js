@@ -36,6 +36,30 @@ describe("Ratio", function() {
         expect(r.b).toEqual(2);
         expect(r.toString()).toEqual("3:2");
     });
+
+    it("Can be `multiplied`; added to itself multiple times", function() {
+        var r = Ratio(2, 1);
+        expect(r.mul(4).equals(r.add(r).add(r).add(r))).toBe(true)
+        expect(r.mul(4).toString()).toEqual("16:1")
+        var r2 = Ratio(4,3);
+        expect(r2.mul(2).equals(r2.add(r2))).toBe(true);
+
+    });
+
+    it("Multiplying by `0` return the identity ratio 1:1", function() {
+        var r = Ratio(2, 1);
+        var r2 = Ratio(5,3);
+        var identity = Ratio(1,1);
+        expect(r.mul(0).equals(identity)).toBe(true);
+        expect(r2.mul(0).equals(identity)).toBe(true);
+    });
+
+    it("Multiplying by a negative is like multiplying the inverse", function() {
+        var r = Ratio(7, 4);
+        var v = r.inverse();
+        expect(r.mul(-2).equals(v.mul(2))).toBe(true);
+        expect(r.mul(-5).equals(v.mul(5))).toBe(true);
+    });
 });
 
 describe("Note", function() {
