@@ -85,12 +85,12 @@ describe("Instrument", function() {
         var jins = diwan.ajnas().first();
         describe("WatarJins", function() {
             it("Contains 4 groups of keys", function() {
-                expect(jins.groups).toBeDefined();
-                expect(jins.groups.length).toEqual(4);
+                expect(jins.groups()).toBeDefined();
+                expect(jins.groups().length).toEqual(4);
             });
 
             it("Each group contains some keys", function() {
-                expect(jins.groups[0].keys().length > 0).toBe(true);
+                expect(jins.groups().first().keys().length > 0).toBe(true);
             });
         });
     });
