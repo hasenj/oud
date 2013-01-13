@@ -191,7 +191,7 @@ Note = function(frequency) {
     var signal = null;
     self.play = function() {
         if(!signal) {
-            signal = tone_gen_from_freq(self.freq());
+            signal = signal_gen_from_freq(self.freq());
         }
         play_signal(signal);
     }

@@ -296,7 +296,7 @@ OudMode = function() {
 
     self.keyboardWindow.bindToInstrument(self.instrument);
 
-    var findWatarKey = function(kbkey) {
+    self.findWatarKey = function(kbkey) {
         // find the key and play its note!
         var rows = self.keyboardWindow.rows();
         for(var i = 0; i < rows.length; i++) {
@@ -314,14 +314,14 @@ OudMode = function() {
 
     self.keydown = function(kbkey) {
         // find the key and play its note!
-        var key = findWatarKey(kbkey);
+        var key = self.findWatarKey(kbkey);
         if(key) {
             key.down();
         }
     };
 
     self.keyup = function(kbkey) {
-        var key = findWatarKey(kbkey);
+        var key = self.findWatarKey(kbkey);
         if(key) {
             key.up();
         }

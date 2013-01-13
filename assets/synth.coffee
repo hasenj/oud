@@ -131,9 +131,9 @@ tone_gen = (tone) ->
     if tone of tone_signal
         tone_signal[tone]
     else
-        tone_signal[tone] = tone_gen_from_freq(tonefreq(tone))
+        tone_signal[tone] = signal_gen_from_freq(tonefreq(tone))
 
-window.tone_gen_from_freq = (freq) ->
+window.signal_gen_from_freq = (freq) ->
     signal_raw = oud_signal_gen(freq)
     signal_raw2 = oud_signal_gen(freq)
     signal = mkbuf(SIGNAL_LEN)
@@ -146,6 +146,9 @@ make_dual_channel = (signal) ->
     for s, index in signal2
         signal2[index] = signal[Math.floor(index/2)]
     signal2
+
+window.play_freq = (freq)->
+    play_signal signal_gen_from_freq freq
 
 window.playtone = (tone)->
     signal = tone_gen(tone)
