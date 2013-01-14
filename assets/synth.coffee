@@ -14,7 +14,7 @@ mksink = (srate)->
         prebuf_size = Math.floor(prebuf_size)
         Sink(null, CHANNELS, prebuf_size, srate)
     catch error # not sure if the exception would happen here
-        issue_error("الرجاء فتح الموقع فيمتصفح كووكل كروم")
+        alert("الرجاء فتح الموقع فيمتصفح كووكل كروم")
         {sampleRate: srate, ringOffset: 0}
             
 window.dev = mksink(44100)

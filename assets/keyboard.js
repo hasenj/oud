@@ -8,18 +8,6 @@
 
 u = _
 
-_modulo = function(index, length) {
-    while(index < 0) {
-        index += length
-    }
-    return index % length
-}
-
-modIndex = function(list, index) {
-    return list[_modulo(index, list.length)]
-}
-
-
 // octave row
 function OctaveVM(octave, koMaqam) { 
     // octave is the octave index
@@ -399,4 +387,3 @@ kb_key_from_event = function(e){
     }
     return kbkey;
 }
-

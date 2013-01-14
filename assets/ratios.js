@@ -108,8 +108,19 @@ RatioCtor = function(a, b) {
         return self.linearize(53);
     }
 
+    self.percent = function() {
+        return self.linearize(100);
+    }
+
     self.linearize = function(units) {
+        if(!units) {
+            units = 1;
+        }
         return (self.toLinear() * units).toFixed(2);
+    }
+
+    self.in = function(other) { // how many units of other ratio?
+        return (Math.log(self.value())/Math.log(other.value())).toFixed(2);
     }
 
     self.toString = function() {
@@ -117,7 +128,7 @@ RatioCtor = function(a, b) {
     }
 
     self.repr = function() {
-        return self.toString() + " ~= " + self.value().toFixed(4) + " | " + self.semiTones() + " ET semitones" + " | " + self.commas() + " ET commas";
+        return self.toString() + " ~= " + self.value().toFixed(4) + " | " + self.semiTones() + " ET semitones" + " | " + self.commas() + " ET commas" + " | " + self.percent() + " octave percent";
     }
 
     self.oud = function(watar_len) {
@@ -150,23 +161,6 @@ intervals.semitone = intervals.minorThird.sub(intervals.tone);
 intervals.neutralSecond = intervals.minorThird.split(2)[0]; // XXX assuming the smaller part comes first!! this should be Ratio(12, 11) maybe we should have "ratio_min" function
 intervals.diminishedForth = intervals.minorThird.add(intervals.semitone);
 
-
-// ----------- utils -----------
-
-
-// XXX duplicate code!!
-_modulo = function(index, length) {
-    while(index < 0) {
-        index += length
-    }
-    return index % length
-}
-
-modIndex = function(list, index) {
-    return list[_modulo(index, list.length)]
-}
-
-
 // -------------------------------------------------------------------------------------------
 // -------------------------    Notes   ------------------------------------------------------
 // -------------------------------------------------------------------------------------------
@@ -197,34 +191,3 @@ Note = function(frequency) {
     }
 }
 
-noteNameSystems = {
-    'doremi_arabic': "دو ري مي فا صول لا سي".split(" "),
-    'doremi_latin': "DO RE ME FA SOL LA SI".split(" "),
-    'cde_latin': "C D E F G A B".split(" ")
-}
-
-noteNameSystem = ko.observable('doremi_arabic');
-
-NoteName = function(index) {
-    var self = this;
-
-    index = _modulo(index, 7);
-    // assert 0 <= index < 7
-    self.index = index;
-
-    self.name = ko.computed(function() {
-        return noteNameSystems[noteNameSystem()][self.index];
-    });
-
-    self.next = function() {
-        return self.add(1);
-    }
-
-    self.prev = function() {
-        return self.add(-1);
-    }
-
-    self.add = function(offset) {
-        return new NoteName(_modulo(self.index + offset, 7));
-    }
-}

@@ -32,6 +32,43 @@
 
  */
 
+// ----------- note names -----------
+
+noteNameSystems = {
+    'doremi_arabic': "دو ري مي فا صول لا سي".split(" "),
+    'doremi_latin': "DO RE ME FA SOL LA SI".split(" "),
+    'cde_latin': "C D E F G A B".split(" ")
+}
+
+noteNameSystem = ko.observable('doremi_arabic');
+
+NoteName = function(index) {
+    var self = this;
+
+    index = _modulo(index, 7);
+    // assert 0 <= index < 7
+    self.index = index;
+
+    self.name = ko.computed(function() {
+        return noteNameSystems[noteNameSystem()][self.index];
+    });
+
+    self.next = function() {
+        return self.add(1);
+    }
+
+    self.prev = function() {
+        return self.add(-1);
+    }
+
+    self.add = function(offset) {
+        return new NoteName(_modulo(self.index + offset, 7));
+    }
+}
+
+
+// ----- instrument components -----
+
 WatarKey = function(jins, interval) {
     var self = this;
 
