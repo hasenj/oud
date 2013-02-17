@@ -319,7 +319,7 @@ piano = new PianoMode();
 function GlobalViewModel() {
     var self = this;
 
-    self.mode = ko.observable("oud"); // DEBUG: for development
+    self.mode = ko.observable("piano");
     self.piano = piano;
     self.oud = oud;
     self.active_instrument = ko.computed(function() {

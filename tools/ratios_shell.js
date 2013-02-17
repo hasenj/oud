@@ -55,8 +55,9 @@ if (in_repl) {
     semitone = minor_third.sub(tone); // actual semitone
     small_tone = major_third.sub(tone);
     diatone = tone.add(tone);
-    pysemi = forth.sub(diatone) // pythagrean semitone
+    pysemi = forth.sub(diatone); // pythagrean semitone
     neutral_second = minor_third.split(2)[0];
+    hijaz = major_third.sub(semitone);
 
     demo("Tone", tone);
     demo("Smaller Tone", small_tone)
@@ -67,7 +68,7 @@ if (in_repl) {
     demo("Major Third", major_third);
 
     // demo("Neutral second(s); three-quarter tones", minor_third.split(2));
-    demo("Hijaz one-half interval", major_third.sub(semitone));
+    demo("Hijaz one-half interval", hijaz);
     // demo("Practical three-quarter tones", tone.add(pysemi).split(2));
 
 show_oud = function(len) { // show oud places with proposed watar length
