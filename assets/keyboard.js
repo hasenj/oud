@@ -33,8 +33,10 @@ window.stdNoteNames = ko.observable(doReMeArabic)
 // maps a note number to a note name index
 noteIndexMap = {
     '-13': -2,
+    '-5': -1,
     0: 0,
     9: 1,
+    17: 2,
     22: 3,
     31: 4,
 }
