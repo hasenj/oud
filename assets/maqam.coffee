@@ -25,8 +25,8 @@ disp_name = (maqam_code) ->
         "saba" : "صبا"
         "saba-full": "صبا كامل"
         "zamzama": "زمزمة"
+        "zamzama-full": "زمزمة-كامل"
         "mahuri": "ماهوري"
-        "huseni": "حسيني"
         "chaharga": "چهرگاه"
         "nairuz": "نيروز"
     }
@@ -42,18 +42,20 @@ maqam_desc =
     "bayati": ""
     "hijaz": ""
     "saba": "المقام الحزين المنكسر"
-    "nhwnd": ""
-    "huseni": ""
-    "mahuri": "من مشتقات العجم، و يستعمل في العراق في الاعياد في التكبيرات و قرائة القرآن"
+    "nhwnd": "و هو مماثل لسلم المينور الغربي"
 
 window.disp_name = disp_name
 ajnas_defs =
+    # major
     "ajam": "9 8 5"
-    "nhwnd": "9 5 8"
-    "bayati": "7 7 8"
-    "rast": "8 7 7"
     "hijaz": "5 12 5"
-    "kurd": "5 8 9"
+    # minor
+    "nhwnd": "9 5 8"
+    "kurd": "5 9 8"
+    "bayati": "7 7 8"
+    # neutral
+    "rast": "8 7 7"
+    # diminished
     "saba": "7 7 5"
     "zamzama": "5 9 5"
 
@@ -142,23 +144,23 @@ for key, val of ajnas_defs
 
 # a maqam def is starting point and 2 jins
 maqam_defs =
-    "ajam": "0 ajam ajam"
-    "kurd": "9 kurd kurd"
-    "mahuri": "0 ajam nhwnd"
     "rast1": "0 rast rast"
     "rast2": "0 rast nhwnd"
-    "huseni": "31 bayati bayati"
-    "hijaz1": "9 hijaz bayati"
-    "hijaz2": "9 hijaz kurd"
-    "hijazkar": "9 hijaz hijaz"
+    "bayati": "9 bayati kurd"
+
     "nhwnd1": "0 nhwnd hijaz"
     "nhwnd2": "0 nhwnd kurd"
-    "bayati": "9 bayati kurd"
+    "kurd": "9 kurd kurd"
+
+    "ajam": "0 ajam ajam"
+    "hijaz1": "9 hijaz bayati"
+    "hijaz2": "9 hijaz kurd"
+
     "saba": "9 saba zamzama"
     "saba-full": "9 saba kurd"
+
     "zamzama": "9 zamzama zamzama"
-    # "chaharga": "22 ajam rast"
-    # "nairuz": "0 rast bayati"
+    "zamzama-full": "9 zamzama kurd"
 
 window.maqamat = {}
 for name, def of maqam_defs
