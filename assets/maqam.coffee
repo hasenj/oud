@@ -72,17 +72,6 @@ class Jins
         self.disp_intervals = ko.computed ->
             [self.p1, self.p2, self.p3].join("-")
 
-    # return a Jins with a broken forth
-    broken: ->
-        if @p3 <= 5
-            console.log "Jins can't be broken!"
-            # return a copy of self!
-            return new Jins(@name, @p1, @p2, @p3)
-        return new Jins(@name + "-broken", @p1, @p2, 5)
-
-    isBroken: ->
-        return @p1 + @p2 + @p3 < FORTH
-
     genTones: (start) ->
         distances = [@p1, @p2, @p3]
         res = [start]
@@ -94,7 +83,7 @@ class Jins
 window.selected_maqam = ko.observable($.cookie('maqam') || 'ajam')
 
 class Mode # maqam/scale with a starting point
-    constructor: (@name, base, @jins1, @jins2) ->
+    constructor: (@name, base, @jins1, @jins2, @jins3) ->
         self = this
 
         self.base = ko.observable(base)
@@ -118,14 +107,13 @@ class Mode # maqam/scale with a starting point
                 cls += " active"
             return cls
 
-
     genTones: (octave) ->
         start = @base() + (octave * OCTAVE)
         result = []
         result = result.concat @jins1.genTones(start)
         result = result.concat @jins2.genTones(start + FIFTH)
-        if @jins2.isBroken()
-            result = result.concat @jins2.genTones(start + FIFTH + FIFTH)
+        if @jins3
+            result = result.concat @jins3.genTones(start + FIFTH + FIFTH)
         return result
 
     select: ->
@@ -144,22 +132,22 @@ for key, val of ajnas_defs
 
 # a maqam def is starting point and 2 jins
 maqam_defs =
-    "rast1": "0 rast rast"
-    "rast2": "0 rast nhwnd"
-    "bayati": "9 bayati kurd"
-
+    "ajam": "0 ajam ajam"
+    "kurd": "9 kurd kurd"
     "nhwnd1": "0 nhwnd hijaz"
     "nhwnd2": "0 nhwnd kurd"
-    "kurd": "9 kurd kurd"
 
-    "ajam": "0 ajam ajam"
+    "bayati": "9 bayati kurd"
+    "huseyni": "9 bayati bayati"
+    "rast1": "0 rast rast"
+    "rast2": "0 rast nhwnd"
+
+    "saba": "9 saba zamzama zamzama"
+    "zamzama": "9 zamzama zamzama zamzama"
     "hijaz1": "9 hijaz bayati"
     "hijaz2": "9 hijaz kurd"
 
-    "saba": "9 saba zamzama"
     "saba-full": "9 saba kurd"
-
-    "zamzama": "9 zamzama zamzama"
     "zamzama-full": "9 zamzama kurd"
 
 window.maqamat = {}
@@ -168,7 +156,8 @@ for name, def of maqam_defs
     start = Number parts.shift()
     jins1 = ajnas[parts.shift()]
     jins2 = ajnas[parts.shift()]
-    maqamat[name] = new Mode(name, start, jins1, jins2)
+    jins3 = ajnas[parts.shift()] || null
+    maqamat[name] = new Mode(name, start, jins1, jins2, jins3)
 
 selected_maqam.subscribe( (val) ->
     $.cookie('maqam', val)
