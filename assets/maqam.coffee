@@ -25,10 +25,10 @@ disp_name = (maqam_code) ->
         "saba" : "صبا"
         "saba-full": "صبا كامل"
         "zamzama": "زمزمة"
-        "zamzama-full": "زمزمة-كامل"
+        "zamzama-full": "زمزمة كامل"
         "mahuri": "ماهوري"
         "chaharga": "چهرگاه"
-        "nairuz": "نيروز"
+        "huseyni": "حسيني"
     }
     if maqam_code of map
         map[maqam_code]
