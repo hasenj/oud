@@ -129,8 +129,8 @@ function VirtualKeyVM(row, column, piano) {
     var self = this;
     // first row is "previous" octave
     self.octave_index = row - 1;
-    // we shift the keyboard by 2 keys
-    self.key_index = column - 2;
+    // we shift the keyboard by 0 keys
+    self.key_index = column - 0;
 
     self.tone = ko.computed(function() {
         return active_maqam.octaveKeyTone(self.octave_index, self.key_index);
@@ -236,7 +236,7 @@ function KeyboardLayout(rows) {
 }
 
 var kb_layouts = {} // standard keyboard layouts .. to choose from; e.g. qwerty, azerty, .. etc
-kb_layouts['qwerty'] = new KeyboardLayout(["      UIOP[]", "ASDFGHJKL;'", "ZXCVBNM,./"])
+kb_layouts['qwerty'] = new KeyboardLayout(["    TYUIOP[]", "ASDFGHJKL;'", "ZXCVBNM,./"])
 
 window.active_maqam = new MaqamVM(selected_maqam);
 
