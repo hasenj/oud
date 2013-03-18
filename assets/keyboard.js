@@ -236,7 +236,7 @@ function KeyboardLayout(rows) {
 }
 
 var kb_layouts = {} // standard keyboard layouts .. to choose from; e.g. qwerty, azerty, .. etc
-kb_layouts['qwerty'] = new KeyboardLayout(["1234567890-=", "QWERTYUIOP[]", "ASDFGHJKL;'"])
+kb_layouts['qwerty'] = new KeyboardLayout(["      UIOP[]", "ASDFGHJKL;'", "ZXCVBNM,./"])
 
 window.active_maqam = new MaqamVM(selected_maqam);
 
