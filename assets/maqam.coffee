@@ -51,7 +51,7 @@ ajnas_defs =
     "hijaz": "5 12 5"
     # minor
     "nhwnd": "9 5 8"
-    "kurd": "5 9 8"
+    "kurd": "5 8 9"
     "bayati": "7 7 8"
     # neutral
     "rast": "8 7 7"
