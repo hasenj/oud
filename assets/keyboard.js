@@ -379,6 +379,7 @@ kb_key_from_event = function(e){
         186: ';',  // chrome
         188: ',',
         190: '.',
+        191: '/',
         222: '\'', // apostrophe
     }
     var kbkey;
