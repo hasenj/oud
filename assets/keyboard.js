@@ -240,7 +240,7 @@ kb_layouts['qwerty'] = new KeyboardLayout(["    TYUIOP[]", "ASDFGHJKL;'", "ZXCVB
 
 window.active_mode = new ModeVM(selected_mode);
 
-function PianoMode() {
+function PianoInstrument() {
     var self = this;
 
     self.mode_vm = active_mode;
@@ -315,18 +315,20 @@ function PianoMode() {
     return self;
 }
 
-piano = new PianoMode();
+piano = new PianoInstrument();
 
 // this should go else where - not in keyboard.js
 function GlobalViewModel() {
     var self = this;
 
-    self.mode = ko.observable("piano"); // TODO remove oud mode .. only mode is piano mode ..
-    self.piano = piano;
-    self.oud = oud;
+    self.instrument = ko.observable("piano"); // TODO remove oud mode .. only mode is piano mode ..
+    var instrument_map = {
+        piano: piano,
+        oud: oud
+    }
+
     self.active_instrument = ko.computed(function() {
-        var mode = self.mode();
-        var instrument = self[mode];
+        var instrument = instrument_map[self.instrument()];
         if(instrument) {
             return instrument;
         } else {

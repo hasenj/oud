@@ -2,7 +2,7 @@ extends layout
 
 block content
 
-    div(data-bind="if: mode() == 'piano'")
+    div(data-bind="if: instrument() == 'piano'")
         table.layout(data-bind="with: piano")
           tr.header
             td.logo
@@ -16,7 +16,7 @@ block content
           tr.guide
             td(colspan=2)
               include guide.html
-    div(data-bind="if: mode() == 'oud'")
+    div(data-bind="if: instrument() == 'oud'")
           include oud_kb.html
 
     != js('/utils')

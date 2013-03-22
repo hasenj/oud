@@ -322,7 +322,7 @@ KeyboardWindow = function() {
 
 }
 
-OudMode = function() {
+OudInstrument = function() {
     var self = this;
 
     // this should come before defining the instrument?
@@ -366,4 +366,4 @@ OudMode = function() {
 
 }
 
-oud = new OudMode();
+oud = new OudInstrument();
