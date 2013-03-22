@@ -12,22 +12,19 @@ disp_name = (maqam_code) ->
         "ajam" : "عجم",
         "kurd": "كرد",
         "nhwnd": "نهاوند"
-        "nhwnd1": "نهاوند صعودا",
-        "nhwnd2": "نهاوند هبوطا",
+        "nhwnd-hijaz": "نهاوند حجاز",
         "hijaz": "حجاز"
-        "hijaz1": "حجاز صعودا",
-        "hijaz2": "حجاز هبوطا",
+        "hijaz-bayati": "حجاز بياتي",
         "hijazkar": "حجاز كار"
         "rast": "رست"
-        "rast1": "رست صعودا",
-        "rast2": "رست هبوطا",
+        "rast-nhwnd": "رست نهاوند",
         "bayati" : "بياتي",
         "saba" : "صبا"
         "saba-full": "صبا كامل"
         "zamzama": "زمزمة"
         "zamzama-full": "زمزمة كامل"
         "mahuri": "ماهوري"
-        "chaharga": "چهرگاه"
+        "charga": "چهرگاه"
         "huseyni": "حسيني"
     }
     if maqam_code of map
@@ -134,18 +131,18 @@ for key, val of ajnas_defs
 maqam_defs =
     "ajam": "0 ajam ajam"
     "kurd": "9 kurd kurd"
-    "nhwnd1": "0 nhwnd hijaz"
-    "nhwnd2": "0 nhwnd kurd"
+
+    "nhwnd": "0 nhwnd kurd"
+    "nhwnd-hijaz": "0 nhwnd hijaz"
 
     "bayati": "9 bayati kurd"
-    "huseyni": "9 bayati bayati"
-    "rast1": "0 rast rast"
-    "rast2": "0 rast nhwnd"
+    "rast": "0 rast rast"
+
+    "hijaz": "9 hijaz kurd"
+    "hijaz-bayati": "9 hijaz bayati"
 
     "saba": "9 saba zamzama zamzama"
     "zamzama": "9 zamzama zamzama zamzama"
-    "hijaz1": "9 hijaz bayati"
-    "hijaz2": "9 hijaz kurd"
 
     "saba-full": "9 saba kurd"
     "zamzama-full": "9 zamzama kurd"
