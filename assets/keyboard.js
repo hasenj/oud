@@ -272,7 +272,6 @@ function PianoInstrument() {
     };
 
     self.keydown = function(kbkey) {
-        // TODO
         var keyvm = piano.findKey(kbkey)
         if (!keyvm) {
             return
@@ -294,7 +293,6 @@ function PianoInstrument() {
     };
 
     self.keyup = function(kbkey) {
-        // TODO
         var keyvm = piano.findKey(kbkey)
         if (!keyvm) {
             return
