@@ -7,21 +7,21 @@
     <div class="section first">
         <div>
             <label class="label"> الجنس الأول </label>
-            <p class="def" data-bind="template: { name: 'template-jins-info', data: maqam.maqam().jins1 }"> </p>
+            <p class="def" data-bind="template: { name: 'template-jins-info', data: mode_vm.mode().jins1 }"> </p>
         </div>
         <div>
             <label class="label"> الجنس الثاني </label>
-            <p class="def" data-bind="template: { name: 'template-jins-info', data: maqam.maqam().jins2 }"> </p>
+            <p class="def" data-bind="template: { name: 'template-jins-info', data: mode_vm.mode().jins2 }"> </p>
         </div>
     </div>
     <!-- First note -->
     <div class="section">
         <label class="label"> نغمة البداية: </label>
-        <select class="def" data-bind="options: noteNames, optionsText: 'name', optionsValue: 'note', value: maqam.maqam().base"></select>
+        <select class="def" data-bind="options: noteNames, optionsText: 'name', optionsValue: 'note', value: mode_vm.mode().base"></select>
     </div>
     <!-- short description -->
     <div class="section">
-        <p class="desc" data-bind="text: maqam.maqam().disp_desc"></p>
+        <p class="desc" data-bind="text: mode_vm.mode().disp_desc"></p>
     </div>
 </div>
 
