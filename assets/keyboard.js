@@ -86,7 +86,7 @@ function MaqamVM(name) {
     }
 
     self.disp_name = ko.computed(function() {
-        return "سلم " + disp_name(self.name()) + " من ال" + self.noteName(0);
+        return "سلم " + arabic_name(self.name()) + " من ال" + self.noteName(0);
     });
 
 

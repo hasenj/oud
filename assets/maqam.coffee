@@ -13,7 +13,7 @@ u = _
 # we don't actually deal with maqams directly, nor do we represent them directly
 # if the word maqam is used anywhere in the code, it's a bug and should be fixed
 
-disp_name = (maqam_code) ->
+arabic_name = (maqam_code) ->
     map = {
         "ajam" : "عجم",
         "kurd": "كرد",
@@ -47,7 +47,7 @@ scale_desc =
     "saba": "المقام الحزين المنكسر"
     "nhwnd": "و هو مماثل لسلم المينور الغربي"
 
-window.disp_name = disp_name
+window.arabic_name = arabic_name
 ajnas_defs =
     # major
     "ajam": "9 8 5"
@@ -71,7 +71,7 @@ class Jins
         total = @p1 + @p2 + @p3
         self = this
         self.disp_name = ko.computed ->
-            disp_name(self.name)
+            arabic_name(self.name)
         self.disp_intervals = ko.computed ->
             [self.p1, self.p2, self.p3].join("-")
 
@@ -87,15 +87,14 @@ selected_mode.subscribe( (val) ->
     $.cookie('mode', val)
 )
 
-
-class Mode # maqam/scale with a starting point
+class Mode # a scale with a starting point
     constructor: (@name, base, @jins1, @jins2, @jins3) ->
         self = this
 
         self.base = ko.observable(base)
 
         self.disp_name = ko.computed ->
-            disp_name(self.name)
+            arabic_name(self.name)
 
         self.disp_desc = ko.computed ->
             if self.name of scale_desc
@@ -127,15 +126,14 @@ class Mode # maqam/scale with a starting point
 
 window.Mode = Mode
 
+# The `ajnas` dict maps jins name to a Jins object
 ajnas = {}
 for key, val of ajnas_defs
     args = (Number n for n in val.split(" "))
     ajnas[key] = new Jins(key, args...)
 
-# The `ajnas` dict maps jins name to a Jins object
-
 # a mode def is starting point and 2 (or 3) jins
-maqam_defs =
+mode_defs =
     "ajam": "0 ajam ajam"
     "kurd": "9 kurd kurd"
 
@@ -155,7 +153,7 @@ maqam_defs =
     "zamzama-full": "9 zamzama kurd"
 
 window.modes = {}
-for name, def of maqam_defs
+for name, def of mode_defs
     parts = def.split(" ")
     start = Number parts.shift()
     jins1 = ajnas[parts.shift()]
