@@ -9,7 +9,7 @@
 u = _
 
 // octave row
-function OctaveVM(octave, koMaqam) { 
+function OctaveVM(octave, koMaqam) {
     // octave is the octave index
     // koMaqam is the observable active maqam
     var self = this;
@@ -86,7 +86,7 @@ function MaqamVM(name) {
     }
 
     self.disp_name = ko.computed(function() {
-        return "سلم ال" + disp_name(self.name()) + " على ال" + self.noteName(0);
+        return "سلم " + disp_name(self.name()) + " من ال" + self.noteName(0);
     });
 
 
@@ -340,7 +340,7 @@ function GlobalViewModel() {
             if(!kbkey) return;
             e.preventDefault();
             if(self.active_instrument()) {
-                self.active_instrument().keydown(kbkey); 
+                self.active_instrument().keydown(kbkey);
             }
         });
 
@@ -349,13 +349,13 @@ function GlobalViewModel() {
             if(!kbkey) return;
             e.preventDefault();
             if(self.active_instrument()) {
-                self.active_instrument().keyup(kbkey); 
+                self.active_instrument().keyup(kbkey);
             }
         });
     };
 }
 
-        
+
 
 $(function() {
     window.viewmodel = new GlobalViewModel();
