@@ -247,7 +247,7 @@ function PianoInstrument() {
     self.noteNames = noteNames;
     self.kbLayout = ko.observable(kb_layouts['qwerty']);
 
-    self.maqam_list = ko.observableArray(u.values(window.modes));
+    self.mode_list = ko.observableArray(u.values(window.modes));
 
     key_list = [];
     self.vkb_rows = [];
