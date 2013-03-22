@@ -72,7 +72,7 @@ function MaqamVM(name) {
     var self = this
     self.name = name // it's an observable
     self.maqam = ko.computed(function() {
-        return maqamat[self.name()]
+        return modes[self.name()]
     });
 
     self.noteName = function(keyIndex) {
@@ -238,7 +238,7 @@ function KeyboardLayout(rows) {
 var kb_layouts = {} // standard keyboard layouts .. to choose from; e.g. qwerty, azerty, .. etc
 kb_layouts['qwerty'] = new KeyboardLayout(["    TYUIOP[]", "ASDFGHJKL;'", "ZXCVBNM,./"])
 
-window.active_maqam = new MaqamVM(selected_maqam);
+window.active_maqam = new MaqamVM(selected_mode);
 
 function PianoMode() {
     var self = this;
@@ -247,7 +247,7 @@ function PianoMode() {
     self.noteNames = noteNames;
     self.kbLayout = ko.observable(kb_layouts['qwerty']);
 
-    self.maqam_list = ko.observableArray(u.values(window.maqamat));
+    self.maqam_list = ko.observableArray(u.values(window.modes));
 
     key_list = [];
     self.vkb_rows = [];
