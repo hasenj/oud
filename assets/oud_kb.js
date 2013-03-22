@@ -238,11 +238,11 @@ Instrument = function(oud, baseNote, noteName) {
 
 
 // a list of [frequency, name] pairs
-Do = new Note(128); // Not from western major scale; just an ideal value for "DO"
+Do = new Note(128); // Not from western major scale; just a nice round value for "DO"
 Re = new Note(144);
 Fa = new Note(170);
-Sol = new Note(100); // not from the major scale! just an ideal "SOL"
-La = new Note(110); // not based on the "DO" above; ideal La, from modern western tuning standard
+Sol = new Note(100); // not from the major scale! just a nice round value for "SOL"
+La = new Note(110); // not based on the "DO" above; just a nice round value for La, from modern western tuning standard
 
 StartNoteChoices = [
     [La, new NoteName(6)],
