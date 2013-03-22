@@ -127,7 +127,7 @@ for key, val of ajnas_defs
 
 # The `ajnas` dict maps jins name to a Jins object
 
-# a maqam def is starting point and 2 jins
+# a maqam def is starting point and 2 (or 3) jins
 maqam_defs =
     "ajam": "0 ajam ajam"
     "kurd": "9 kurd kurd"
