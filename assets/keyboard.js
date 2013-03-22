@@ -236,8 +236,7 @@ function KeyboardLayout(rows) {
 }
 
 var kb_layouts = {} // standard keyboard layouts .. to choose from; e.g. qwerty, azerty, .. etc
-kb_layouts['qwerty'] = new KeyboardLayout(["    TYUIOP[]", "ASDFGHJKL;'", "ZXCVBNM,./"])
-
+kb_layouts['qwerty'] = new KeyboardLayout(["    TYUIOP[]", "ASDFGHJKL;'↩", "ZXCVBNM,./"])
 window.active_mode = new ModeVM(selected_mode);
 
 function PianoInstrument() {
@@ -383,6 +382,7 @@ kb_key_from_event = function(e){
         190: '.',
         191: '/',
         222: '\'', // apostrophe
+        13: '↩', // enter key
     }
     var kbkey;
     if(e.which in special) {
