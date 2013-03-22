@@ -9,14 +9,14 @@
 u = _
 
 // octave row
-function OctaveVM(octave, koMaqam) { 
+function OctaveVM(octave, ko_mode) {
     // octave is the octave index
-    // koMaqam is the observable active maqam
+    // ko_mode is the observable active mode
     var self = this;
     self.tones = ko.computed(function() {
-        var maqam = koMaqam();
-        if (maqam) {
-            return maqam.genTones(octave);
+        var mode = ko_mode();
+        if (mode) {
+            return mode.genTones(octave);
         }
         else {
             return [];
@@ -68,31 +68,31 @@ noteNames = ko.computed(function() {
     return res;
 })
 
-function MaqamVM(name) {
+function ModeVM(name) {
     var self = this
     self.name = name // it's an observable
-    self.maqam = ko.computed(function() {
-        return maqamat[self.name()]
+    self.mode = ko.computed(function() {
+        return modes[self.name()]
     });
 
     self.noteName = function(keyIndex) {
         var firstNoteIndex = 0;
         // HACK! works because we only use a starting note from the map above
-        if(self.maqam()) {
-            firstNoteIndex = noteIndexMap[self.maqam().base()]
+        if(self.mode()) {
+            firstNoteIndex = noteIndexMap[self.mode().base()]
         }
         var noteIndex = keyIndex + firstNoteIndex;
         return modIndex(stdNoteNames(), noteIndex);
     }
 
     self.disp_name = ko.computed(function() {
-        return "سلم ال" + disp_name(self.name()) + " على ال" + self.noteName(0);
+        return "سلم " + arabic_name(self.name()) + " من ال" + self.noteName(0);
     });
 
 
     self.octaves = {}
     for(var i = -1; i <= 1; i++) {
-        self.octaves[i] = new OctaveVM(i, self.maqam);
+        self.octaves[i] = new OctaveVM(i, self.mode);
     }
 
     // find the tone for the key in the octave, returning null if one can't be found
@@ -129,11 +129,11 @@ function VirtualKeyVM(row, column, piano) {
     var self = this;
     // first row is "previous" octave
     self.octave_index = row - 1;
-    // we shift the keyboard by 2 keys
-    self.key_index = column - 2;
+    // we shift the keyboard by 0 keys
+    self.key_index = column - 0;
 
     self.tone = ko.computed(function() {
-        return active_maqam.octaveKeyTone(self.octave_index, self.key_index);
+        return active_mode.octaveKeyTone(self.octave_index, self.key_index);
     })
     self.letter = ko.computed(function() {
         return piano.kbLayout().letterAt(row, column);
@@ -157,7 +157,7 @@ function VirtualKeyVM(row, column, piano) {
     });
 
     self.note_name = ko.computed(function() {
-        return active_maqam.noteName(self.key_index);
+        return active_mode.noteName(self.key_index);
     });
 
     self.disp_note_name = ko.computed(function() {
@@ -236,18 +236,17 @@ function KeyboardLayout(rows) {
 }
 
 var kb_layouts = {} // standard keyboard layouts .. to choose from; e.g. qwerty, azerty, .. etc
-kb_layouts['qwerty'] = new KeyboardLayout(["1234567890-=", "QWERTYUIOP[]", "ASDFGHJKL;'"])
+kb_layouts['qwerty'] = new KeyboardLayout(["    TYUIOP[]", "ASDFGHJKL;'↩", "ZXCVBNM,./"])
+window.active_mode = new ModeVM(selected_mode);
 
-window.active_maqam = new MaqamVM(selected_maqam);
-
-function PianoMode() {
+function PianoInstrument() {
     var self = this;
 
-    self.maqam = active_maqam;
+    self.mode_vm = active_mode;
     self.noteNames = noteNames;
     self.kbLayout = ko.observable(kb_layouts['qwerty']);
 
-    self.maqam_list = ko.observableArray(u.values(window.maqamat));
+    self.mode_list = ko.observableArray(u.values(window.modes));
 
     key_list = [];
     self.vkb_rows = [];
@@ -273,7 +272,6 @@ function PianoMode() {
     };
 
     self.keydown = function(kbkey) {
-        // TODO
         var keyvm = piano.findKey(kbkey)
         if (!keyvm) {
             return
@@ -295,7 +293,6 @@ function PianoMode() {
     };
 
     self.keyup = function(kbkey) {
-        // TODO
         var keyvm = piano.findKey(kbkey)
         if (!keyvm) {
             return
@@ -315,18 +312,20 @@ function PianoMode() {
     return self;
 }
 
-piano = new PianoMode();
+piano = new PianoInstrument();
 
 // this should go else where - not in keyboard.js
 function GlobalViewModel() {
     var self = this;
 
-    self.mode = ko.observable("piano");
-    self.piano = piano;
-    self.oud = oud;
+    self.instrument = ko.observable("piano"); // TODO remove oud mode .. only mode is piano mode ..
+    var instrument_map = {
+        piano: piano,
+        oud: oud
+    }
+
     self.active_instrument = ko.computed(function() {
-        var mode = self.mode();
-        var instrument = self[mode];
+        var instrument = instrument_map[self.instrument()];
         if(instrument) {
             return instrument;
         } else {
@@ -340,7 +339,7 @@ function GlobalViewModel() {
             if(!kbkey) return;
             e.preventDefault();
             if(self.active_instrument()) {
-                self.active_instrument().keydown(kbkey); 
+                self.active_instrument().keydown(kbkey);
             }
         });
 
@@ -349,13 +348,13 @@ function GlobalViewModel() {
             if(!kbkey) return;
             e.preventDefault();
             if(self.active_instrument()) {
-                self.active_instrument().keyup(kbkey); 
+                self.active_instrument().keyup(kbkey);
             }
         });
     };
 }
 
-        
+
 
 $(function() {
     window.viewmodel = new GlobalViewModel();
@@ -379,7 +378,9 @@ kb_key_from_event = function(e){
         186: ';',  // chrome
         188: ',',
         190: '.',
+        191: '/',
         222: '\'', // apostrophe
+        13: '↩', // enter key
     }
     var kbkey;
     if(e.which in special) {
