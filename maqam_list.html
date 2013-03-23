@@ -13,6 +13,10 @@
             <label class="label"> الجنس الثاني </label>
             <p class="def" data-bind="template: { name: 'template-jins-info', data: mode_vm.mode().jins2 }"> </p>
         </div>
+        <div data-bind="visible: mode_vm.mode().jins3">
+            <label class="label"> الجنس الثالث </label>
+            <p class="def" data-bind="template: { name: 'template-jins-info', data: mode_vm.mode().jins2 }"> </p>
+        </div>
     </div>
     <!-- First note -->
     <div class="section">
@@ -20,9 +24,11 @@
         <select class="def" data-bind="options: noteNames, optionsText: 'name', optionsValue: 'note', value: mode_vm.mode().base"></select>
     </div>
     <!-- short description -->
+    <!--
     <div class="section">
         <p class="desc" data-bind="text: mode_vm.mode().disp_desc"></p>
     </div>
+    -->
 </div>
 
 <!-- For this template, assume current bound data is a jins object -->
