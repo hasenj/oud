@@ -50,11 +50,11 @@ scale_desc =
 window.arabic_name = arabic_name
 ajnas_defs =
     # major
-    "ajam": "9 8 5"
+    "ajam": "8 9 5"
     "hijaz": "5 12 5"
     # minor
     "nhwnd": "9 5 8"
-    "kurd": "5 8 9"
+    "kurd": "5 9 8"
     "bayati": "7 7 8"
     # neutral
     "rast": "8 7 7"
