@@ -135,6 +135,7 @@ function VirtualKeyVM(row, column, piano) {
     self.tone = ko.computed(function() {
         return active_mode.octaveKeyTone(self.octave_index, self.key_index);
     })
+
     self.letter = ko.computed(function() {
         return piano.kbLayout().letterAt(row, column);
     })
@@ -246,9 +247,12 @@ function PianoInstrument() {
     self.noteNames = noteNames;
     self.kbLayout = ko.observable(kb_layouts['qwerty']);
 
+    // window.modes is a dictionary mapping names to modes
+    // mode_list is an array of just the modes
     self.mode_list = ko.observableArray(u.values(window.modes));
 
     key_list = [];
+
     self.vkb_rows = [];
     for(var i = 0; i < 3; i++) {
         self.vkb_rows.push([]);
