@@ -82,6 +82,9 @@ class Jins
             res.push(u.last(res) + displacement)
         res
 
+    forth: ->
+        return @p1 + @p2 + @p3
+
 window.selected_mode = ko.observable($.cookie('mode') || 'ajam')
 selected_mode.subscribe( (val) ->
     $.cookie('mode', val)
@@ -111,6 +114,26 @@ class Mode # a scale with a starting point
             if self.isActive()
                 cls += " active"
             return cls
+
+    # manual .. but works
+    intervals: (index)->
+        result = [
+            @jins1.p1
+            @jins1.p2
+            @jins1.p3
+            FIFTH - @jins1.forth()
+            @jins2.p1
+            @jins2.p2
+            @jins2.p3
+        ]
+        if @jins3
+            result.add [
+                FIFTH - @jins2.forth()
+                @jins3.p1
+                @jins3.p2
+                @jins3.p3
+            ]
+        return result
 
     genTones: (octave) ->
         start = @base() + (octave * OCTAVE)

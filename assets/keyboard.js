@@ -136,6 +136,15 @@ function VirtualKeyVM(row, column, piano) {
         return active_mode.octaveKeyTone(self.octave_index, self.key_index);
     })
 
+    self.interval_to_next = ko.computed(function() {
+        var mode = active_mode.mode()
+        if(mode) {
+            return mode.intervals().at(self.key_index);
+        } else { // should not happen except briefly during initialization
+            return -1;
+        }
+    });
+
     self.letter = ko.computed(function() {
         return piano.kbLayout().letterAt(row, column);
     })
