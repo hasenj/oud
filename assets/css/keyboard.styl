@@ -16,7 +16,7 @@ btn_highlight(color)
 
 #keys
     borderc = hsl(0, 0, 70)
-    bgc = hsl(200, 8, 97)
+    bgc = hsl(200, 50, 98)
     radiuspx = 8px
     *
         user-select none
@@ -59,6 +59,9 @@ btn_highlight(color)
                 color hsl(270, 20, 60)
         &.pressed
             background-color bgc * 0.8
+            border-color borderc * 0.8
+            .half
+                border-color borderc * 0.8
             color hsl(300, 20, 10)
             // background-image url('/key-pressed.png')
             .kb_key
