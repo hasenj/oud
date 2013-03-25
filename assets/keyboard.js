@@ -160,10 +160,12 @@ function VirtualKeyVM(row, column, piano) {
 
     self.disp_letter = ko.computed(function() {
         if(self.enabled()) {
-            return self.letter() || "&nbsp;";
-        } else {
-            return "&nbsp;"
+            var letter = self.letter();
+            if(letter && letter != " ") {
+                return letter;
+            }
         }
+        return "&nbsp;"
     });
 
     self.note_name = ko.computed(function() {
