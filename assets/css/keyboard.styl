@@ -15,63 +15,65 @@ btn_highlight(color)
     display inline-block
 
 #keys
+    borderc = hsl(0, 0, 70)
+    bgc = hsl(200, 4, 99)
     *
         user-select none
-    .outside_octave
-        // background-image url('/wood.png')
     .row
-      // margin 1px 4px
+      margin 14px 0px // vertical spacing
       .key
         link()
-        background-image url('/key.png')
-        background-repeat no-repeat
-        background-position-x center
+        // background-image url('/key.png')
+        // background-repeat no-repeat
+        // background-position-x center
+        background-color bgc
+        border 1px solid borderc
+        border-radius 8px
         display inline-block
-        width 45px
-        height 123px
-        font normal 9pt sans
+        width 40px
+        height 100px
+        // font normal 9pt sans
         text-align center
         text-shadow 0px 0px 2px silver * 1.2
-        .kb_key
-          padding-top 20px
-          margin-bottom 16px
-          height 30px
-          text-align center
-          font-family Arial
-          font-size 12px
-          font-weight normal
-          color hsl(120, 10, 30)
-          border-bottom 1px solid hsl(0, 0, 88)
-          // border-radius 3px
-        .tone
-            display: none // hide it!
-            font normal 5pt sans
-            padding-top 4px
-            color gray
-            text-shadow 0px 0px 2px 1px hsl(50, 80, 90)
-        .note_name
-            font normal 18px monospace
-            color hsl(270, 20, 60)
-        &.pressed
-            color hsl(300, 20, 10)
-            background-image url('/key-pressed.png')
+        .half
+            height 50px
+            line-height 50px
+        .upper.half
+            height 49px
+            border-bottom 1px solid borderc
+        .half
             .kb_key
-              // border-color gray
-              color hsl(50, 70, 20)
+                text-align center
+                font-family Arial
+                font-size 12px
+                font-weight normal
+                color hsl(120, 10, 30)
             .note_name
-              color hsl(270, 20, 40)
-        &.semi_pressed
-            background-image url('/key-semi-pressed.png')
+                font normal 18px monospace
+                color hsl(270, 20, 60)
+        &.pressed
+            background-color bgc * 0.8
+            color hsl(300, 20, 10)
+            // background-image url('/key-pressed.png')
             .kb_key
-              color hsl(50, 70, 20)
+                // border-color gray
+                color hsl(50, 70, 20)
+            .note_name
+                color hsl(270, 20, 40)
+        &.semi_pressed
+            // background-image url('/key-semi-pressed.png')
+            .kb_key
+                color hsl(50, 70, 20)
+            .half.lower
+                background-color bgc * 0.9
         &.interval_5
-            margin-right 5px
-        &.interval_7
-            margin-right 7px
-        &.interval_8, &.interval_9
             margin-right 9px
-        &.interval_12
+        &.interval_7
             margin-right 12px
+        &.interval_8, &.interval_9
+            margin-right 14px
+        &.interval_12
+            margin-right 20px
 
 // oud styles
 #oud_kb

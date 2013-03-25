@@ -169,7 +169,11 @@ function VirtualKeyVM(row, column, piano) {
     });
 
     self.note_name = ko.computed(function() {
-        return active_mode.noteName(self.key_index);
+        if(self.disp_letter()) {
+            return active_mode.noteName(self.key_index);
+        } else {
+            return "&nbsp;"
+        }
     });
 
     self.disp_note_name = ko.computed(function() {
