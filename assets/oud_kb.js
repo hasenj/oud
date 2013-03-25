@@ -45,12 +45,10 @@ noteNameSystem = ko.observable('doremi_arabic');
 NoteName = function(index) {
     var self = this;
 
-    index = _modulo(index, 7);
-    // assert 0 <= index < 7
     self.index = index;
 
     self.name = ko.computed(function() {
-        return noteNameSystems[noteNameSystem()][self.index];
+        return noteNameSystems[noteNameSystem()].at(self.index);
     });
 
     self.next = function() {
@@ -62,7 +60,7 @@ NoteName = function(index) {
     }
 
     self.add = function(offset) {
-        return new NoteName(_modulo(self.index + offset, 7));
+        return new NoteName(self.index + offset);
     }
 }
 
