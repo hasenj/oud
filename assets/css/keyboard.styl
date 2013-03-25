@@ -50,12 +50,19 @@ btn_highlight(color)
             padding-top 4px
             color gray
             text-shadow 0px 0px 2px 1px hsl(50, 80, 90)
+        .interval_to_next
+            font-size 10pt
+            display inline-block
+            // background-color hsla(0, 0, 98, 50)
+            padding 3px 5px
+            border-radius 2px
+            border-bottom 1px solid silver
+            position relative // for some reason, we need this
+            margin-right -50px
+            z-index 4
         .note_name
             font normal 18px monospace
-            margin-top 10px
             color hsl(270, 20, 60)
-            height 60px
-            line-height 50px
         &.pressed
             color hsl(300, 20, 10)
             background-image url('/key-pressed.png')
