@@ -8,7 +8,7 @@ semipress_color = hsl(40, 60, 87)
 press_color = hsl(40, 77, 80)
 
 btn_highlight(color)
-    // box-shadow inset 0px -50px 40px -30px color 
+    // box-shadow inset 0px -50px 40px -30px color
     background-color color
 
 .ib
@@ -18,7 +18,7 @@ btn_highlight(color)
     *
         user-select none
     .outside_octave
-        background-image url('/wood.png')
+        // background-image url('/wood.png')
     .row
       // margin 1px 4px
       .key
@@ -46,20 +46,11 @@ btn_highlight(color)
           border 1px solid silver
           border-radius 3px
         .tone
+            display: none // hide it!
             font normal 5pt sans
             padding-top 4px
             color gray
             text-shadow 0px 0px 2px 1px hsl(50, 80, 90)
-        .interval_to_next
-            font-size 10pt
-            display inline-block
-            // background-color hsla(0, 0, 98, 50)
-            padding 3px 5px
-            border-radius 2px
-            border-bottom 1px solid silver
-            position relative // for some reason, we need this
-            margin-right -50px
-            z-index 4
         .note_name
             font normal 18px monospace
             color hsl(270, 20, 60)
@@ -75,6 +66,14 @@ btn_highlight(color)
             background-image url('/key-semi-pressed.png')
             .kb_key
               color hsl(50, 70, 20)
+        &.interval_5
+            margin-right 5px
+        &.interval_7
+            margin-right 7px
+        &.interval_8, &.interval_9
+            margin-right 9px
+        &.interval_12
+            margin-right 12px
 
 // oud styles
 #oud_kb
@@ -100,4 +99,4 @@ btn_highlight(color)
         text-align center
         &.pressed
             background-color silver
-        
+
