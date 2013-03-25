@@ -27,24 +27,22 @@ btn_highlight(color)
         background-repeat no-repeat
         background-position-x center
         display inline-block
-        width 49px
-        height 130px
+        width 45px
+        height 123px
         font normal 9pt sans
         text-align center
         text-shadow 0px 0px 2px silver * 1.2
         .kb_key
-          margin-top 20px
-          display inline-block
-          width 30px
-          height 28px
-          line-height 28px
+          padding-top 20px
+          margin-bottom 16px
+          height 30px
           text-align center
           font-family Arial
           font-size 12px
           font-weight normal
           color hsl(120, 10, 30)
-          border 1px solid silver
-          border-radius 3px
+          border-bottom 1px solid hsl(0, 0, 88)
+          // border-radius 3px
         .tone
             display: none // hide it!
             font normal 5pt sans
@@ -58,7 +56,7 @@ btn_highlight(color)
             color hsl(300, 20, 10)
             background-image url('/key-pressed.png')
             .kb_key
-              border-color gray
+              // border-color gray
               color hsl(50, 70, 20)
             .note_name
               color hsl(270, 20, 40)
