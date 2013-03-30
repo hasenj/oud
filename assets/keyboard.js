@@ -57,7 +57,7 @@ noteNames = ko.computed(function() {
     var sortedKeys = u.keys(noteIndexMap).map(intfn).sort(sortfn);
     for(i in sortedKeys) {
         var note = sortedKeys[i];
-        var name = modIndex(stdNoteNames(), noteIndexMap[note]);
+        var name = stdNoteNames().at(noteIndexMap[note]);
         var item = {
             note: parseInt(note),
             //name: zfill(name, 10) + note
@@ -82,7 +82,7 @@ function ModeVM(name) {
             firstNoteIndex = noteIndexMap[self.mode().base()]
         }
         var noteIndex = keyIndex + firstNoteIndex;
-        return modIndex(stdNoteNames(), noteIndex);
+        return stdNoteNames().at(noteIndex);
     }
 
     self.disp_name = ko.computed(function() {
