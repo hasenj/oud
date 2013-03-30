@@ -21,68 +21,81 @@ btn_highlight(color)
     *
         user-select none
     .row
-      margin 14px 0px // vertical spacing
-      .key
-        link()
-        // background-image url('/key.png')
-        // background-repeat no-repeat
-        // background-position-x center
-        background-color bgc
-        border 1px solid borderc
-        border-radius radiuspx
-        display inline-block
-        width 40px
-        height 100px
-        // font normal 9pt sans
-        text-align center
-        text-shadow 0px 0px 2px silver * 1.2
-        .half
-            height 50px
-            line-height 50px
-        .upper.half
-            height 49px
-            border-bottom 1px solid borderc
-            border-top-left-radius radiuspx
-            border-top-right-radius radiuspx
-        .lower.half
-            border-bottom-left-radius radiuspx
-            border-bottom-right-radius radiuspx
-        .half
-            .kb_key
-                text-align center
-                font-family Arial
-                font-size 12px
-                font-weight normal
-                color hsl(120, 10, 30)
-            .note_name
-                font normal 18px monospace
-                color hsl(270, 20, 60)
-        &.pressed
-            background-color bgc * 0.8
-            border-color borderc * 0.8
+        margin 14px 0px // vertical spacing
+        .key
+            link()
+            // background-image url('/key.png')
+            // background-repeat no-repeat
+            // background-position-x center
+            background-color bgc
+            border 1px solid borderc
+            border-radius radiuspx
+            display inline-block
+            width 40px
+            height 100px
+            // font normal 9pt sans
+            text-align center
+            text-shadow 0px 0px 2px silver * 1.2
             .half
+                height 50px
+                line-height 50px
+            .upper.half
+                height 49px
+                border-bottom 1px solid borderc
+                border-top-left-radius radiuspx
+                border-top-right-radius radiuspx
+            .lower.half
+                border-bottom-left-radius radiuspx
+                border-bottom-right-radius radiuspx
+            .half
+                .kb_key
+                    text-align center
+                    font-family Arial
+                    font-size 12px
+                    font-weight normal
+                    color hsl(120, 10, 30)
+                .note_name
+                    font normal 18px monospace
+                    color hsl(270, 20, 60)
+            &.pressed
+                background-color bgc * 0.8
                 border-color borderc * 0.8
-            color hsl(300, 20, 10)
-            // background-image url('/key-pressed.png')
-            .kb_key
-                // border-color gray
-                color hsl(50, 70, 20)
-            .note_name
-                color hsl(270, 20, 40)
-        &.semi_pressed
-            // background-image url('/key-semi-pressed.png')
-            .kb_key
-                color hsl(50, 70, 20)
-            .half.lower
-                background-color bgc * 0.9
-        &.interval_5
-            margin-right 9px
-        &.interval_7
-            margin-right 12px
-        &.interval_8, &.interval_9
-            margin-right 14px
-        &.interval_12
-            margin-right 20px
+                .half
+                    border-color borderc * 0.8
+                color hsl(300, 20, 10)
+                // background-image url('/key-pressed.png')
+                .kb_key
+                    // border-color gray
+                    color hsl(50, 70, 20)
+                .note_name
+                    color hsl(270, 20, 40)
+            &.semi_pressed
+                // background-image url('/key-semi-pressed.png')
+                .kb_key
+                    color hsl(50, 70, 20)
+                .half.lower
+                    background-color bgc * 0.9
+        .separator
+            display inline-block
+            margin 0px
+            padding 0px
+            vertical-align top
+            margin-top 20px
+            line-height: 10px
+            font-size 8px
+            color white
+        .separator_5
+            width: 1px
+            background-color black
+        .separator_7
+            width: 5px
+            background-color gray
+        .separator_8, .separator_9
+            width: 9px
+            background-color black
+        .separator_12
+            width: 18px
+            background-color gray
 
 // oud styles
 #oud_kb

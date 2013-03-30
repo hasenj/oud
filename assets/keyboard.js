@@ -198,7 +198,7 @@ function VirtualKeyVM(row, column, piano) {
     })
 
     self.el_class = ko.computed(function() {
-        return "key " + self.state_class() + " interval_" + self.interval_to_next();
+        return "key " + self.state_class();
     })
 
     self.container_class = ko.computed(function() {
