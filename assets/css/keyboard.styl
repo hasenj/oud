@@ -15,7 +15,7 @@ btn_highlight(color)
     display inline-block
 
 #keys
-    borderc = hsl(0, 0, 70)
+    borderc = hsl(0, 0, 80)
     bgc = hsl(200, 50, 98)
     radiuspx = 8px
     *
@@ -24,78 +24,78 @@ btn_highlight(color)
         margin 14px 0px // vertical spacing
         .key
             link()
+            padding 0px
             // background-image url('/key.png')
             // background-repeat no-repeat
             // background-position-x center
             background-color bgc
-            border 1px solid borderc
-            border-radius radiuspx
+            // border 1px solid borderc
+            outline 1px solid borderc
+            // box-shadow 0px 0px 1px 1px borderc
+            // border-radius radiuspx
             display inline-block
-            width 40px
+            width 30px
             height 100px
             // font normal 9pt sans
             text-align center
             text-shadow 0px 0px 2px silver * 1.2
+            overflow: hidden
             .half
                 height 50px
                 line-height 50px
-            .upper.half
-                height 49px
-                border-bottom 1px solid borderc
-                border-top-left-radius radiuspx
-                border-top-right-radius radiuspx
-            .lower.half
-                border-bottom-left-radius radiuspx
-                border-bottom-right-radius radiuspx
-            .half
+                outline 1px solid borderc
+                padding 0px
+                margin 0px
+                overflow: hidden
+                text-align center
                 .kb_key
-                    text-align center
-                    font-family Arial
+                    font-family Verdana
                     font-size 12px
                     font-weight normal
                     color hsl(120, 10, 30)
+                    line-height: 50px
                 .note_name
-                    font normal 18px monospace
+                    font normal 18px Baghdad, monospace
                     color hsl(270, 20, 60)
+                    line-height: 50px
             &.pressed
                 background-color bgc * 0.8
-                border-color borderc * 0.8
+                outline-color borderc * 0.8
                 .half
-                    border-color borderc * 0.8
+                    outline-color borderc * 0.8
                 color hsl(300, 20, 10)
-                // background-image url('/key-pressed.png')
                 .kb_key
-                    // border-color gray
                     color hsl(50, 70, 20)
                 .note_name
                     color hsl(270, 20, 40)
             &.semi_pressed
-                // background-image url('/key-semi-pressed.png')
                 .kb_key
                     color hsl(50, 70, 20)
                 .half.lower
-                    background-color bgc * 0.9
+                    background-color bgc * 0.85
         .separator
             display inline-block
             margin 0px
             padding 0px
             vertical-align top
-            margin-top 20px
-            line-height: 10px
-            font-size 8px
+            margin-top 27px
+            line-height: 7px
+            font-size 6px
             color white
+            text-align center
+            font: monospace
         .separator_5
-            width: 1px
+            width: 10px
             background-color black
         .separator_7
-            width: 5px
-            background-color gray
+            width: 14px
+            background-color gray * 0.8
         .separator_8, .separator_9
-            width: 9px
+            width: 20px
             background-color black
         .separator_12
-            width: 18px
-            background-color gray
+            width: 30px
+            background-color gray * 0.8
 
 // oud styles
 #oud_kb
