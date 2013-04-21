@@ -8,66 +8,94 @@ semipress_color = hsl(40, 60, 87)
 press_color = hsl(40, 77, 80)
 
 btn_highlight(color)
-    // box-shadow inset 0px -50px 40px -30px color 
+    // box-shadow inset 0px -50px 40px -30px color
     background-color color
 
 .ib
     display inline-block
 
 #keys
+    borderc = hsl(0, 0, 80)
+    bgc = hsl(200, 50, 98)
+    radiuspx = 8px
     *
         user-select none
-    .outside_octave
-        background-image url('/wood.png')
     .row
-      // margin 1px 4px
-      .key
-        link()
-        background-image url('/key.png')
-        background-repeat no-repeat
-        background-position-x center
-        display inline-block
-        width 49px
-        height 130px
-        font normal 9pt sans
-        text-align center
-        text-shadow 0px 0px 2px silver * 1.2
-        .kb_key
-          margin-top 20px
-          display inline-block
-          width 30px
-          height 28px
-          line-height 28px
-          text-align center
-          font-family Arial
-          font-size 12px
-          font-weight normal
-          color hsl(120, 10, 30)
-          border 1px solid silver
-          border-radius 3px
-        .tone
-            font normal 5pt sans
-            padding-top 4px
-            color gray
-            text-shadow 0px 0px 2px 1px hsl(50, 80, 90)
-        .note_name
-            font normal 18px monospace
-            margin-top 10px
-            color hsl(270, 20, 60)
-            height 60px
-            line-height 50px
-        &.pressed
-            color hsl(300, 20, 10)
-            background-image url('/key-pressed.png')
-            .kb_key
-              border-color gray
-              color hsl(50, 70, 20)
-            .note_name
-              color hsl(270, 20, 40)
-        &.semi_pressed
-            background-image url('/key-semi-pressed.png')
-            .kb_key
-              color hsl(50, 70, 20)
+        margin 14px 0px // vertical spacing
+        .key
+            link()
+            padding 0px
+            // background-image url('/key.png')
+            // background-repeat no-repeat
+            // background-position-x center
+            background-color bgc
+            // border 1px solid borderc
+            outline 1px solid borderc
+            // box-shadow 0px 0px 1px 1px borderc
+            // border-radius radiuspx
+            display inline-block
+            width 30px
+            height 100px
+            // font normal 9pt sans
+            text-align center
+            text-shadow 0px 0px 2px silver * 1.2
+            overflow: hidden
+            .half
+                height 50px
+                line-height 50px
+                outline 1px solid borderc
+                padding 0px
+                margin 0px
+                overflow: hidden
+                text-align center
+                .kb_key
+                    font-family Verdana
+                    font-size 12px
+                    font-weight normal
+                    color hsl(120, 10, 30)
+                    line-height: 50px
+                .note_name
+                    font normal 18px Baghdad, monospace
+                    color hsl(270, 20, 60)
+                    line-height: 50px
+            &.pressed
+                background-color bgc * 0.8
+                outline-color borderc * 0.8
+                .half
+                    outline-color borderc * 0.8
+                color hsl(300, 20, 10)
+                .kb_key
+                    color hsl(50, 70, 20)
+                .note_name
+                    color hsl(270, 20, 40)
+            &.semi_pressed
+                .kb_key
+                    color hsl(50, 70, 20)
+                .half.lower
+                    background-color bgc * 0.85
+        .separator
+            display inline-block
+            margin 0px
+            padding 0px
+            vertical-align top
+            margin-top 27px
+            line-height: 7px
+            font-size 6px
+            color white
+            text-align center
+            font: monospace
+        .separator_5
+            width: 10px
+            background-color black
+        .separator_7
+            width: 14px
+            background-color gray * 0.8
+        .separator_8, .separator_9
+            width: 20px
+            background-color black
+        .separator_12
+            width: 30px
+            background-color gray * 0.8
 
 // oud styles
 #oud_kb
@@ -93,4 +121,4 @@ btn_highlight(color)
         text-align center
         &.pressed
             background-color silver
-        
+

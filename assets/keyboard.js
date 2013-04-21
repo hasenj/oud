@@ -129,8 +129,8 @@ function VirtualKeyVM(row, column, piano) {
     var self = this;
     // first row is "previous" octave
     self.octave_index = row - 1;
-    // we shift the keyboard by 0 keys
-    self.key_index = column - 0;
+    // we shift the keyboard by 2 keys
+    self.key_index = column - 2;
 
     self.tone = ko.computed(function() {
         return active_mode.octaveKeyTone(self.octave_index, self.key_index);
@@ -160,14 +160,20 @@ function VirtualKeyVM(row, column, piano) {
 
     self.disp_letter = ko.computed(function() {
         if(self.enabled()) {
-            return self.letter() || "&nbsp;";
-        } else {
-            return "&nbsp;"
+            var letter = self.letter();
+            if(letter && letter != " ") {
+                return letter;
+            }
         }
+        return "&nbsp;"
     });
 
     self.note_name = ko.computed(function() {
-        return active_mode.noteName(self.key_index);
+        if(self.disp_letter()) {
+            return active_mode.noteName(self.key_index);
+        } else {
+            return "&nbsp;"
+        }
     });
 
     self.disp_note_name = ko.computed(function() {
@@ -246,7 +252,7 @@ function KeyboardLayout(rows) {
 }
 
 var kb_layouts = {} // standard keyboard layouts .. to choose from; e.g. qwerty, azerty, .. etc
-kb_layouts['qwerty'] = new KeyboardLayout(["    TYUIOP[]", "ASDFGHJKL;'↩", "ZXCVBNM,./"])
+kb_layouts['qwerty'] = new KeyboardLayout(["QWERTYUIOP[]", "ASDFGHJKL;'↩", "ZXCVBNM,./"])
 window.active_mode = new ModeVM(selected_mode);
 
 function PianoInstrument() {

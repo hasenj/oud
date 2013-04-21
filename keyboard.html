@@ -1,11 +1,17 @@
-<div id="keys" data-bind="foreach: vkb_rows">
-    <div class="row" data-bind="foreach: $data">
-        <div data-bind="attr: {class: container_class}">
-            <div class="key unpressed" data-bind="click: play, attr: {class: el_class}">
-                <div class='kb_key' data-bind="html: disp_letter">&nbsp;</div>
-                <div class='tone' data-bind="html: disp_tone">&nbsp;</div>
-                <div class='note_name' data-bind="html: disp_note_name">&nbsp;</div>
-            </div>
-        </div>
-    </div>
+<div id="keys" data-bind="foreach: { data: vkb_rows, as: 'row' }">
+    <div class="row" data-bind="foreach: row"><!--
+        --><div data-bind="attr: {class: container_class}"><!--
+            --><div class="key unpressed" data-bind="click: play, attr: {class: el_class}"><!--
+                --><div class="half upper"><!--
+                    --><div class='kb_key' data-bind="html: disp_letter">&nbsp;</div><!--
+                --></div><!--
+                --><div class="half lower"><!--
+                    --><div class='note_name' data-bind="html: disp_note_name">&nbsp;</div><!--
+                    --></div><!--
+                --></div><!--
+            --></div><!--
+        --><!-- ko if: $index() + 1 < $parentContext.row.length --><!--
+            --><div data-bind="attr: {class: 'separator separator_' + interval_to_next()}, text: interval_to_next">&nbsp;</div><!--
+        --><!-- /ko --><!--
+    --></div>
 </div>
