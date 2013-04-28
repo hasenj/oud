@@ -80,7 +80,8 @@ show_oud = function(len) { // show oud places with proposed watar length
         ["Minor Third", minor_third],
         ["Major Third", major_third],
         ["Diminished Forth", minor_third.add(semitone)],
-        ["Forth", forth]
+        ["Forth", forth],
+        ["Fifth", fifth]
     ];
     places.forEach(function(place) {
         var title = place[0];
