@@ -1,4 +1,4 @@
-mkbuf = (len) -> 
+mkbuf = (len) ->
     new Float32Array Math.floor len
 
 firefox_on_linux = ->
@@ -16,7 +16,7 @@ mksink = (srate)->
     catch error # not sure if the exception would happen here
         alert("الرجاء فتح الموقع فيمتصفح كووكل كروم")
         {sampleRate: srate, ringOffset: 0}
-            
+
 window.dev = mksink(44100)
 SRATE = dev.sampleRate
 
@@ -91,21 +91,23 @@ dampness = (->
 )()
 
 # karplus strong algorithm
-oud_signal_gen = (freq) ->
-    table_len = period_len freq
-    table = mkbuf(table_len)
-    base_sample = wave_shape_to_sample(oud_wave_shape, table_len)
-    signal = mkbuf(SIGNAL_LEN)
-    for s, index in signal
-        point = index % table_len
-        if index < table_len
-            table[point] = base_sample[point] + ks_noise_sample(0.1)
+string_type_factory = (wave_shape, noise_sample_param) ->
+    signal_gen = (freq) ->
+        table_len = period_len freq
+        table = mkbuf(table_len)
+        base_sample = wave_shape_to_sample(wave_shape, table_len)
+        # first apply white nose to the base sample
+        for s, index in base_sample
+            table[index] = base_sample[index] + ks_noise_sample(noise_sample_param)
+        signal = mkbuf(SIGNAL_LEN)
+        for s, index in signal
+            point = index % table_len
+            adj = (table_len + index - 1) % table_len
+            table[point] = avg(table[point], table[adj])
             signal[index] = table[point]
-        else
-            prev = (index - 1) % table_len
-            table[point] = avg(table[point], table[prev])
-            signal[index] = table[point]
-    return signal
+        return signal
+
+oud_signal_gen = string_type_factory(oud_wave_shape, 0.12)
 
 tonefreq = (tone, base=128) ->
     # use DO=128 (2^7) as a base reference
