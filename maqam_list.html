@@ -19,9 +19,9 @@
         </div>
     </div>
     <!-- First note -->
-    <div class="section">
+    <div class="section" data-bind="with: piano">
         <label class="label"> نغمة البداية: </label>
-        <select class="def" data-bind-x="options: noteNames, optionsText: 'name', optionsValue: 'note', value: mode_vm.mode().base"></select>
+        <select class="def" data-bind="options: baseNotes, optionsText: 'display_name', optionsValue: 'raw', value: rawBaseNote"></select>
     </div>
     <!-- short description -->
     <!--
