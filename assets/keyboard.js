@@ -8,123 +8,6 @@
 
 u = _
 
-// octave row
-function OctaveVM(octave, ko_mode) {
-    // octave is the octave index
-    // ko_mode is the observable active mode
-    var self = this;
-    self.tones = ko.computed(function() {
-        var mode = ko_mode();
-        if (mode) {
-            return mode.genTones(octave);
-        }
-        else {
-            return [];
-        }
-    })
-    return self;
-}
-
-doReMeArabic = "دو ري مي فا صول لا سي".split(" ")
-doReMeLatin = "DO RE ME FA SOL LA SI".split(" ")
-CDELatin = "C D E F G A B".split(" ")
-window.stdNoteNames = ko.observable(doReMeArabic)
-
-// maps a note number to a note name index
-noteIndexMap = {
-    '-13': -2,
-    '-5': -1,
-    0: 0,
-    9: 1,
-    17: 2,
-    22: 3,
-    31: 4,
-}
-
-zfill = function(str, len) {
-    while(str.length < len) {
-        str = str + String.fromCharCode(160);
-    }
-    return str;
-}
-
-// option list for starting note along with its name
-noteNames = ko.computed(function() {
-    // helper functions
-    var intfn = function(n) { return parseInt(n); };
-    var sortfn = function(a, b) { return a > b; };
-    var res = [];
-    var sortedKeys = u.keys(noteIndexMap).map(intfn).sort(sortfn);
-    for(i in sortedKeys) {
-        var note = sortedKeys[i];
-        var name = stdNoteNames().at(noteIndexMap[note]);
-        var item = {
-            note: parseInt(note),
-            //name: zfill(name, 10) + note
-            name: name
-        };
-        res.push(item);
-    }
-    return res;
-})
-
-function ModeVM(name) {
-    var self = this
-    self.name = name // it's an observable
-    self.mode = ko.computed(function() {
-        return modes[self.name()]
-    });
-
-    self.noteName = function(keyIndex) {
-        var firstNoteIndex = 0;
-        // HACK! works because we only use a starting note from the map above
-        if(self.mode()) {
-            firstNoteIndex = noteIndexMap[self.mode().base()]
-        }
-        var noteIndex = keyIndex + firstNoteIndex;
-        return stdNoteNames().at(noteIndex);
-    }
-
-    self.disp_name = ko.computed(function() {
-        return "سلم " + arabic_name(self.name()) + " من ال" + self.noteName(0);
-    });
-
-
-    self.octaves = {}
-    for(var i = -1; i <= 1; i++) {
-        self.octaves[i] = new OctaveVM(i, self.mode);
-    }
-
-    // find the tone for the key in the octave, returning null if one can't be found
-    self.octaveKeyTone = function(octave, key) {
-        var ovm = self.octaves[octave];
-        if(!ovm) {
-            return null;
-        }
-
-        var keys = ovm.tones();
-        if(!keys) {
-            return null;
-        }
-
-        var tone = keys[key];
-        if(tone == null) {
-            if(key > 7) {
-                // find the key from the next octave ..
-                return self.octaveKeyTone(octave+1, key-7);
-            } else if(key < 0) {
-                // find the key from the previous octave
-                return self.octaveKeyTone(octave-1, key+7);
-            } else {
-                return null;
-            }
-        }
-        return tone;
-    }
-
-    return self;
-}
-
 function VirtualKeyVM(row, column, piano) {
     var self = this;
     // first row is "previous" octave
@@ -132,17 +15,16 @@ function VirtualKeyVM(row, column, piano) {
     // we shift the keyboard by 2 keys
     self.key_index = column - 2;
 
-    self.tone = ko.computed(function() {
-        return active_mode.octaveKeyTone(self.octave_index, self.key_index);
+    self.note = ko.computed(function() {
+        return piano.note_at(self.octave_index, self.key_index);
     })
 
+    self.tone = ko.computed(function() {
+        return self.note().freq();
+    });
+
     self.interval_to_next = ko.computed(function() {
-        var mode = active_mode.mode()
-        if(mode) {
-            return mode.intervals().at(self.key_index);
-        } else { // should not happen except briefly during initialization
-            return -1;
-        }
+        return "5"; // XXX STUB
     });
 
     self.letter = ko.computed(function() {
@@ -150,11 +32,11 @@ function VirtualKeyVM(row, column, piano) {
     })
 
     self.enabled = ko.computed(function() {
-        return self.tone() != null;
+        return self.note() != null;
     });
 
     self.disp_tone = ko.computed(function() {
-        var t = self.tone();
+        var t = self.note();
         return t == null? "&nbsp;" : t;
     });
 
@@ -169,16 +51,13 @@ function VirtualKeyVM(row, column, piano) {
     });
 
     self.note_name = ko.computed(function() {
-        if(self.disp_letter()) {
-            return active_mode.noteName(self.key_index);
-        } else {
-            return "&nbsp;"
-        }
+        var base = piano.noteName();
+        return base.add(self.key_index);
     });
 
     self.disp_note_name = ko.computed(function() {
         if(self.enabled()) {
-            return self.note_name();
+            return self.note_name().disp_arabic();
         } else {
             return "&nbsp;";
         }
@@ -214,7 +93,8 @@ function VirtualKeyVM(row, column, piano) {
         if(t==null) {
             return
         }
-        playtone(t);
+        console.log("Tone:", t);
+        play_freq(t);
     }
 
     self.press = function() {
@@ -253,13 +133,61 @@ function KeyboardLayout(rows) {
 
 var kb_layouts = {} // standard keyboard layouts .. to choose from; e.g. qwerty, azerty, .. etc
 kb_layouts['qwerty'] = new KeyboardLayout(["QWERTYUIOP[]", "ASDFGHJKL;'↩", "ZXCVBNM,./"])
-window.active_mode = new ModeVM(selected_mode);
 
 function PianoInstrument() {
     var self = this;
 
-    self.mode_vm = active_mode;
-    self.noteNames = noteNames;
+    self.jins1 = ko.observable(ajnas.ajem);
+    self.jins2 = ko.observable(ajnas.ajem);
+    self.jins3 = ko.observable(null);
+    self.note = ko.observable(notes.C);
+    self.noteName = ko.observable(new NoteName('C')); // XXX should be conbined with the note ..
+
+    // jins3 is nullified when jins2 is not diminished
+    self.jins2.subscribe(function(val) {
+        if(self.jins2().p3 == intervals.forth) {
+            self.jins3(null);
+        } else {
+            if(!self.jins3()) {
+                self.jins3(val);
+            }
+        }
+    });
+
+    // array of Note objects
+    self.jins1_notes = ko.computed(function() {
+        return self.jins1().notes(self.note());
+    });
+    // array of Note objects
+    self.jins2_notes = ko.computed(function() {
+        return self.jins2().notes(self.note().addInterval(intervals.fifth));
+    });
+    // array of Note objects
+    self.jins3_notes = ko.computed(function() {
+        if(self.jins3()) {
+            return self.jins3().notes(self.note().addInterval(intervals.fifth.mul(2)));
+        } else {
+            return [];
+        }
+    });
+
+    self.octave_notes = ko.computed(function() {
+        return Array.create(self.jins1_notes(), self.jins2_notes(), self.jins3_notes());
+    });
+
+    self.note_at = function(octave_index, key_index) {
+        if(key_index < 0) { // HACK, but works
+            return self.note_at(octave_index - 1, key_index + 7)
+        }
+        var notes = self.octave_notes();
+        if(key_index >= notes.length) {
+            return self.note_at(octave_index +1, key_index - 7);
+        }
+        var note = notes.at(key_index);
+        note = note.addInterval(intervals.octave.mul(octave_index));
+        return note;
+    };
+
     self.kbLayout = ko.observable(kb_layouts['qwerty']);
 
     // window.modes is a dictionary mapping names to modes
@@ -337,10 +265,9 @@ piano = new PianoInstrument();
 function GlobalViewModel() {
     var self = this;
 
-    self.instrument = ko.observable("piano"); // TODO remove oud mode .. only mode is piano mode ..
+    self.instrument = ko.observable("piano");
     var instrument_map = {
         piano: piano,
-        oud: oud
     }
 
     self.active_instrument = ko.computed(function() {

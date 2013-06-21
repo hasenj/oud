@@ -155,11 +155,15 @@ var intervals = {
     forth: Ratio(4, 3),
     majorThird: Ratio(5, 4),
     minorThird: Ratio(6, 5),
+    hijaz: Ratio(7,6),
+    tone: Ratio(9,8),
+    lesserTone: Ratio(10,9),
+    neutralSecond: Ratio(12,11),
+    biggerSemiTone: Ratio(15,14),
+    semiTone: Ratio(16,15),
+    neutralThird: Ratio(11,9),
+    diminishedForth: Ratio(9, 7)
 }
-intervals.tone = intervals.fifth.sub(intervals.forth);
-intervals.semitone = intervals.minorThird.sub(intervals.tone);
-intervals.neutralSecond = intervals.minorThird.split(2)[0]; // XXX assuming the smaller part comes first!! this should be Ratio(12, 11) maybe we should have "ratio_min" function
-intervals.diminishedForth = intervals.minorThird.add(intervals.semitone);
 
 // -------------------------------------------------------------------------------------------
 // -------------------------    Notes   ------------------------------------------------------
@@ -174,13 +178,15 @@ Note = function(frequency) {
     }
 
     // apply ratio to a note and come up with a new note
-    self.addRatio = function(ratio) {
+    self.addInterval = function(ratio) {
         return new Note(self.freq() * ratio.value());
     }
+    self.addRatio = self.addInterval; // for backward compatibility
 
-    self.subRatio = function(ratio) {
+    self.subInterval = function(ratio) {
         return new Note(self.freq() * ratio.inverse().value());
     }
+    self.subRatio = self.subInterval;
 
     var signal = null;
     self.play = function() {
@@ -190,4 +196,14 @@ Note = function(frequency) {
         play_signal(signal);
     }
 }
+
+// standard notes
+notes = {}
+notes.A = new Note(110);
+notes.B = notes.A.addInterval(intervals.tone);
+notes.C = notes.A.addInterval(intervals.minorThird);
+notes.D = notes.A.addInterval(intervals.forth);
+notes.E = notes.A.addInterval(intervals.fifth);
+notes.F = notes.D.addInterval(intervals.majorThird);
+notes.G = notes.D.addInterval(intervals.forth);
 
