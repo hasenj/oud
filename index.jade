@@ -4,10 +4,6 @@ block content
 
     div(data-bind="if: instrument() == 'piano'")
         table.layout(data-bind="with: piano")
-          tr.header
-            td.logo
-            td.maqam_name
-              div#maqam_name(data-bind="html: scale_display_name")
           tr.app
             td.controls
               include controls.html

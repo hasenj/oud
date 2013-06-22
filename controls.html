@@ -1,6 +1,6 @@
-<div class="controls" data-bind="foreach: mode_list">
-    <div class="maqam_btn" data-bind="html: disp_name"> <!--, click: select, attr: {class: el_class}"> -->
-    </div>
+<div class="logo"></div>
+<div class="maqam_name">
+    <div id="maqam_name" data-bind="html: scale_display_name"></div>
 </div>
 <div class="maqam_info" data-bind="with: piano.jinsSetCtrl">
     <!-- jins info -->
@@ -30,6 +30,11 @@
         <p class="desc" data-bind="text: mode_vm.mode().disp_desc"></p>
     </div>
     -->
+</div>
+
+<div class="controls" data-bind="foreach: mode_list">
+    <div class="maqam_btn" data-bind="html: disp_name"> <!--, click: select, attr: {class: el_class}"> -->
+    </div>
 </div>
 
 <!-- For this template, assume current bound data is a jins object -->
