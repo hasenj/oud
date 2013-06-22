@@ -92,9 +92,7 @@ JinsSetControls = function() {
         if(self.jins2().p3 == intervals.forth) {
             self.jins3(null);
         } else {
-            if(!self.jins3()) {
-                self.jins3(val);
-            }
+            self.jins3(val);
         }
     });
 
@@ -103,14 +101,7 @@ JinsSetControls = function() {
         if(self.pointer == self.jins1) {
             self.pointer = self.jins2;
             return;
-        } else if (self.pointer == self.jins2) {
-            if(self.jins3()) { // XXX make sure this runs after jins3's null status is updated
-                self.pointer = self.jins3;
-            } else {
-                self.pointer = self.jins1
-            }
-            return;
-        } else if (self.pointer == self.jins3) {
+        } else {
             self.pointer = self.jins1;
             return;
         }
