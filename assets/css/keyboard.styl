@@ -18,32 +18,34 @@ btn_highlight(color)
     text-align center
 
 #keys
-    borderc = hsl(0, 0, 80)
-    bgc = hsl(200, 50, 98)
+    borderc = hsl(270, 40, 84)
+    borderhilight = hsl(270, 90, 94)
+    bgc = hsl(270, 50, 98)
     radiuspx = 8px
     *
         user-select none
     text-align center
+    margin-top: 30px
     .row
-        margin 14px 0px // vertical spacing
+        margin -10px 0px // vertical spacing
         .key
             link()
             padding 0px
-            margin: 0px 2px
+            margin: 0px 1px
             background-image url('/btn.png')
             background-repeat no-repeat
             background-position-x center
             background-color bgc
-            // border 1px solid borderc
-            outline 1px solid borderc
-            // box-shadow 0px 0px 1px 1px borderc
-            // border-radius radiuspx
+            background-size: 100% 100%;
+            border 1px solid borderc
+            box-shadow 0px 0px 4px 1px hsl(270, 0, 90)
             display inline-block
-            width 40px
+            width 50px
             height 106px
             text-align center
             text-shadow 0px 0px 2px silver * 1.2
             overflow: hidden
+            border-radius: 4px;
             .half
                 height 53px
                 line-height 60px
@@ -66,9 +68,8 @@ btn_highlight(color)
             &.pressed
                 background-image url('/btn-pressed.png')
                 // background-color bgc * 0.8
-                .half
-                    outline-color borderc * 0.8
                 color hsl(300, 20, 10)
+                border-color: borderhilight
                 .kb_key
                     color hsl(50, 70, 20)
                 .note_name
