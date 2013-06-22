@@ -67,7 +67,8 @@ JinsButton = function(key, name) {
     var self = this;
     self.key = key;
     self.jins = ajnas[name];
-    self.display = key + ' | ' + ScaleArabicName(name);
+    self.displayName = ScaleArabicName(name);
+    // self.display = key + ' | ' + ScaleArabicName(name);
 
     var unclick = 0;
     self.btnClicked = ko.observable(false);
