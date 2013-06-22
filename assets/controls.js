@@ -21,7 +21,7 @@ BaseNote = function(nameWithOctave) {
 // list base notes and select one
 BaseNotesVM = function() {
     var self = this;
-    self.rawBaseNotes = 'E1 F1 G1 A2 B2 C2 D2 E2 F2 G2 A3 B3 C3 D3 E3'.split(' ');
+    self.rawBaseNotes = 'E1 F1 G1 A1 B1 C2 D2 E2 F2 G2 A2 B2 C3 D3 E3'.split(' ');
     self.baseNotes = ko.observableArray(self.rawBaseNotes.map(function(n) {
         return new BaseNote(n);
     }));
