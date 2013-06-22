@@ -109,16 +109,20 @@ aqua-button(bghue=230)
 
         .pointer
             position: absolute
-            background-color transparent
+            background-color hsla(270, 60, 80, 0.2)
+            box-shadow 0px 0px 5px 0px hsla(270, 30%, 80%, 0.5) inset
             width: 300px
             height: 30px
             border-radius 6px
             border 1px solid silver
-            transition: 300ms
+            transition: 200ms
+            line-height: 27px
+            padding-right 14px
+            color: hsl(270, 50, 30)
             &.first
-                margin-top: 0px - 4px
+                margin-top: 0px - 5px
             &.second
-                margin-top: 30px - 4px
+                margin-top: 30px - 5px
 
         .jins
             padding-right 50px
