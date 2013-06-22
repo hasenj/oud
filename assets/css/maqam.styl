@@ -104,15 +104,31 @@ aqua-button(bghue=230)
     border-radius 8px
     .section
         margin-top 20px
-        &.first
+        &:first-child
             margin-top 2px
 
-        .label
-            width 120px
-            display inline-block
-        .def
-            width 120px
-            display inline-block
+        .pointer
+            position: absolute
+            background-color transparent
+            width: 300px
+            height: 30px
+            border-radius 6px
+            border 1px solid silver
+            transition: 300ms
+            &.first
+                margin-top: 0px - 4px
+            &.second
+                margin-top: 30px - 4px
+
+        .jins
+            padding-right 50px
+            height: 30px
+            .label
+                width 120px
+                display inline-block
+            .def
+                width 120px
+                display inline-block
 
 .rtl
     text-align right
@@ -121,4 +137,3 @@ aqua-button(bghue=230)
 .ltr
     text-align left
     direction ltr
-

@@ -4,16 +4,17 @@
 </div>
 <div class="maqam_info" data-bind="with: piano.jinsSetCtrl">
     <!-- jins info -->
-    <div class="section first">
-        <div>
+    <div class="section">
+        <div class="pointer" data-bind="attr: { class : pointerClass }"></div>
+        <div class="jins">
             <label class="label"> الجنس الأول </label>
             <p class="def" data-bind="template: { name: 'template_jins_info', data: jins1 }"> </p>
         </div>
-        <div>
+        <div class="jins">
             <label class="label"> الجنس الثاني </label>
             <p class="def" data-bind="template: { name: 'template_jins_info', data: jins2 }"> </p>
         </div>
-        <div data-bind="visible: jins3">
+        <div class="jins" data-bind="visible: jins3">
             <label class="label"> الجنس الثالث </label>
             <p class="def" data-bind="template: { name: 'template_jins_info', data: jins3() || jins2() }"> </p>
         </div>
@@ -33,9 +34,8 @@
 
 <!-- For this template, assume current bound data is a jins object -->
 <script type="text/html" id="template_jins_info">
-    <div class="ib" style="width: 100%">
-        <!-- XXX show an arrow if this is the current one -->
-        <span class="ib" style="width: 50%" data-bind="text: disp_name"> </span>
+    <div>
+        <span class="ib" data-bind="text: disp_name"> </span>
         <!--  <span class="ib ltr" style="width: 30%" data-bind="text: disp_intervals"> </span> -->
     </div>
 </script>

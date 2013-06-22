@@ -96,20 +96,24 @@ JinsSetControls = function() {
         }
     });
 
-    self.pointer = self.jins1;
+    self.pointer = ko.observable(self.jins1); // observable to observable (pointer to pointer)
     self.advancePointer = function() {
-        if(self.pointer == self.jins1) {
-            self.pointer = self.jins2;
+        if(self.pointer() == self.jins1) {
+            self.pointer(self.jins2);
             return;
         } else {
-            self.pointer = self.jins1;
+            self.pointer(self.jins1);
             return;
         }
     }
 
+    self.pointerClass = ko.computed(function() {
+        return "pointer " + (self.pointer() == self.jins1 ? "first" : "second");
+    })
+
     self.selectFromKey = function(key) {
         var selectedName = self.keyMap[key];
-        self.pointer(ajnas[selectedName]);
+        self.pointer()(ajnas[selectedName]);
         self.advancePointer();
     }
 }
