@@ -6,8 +6,6 @@
     Maqam can be changed and the keyboard keys will change which notes they sound.
 */
 
-u = _
-
 function VirtualKeyVM(row, column, piano) {
     var self = this;
     // first row is "previous" octave
@@ -204,7 +202,7 @@ function PianoInstrument() {
 
     // window.modes is a dictionary mapping names to modes
     // mode_list is an array of just the modes
-    self.mode_list = ko.observableArray(u.values(window.modes));
+    self.mode_list = ko.observableArray(Object.extended(window.modes).values());
 
     key_list = [];
 
@@ -219,13 +217,13 @@ function PianoInstrument() {
     }
 
     self.findKey = function(letter) {
-        return u.find(key_list, function(key) {
+        return key_list.find(function(key) {
             return key.letter() == letter;
         })
     };
 
     self.findKeysByTone = function(tone) {
-        return u.filter(key_list, function(key) {
+        return key_list.filter(function(key) {
             return key.tone() == tone;
         });
     };

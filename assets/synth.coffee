@@ -52,7 +52,7 @@ interpolate = (v1, v2, dist) ->
 
 wave_shape_to_sample = (shape, len) ->
     # turns a waveshape to an actual wave form of the given length
-    shape = _(shape).clone()
+    shape = Object.clone(shape)
     sample = mkbuf(len)
     prev = shape.shift()
     for s, i in sample
