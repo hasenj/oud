@@ -7,22 +7,12 @@ block content
           tr.header
             td.logo
             td.maqam_name
-              div#maqam_name(data-bind="html: active_mode.disp_name")
+              div#maqam_name(data-bind="html: scale_display_name")
           tr.app
-            td.maqam_list
-              include maqam_list.html
+            td.controls
+              include controls.html
             td.keyboard
               include keyboard.html
           tr.guide
             td(colspan=2)
               include guide.html
-    div(data-bind="if: instrument() == 'oud'")
-          include oud_kb.html
-
-    != js('/utils')
-    != js('/synth')
-    != js('/maqam')
-    != js('/keyboard')
-    != js('/ratios')
-    != js('/oud_kb')
-

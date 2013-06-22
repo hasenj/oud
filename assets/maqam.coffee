@@ -1,189 +1,139 @@
-u = _
-
+# XXX fix this doc comment
 # jins, scale, mode
 #
 # a jins (tetrachord) is a series of 4 intervals, spanning a forth or a diminished forth
 #
 # a scale is a series of jins concatenated together at "fifth" intervals
 #
-# a mode is a scale with a starting point
-#   so itcan be used to build a concrete list of notes
-#
 # maqam is an abstract concept that not only defines a mode but a playing style
 # we don't actually deal with maqams directly, nor do we represent them directly
 # if the word maqam is used anywhere in the code, it's a bug and should be fixed
 
-arabic_name = (maqam_code) ->
+# require: notes.js
+
+ABCNotes = "A B C D E F G".split(" ")
+window.stdNoteNames = ABCNotes
+
+class NoteName
+    constructor: (@name) ->
+        @index = ABCNotes.indexOf(@name)
+    add: (n) ->
+        return new NoteName(ABCNotes.at(@index+n))
+    next: -> @add(1)
+    prev: -> @add(-1)
+    disp_arabic: ->
+        { A: "لا", B: "سي", C: "دو", D: "ري", E: "مي", F: "فا", G: "صول" }[@name]
+window.NoteName = NoteName
+
+ScaleArabicName = (maqam_code) ->
     map = {
-        "ajam" : "عجم",
+        "ajem" : "عجم",
+        "ajem-ajem" : "عجم",
         "kurd": "كرد",
-        "nhwnd": "نهاوند"
-        "nhwnd-hijaz": "نهاوند حجاز",
+        "kurd-kurd": "كرد",
+        "nahawend": "نهاوند"
+        "nahawend-kurd": "نهاوند"
+        "nahawend-hijaz": "نهاوند حجاز",
         "hijaz": "حجاز"
-        "hijaz-bayati": "حجاز بياتي",
+        "hijaz-kurd": "حجاز"
+        "hijaz-beyat": "حجاز بياتي",
         "hijazkar": "حجاز كار"
+        "hijaz-hijaz": "حجاز كار"
         "rast": "رست"
-        "rast-nhwnd": "رست نهاوند",
-        "bayati" : "بياتي",
+        "rast-rast": "رست"
+        "rast-nahawend": "رست نهاوند",
+        "beyat" : "بياتي",
+        "beyat-kurd" : "بياتي",
+        "beyat-beyat" : "حسيني",
         "saba" : "صبا"
+        "saba-zemzem" : "صبا"
         "saba-full": "صبا كامل"
-        "zamzama": "زمزمة"
-        "zamzama-full": "زمزمة كامل"
-        "mahuri": "ماهوري"
-        "charga": "چهرگاه"
-        "huseyni": "حسيني"
+        "saba-kurd": "صبا كامل"
+        "zemzem": "زمزمة"
+        "zemzem-zemzem": "زمزمة"
+        "zemzem-full": "زمزمة كامل"
+        "zemzem-kurd": "زمزمة كامل"
     }
     if maqam_code of map
         map[maqam_code]
     else
         maqam_code
 
-scale_desc =
-    "ajam": "و هو مماثل لسلم الميجور الغربي"
-    "kurd": ""
-    "rast": "ابو المقامات الشرقية"
-    "bayati": ""
-    "hijaz": ""
-    "saba": "المقام الحزين المنكسر"
-    "nhwnd": "و هو مماثل لسلم المينور الغربي"
-
-window.arabic_name = arabic_name
-ajnas_defs =
-    # major
-    "ajam": "8 9 5"
-    "hijaz": "5 12 5"
-    # minor
-    "nhwnd": "9 5 8"
-    "kurd": "5 9 8"
-    "bayati": "7 7 8"
-    # neutral
-    "rast": "8 7 7"
-    # diminished
-    "saba": "7 7 5"
-    "zamzama": "5 9 5"
-
-FORTH = 22
-FIFTH = 31
-OCTAVE = 53
+window.ScaleArabicName = ScaleArabicName
 
 class Jins
     constructor: (@name, @p1, @p2, @p3) ->
-        total = @p1 + @p2 + @p3
         self = this
         self.disp_name = ko.computed ->
-            arabic_name(self.name)
+            ScaleArabicName(self.name)
         self.disp_intervals = ko.computed ->
-            [self.p1, self.p2, self.p3].join("-")
+            return "--"
+            # [self.p1, self.p2, self.p3].join("-")
 
-    genTones: (start) ->
-        distances = [@p1, @p2, @p3]
-        res = [start]
-        for displacement in distances
-            res.push(u.last(res) + displacement)
-        res
+    # assuming base is a Note object
+    # returns an array of Note objects
+    notes: (base) ->
+        res = [base]
+        for interval in [@p1, @p2, @p3]
+            res.push base.addInterval(interval)
+        return res
 
-    forth: ->
-        return @p1 + @p2 + @p3
+# Define the ajnas
+window.ajnas = {}
+ajnas.ajem = new Jins('ajem', intervals.lesserTone, intervals.majorThird, intervals.forth)
+ajnas.kurd = new Jins('kurd', intervals.semiTone, intervals.minorThird, intervals.forth)
+ajnas.hijaz = new Jins('hijaz', intervals.semiTone, intervals.majorThird, intervals.forth)
+ajnas.nahawend = new Jins('nahawend', intervals.tone, intervals.minorThird, intervals.forth)
+ajnas.beyat = new Jins('beyat', intervals.neutralSecond, intervals.minorThird, intervals.forth)
+ajnas.rast = new Jins('rast', intervals.lesserTone, intervals.neutralThird, intervals.forth)
+ajnas.saba = new Jins('saba', intervals.neutralSecond, intervals.minorThird, intervals.diminishedForth)
+ajnas.zemzem = new Jins('zemzem', intervals.semiTone, intervals.minorThird, intervals.diminishedForth)
 
-window.selected_mode = ko.observable($.cookie('mode') || 'ajam')
+
+
+window.selected_mode = ko.observable($.cookie('mode') || 'ajem')
 selected_mode.subscribe( (val) ->
     $.cookie('mode', val)
 )
 
-class Mode # a scale with a starting point
-    constructor: (@name, base, @jins1, @jins2, @jins3) ->
+class PresetMaqam
+    constructor: (@name, @start, @jins1, @jins2, @jins3) ->
         self = this
-
-        self.base = ko.observable(base)
-
         self.disp_name = ko.computed ->
-            arabic_name(self.name)
+            ScaleArabicName(self.name)
+    apply: -> # TODO
 
-        self.disp_desc = ko.computed ->
-            if self.name of scale_desc
-                scale_desc[self.name]
-            else
-                ""
 
-        self.isActive = ko.computed ->
-            selected_mode() == self.name
-
-        # for the maqam button
-        self.el_class = ko.computed ->
-            cls = "maqam_btn"
-            if self.isActive()
-                cls += " active"
-            return cls
-
-    # manual .. but works
-    intervals: (index)->
-        result = [
-            @jins1.p1
-            @jins1.p2
-            @jins1.p3
-            FIFTH - @jins1.forth()
-            @jins2.p1
-            @jins2.p2
-            @jins2.p3
-        ]
-        if @jins3
-            result.add [
-                FIFTH - @jins2.forth()
-                @jins3.p1
-                @jins3.p2
-                @jins3.p3
-            ]
-        return result
-
-    genTones: (octave) ->
-        start = @base() + (octave * OCTAVE)
-        result = []
-        result = result.concat @jins1.genTones(start)
-        result = result.concat @jins2.genTones(start + FIFTH)
-        if @jins3
-            result = result.concat @jins3.genTones(start + FIFTH + FIFTH)
-        return result
-
-    select: ->
-        selected_mode(@name)
-
-window.Mode = Mode
-
-# The `ajnas` dict maps jins name to a Jins object
-ajnas = {}
-for key, val of ajnas_defs
-    args = (Number n for n in val.split(" "))
-    ajnas[key] = new Jins(key, args...)
-
+# XXX need a predefined set of possible starting notes
 # a mode def is starting point and 2 (or 3) jins
 mode_defs =
-    "ajam": "0 ajam ajam"
-    "kurd": "9 kurd kurd"
+    "ajem": "C ajem ajem"
+    "kurd": "D kurd kurd"
 
-    "nhwnd": "0 nhwnd kurd"
-    "nhwnd-hijaz": "0 nhwnd hijaz"
+    "nahawend": "C nahawend kurd"
+    "nahawend-hijaz": "C nahawend hijaz"
 
-    "bayati": "9 bayati kurd"
-    "rast": "0 rast rast"
+    "beyat": "D beyat kurd"
+    "rast": "C rast rast"
 
-    "hijaz": "9 hijaz kurd"
-    "hijaz-bayati": "9 hijaz bayati"
+    "hijaz": "D hijaz kurd"
+    "hijaz-beyat": "D hijaz beyat"
 
-    "saba": "9 saba zamzama zamzama"
-    "zamzama": "9 zamzama zamzama zamzama"
+    "saba": "D saba zemzem zemzem"
+    "zemzem": "D zemzem zemzem zemzem"
 
-    "saba-full": "9 saba kurd"
-    "zamzama-full": "9 zamzama kurd"
+    "saba-full": "D saba kurd"
+    "zemzem-full": "D zemzem kurd"
 
 window.modes = {}
 for name, def of mode_defs
     parts = def.split(" ")
-    start = Number parts.shift()
+    start = notes[parts.shift()]
     jins1 = ajnas[parts.shift()]
     jins2 = ajnas[parts.shift()]
     jins3 = ajnas[parts.shift()] || null
-    modes[name] = new Mode(name, start, jins1, jins2, jins3)
+    modes[name] = new PresetMaqam(name, start, jins1, jins2, jins3)
 
 # just a sanity check
 if(window.selected_mode() not of modes)
-    window.selected_mode('ajam')
+    window.selected_mode('ajem')
