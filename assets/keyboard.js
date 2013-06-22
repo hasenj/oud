@@ -165,6 +165,18 @@ function PianoInstrument() {
         }
     });
 
+    self.scale_display_name = ko.computed(function() {
+        var jins1Name = self.jins1().name;
+        var jins2Name = self.jins2().name;
+        var compoundName = jins1Name + '-' + jins2Name;
+        var scaleName = ScaleArabicName(compoundName);
+        if(scaleName == compoundName) {
+            scaleName = ScaleArabicName(jins1Name) + ' ' + ScaleArabicName(jins2Name);
+        }
+        var baseName = self.baseNote().noteName.disp_arabic();
+        return scaleName + ' على ' + baseName;
+    });
+
     // array of Note objects
     self.jins1_notes = ko.computed(function() {
         return self.jins1().notes(self.note());

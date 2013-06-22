@@ -26,22 +26,34 @@ class NoteName
         { A: "لا", B: "سي", C: "دو", D: "ري", E: "مي", F: "فا", G: "صول" }[@name]
 window.NoteName = NoteName
 
-arabic_name = (maqam_code) ->
+ScaleArabicName = (maqam_code) ->
     map = {
         "ajem" : "عجم",
+        "ajem-ajem" : "عجم",
         "kurd": "كرد",
+        "kurd-kurd": "كرد",
         "nahawend": "نهاوند"
+        "nahawend-kurd": "نهاوند"
         "nahawend-hijaz": "نهاوند حجاز",
         "hijaz": "حجاز"
+        "hijaz-kurd": "حجاز"
         "hijaz-beyat": "حجاز بياتي",
         "hijazkar": "حجاز كار"
+        "hijaz-hijaz": "حجاز كار"
         "rast": "رست"
+        "rast-rast": "رست"
         "rast-nahawend": "رست نهاوند",
         "beyat" : "بياتي",
+        "beyat-kurd" : "بياتي",
+        "beyat-beyat" : "حسيني",
         "saba" : "صبا"
+        "saba-zemzem" : "صبا"
         "saba-full": "صبا كامل"
+        "saba-kurd": "صبا كامل"
         "zemzem": "زمزمة"
+        "zemzem-zemzem": "زمزمة"
         "zemzem-full": "زمزمة كامل"
+        "zemzem-kurd": "زمزمة كامل"
     }
     if maqam_code of map
         map[maqam_code]
@@ -58,13 +70,13 @@ scale_desc =
     "saba": "المقام الحزين المنكسر"
     "nahawend": "و هو مماثل لسلم المينور الغربي"
 
-window.arabic_name = arabic_name
+window.ScaleArabicName = ScaleArabicName
 
 class Jins
     constructor: (@name, @p1, @p2, @p3) ->
         self = this
         self.disp_name = ko.computed ->
-            arabic_name(self.name)
+            ScaleArabicName(self.name)
         self.disp_intervals = ko.computed ->
             return "--"
             # [self.p1, self.p2, self.p3].join("-")
@@ -99,7 +111,7 @@ class PresetMaqam
     constructor: (@name, @start, @jins1, @jins2, @jins3) ->
         self = this
         self.disp_name = ko.computed ->
-            arabic_name(self.name)
+            ScaleArabicName(self.name)
     apply: -> # TODO
 
 
