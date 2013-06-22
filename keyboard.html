@@ -1,6 +1,6 @@
 <div id="keys" data-bind="with: jinsSetCtrl">
     <div class="btn-group" data-bind="foreach: buttons"><!--
-        --><div class="jins_btn" data-bind="html: display, css: { active: btnClicked }, click: function() { $parent.selectFromKey(key, true); }"></div><!--
+        --><div class="btn jins" data-bind="html: display, css: { active: btnClicked }, click: function() { $parent.selectFromKey(key, true); }"></div><!--
     --></div>
 </div>
 <div id="keys" data-bind="foreach: { data: vkb_rows, as: 'row' }">

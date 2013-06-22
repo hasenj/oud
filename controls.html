@@ -20,9 +20,16 @@
         </div>
     </div>
     <!-- base note -->
-    <div class="section" data-bind="with: baseNoteCtrl">
-        <label class="label"> نغمة البداية: </label>
-        <select class="def" data-bind="options: baseNotes, optionsText: 'display_name', optionsValue: 'raw', value: selected"></select>
+    <div class="section base_note" data-bind="with: baseNoteCtrl">
+        <label class="label"> نغمة البداية </label>
+        <div class="btn-group"><!--
+            --><div class="btn" data-bind="click: prevBase">-</div><!--
+            --><div class="btn"><!--
+                --><!--<select data-bind="options: baseNotes, optionsText: 'display_name', optionsValue: 'raw', value: selected"></select>--><!--
+                --><div data-bind="html: selected"></div><!--
+                --></div><!--
+            --><div class="btn" data-bind="click: nextBase">+</div><!--
+        --></div>
     </div>
     <!-- short description -->
     <!--

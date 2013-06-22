@@ -68,28 +68,30 @@ aqua-button(bghue=230)
     &.active
         font-size 1.09em
 
-.jins_btn
+.btn, .btn.jins
     maqam-button()
     direction: ltr
     margin: 2px;
     font-family: verdana;
     font-size: 14px;
     font-weight normal
-    padding: 4px 6px;
-    min-width: 40px;
+    padding: 4px 8px;
+    min-width: 20px;
     text-shadow: none
     color: hsla(270, 10%, 10%, 0.7);
 
 .btn-group
-    .jins_btn
+    direction ltr
+    display inline-block
+    .btn
         border-radius: 0px
         margin-left: 0px;
         margin-right: 0px;
         border-left-width: 0px;
-    .jins_btn:first-child
+    .btn:first-child
         border-radius: 5px 0px 0px 5px
         border-left-width: 1px;
-    .jins_btn:last-child
+    .btn:last-child
         border-radius: 0px 5px 5px 0px
 
 
@@ -108,6 +110,19 @@ aqua-button(bghue=230)
             margin-top 2px
         &:last-child
             border-bottom none
+
+        &.base_note
+            padding-right: 20px
+            padding-top: 10px
+
+        .label
+            width 80px
+            display inline-block
+            vertical-align middle
+        .def
+            min-width 120px
+            display inline-block
+            vertical-align middle
 
         &.ajnas
             height 100px
@@ -135,12 +150,6 @@ aqua-button(bghue=230)
             .jins
                 padding-right 50px
                 height: 30px
-                .label
-                    width 120px
-                    display inline-block
-                .def
-                    width 120px
-                    display inline-block
 
 .rtl
     text-align right
