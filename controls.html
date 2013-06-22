@@ -23,13 +23,19 @@
     <div class="section base_note" data-bind="with: baseNoteCtrl">
         <label class="label"> نغمة البداية </label>
         <div class="btn-group"><!--
-            --><div class="btn" data-bind="click: prevBase">-</div><!--
-            --><div class="btn"><!--
-                --><!--<select data-bind="options: baseNotes, optionsText: 'display_name', optionsValue: 'raw', value: selected"></select>--><!--
-                --><div data-bind="html: selected"></div><!--
-                --></div><!--
-            --><div class="btn" data-bind="click: nextBase">+</div><!--
+            --><div class="btn basenote" data-bind="click: prevBase">-</div><!--
+            --><div class="btn basenote" style="width: 40px" data-bind="click: toggleDropmenu"><!--
+                --><span data-bind="html: selected"></span> <span class="icon"> v </span><!--
+            --></div><!--
+            --><div class="btn basenote" data-bind="click: nextBase">+</div><!--
         --></div>
+        <div class="dropmenu" style="margin-top: 2px; margin-right: 120px; width: 58px;"
+            data-bind="visible: dropmenuVisible, foreach: baseNotes">
+            <div class="item" data-bind="html: raw, css: { selected : $parent.selected() == raw },
+                click: function() {
+                    $parent.selected(raw);
+                }"></div>
+        </div>
     </div>
     <!-- short description -->
     <!--
@@ -48,6 +54,5 @@
 <script type="text/html" id="template_jins_info">
     <div>
         <span class="ib" data-bind="text: disp_name"> </span>
-        <!--  <span class="ib ltr" style="width: 30%" data-bind="text: disp_intervals"> </span> -->
     </div>
 </script>

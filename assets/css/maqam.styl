@@ -68,20 +68,25 @@ aqua-button(bghue=230)
     &.active
         font-size 1.09em
 
-.btn, .btn.jins
+.btn
     maqam-button()
-    direction: ltr
     margin: 2px;
-    font-family: verdana;
-    font-size: 14px;
-    font-weight normal
-    padding: 4px 8px;
+    widget-font()
     min-width: 20px;
+    padding: 4px 8px;
     text-shadow: none
-    color: hsla(270, 10%, 10%, 0.7);
     user-select: none
     *
         user-select: none
+
+.btn.jins
+    direction: ltr
+
+.btn.basenote
+    height: 20px
+    direction: ltr
+    vertical-align middle
+    line-height: 20px
 
 .btn-group
     direction ltr
@@ -138,6 +143,7 @@ aqua-button(bghue=230)
                 box-shadow 0px 0px 5px 0px hsla(270, 30%, 80%, 0.5) inset
                 width: 286px
                 height: 30px
+                font-size 22px
                 border-radius 0px
                 border 1px solid silver
                 transition: 200ms

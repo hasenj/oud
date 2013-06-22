@@ -53,6 +53,14 @@ BaseNotesVM = function() {
             self.selected(self.rawBaseNotes.at(prevIndex));
         }
     }
+
+    self.dropmenuVisible = ko.observable(false);
+    self.toggleDropmenu = function() {
+        self.dropmenuVisible(!self.dropmenuVisible());
+        if(self.dropmenuVisible()) {
+            falseOnDocumentClick(self.dropmenuVisible);
+        }
+    }
 }
 
 JinsButton = function(key, name) {
