@@ -85,7 +85,7 @@ JinsSetControls = function() {
         '8': 'zemzem'
     }
     self.buttons = ko.observableArray(
-        Object.extended(self.keyMap).keys().map(
+        Object.keys(self.keyMap).map(
             function(key){
                 var name = self.keyMap[key];
                 return new JinsButton(key, name);

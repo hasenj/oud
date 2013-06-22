@@ -202,7 +202,7 @@ function PianoInstrument() {
 
     // window.modes is a dictionary mapping names to modes
     // mode_list is an array of just the modes
-    self.mode_list = ko.observableArray(Object.extended(window.modes).values());
+    self.mode_list = ko.observableArray(Object.values(window.modes));
 
     key_list = [];
 
