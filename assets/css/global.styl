@@ -38,40 +38,33 @@ link()
     -webkit-user-select none
     user-select none
 
-table.layout
+div.layout
     padding 0
     margin 0 auto
-    width 950px
-    tr, td
+    width 1000px
+    > div
         padding 0
         margin 0
-        vertical-align top
 
-tr.app
+div.app
     text-align right
-    td.controls
+    > div
+        display inline-block
+        vertical-align top
+    div.controls
         width 400px
         vertical-align top
         direction rtl
         text-align right
-    td.keyboard
-        direction ltr
+    div.keyboard
         width 600px
-
-tr.footer
-    td
-        direction rtl
-        text-align right
-        padding-top 30px
-    td.author
-        width 200px
-    td.tips
-        width 400px
+        direction ltr
 
 body
     font normal 12pt Ubuntu
     color hsl(0, 0%, 20%)
 
+// XXX remove this?!!
 #error_box
   div, span
     font normal 12pt sans
@@ -91,45 +84,27 @@ body
 code
     font-family monospace
 
-.footer_content
-  padding-top 10px
-  margin-left 30px
-  color hsl(160, 10%, 30%)
-  font-size 14px
-  div
-    display inline-block
-    vertical-align middle
-  div.link
-    padding 5px
-    margin-right 8px
-    a
-      color: hsl(240, 10%, 30%)
-      text-shadow 0 1px 1px white
-      text-decoration none
-      font-family Ubuntu
-
-
 div.text_page
-  *
-    user-select text
-  width 500px
-  margin 10px 40px
-  h1
-    font-size 1.8em
-    font-weight bold
-  h2
-    font-size 1.3em
-  h3
-    font-size 1.2em
-  h1, h2, h3, p
-    margin 13px 2px
-  pre, code
-    font normal 10pt monospace
-  pre
-    margin-left 20px
+    *
+        user-select text
+    width 500px
+    margin 10px 40px
+    h1
+        font-size 1.8em
+        font-weight bold
+    h2
+        font-size 1.3em
+    h3
+        font-size 1.2em
+    h1, h2, h3, p
+        margin 13px 2px
+    pre, code
+        font normal 10pt monospace
+    pre
+        margin-left 20px
 
 span()
-    display inlien-block
+    display inline-block
     float right
     padding 2px 45px
     margin 0 10px

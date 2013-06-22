@@ -96,43 +96,51 @@ aqua-button(bghue=230)
 
 .maqam_info
     display block
-    width 380px
-    padding 10px 13px
+    width 300px
+    padding 10px 0px
     margin 10px 5px
     background-color hsl(0, 0, 99)
     border 1px solid hsl(0, 0, 90)
     border-radius 8px
     .section
-        margin-top 20px
+        border-bottom 1px solid hsl(0, 0, 90)
         &:first-child
             margin-top 2px
+        &:last-child
+            border-bottom none
 
-        .pointer
-            position: absolute
-            background-color hsla(270, 60, 80, 0.2)
-            box-shadow 0px 0px 5px 0px hsla(270, 30%, 80%, 0.5) inset
-            width: 300px
-            height: 30px
-            border-radius 6px
-            border 1px solid silver
-            transition: 200ms
-            line-height: 27px
-            padding-right 14px
-            color: hsl(270, 50, 30)
-            &.first
-                margin-top: 0px - 5px
-            &.second
-                margin-top: 30px - 5px
+        &.ajnas
+            height 100px
+            padding-top 0px
+            margin-top: 4px // to accomedate the pointer's 4px up shift
 
-        .jins
-            padding-right 50px
-            height: 30px
-            .label
-                width 120px
-                display inline-block
-            .def
-                width 120px
-                display inline-block
+            .pointer
+                position: absolute
+                background-color hsla(270, 60, 80, 0.2)
+                box-shadow 0px 0px 5px 0px hsla(270, 30%, 80%, 0.5) inset
+                width: 286px
+                height: 30px
+                border-radius 0px
+                border 1px solid silver
+                transition: 200ms
+                line-height: 27px
+                padding-right 14px
+                color: hsl(270, 50, 30)
+                margin-right: -1px;
+                &.first
+                    margin-top: 0px - 5px
+                &.second
+                    margin-top: 30px - 5px
+
+            .jins
+                padding-right 50px
+                height: 30px
+                .label
+                    width 120px
+                    display inline-block
+                .def
+                    width 120px
+                    display inline-block
 
 .rtl
     text-align right

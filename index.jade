@@ -2,13 +2,11 @@ extends layout
 
 block content
 
-    div(data-bind="if: instrument() == 'piano'")
-        table.layout(data-bind="with: piano")
-          tr.app
-            td.controls
-              include controls.html
-            td.keyboard
-              include keyboard.html
-          tr.guide
-            td(colspan=2)
-              include guide.html
+    div.layout(data-bind="with: piano")
+        div.app
+            div.controls
+                include controls.html
+            div.keyboard
+                include keyboard.html
+        div.guide
+            include guide.html

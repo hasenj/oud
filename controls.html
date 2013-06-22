@@ -1,10 +1,10 @@
 <div class="logo"></div>
-<div class="maqam_name">
-    <div id="maqam_name" data-bind="html: scale_display_name"></div>
-</div>
-<div class="maqam_info" data-bind="with: piano.jinsSetCtrl">
+<div class="maqam_info">
+    <div class="section maqam_name">
+        <div data-bind="html: scale_display_name"></div>
+    </div>
     <!-- jins info -->
-    <div class="section">
+    <div class="section ajnas" data-bind="with: jinsSetCtrl">
         <div class="pointer" data-bind="attr: { class : pointerClass }"> <span class="icon"> &gt; </span> </div>
         <div class="jins">
             <label class="label"> الجنس الأول </label>
@@ -20,7 +20,7 @@
         </div>
     </div>
     <!-- base note -->
-    <div class="section" data-bind="with: piano.baseNoteCtrl">
+    <div class="section" data-bind="with: baseNoteCtrl">
         <label class="label"> نغمة البداية: </label>
         <select class="def" data-bind="options: baseNotes, optionsText: 'display_name', optionsValue: 'raw', value: selected"></select>
     </div>
