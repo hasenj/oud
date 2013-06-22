@@ -14,40 +14,45 @@ btn_highlight(color)
 .ib
     display inline-block
 
+.jins_controls
+    text-align center
+
 #keys
     borderc = hsl(0, 0, 80)
     bgc = hsl(200, 50, 98)
     radiuspx = 8px
     *
         user-select none
+    text-align center
     .row
         margin 14px 0px // vertical spacing
         .key
             link()
             padding 0px
-            // background-image url('/key.png')
-            // background-repeat no-repeat
-            // background-position-x center
+            margin: 0px 2px
+            background-image url('/btn.png')
+            background-repeat no-repeat
+            background-position-x center
             background-color bgc
             // border 1px solid borderc
             outline 1px solid borderc
             // box-shadow 0px 0px 1px 1px borderc
             // border-radius radiuspx
             display inline-block
-            width 30px
-            height 100px
-            // font normal 9pt sans
+            width 40px
+            height 106px
             text-align center
             text-shadow 0px 0px 2px silver * 1.2
             overflow: hidden
             .half
-                height 50px
-                line-height 50px
-                outline 1px solid borderc
+                height 53px
+                line-height 60px
                 padding 0px
                 margin 0px
                 overflow: hidden
                 text-align center
+                &:first-child
+                    // border-bottom 1px solid borderc
                 .kb_key
                     font-family Verdana
                     font-size 12px
@@ -59,8 +64,8 @@ btn_highlight(color)
                     color hsl(270, 20, 60)
                     line-height: 50px
             &.pressed
-                background-color bgc * 0.8
-                outline-color borderc * 0.8
+                background-image url('/btn-pressed.png')
+                // background-color bgc * 0.8
                 .half
                     outline-color borderc * 0.8
                 color hsl(300, 20, 10)
@@ -69,10 +74,11 @@ btn_highlight(color)
                 .note_name
                     color hsl(270, 20, 40)
             &.semi_pressed
+                background-image url('/btn-half-pressed.png')
                 .kb_key
                     color hsl(50, 70, 20)
                 .half.lower
-                    background-color bgc * 0.85
+                    // background-color bgc * 0.85
         .separator
             display inline-block
             margin 0px

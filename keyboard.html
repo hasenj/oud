@@ -1,4 +1,4 @@
-<div id="keys" data-bind="with: jinsSetCtrl">
+<div class="jins_controls" data-bind="with: jinsSetCtrl">
     <div class="btn-group" data-bind="foreach: buttons"><!--
         --><div class="btn jins" data-bind="html: display, css: { active: btnClicked }, click: function() { $parent.selectFromKey(key, true); }"></div><!--
     --></div>
@@ -16,7 +16,7 @@
                 --></div><!--
             --></div><!--
         --><!-- ko if: $index() + 1 < $parentContext.row.length --><!--
-            --><div data-bind="attr: {class: 'separator separator_' + interval_to_next()}, text: interval_to_next">&nbsp;</div><!--
+            --><!--<div data-bind="attr: {class: 'separator separator_' + interval_to_next()}, text: interval_to_next">&nbsp;</div>--><!--
         --><!-- /ko --><!--
     --></div>
 </div>
