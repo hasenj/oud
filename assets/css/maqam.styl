@@ -12,7 +12,6 @@ maqam-button(bghue=230)
   border solid 1px hsl(bghue, 20, 85)
   // background-color white
   display inline-block
-  width 90px
   text-align center
   direction rtl
   font-family amiri
@@ -28,32 +27,7 @@ maqam-button(bghue=230)
     // background-color hsl(190, 20, 80)
     background: linear-gradient(top, hsl(0,0,88), hsl(0,0,98))
     text-shadow 1px 1px 2px hsl(150, 40, 90)
-    font-size 1.09em
 
-.widget_stepper
-  font-size 0.8em
-  width 40px
-  display inline-block
-  text-align center
-  &.horizontal
-    width auto
-    margin auto 8px
-  .button
-    cursor pointer
-    user-select none
-    color gray
-    display inline-block
-  .val
-    cursor default
-    display inline-block
-    width 30px
-    vertical-align top
-    margin auto 4px
-
-.start_widget
-  margin-left 20px
-  span.text
-    font-size 10pt
 
 aqua-button(bghue=230)
   -reset()
@@ -87,14 +61,44 @@ aqua-button(bghue=230)
 
 
 .maqam_btn
-  maqam-button()
-  margin: 5px
+    maqam-button()
+    width 90px
+    margin: 5px
+    &:active
+    &.active
+        font-size 1.09em
+
+.jins_btn
+    maqam-button()
+    direction: ltr
+    margin: 2px;
+    font-family: verdana;
+    font-size: 14px;
+    font-weight normal
+    padding: 4px 6px;
+    min-width: 40px;
+    text-shadow: none
+    color: hsla(270, 10%, 10%, 0.7);
+
+.btn-group
+    .jins_btn
+        border-radius: 0px
+        margin-left: 0px;
+        margin-right: 0px;
+        border-left-width: 0px;
+    .jins_btn:first-child
+        border-radius: 5px 0px 0px 5px
+        border-left-width: 1px;
+    .jins_btn:last-child
+        border-radius: 0px 5px 5px 0px
+
+
 
 .maqam_info
     display block
-    width 280px
-    padding 10px
-    margin 10px
+    width 380px
+    padding 10px 13px
+    margin 10px 5px
     background-color hsl(0, 0, 99)
     border 1px solid hsl(0, 0, 90)
     border-radius 8px

@@ -1,25 +1,25 @@
-<div class="maqam_list" data-bind="foreach: mode_list">
+<div class="controls" data-bind="foreach: mode_list">
     <div class="maqam_btn" data-bind="html: disp_name"> <!--, click: select, attr: {class: el_class}"> -->
     </div>
 </div>
-<div class="maqam_info" data-bind="with: piano">
+<div class="maqam_info" data-bind="with: piano.jinsSetCtrl">
     <!-- jins info -->
     <div class="section first">
         <div>
             <label class="label"> الجنس الأول </label>
-            <p class="def" data-bind="template: { name: 'template-jins-info', data: jins1 }"> </p>
+            <p class="def" data-bind="template: { name: 'template_jins_info', data: jins1 }"> </p>
         </div>
         <div>
             <label class="label"> الجنس الثاني </label>
-            <p class="def" data-bind="template: { name: 'template-jins-info', data: jins2 }"> </p>
+            <p class="def" data-bind="template: { name: 'template_jins_info', data: jins2 }"> </p>
         </div>
         <div data-bind="visible: jins3">
             <label class="label"> الجنس الثالث </label>
-            <p class="def" data-bind="template: { name: 'template-jins-info', data: jins3() || jins2() }"> </p>
+            <p class="def" data-bind="template: { name: 'template_jins_info', data: jins3() || jins2() }"> </p>
         </div>
     </div>
     <!-- base note -->
-    <div class="section" data-bind="with: baseNoteCtrl">
+    <div class="section" data-bind="with: piano.baseNoteCtrl">
         <label class="label"> نغمة البداية: </label>
         <select class="def" data-bind="options: baseNotes, optionsText: 'display_name', optionsValue: 'raw', value: selected"></select>
     </div>
@@ -32,9 +32,10 @@
 </div>
 
 <!-- For this template, assume current bound data is a jins object -->
-<script type="text/html" id="template-jins-info">
+<script type="text/html" id="template_jins_info">
     <div class="ib" style="width: 100%">
+        <!-- XXX show an arrow if this is the current one -->
         <span class="ib" style="width: 50%" data-bind="text: disp_name"> </span>
-        <span class="ib ltr" style="width: 45%" data-bind="text: disp_intervals"> </span>
+        <!--  <span class="ib ltr" style="width: 30%" data-bind="text: disp_intervals"> </span> -->
     </div>
 </script>
