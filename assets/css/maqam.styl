@@ -81,7 +81,9 @@ aqua-button(bghue=230)
 
 .btn.jins
     direction: ltr
-    padding: 10px 15px
+    padding: 10px 0px
+    width: 84px
+    text-align: center
 
 .btn.basenote
     height: 20px
@@ -94,8 +96,7 @@ aqua-button(bghue=230)
     display inline-block
     .btn
         border-radius: 0px
-        margin-left: 0px;
-        margin-right: 0px;
+        margin: 0px;
         border-left-width: 0px;
     .btn:first-child
         border-radius: 5px 0px 0px 5px
@@ -103,6 +104,17 @@ aqua-button(bghue=230)
     .btn:last-child
         border-radius: 0px 5px 5px 0px
 
+.jins_controls
+    border-radius 5px 5px 0 0
+    margin-top: -1px
+    .btn-group
+        margin-right: -1px
+        margin-left: -1px
+        .btn:first-child
+            border-radius 5px 0 0 0
+        .btn:last-child
+            border-radius 0 5px 0 0
+            padding-right: 1px
 
 span.divider
     color hsla(270, 50, 90, 0.7)
