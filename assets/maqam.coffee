@@ -93,7 +93,7 @@ class Jins
 window.ajnas = {}
 ajnas.ajem = new Jins('ajem', intervals.lesserTone, intervals.majorThird, intervals.forth)
 ajnas.kurd = new Jins('kurd', intervals.semiTone, intervals.minorThird, intervals.forth)
-ajnas.hijaz = new Jins('hijaz', intervals.biggerSemiTone, intervals.majorThird, intervals.forth)
+ajnas.hijaz = new Jins('hijaz', intervals.semiTone, intervals.majorThird, intervals.forth)
 ajnas.nahawend = new Jins('nahawend', intervals.tone, intervals.minorThird, intervals.forth)
 ajnas.beyat = new Jins('beyat', intervals.neutralSecond, intervals.minorThird, intervals.forth)
 ajnas.rast = new Jins('rast', intervals.lesserTone, intervals.neutralThird, intervals.forth)

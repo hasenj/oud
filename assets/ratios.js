@@ -155,7 +155,6 @@ var intervals = {
     forth: Ratio(4, 3),
     majorThird: Ratio(5, 4),
     minorThird: Ratio(6, 5),
-    hijaz: Ratio(7,6),
     tone: Ratio(9,8),
     lesserTone: Ratio(10,9),
     neutralSecond: Ratio(12,11),
@@ -163,7 +162,8 @@ var intervals = {
     semiTone: Ratio(16,15),
     // neutralThird: Ratio(11,9),
     neutralThird: Ratio(27, 22), // zalzal's
-    diminishedForth: Ratio(9, 7)
+    // diminishedForth: Ratio(9, 7)
+    diminishedForth: Ratio(32, 25)
 }
 
 // -------------------------------------------------------------------------------------------
