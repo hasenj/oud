@@ -2,9 +2,9 @@
     <div class="maqam_btn" data-bind="html: disp_name"> <!--, click: select, attr: {class: el_class}"> -->
     </div>
 </div>
-<div class="maqam_info">
+<div class="maqam_info" data-bind="with: piano">
     <!-- jins info -->
-    <div class="section first" data-bind="with: piano">
+    <div class="section first">
         <div>
             <label class="label"> الجنس الأول </label>
             <p class="def" data-bind="template: { name: 'template-jins-info', data: jins1 }"> </p>
@@ -18,10 +18,10 @@
             <p class="def" data-bind="template: { name: 'template-jins-info', data: jins3() || jins2() }"> </p>
         </div>
     </div>
-    <!-- First note -->
-    <div class="section" data-bind="with: piano">
+    <!-- base note -->
+    <div class="section" data-bind="with: baseNoteCtrl">
         <label class="label"> نغمة البداية: </label>
-        <select class="def" data-bind="options: baseNotes, optionsText: 'display_name', optionsValue: 'raw', value: rawBaseNote"></select>
+        <select class="def" data-bind="options: baseNotes, optionsText: 'display_name', optionsValue: 'raw', value: selected"></select>
     </div>
     <!-- short description -->
     <!--

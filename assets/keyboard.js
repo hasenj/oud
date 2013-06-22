@@ -134,60 +134,25 @@ function KeyboardLayout(rows) {
 var kb_layouts = {} // standard keyboard layouts .. to choose from; e.g. qwerty, azerty, .. etc
 kb_layouts['qwerty'] = new KeyboardLayout(["QWERTYUIOP[]", "ASDFGHJKL;'↩", "ZXCVBNM,./"])
 
-// a list of possible starting tones:
-// each one includes:
-//  - display name
-//  - note name
-//  - note object (frequency)
-//  all parsed form the given string, e.g. 'F1', 'A2', etc
-BaseNote = function(nameWithOctave) {
-    console.log("Argument", nameWithOctave);
-    var self = this;
-    var raw_name = nameWithOctave[0];
-    var octave = Number(nameWithOctave[1]);
-    self.raw = nameWithOctave;
-    self.noteName = new NoteName(raw_name);
-    self.display_name = self.noteName.disp_arabic() + octave;
-    octave -= 2; // shift by 2 ..
-    self.note = notes[raw_name].addInterval(intervals.octave.mul(octave));
-}
-
-rawBaseNotes = 'E1 F1 G1 A2 B2 C2 D2 E2 F2 G2 A3 B3 C3 D3 E3'.split(' ');
-baseNotes = ko.observableArray(rawBaseNotes.map(function(n) {
-        return new BaseNote(n);
-    }));
-
 function PianoInstrument() {
     var self = this;
 
     self.jins1 = ko.observable(ajnas.ajem);
     self.jins2 = ko.observable(ajnas.ajem);
     self.jins3 = ko.observable(null);
-    self.rawBaseNote = ko.observable('C2');
+
+    self.baseNoteCtrl = new BaseNotesVM();
+
     self.baseNote = ko.computed(function() {
-        return new BaseNote(self.rawBaseNote());
+        return self.baseNoteCtrl.selectedBaseNote();
     });
+
     self.note = ko.computed(function() {
         return self.baseNote().note;
     });
     self.noteName = ko.computed(function() {
         return self.baseNote().noteName;
     });
-
-    self.nextBase = function() {
-        var index = rawBaseNotes.indexOf(self.rawBaseNote());
-        var nextIndex = index + 1;
-        if(nextIndex < rawBaseNotes.length) {
-            self.rawBaseNote(rawBaseNotes.at(nextIndex));
-        }
-    }
-    self.prevBase = function() {
-        var index = rawBaseNotes.indexOf(self.rawBaseNote());
-        var prevIndex = index - 1;
-        if(prevIndex >= 0) {
-            self.rawBaseNote(rawBaseNotes.at(prevIndex));
-        }
-    }
 
     // jins3 is nullified when jins2 is not diminished
     self.jins2.subscribe(function(val) {
@@ -267,9 +232,9 @@ function PianoInstrument() {
     self.keydown = function(kbkey) {
         if('-=+'.has(kbkey)) { // special keys - not notes
             if(kbkey == '-') {
-                self.prevBase();
+                self.baseNoteCtrl.prevBase();
             } else if (kbkey == '=') {
-                self.nextBase();
+                self.baseNoteCtrl.nextBase();
             }
         }
         var keyvm = piano.findKey(kbkey)
