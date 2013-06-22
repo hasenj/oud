@@ -137,32 +137,21 @@ kb_layouts['qwerty'] = new KeyboardLayout(["QWERTYUIOP[]", "ASDFGHJKL;'↩", "ZX
 function PianoInstrument() {
     var self = this;
 
-    self.jins1 = ko.observable(ajnas.ajem);
-    self.jins2 = ko.observable(ajnas.ajem);
-    self.jins3 = ko.observable(null);
+    self.jinsSetCtrl = new JinsSetControls();
+    // alises ...
+    self.jins1 = self.jinsSetCtrl.jins1;
+    self.jins2 = self.jinsSetCtrl.jins2;
+    self.jins3 = self.jinsSetCtrl.jins3;
 
     self.baseNoteCtrl = new BaseNotesVM();
 
-    self.baseNote = ko.computed(function() {
-        return self.baseNoteCtrl.selectedBaseNote();
-    });
+    self.baseNote = self.baseNoteCtrl.selectedBaseNote;
 
     self.note = ko.computed(function() {
         return self.baseNote().note;
     });
     self.noteName = ko.computed(function() {
         return self.baseNote().noteName;
-    });
-
-    // jins3 is nullified when jins2 is not diminished
-    self.jins2.subscribe(function(val) {
-        if(self.jins2().p3 == intervals.forth) {
-            self.jins3(null);
-        } else {
-            if(!self.jins3()) {
-                self.jins3(val);
-            }
-        }
     });
 
     self.scale_display_name = ko.computed(function() {
@@ -248,6 +237,11 @@ function PianoInstrument() {
             } else if (kbkey == '=') {
                 self.baseNoteCtrl.nextBase();
             }
+            return;
+        }
+        if('12345678'.has(kbkey)) { // jins selector
+            self.jinsSetCtrl.selectFromKey(kbkey);
+            return;
         }
         var keyvm = piano.findKey(kbkey)
         if (!keyvm) {

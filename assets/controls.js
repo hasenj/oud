@@ -54,3 +54,72 @@ BaseNotesVM = function() {
         }
     }
 }
+
+JinsButton = function(key, name) {
+    var self = this;
+    self.key = key;
+    self.jins = ajnas[name];
+    self.display = key + '.' + ScaleArabicName(name);
+}
+
+JinsSetControls = function() {
+    var self = this;
+    self.keyMap = {
+        '1': 'ajem',
+        '2': 'kurd',
+        '3': 'nahawend',
+        '4': 'hijaz',
+        '5': 'rast',
+        '6': 'beyat',
+        '7': 'saba',
+        '8': 'zemzem'
+    }
+    self.buttons = ko.observableArray(
+        Object.extended(self.keyMap).keys(
+            function(key){
+                var name = self.keyMap[key];
+                return new JinsButton(key, name);
+            })
+        );
+
+    // default to beyat
+    self.jins1 = ko.observable(ajnas.beyat);
+    self.jins2 = ko.observable(ajnas.kurd);
+    self.jins3 = ko.observable(null);
+
+    // jins3 is nullified when jins2 is not diminished
+    self.jins2.subscribe(function(val) {
+        if(self.jins2().p3 == intervals.forth) {
+            self.jins3(null);
+        } else {
+            if(!self.jins3()) {
+                self.jins3(val);
+            }
+        }
+    });
+
+    self.pointer = self.jins1;
+    self.advancePointer = function() {
+        if(self.pointer == self.jins1) {
+            self.pointer = self.jins2;
+            return;
+        } else if (self.pointer == self.jins2) {
+            if(self.jins3()) { // XXX make sure this runs after jins3's null status is updated
+                self.pointer = self.jins3;
+            } else {
+                self.pointer = self.jins1
+            }
+            return;
+        } else if (self.pointer == self.jins3) {
+            self.pointer = self.jins1;
+            return;
+        }
+    }
+
+    self.selectFromKey = function(key) {
+        var selectedName = self.keyMap[key];
+        self.pointer(ajnas[selectedName]);
+        self.advancePointer();
+    }
+}
+
