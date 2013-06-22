@@ -161,7 +161,8 @@ var intervals = {
     neutralSecond: Ratio(12,11),
     biggerSemiTone: Ratio(15,14),
     semiTone: Ratio(16,15),
-    neutralThird: Ratio(11,9),
+    // neutralThird: Ratio(11,9),
+    neutralThird: Ratio(27, 22), // zalzal's
     diminishedForth: Ratio(9, 7)
 }
 
