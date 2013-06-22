@@ -1,5 +1,4 @@
-u = _
-
+# XXX fix this doc comment
 # jins, scale, mode
 #
 # a jins (tetrachord) is a series of 4 intervals, spanning a forth or a diminished forth
@@ -59,16 +58,6 @@ ScaleArabicName = (maqam_code) ->
         map[maqam_code]
     else
         maqam_code
-
-# XXX get rid of this?
-scale_desc =
-    "ajem": "و هو مماثل لسلم الميجور الغربي"
-    "kurd": ""
-    "rast": "ابو المقامات الشرقية"
-    "beyat": ""
-    "hijaz": ""
-    "saba": "المقام الحزين المنكسر"
-    "nahawend": "و هو مماثل لسلم المينور الغربي"
 
 window.ScaleArabicName = ScaleArabicName
 
