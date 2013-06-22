@@ -60,6 +60,16 @@ JinsButton = function(key, name) {
     self.key = key;
     self.jins = ajnas[name];
     self.display = key + ' | ' + ScaleArabicName(name);
+
+    var unclick = 0;
+    self.btnClicked = ko.observable(false);
+    self.simulateClick = function() {
+        self.btnClicked(true);
+        clearTimeout(unclick);
+        unclick = setTimeout( function() {
+            self.btnClicked(false);
+        }, 200);
+    }
 }
 
 JinsSetControls = function() {
@@ -111,10 +121,16 @@ JinsSetControls = function() {
         return "pointer " + (self.pointer() == self.jins1 ? "first" : "second");
     })
 
-    self.selectFromKey = function(key) {
+    self.selectFromKey = function(key, uiClicked) {
         var selectedName = self.keyMap[key];
         self.pointer()(ajnas[selectedName]);
         self.advancePointer();
+
+        // simulate click
+        if(!uiClicked) {
+            var btn = self.buttons().find(function(b) { return b.key == key; });
+            btn.simulateClick();
+        }
     }
 }
 
