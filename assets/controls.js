@@ -143,3 +143,82 @@ JinsSetControls = function() {
     }
 }
 
+// base is a raw string, e.g. 'C2'
+PresetMaqam = function(name, base, jins1, jins2) {
+    var self = this;
+    self.name = name;
+    self.base = base;
+
+    // this is computed because it could change depending on active language (in the future)
+    self.maqamName = ko.computed(function() {
+        return ScaleArabicName(name);
+    });
+
+    // create a version of this object bound to a piano object
+    // HACK to make it usable in templates without having this model itself
+    // depend on the existance of the piano object
+    self.pianoBound = function(piano) {
+        var clone = Object.clone(self);
+        clone.apply = function() {
+            piano.jins1(jins1);
+            piano.jins2(jins2);
+        }
+
+        clone.applyWithBase = function() {
+            clone.apply();
+            piano.baseNoteCtrl.selected(base);
+        }
+
+        clone.isApplied = ko.computed(function() {
+            return piano.jins1().name == jins1.name && piano.jins2().name == jins2.name;
+        });
+
+        clone.isAppliedWithBase = ko.computed(function() {
+            return clone.isApplied() && piano.baseNote().raw == base;
+        });
+
+        return clone;
+    }
+
+}
+
+
+// do we actually need a map?!
+var preset_def_map = {
+    "ajem": "C2 ajem ajem",
+    "kurd": "D2 kurd kurd",
+
+    "nahawend": "C2 nahawend kurd",
+    //"nahawend-hijaz": "C2 nahawend hijaz",
+
+    "beyat": "D2 beyat kurd",
+    "rast": "C2 rast rast",
+
+    "hijaz": "D2 hijaz kurd",
+    //"hijaz-beyat": "D2 hijaz beyat",
+
+    "saba": "D2 saba zemzem",
+    //"zemzem": "D2 zemzem zemzem",
+
+    //"saba-full": "D2 saba kurd",
+    //"zemzem-full": "D2 zemzem kurd",
+}
+
+var maqamPresetMap = {}
+Object.keys(preset_def_map).map(function(key) {
+    var name = key;
+    var def = preset_def_map[key];
+    var parts = def.split(" ")
+    var base = parts.shift();
+    var jins1 = ajnas[parts.shift()]
+    var jins2 = ajnas[parts.shift()]
+    maqamPresetMap[name] = new PresetMaqam(name, base, jins1, jins2);
+});
+
+MaqamPresetsCtrl = function() {
+    var self = this;
+    // maqamPresetMap is a dict
+    // XXX do we need the dict acutally? Probably just the list will do
+    self.presets = ko.observableArray(Object.values(window.maqamPresetMap));
+}
+

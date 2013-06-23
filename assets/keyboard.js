@@ -201,13 +201,13 @@ function PianoInstrument() {
         return note;
     };
 
+    // this is kind cheating .. it doesn't need to be inside the piano actually
+    // but we'll do it this way to keep things grouped together
+    self.maqamPresetsCtrl = new MaqamPresetsCtrl();
+
     self.kbLayout = ko.observable(kb_layouts['qwerty']);
 
-    // window.modes is a dictionary mapping names to modes
-    // mode_list is an array of just the modes
-    self.mode_list = ko.observableArray(Object.values(window.modes));
-
-    key_list = [];
+    self.key_list = [];
 
     self.vkb_rows = [];
     for(var i = 0; i < 3; i++) {
@@ -215,18 +215,18 @@ function PianoInstrument() {
         for(var j=0; j < 12; j++) {
             var kvm = new VirtualKeyVM(i, j, self);
             self.vkb_rows[i].push(kvm);
-            key_list.push(kvm);
+            self.key_list.push(kvm);
         }
     }
 
     self.findKey = function(letter) {
-        return key_list.find(function(key) {
+        return self.key_list.find(function(key) {
             return key.letter() == letter;
         })
     };
 
     self.findKeysByFreq = function(freq) {
-        return key_list.filter(function(key) {
+        return self.key_list.filter(function(key) {
             return key.freq() == freq;
         });
     };

@@ -91,6 +91,14 @@ aqua-button(bghue=230)
     vertical-align middle
     line-height: 20px
 
+.btn.maqamPreset
+    height: 30px;
+    font-size: 20px;
+    &.maqamName
+        width: 150px;
+    &.maqamBase
+        width: 50px;
+
 .btn-group
     direction ltr
     display inline-block
@@ -99,10 +107,37 @@ aqua-button(bghue=230)
         margin: 0px;
         border-left-width: 0px;
     .btn:first-child
-        border-radius: 5px 0px 0px 5px
+        border-top-left-radius: 5px
+        border-bottom-left-radius: 5px
         border-left-width: 1px;
     .btn:last-child
-        border-radius: 0px 5px 5px 0px
+        border-top-right-radius: 5px
+        border-bottom-right-radius: 5px
+
+// a stacking of button groups
+.btn-stack
+    .btn-group
+        .btn
+            border-radius 0px
+            border-bottom-width: 0px
+            border-radius 0px
+    .btn-group:first-child
+        .btn:first-child
+            border-top-left-radius: 5px
+        .btn:last-child
+            border-top-right-radius: 5px
+    .btn-group:last-child
+        .btn
+            border-bottom-width: 1px
+        .btn:first-child
+            border-bottom-left-radius: 5px
+        .btn:last-child
+            border-bottom-right-radius: 5px
+
+.section.maqamPresets
+    text-align center
+    .btn
+        border-radius 0px
 
 .jins_controls
     border-radius 5px 5px 0 0
@@ -119,13 +154,14 @@ aqua-button(bghue=230)
 span.divider
     color hsla(270, 50, 90, 0.7)
 
-.maqam_info
+.controls > .panel
     display block
     width 300px
     padding 10px 0px
     background-color hsl(0, 0, 99)
     border 1px solid hsl(0, 0, 90)
     border-radius 8px
+    margin-bottom: 10px
     .section
         border-bottom 1px solid hsl(0, 0, 90)
         &:first-child
@@ -133,9 +169,8 @@ span.divider
         &:last-child
             border-bottom none
 
-        &.base_note
-            padding-right: 20px
-            padding-top: 10px
+        &.pad
+            padding: 14px 20px 2px
 
         .label
             width 80px
@@ -146,33 +181,42 @@ span.divider
             display inline-block
             vertical-align middle
 
-        &.ajnas
-            height 100px
-            padding-top 0px
-            margin-top: 4px // to accomedate the pointer's 4px up shift
+        &.header
+            text-align center
+            h3
+                font-family: amiri, helvetica
+                font-size: 18px
+                font-weight: bold
+                margin-bottom: 4px
 
-            .pointer
-                position: absolute
-                background-color hsla(270, 60, 80, 0.2)
-                box-shadow 0px 0px 5px 0px hsla(270, 30%, 80%, 0.5) inset
-                width: 286px
-                height: 30px
-                font-size 22px
-                border-radius 0px
-                border 1px solid silver
-                transition: 200ms
-                line-height: 27px
-                padding-right 14px
-                color: hsl(270, 50, 30)
-                margin-right: -1px;
-                &.first
-                    margin-top: 0px - 5px
-                &.second
-                    margin-top: 30px - 5px
+.maqam_info
+    .section.ajnas
+        height 100px
+        padding-top 0px
+        margin-top: 4px // to accomedate the pointer's 4px up shift
 
-            .jins
-                padding-right 50px
-                height: 30px
+        .pointer
+            position: absolute
+            background-color hsla(270, 60, 80, 0.2)
+            box-shadow 0px 0px 5px 0px hsla(270, 30%, 80%, 0.5) inset
+            width: 286px
+            height: 30px
+            font-size 22px
+            border-radius 0px
+            border 1px solid silver
+            transition: 200ms
+            line-height: 27px
+            padding-right 14px
+            color: hsl(270, 50, 30)
+            margin-right: -1px;
+            &.first
+                margin-top: 0px - 5px
+            &.second
+                margin-top: 30px - 5px
+
+        .jins
+            padding-right 50px
+            height: 30px
 
 .rtl
     text-align right

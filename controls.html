@@ -1,4 +1,4 @@
-<div class="maqam_info">
+<div class="panel maqam_info">
     <div class="section maqam_name">
         <div data-bind="html: scale_display_name"></div>
     </div>
@@ -19,7 +19,7 @@
         </div>
     </div>
     <!-- base note -->
-    <div class="section base_note" data-bind="with: baseNoteCtrl">
+    <div class="section pad base_note" data-bind="with: baseNoteCtrl">
         <label class="label"> نغمة البداية </label>
         <div class="btn-group"><!--
             --><div class="btn basenote" data-bind="click: prevBase">-</div><!--
@@ -44,8 +44,15 @@
     -->
 </div>
 
-<div class="controls" data-bind="foreach: mode_list">
-    <div class="maqam_btn" data-bind="html: disp_name"> <!--, click: select, attr: {class: el_class}"> -->
+<div class="panel" data-bind="with: maqamPresetsCtrl">
+    <div class="section header">
+        <h3>مقامات جاهزة</h3>
+    </div>
+    <div class="section pad btn-stack maqamPresets" data-bind="foreach: presets">
+        <div class="btn-group" data-bind="with: pianoBound(piano)"><!--
+            --><div class="btn maqamPreset maqamBase" data-bind="html: base, click: applyWithBase, css: { active: isAppliedWithBase }"></div><!--
+            --><div class="btn maqamPreset maqamName" data-bind="html: maqamName, click: apply, css: { active: isApplied }"></div><!--
+        --></div>
     </div>
 </div>
 
