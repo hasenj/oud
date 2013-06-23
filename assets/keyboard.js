@@ -17,7 +17,7 @@ function VirtualKeyVM(row, column, piano) {
         return piano.note_at(self.octave_index, self.key_index);
     })
 
-    self.tone = ko.computed(function() {
+    self.freq = ko.computed(function() {
         return self.note().freq();
     });
 
@@ -29,21 +29,15 @@ function VirtualKeyVM(row, column, piano) {
         return piano.kbLayout().letterAt(row, column);
     })
 
-    self.enabled = ko.computed(function() {
-        return self.note() != null;
-    });
-
-    self.disp_tone = ko.computed(function() {
+    self.disp_freq = ko.computed(function() {
         var t = self.note();
         return t == null? "&nbsp;" : t;
     });
 
     self.disp_letter = ko.computed(function() {
-        if(self.enabled()) {
-            var letter = self.letter();
-            if(letter && letter != " ") {
-                return letter;
-            }
+        var letter = self.letter();
+        if(letter != " ") {
+            return letter;
         }
         return "&nbsp;"
     });
@@ -54,11 +48,7 @@ function VirtualKeyVM(row, column, piano) {
     });
 
     self.disp_note_name = ko.computed(function() {
-        if(self.enabled()) {
-            return self.note_name().disp_arabic();
-        } else {
-            return "&nbsp;";
-        }
+        return self.note_name().disp_arabic();
     });
 
     self.pressed = ko.observable(false);
@@ -87,11 +77,11 @@ function VirtualKeyVM(row, column, piano) {
     })
 
     self.play = function() {
-        var t = self.tone();
+        var t = self.freq();
         if(t==null) {
             return
         }
-        console.log("Tone:", t);
+        console.log("freq:", t);
         play_freq(t);
     }
 
@@ -222,9 +212,9 @@ function PianoInstrument() {
         })
     };
 
-    self.findKeysByTone = function(tone) {
+    self.findKeysByFreq = function(freq) {
         return key_list.filter(function(key) {
-            return key.tone() == tone;
+            return key.freq() == freq;
         });
     };
 
@@ -245,11 +235,11 @@ function PianoInstrument() {
         if (!keyvm) {
             return
         }
-        var tone = keyvm.tone()
-        if(tone == null) {
+        var freq = keyvm.freq()
+        if(freq == null) {
             return
         }
-        var secondary_keys = piano.findKeysByTone(tone)
+        var secondary_keys = piano.findKeysByFreq(freq)
         if(keyvm.pressed()) { // already pressed, don't handle again
             return false
         }
@@ -266,11 +256,11 @@ function PianoInstrument() {
         if (!keyvm) {
             return
         }
-        var tone = keyvm.tone()
-        if(tone == null) {
+        var freq = keyvm.freq()
+        if(freq == null) {
             return
         }
-        var secondary_keys = piano.findKeysByTone(tone)
+        var secondary_keys = piano.findKeysByFreq(freq)
         for(var i = 0; i < secondary_keys.length; i++) {
             var key = secondary_keys[i];
             key.unsemi_press()
