@@ -64,8 +64,21 @@ function VirtualKeyVM(row, column, piano) {
         return "unpressed";
     })
 
+    self.position_class = ko.computed(function() {
+        var pos = self.key_index + 1;
+        if(pos == 1) {
+            return "first mark";
+        } else if (pos == 5) {
+            return "fifth mark";
+        } else if (pos == 9) {
+            return "ninth mark";
+        } else {
+            return "";
+        }
+    })
+
     self.el_class = ko.computed(function() {
-        return "key " + self.state_class();
+        return "key " + self.state_class() + " " + self.position_class();
     })
 
     self.container_class = ko.computed(function() {

@@ -80,6 +80,12 @@ btn_highlight(color)
                     color hsl(50, 70, 20)
                 .half.lower
                     // background-color bgc * 0.85
+            &.mark
+                background-image url('/btn-marked.png')
+            &.mark.pressed
+                background-image url('/btn-marked-pressed.png')
+            &.mark.semi_pressed
+                background-image url('/btn-marked-half-pressed.png')
         .separator
             display inline-block
             margin 0px
