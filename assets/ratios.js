@@ -200,11 +200,13 @@ Note = function(frequency) {
 
 // standard notes
 notes = {}
-notes.A = new Note(110);
-notes.B = notes.A.addInterval(intervals.tone);
-notes.C = notes.A.addInterval(intervals.minorThird);
-notes.D = notes.A.addInterval(intervals.forth);
-notes.E = notes.A.addInterval(intervals.fifth);
+notes.A1 = new Note(110);
+notes.B1 = notes.A1.addInterval(intervals.tone);
+notes.C = notes.A1.addInterval(intervals.minorThird);
+notes.D = notes.A1.addInterval(intervals.forth);
+notes.E = notes.A1.addInterval(intervals.fifth);
 notes.F = notes.D.addInterval(intervals.majorThird);
 notes.G = notes.D.addInterval(intervals.forth);
+notes.A = notes.A1.addInterval(intervals.octave);
+notes.B = notes.B1.addInterval(intervals.octave);
 

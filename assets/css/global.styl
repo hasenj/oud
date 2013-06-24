@@ -2,6 +2,12 @@
 
 global-reset()
 
+widget-font()
+    color: hsla(270, 10%, 10%, 0.7);
+    font-family: verdana;
+    font-size: 14px;
+    font-weight normal
+
 bgcol = hsl(200, 5, 94)
 footer_bgcol = hsl(200, 6, 90)
 body
@@ -9,6 +15,19 @@ body
     padding 0px
     background-color bgcol
     background-image: url('/cream_dust.png')
+
+.oud_bg
+    background-color: hsl(30, 60, 20)
+    background-image: url('/oud-bg.png')
+    background-position: 0 -200px
+    opacity: 0.7
+    position: absolute
+    top: 0
+    height: 584px
+    width: 100%
+    z-index: -10
+    box-shadow 0px 0px 3px 1px black
+
 
 html, body
     height 100%
@@ -38,62 +57,38 @@ link()
     -webkit-user-select none
     user-select none
 
-table.layout
+div.layout
     padding 0
     margin 0 auto
-    width 1200px
-    background-image url('/logo.png')
-    background-repeat no-repeat
-    background-position top right
-
-    tr, td
+    width 992px
+    > div
         padding 0
         margin 0
-        vertical-align top
 
-tr.header
-    font-family Amiri
-    text-align center
-    color hsl(270, 30, 30)
-    text-shadow 0px 1px 2px silver
-    margin-bottom 10px
-    width 100%
-    td.logo
-        width 300px
-
-    td.maqam_name
-        width 650px
-        font normal 2.7em amiri
-        text-shadow 0 1px 1px black
-        color hsl(243, 16, 30)
-        direction rtl
-        text-align center
-
-tr.app
+div.app
     text-align right
-    td.controls
-        width 450px
+    > div
+        display inline-block
+        vertical-align top
+        margin-top: 10px
+    > div.controls
+        width 310px
         vertical-align top
         direction rtl
         text-align right
-    td.keyboard
+    div.keyboard
+        width 680px
+        height 500px
         direction ltr
-        width 800px
-
-tr.footer
-    td
-        direction rtl
-        text-align right
-        padding-top 30px
-    td.author
-        width 200px
-    td.tips
-        width 400px
+        border 1px solid silver
+        border-radius 5px
+        background-color hsla(270, 20, 99, 0.6)
 
 body
     font normal 12pt Ubuntu
     color hsl(0, 0%, 20%)
 
+// XXX remove this?!!
 #error_box
   div, span
     font normal 12pt sans
@@ -113,55 +108,38 @@ body
 code
     font-family monospace
 
-.footer_content
-  padding-top 10px
-  margin-left 30px
-  color hsl(160, 10%, 30%)
-  font-size 14px
-  div
-    display inline-block
-    vertical-align middle
-  div.link
-    padding 5px
-    margin-right 8px
-    a
-      color: hsl(240, 10%, 30%)
-      text-shadow 0 1px 1px white
-      text-decoration none
-      font-family Ubuntu
-
-
 div.text_page
-  *
-    user-select text
-  width 500px
-  margin 10px 40px
-  h1
-    font-size 1.8em
-    font-weight bold
-  h2
-    font-size 1.3em
-  h3
-    font-size 1.2em
-  h1, h2, h3, p
-    margin 13px 2px
-  pre, code
-    font normal 10pt monospace
-  pre
-    margin-left 20px
+    *
+        user-select text
+    width 500px
+    margin 10px 40px
+    h1
+        font-size 1.8em
+        font-weight bold
+    h2
+        font-size 1.3em
+    h3
+        font-size 1.2em
+    h1, h2, h3, p
+        margin 13px 2px
+    pre, code
+        font normal 10pt monospace
+    pre
+        margin-left 20px
 
-span()
-    display inlien-block
-    float right
-    padding 2px 45px
-    margin 0 10px
 
 .guide
-    margin-top 60px
-    border-top 2px solid hsl(30, 93, 24)
+    span()
+        display inline-block
+        float right
+        padding 2px 20px
+        margin 0 4px
+    margin-top 0px
+    // border-top 1px solid hsla(30, 93, 24, 0.5)
     direction rtl
     text-align right
     font-family amiri
+    display inline-block
     h1
         font-size 24pt
         text-align center
@@ -179,24 +157,46 @@ span()
         list-style-position: inside;
 
     .span4
-        width 400px
+        width 350px
         span()
     .span6
-        width 480px
+        width 545px
         span()
 
 // fonts
 @font-face {
   font-family: 'icons';
-  src: url('/fonts/icons.eot') format('embedded-opentype'),
-       url('/fonts/icons.ttf') format('truetype');
+  src: url('/fonts/icons.eot?v=3') format('embedded-opentype'),
+       url('/fonts/icons.ttf?v=3') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 .icon
     font-family 'icons'
-    font-size 22px
+    font-weight normal !important
     display inline-block
     vertical-align middle
+
+.dropmenu
+    position: absolute
+    margin-top: 8px
+    margin-left: -8px
+    padding: 8px 0px;
+    background-color: hsla(270, 50%, 99%, 0.98)
+    border-radius 5px
+    border 1px solid hsla(270, 4, 78, 0.98)
+    box-shadow 0px 0px 2px 1px hsla(270, 0, 88, 0.99)
+    cursor: default
+    text-align center
+    widget-font()
+    .item
+        padding: 3px 14px
+        transition: 100ms
+        &:hover
+            background-color hsla(270, 50%, 40%, 0.9)
+            color: hsl(270, 10, 99)
+        &.selected
+            background-color hsla(270, 30%, 70%, 0.5)
+            color: hsl(270, 5, 50)
 

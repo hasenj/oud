@@ -68,57 +68,146 @@ aqua-button(bghue=230)
     &.active
         font-size 1.09em
 
-.jins_btn
+.btn
     maqam-button()
-    direction: ltr
     margin: 2px;
-    font-family: verdana;
-    font-size: 14px;
-    font-weight normal
-    padding: 4px 6px;
-    min-width: 40px;
+    widget-font()
+    min-width: 20px;
+    padding: 4px 8px;
     text-shadow: none
-    color: hsla(270, 10%, 10%, 0.7);
+    user-select: none
+    *
+        user-select: none
+
+.btn.jins
+    direction: ltr
+    padding: 10px 0px
+    width: 84px
+    text-align: center
+
+.btn.basenote
+    height: 20px
+    direction: ltr
+    vertical-align middle
+    line-height: 20px
 
 .btn-group
-    .jins_btn
+    direction ltr
+    display inline-block
+    .btn
         border-radius: 0px
-        margin-left: 0px;
-        margin-right: 0px;
+        margin: 0px;
         border-left-width: 0px;
-    .jins_btn:first-child
-        border-radius: 5px 0px 0px 5px
+    .btn:first-child
+        border-top-left-radius: 5px
+        border-bottom-left-radius: 5px
         border-left-width: 1px;
-    .jins_btn:last-child
-        border-radius: 0px 5px 5px 0px
+    .btn:last-child
+        border-top-right-radius: 5px
+        border-bottom-right-radius: 5px
+
+// a stacking of button groups
+.btn-stack
+    .btn-group
+        .btn
+            border-radius 0px
+            border-bottom-width: 0px
+            border-radius 0px
+    .btn-group:first-child
+        .btn:first-child
+            border-top-left-radius: 5px
+        .btn:last-child
+            border-top-right-radius: 5px
+    .btn-group:last-child
+        .btn
+            border-bottom-width: 1px
+        .btn:first-child
+            border-bottom-left-radius: 5px
+        .btn:last-child
+            border-bottom-right-radius: 5px
+
+.section.maqamPresets
+    text-align center
+    .btn-group
+        margin-top: 10px
+        .btn.maqamPreset
+            &.maqamName
+                width: 60px;
+                font-weight bold
+            &.maqamBase
+                width: 20px;
 
 
+.jins_controls
+    border-radius 5px 5px 0 0
+    margin-top: -1px
+    .btn-group
+        margin-right: -1px
+        margin-left: -1px
+        .btn:first-child
+            border-radius 5px 0 0 0
+        .btn:last-child
+            border-radius 0 5px 0 0
+            padding-right: 1px
 
-.maqam_info
+span.divider
+    color hsla(270, 50, 90, 0.7)
+
+.controls > .panel
     display block
-    width 380px
-    padding 10px 13px
-    margin 10px 5px
+    width 300px
+    padding 10px 0px
     background-color hsl(0, 0, 99)
     border 1px solid hsl(0, 0, 90)
-    border-radius 8px
+    border-radius 5px
+    margin-bottom: 10px
     .section
-        margin-top 20px
+        border-bottom 1px solid hsl(0, 0, 90)
         &:first-child
             margin-top 2px
+        &:last-child
+            border-bottom none
+
+        &.pad
+            padding: 14px 20px 2px
+
+        .label
+            width 80px
+            display inline-block
+            vertical-align middle
+        .def
+            min-width 120px
+            display inline-block
+            vertical-align middle
+
+        &.header
+            text-align center
+            h3
+                font-family: amiri, helvetica
+                font-size: 18px
+                font-weight: bold
+                margin-bottom: 4px
+
+.maqam_info
+    .section.ajnas
+        height 100px
+        padding-top 0px
+        margin-top: 4px // to accomedate the pointer's 4px up shift
 
         .pointer
             position: absolute
             background-color hsla(270, 60, 80, 0.2)
             box-shadow 0px 0px 5px 0px hsla(270, 30%, 80%, 0.5) inset
-            width: 300px
+            width: 286px
             height: 30px
-            border-radius 6px
+            font-size 22px
+            border-radius 0px
             border 1px solid silver
             transition: 200ms
             line-height: 27px
             padding-right 14px
             color: hsl(270, 50, 30)
+            margin-right: -1px;
             &.first
                 margin-top: 0px - 5px
             &.second
@@ -127,12 +216,6 @@ aqua-button(bghue=230)
         .jins
             padding-right 50px
             height: 30px
-            .label
-                width 120px
-                display inline-block
-            .def
-                width 120px
-                display inline-block
 
 .rtl
     text-align right
@@ -141,3 +224,23 @@ aqua-button(bghue=230)
 .ltr
     text-align left
     direction ltr
+
+.logo
+    background-image url('/logo.png')
+    background-repeat no-repeat
+    background-position top right
+    height: 60px
+    width: 992px
+    border-radius: 0 0 5px 5px
+    background-color hsla(270, 50, 99, 0.9)
+    border 1px solid silver
+    border-top: none
+    box-shadow 0x 0px 5px 2px hsl(270, 10, 30)
+
+.maqam_name
+    font normal 1.5em amiri
+    text-shadow 0 1px 1px black
+    color hsl(243, 16, 30)
+    direction rtl
+    text-align center
+

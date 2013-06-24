@@ -21,7 +21,7 @@ BaseNote = function(nameWithOctave) {
 // list base notes and select one
 BaseNotesVM = function() {
     var self = this;
-    self.rawBaseNotes = 'E1 F1 G1 A2 B2 C2 D2 E2 F2 G2 A3 B3 C3 D3 E3'.split(' ');
+    self.rawBaseNotes = 'E1 F1 G1 A1 B1 C2 D2 E2 F2 G2 A2 B2 C3 D3 E3'.split(' ');
     self.baseNotes = ko.observableArray(self.rawBaseNotes.map(function(n) {
         return new BaseNote(n);
     }));
@@ -53,13 +53,22 @@ BaseNotesVM = function() {
             self.selected(self.rawBaseNotes.at(prevIndex));
         }
     }
+
+    self.dropmenuVisible = ko.observable(false);
+    self.toggleDropmenu = function() {
+        self.dropmenuVisible(!self.dropmenuVisible());
+        if(self.dropmenuVisible()) {
+            falseOnDocumentClick(self.dropmenuVisible);
+        }
+    }
 }
 
 JinsButton = function(key, name) {
     var self = this;
     self.key = key;
     self.jins = ajnas[name];
-    self.display = key + ' | ' + ScaleArabicName(name);
+    self.displayName = ScaleArabicName(name);
+    // self.display = key + ' | ' + ScaleArabicName(name);
 
     var unclick = 0;
     self.btnClicked = ko.observable(false);
@@ -132,5 +141,94 @@ JinsSetControls = function() {
             btn.simulateClick();
         }
     }
+}
+
+// base is a raw string, e.g. 'C2'
+PresetMaqam = function(name, base, jins1, jins2) {
+    var self = this;
+    self.name = name;
+    self.base = base;
+    self.jins1 = jins1;
+    self.jins2 = jins2;
+
+    // this is computed because it could change depending on active language (in the future)
+    self.maqamName = ko.computed(function() {
+        return ScaleArabicName(self.name);
+    });
+
+    // simple as in: no octave number
+    self.simpleNoteName = ko.computed(function() {
+        return SimpleNoteName(self.base);
+    });
+
+    // create a version of this object bound to a piano object
+    // HACK to make it usable in templates without having this model itself
+    // depend on the existance of the piano object
+    self.pianoBound = function(piano) {
+        var clone = Object.clone(self);
+        clone.apply = function() {
+            piano.jins1(clone.jins1);
+            piano.jins2(clone.jins2);
+        }
+
+        clone.applyWithBase = function() {
+            clone.apply();
+            piano.baseNoteCtrl.selected(clone.base);
+        }
+
+        clone.isApplied = ko.computed(function() {
+            return piano.jins1().name == clone.jins1.name && piano.jins2().name == clone.jins2.name;
+        });
+
+        clone.isAppliedWithBase = ko.computed(function() {
+            return clone.isApplied() && piano.baseNote().raw == clone.base;
+        });
+
+        return clone;
+    }
+
+}
+
+
+// do we actually need a map?!
+var preset_def_map = {
+    "ajem": "C2 ajem ajem",
+    "kurd": "D2 kurd kurd",
+
+    "beyat": "D2 beyat kurd",
+    "saba": "D2 saba zemzem",
+
+    "nahawend-u": "C2 nahawend kurd",
+    "nahawend-d": "C2 nahawend hijaz",
+
+
+    "rast-u": "C2 rast rast",
+    "rast-d": "C2 rast nahawend",
+
+    "hijaz-u": "D2 hijaz beyat",
+    "hijaz-d": "D2 hijaz kurd",
+
+    // "zemzem": "D2 zemzem zemzem",
+
+    // "saba-full": "D2 saba kurd",
+    // "zemzem-full": "D2 zemzem kurd",
+}
+
+var maqamPresetMap = {}
+Object.keys(preset_def_map).map(function(key) {
+    var name = key;
+    var def = preset_def_map[key];
+    var parts = def.split(" ")
+    var base = parts.shift();
+    var jins1 = ajnas[parts.shift()]
+    var jins2 = ajnas[parts.shift()]
+    maqamPresetMap[name] = new PresetMaqam(name, base, jins1, jins2);
+});
+
+MaqamPresetsCtrl = function() {
+    var self = this;
+    // maqamPresetMap is a dict
+    // XXX do we need the dict acutally? Probably just the list will do
+    self.presets = ko.observableArray(Object.values(window.maqamPresetMap));
 }
 

@@ -1,18 +1,13 @@
 extends layout
 
 block content
-
-    div(data-bind="if: instrument() == 'piano'")
-        table.layout(data-bind="with: piano")
-          tr.header
-            td.logo
-            td.maqam_name
-              div#maqam_name(data-bind="html: scale_display_name")
-          tr.app
-            td.controls
-              include controls.html
-            td.keyboard
-              include keyboard.html
-          tr.guide
-            td(colspan=2)
-              include guide.html
+    div.oud_bg
+    div.layout(data-bind="with: piano")
+        div.logo
+        div.app
+            div.controls
+                include controls.html
+            div.keyboard
+                include keyboard.html
+        div
+            include guide.html

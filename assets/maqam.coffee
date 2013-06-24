@@ -14,6 +14,7 @@
 ABCNotes = "A B C D E F G".split(" ")
 window.stdNoteNames = ABCNotes
 
+note_names_map = { A: "لا", B: "سي", C: "دو", D: "ري", E: "مي", F: "فا", G: "صول" }
 class NoteName
     constructor: (@name) ->
         @index = ABCNotes.indexOf(@name)
@@ -22,40 +23,56 @@ class NoteName
     next: -> @add(1)
     prev: -> @add(-1)
     disp_arabic: ->
-        { A: "لا", B: "سي", C: "دو", D: "ري", E: "مي", F: "فا", G: "صول" }[@name]
+        note_names_map[@name]
+
 window.NoteName = NoteName
 
+# where noteCode could be C2 or just C
+window.SimpleNoteName = (noteCode) ->
+    if !noteCode
+        return ""
+    return note_names_map[noteCode[0]]
+
+maqam_names_map = {
+    "ajem" : "عجم",
+    "ajem-ajem" : "عجم",
+    "kurd": "كرد",
+    "nahawend": "نهاوند"
+    "nahawend-kurd": "نهاوند"
+    "nahawend-hijaz": "نهاوند حجاز",
+    "hijaz": "حجاز"
+    "hijaz-kurd": "حجاز"
+    "hijaz-beyat": "حجاز بياتي",
+    "hijazkar": "حجاز كار"
+    "hijaz-hijaz": "حجاز كار"
+    "rast": "رست"
+    "rast-rast": "رست"
+    "rast-nahawend": "رست نهاوند",
+    "beyat" : "بياتي",
+    "beyat-kurd" : "بياتي",
+    "beyat-beyat" : "حسيني",
+    "saba" : "صبا",
+    "saba-zemzem" : "صبا",
+    "saba-full": "صبا كامل",
+    "saba-kurd": "صبا كامل",
+    "zemzem": "زمزمة",
+    "zemzem-zemzem": "زمزمة",
+    "zemzem-full": "زمزمة كامل",
+    "zemzem-kurd": "زمزمة كامل",
+    "full": "كامل",
+    "u": "<span class='icon'>u</span>", # HACK
+    "d": "<span class='icon'>d</span>", # HACK
+}
+
 ScaleArabicName = (maqam_code) ->
-    map = {
-        "ajem" : "عجم",
-        "ajem-ajem" : "عجم",
-        "kurd": "كرد",
-        "kurd-kurd": "كرد",
-        "nahawend": "نهاوند"
-        "nahawend-kurd": "نهاوند"
-        "nahawend-hijaz": "نهاوند حجاز",
-        "hijaz": "حجاز"
-        "hijaz-kurd": "حجاز"
-        "hijaz-beyat": "حجاز بياتي",
-        "hijazkar": "حجاز كار"
-        "hijaz-hijaz": "حجاز كار"
-        "rast": "رست"
-        "rast-rast": "رست"
-        "rast-nahawend": "رست نهاوند",
-        "beyat" : "بياتي",
-        "beyat-kurd" : "بياتي",
-        "beyat-beyat" : "حسيني",
-        "saba" : "صبا"
-        "saba-zemzem" : "صبا"
-        "saba-full": "صبا كامل"
-        "saba-kurd": "صبا كامل"
-        "zemzem": "زمزمة"
-        "zemzem-zemzem": "زمزمة"
-        "zemzem-full": "زمزمة كامل"
-        "zemzem-kurd": "زمزمة كامل"
-    }
+    map = maqam_names_map
+    if !maqam_code
+        return ""
     if maqam_code of map
         map[maqam_code]
+    else if maqam_code.has('-')
+            parts = maqam_code.split('-').map(ScaleArabicName)
+            return parts.join(' ')
     else
         maqam_code
 
@@ -89,51 +106,13 @@ ajnas.rast = new Jins('rast', intervals.lesserTone, intervals.neutralThird, inte
 ajnas.saba = new Jins('saba', intervals.neutralSecond, intervals.minorThird, intervals.diminishedForth)
 ajnas.zemzem = new Jins('zemzem', intervals.semiTone, intervals.minorThird, intervals.diminishedForth)
 
+# XXX do something about this ..
+# window.selected_mode = ko.observable($.cookie('mode') || 'ajem')
+# selected_mode.subscribe( (val) ->
+#     $.cookie('mode', val)
+# )
 
-
-window.selected_mode = ko.observable($.cookie('mode') || 'ajem')
-selected_mode.subscribe( (val) ->
-    $.cookie('mode', val)
-)
-
-class PresetMaqam
-    constructor: (@name, @start, @jins1, @jins2, @jins3) ->
-        self = this
-        self.disp_name = ko.computed ->
-            ScaleArabicName(self.name)
-    apply: -> # TODO
-
-
-# XXX need a predefined set of possible starting notes
-# a mode def is starting point and 2 (or 3) jins
-mode_defs =
-    "ajem": "C ajem ajem"
-    "kurd": "D kurd kurd"
-
-    "nahawend": "C nahawend kurd"
-    "nahawend-hijaz": "C nahawend hijaz"
-
-    "beyat": "D beyat kurd"
-    "rast": "C rast rast"
-
-    "hijaz": "D hijaz kurd"
-    "hijaz-beyat": "D hijaz beyat"
-
-    "saba": "D saba zemzem zemzem"
-    "zemzem": "D zemzem zemzem zemzem"
-
-    "saba-full": "D saba kurd"
-    "zemzem-full": "D zemzem kurd"
-
-window.modes = {}
-for name, def of mode_defs
-    parts = def.split(" ")
-    start = notes[parts.shift()]
-    jins1 = ajnas[parts.shift()]
-    jins2 = ajnas[parts.shift()]
-    jins3 = ajnas[parts.shift()] || null
-    modes[name] = new PresetMaqam(name, start, jins1, jins2, jins3)
 
 # just a sanity check
-if(window.selected_mode() not of modes)
-    window.selected_mode('ajem')
+# if(window.selected_mode() not of maqamPresetMap)
+#     window.selected_mode('ajem')
