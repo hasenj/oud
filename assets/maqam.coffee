@@ -37,6 +37,7 @@ maqam_names_map = {
     "ajem" : "عجم",
     "ajem-ajem" : "عجم",
     "kurd": "كرد",
+    "kurd-kurd": "كرد",
     "nahawend": "نهاوند"
     "nahawend-kurd": "نهاوند"
     "nahawend-hijaz": "نهاوند حجاز",
