@@ -17,14 +17,17 @@ body
     background-image: url('/cream_dust.png')
 
 .oud_bg
+    background-color: hsl(30, 60, 20)
     background-image: url('/oud-bg.png')
-    opacity: 0.8
+    background-position: 0 -200px
+    opacity: 0.7
     position: absolute
     top: 0
-    height: 666px
+    height: 584px
     width: 100%
     z-index: -10
-    background-position-y: -245px
+    box-shadow 0px 0px 3px 1px black
+
 
 html, body
     height 100%
@@ -75,7 +78,7 @@ div.app
         text-align right
     div.keyboard
         width 680px
-        height 588px
+        height 500px
         direction ltr
         border 1px solid silver
         border-radius 5px
@@ -132,7 +135,7 @@ div.text_page
         padding 2px 20px
         margin 0 4px
     margin-top 0px
-    border-top 1px solid hsla(30, 93, 24, 0.5)
+    // border-top 1px solid hsla(30, 93, 24, 0.5)
     direction rtl
     text-align right
     font-family amiri
@@ -163,14 +166,15 @@ div.text_page
 // fonts
 @font-face {
   font-family: 'icons';
-  src: url('/fonts/icons.eot?v=2') format('embedded-opentype'),
-       url('/fonts/icons.ttf?v=2') format('truetype');
+  src: url('/fonts/icons.eot?v=3') format('embedded-opentype'),
+       url('/fonts/icons.ttf?v=3') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 .icon
     font-family 'icons'
+    font-weight normal !important
     display inline-block
     vertical-align middle
 

@@ -148,10 +148,17 @@ PresetMaqam = function(name, base, jins1, jins2) {
     var self = this;
     self.name = name;
     self.base = base;
+    self.jins1 = jins1;
+    self.jins2 = jins2;
 
     // this is computed because it could change depending on active language (in the future)
     self.maqamName = ko.computed(function() {
-        return ScaleArabicName(name);
+        return ScaleArabicName(self.name);
+    });
+
+    // simple as in: no octave number
+    self.simpleNoteName = ko.computed(function() {
+        return SimpleNoteName(self.base);
     });
 
     // create a version of this object bound to a piano object
@@ -160,21 +167,21 @@ PresetMaqam = function(name, base, jins1, jins2) {
     self.pianoBound = function(piano) {
         var clone = Object.clone(self);
         clone.apply = function() {
-            piano.jins1(jins1);
-            piano.jins2(jins2);
+            piano.jins1(clone.jins1);
+            piano.jins2(clone.jins2);
         }
 
         clone.applyWithBase = function() {
             clone.apply();
-            piano.baseNoteCtrl.selected(base);
+            piano.baseNoteCtrl.selected(clone.base);
         }
 
         clone.isApplied = ko.computed(function() {
-            return piano.jins1().name == jins1.name && piano.jins2().name == jins2.name;
+            return piano.jins1().name == clone.jins1.name && piano.jins2().name == clone.jins2.name;
         });
 
         clone.isAppliedWithBase = ko.computed(function() {
-            return clone.isApplied() && piano.baseNote().raw == base;
+            return clone.isApplied() && piano.baseNote().raw == clone.base;
         });
 
         return clone;
@@ -188,20 +195,23 @@ var preset_def_map = {
     "ajem": "C2 ajem ajem",
     "kurd": "D2 kurd kurd",
 
-    "nahawend": "C2 nahawend kurd",
-    //"nahawend-hijaz": "C2 nahawend hijaz",
-
     "beyat": "D2 beyat kurd",
-    "rast": "C2 rast rast",
-
-    "hijaz": "D2 hijaz kurd",
-    //"hijaz-beyat": "D2 hijaz beyat",
-
     "saba": "D2 saba zemzem",
-    //"zemzem": "D2 zemzem zemzem",
 
-    //"saba-full": "D2 saba kurd",
-    //"zemzem-full": "D2 zemzem kurd",
+    "nahawend-u": "C2 nahawend kurd",
+    "nahawend-d": "C2 nahawend hijaz",
+
+
+    "rast-u": "C2 rast rast",
+    "rast-d": "C2 rast nahawend",
+
+    "hijaz-u": "D2 hijaz beyat",
+    "hijaz-d": "D2 hijaz kurd",
+
+    // "zemzem": "D2 zemzem zemzem",
+
+    // "saba-full": "D2 saba kurd",
+    // "zemzem-full": "D2 zemzem kurd",
 }
 
 var maqamPresetMap = {}

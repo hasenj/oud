@@ -48,9 +48,9 @@
     <div class="section header">
         <h3>مقامات جاهزة</h3>
     </div>
-    <div class="section pad btn-stack maqamPresets" data-bind="foreach: presets">
+    <div class="section maqamPresets" data-bind="foreach: presets">
         <div class="btn-group" data-bind="with: pianoBound(piano)"><!--
-            --><div class="btn maqamPreset maqamBase" data-bind="html: base, click: applyWithBase, css: { active: isAppliedWithBase }"></div><!--
+            --><div class="btn maqamPreset maqamBase" data-bind="html: simpleNoteName, click: applyWithBase, css: { active: isAppliedWithBase }"></div><!--
             --><div class="btn maqamPreset maqamName" data-bind="html: maqamName, click: apply, css: { active: isApplied }"></div><!--
         --></div>
     </div>

@@ -91,14 +91,6 @@ aqua-button(bghue=230)
     vertical-align middle
     line-height: 20px
 
-.btn.maqamPreset
-    height: 30px;
-    font-size: 20px;
-    &.maqamName
-        width: 150px;
-    &.maqamBase
-        width: 50px;
-
 .btn-group
     direction ltr
     display inline-block
@@ -136,8 +128,15 @@ aqua-button(bghue=230)
 
 .section.maqamPresets
     text-align center
-    .btn
-        border-radius 0px
+    .btn-group
+        margin-top: 10px
+        .btn.maqamPreset
+            &.maqamName
+                width: 60px;
+                font-weight bold
+            &.maqamBase
+                width: 20px;
+
 
 .jins_controls
     border-radius 5px 5px 0 0
@@ -160,7 +159,7 @@ span.divider
     padding 10px 0px
     background-color hsl(0, 0, 99)
     border 1px solid hsl(0, 0, 90)
-    border-radius 8px
+    border-radius 5px
     margin-bottom: 10px
     .section
         border-bottom 1px solid hsl(0, 0, 90)
