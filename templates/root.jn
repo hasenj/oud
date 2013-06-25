@@ -10,6 +10,7 @@
     </head>
     <body>
         {% block content %}
+        {% endblock %}
         {% include "ga.html" %}
     </body>
 </html>

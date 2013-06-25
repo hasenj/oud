@@ -36,9 +36,9 @@ if app.testing: # testing mode (e.g. unit tests, etc)
     db = SqliteDatabase(':memory:', threadlocals=True)
 else:
     # local dev database
-    # db_uri = 'sqlite:///{project_path}/{app_name}_dev.db'.format(project_path=project_path, app_name=app_name)
     print "Using local mysql db"
-    db = MySQLDatabase(app_name, user='root', threadlocals=True)
+    db_name = "awtar"
+    db = MySQLDatabase(db_name, user='root', threadlocals=True)
 
 def db_connect():
     if db.is_closed():

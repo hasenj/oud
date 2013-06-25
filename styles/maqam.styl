@@ -1,5 +1,6 @@
 @import 'nib'
 @import 'nib/gradients'
+@import 'global'
 
 #maqam_section
   text-align right
@@ -14,7 +15,7 @@ maqam-button(bghue=230)
   display inline-block
   text-align center
   direction rtl
-  font-family amiri
+  // font-family amiri
   font-size 1.1em
   text-shadow 1px 1px 2px hsl(150, 40, 60)
   background: linear-gradient(top, 20% white, 280% hsl(0,0,92))
@@ -226,11 +227,11 @@ span.divider
     direction ltr
 
 .logo
-    background-image url('/logo.png')
+    background-image url('/static/images/logo.png')
     background-repeat no-repeat
     background-position top right
     height: 60px
-    width: 992px
+    width: 994px
     border-radius: 0 0 5px 5px
     background-color hsla(270, 50, 99, 0.9)
     border 1px solid silver
