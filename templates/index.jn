@@ -1,0 +1,19 @@
+{% extends "root.jn" %}
+
+{% block content %}
+    <div class="oud_bg"></div>
+    <div class="layout" data-bind="with: piano">
+        <div class="logo"></div>
+        <div class="app">
+            <div class="controls">
+                {% include "controls.html" %}
+            </div>
+            <div class="keyboard">
+                {% include "keyboard.html" %}
+            </div>
+        </div>
+        <div>
+            {% include "guide.html" %}
+        </div>
+    </div>
+{% endblock %}

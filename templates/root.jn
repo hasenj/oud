@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+    <head>
+        <title>أوتار</title>
+        <link rel="icon" type="image/png" href="/static/icon.png">
+        <link rel="stylesheet" type="text/css" href="/static/all.css">
+        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/earlyaccess/amiri.css">
+        <script type="text/javascript" src="/static/libs.js"></script>
+        <script type="text/javascript" src="/static/client.js"></script>
+    </head>
+    <body>
+        {% block content %}
+        {% endblock %}
+        {% include "ga.html" %}
+    </body>
+</html>
