@@ -1,0 +1,145 @@
+.ib {
+  display: inline-block;
+}
+.jins_controls {
+  text-align: center;
+}
+#keys {
+  text-align: center;
+  margin-top: 30px;
+}
+#keys * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#keys .row {
+  margin: -10px 0px;
+}
+#keys .row .key {
+  padding: 0px;
+  margin: 0px -2px;
+  background-image: url("/btn.png");
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-color: #faf7fc;
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  background-size: 100% 100%;
+  border: 1px solid #d6c6e7;
+  -webkit-box-shadow: 0px 0px 4px 1px #e6e6e6;
+  box-shadow: 0px 0px 4px 1px #e6e6e6;
+  display: inline-block;
+  width: 56px;
+  height: 110px;
+  text-align: center;
+  text-shadow: 0px 0px 2px #e6e6e6;
+  overflow: hidden;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+#keys .row .key .half {
+  height: 53px;
+  line-height: 60px;
+  padding: 0px;
+  margin: 0px;
+  overflow: hidden;
+  text-align: center;
+}
+#keys .row .key .half .kb_key {
+  font-family: Verdana;
+  font-size: 12px;
+  font-weight: normal;
+  color: #455445;
+  line-height: 50px;
+}
+#keys .row .key .half .note_name {
+  font: normal 18px Baghdad, monospace;
+  color: #9985ad;
+  line-height: 50px;
+}
+#keys .row .key.pressed {
+  background-image: url("/btn-pressed.png");
+  color: #1f141f;
+  border-color: #f0e2fd;
+}
+#keys .row .key.pressed .kb_key {
+  color: #574b0f;
+}
+#keys .row .key.pressed .note_name {
+  color: #66527a;
+}
+#keys .row .key.semi_pressed {
+  background-image: url("/btn-half-pressed.png");
+}
+#keys .row .key.semi_pressed .kb_key {
+  color: #574b0f;
+}
+#keys .row .key.mark {
+  background-image: url("/btn-marked.png");
+}
+#keys .row .key.mark.pressed {
+  background-image: url("/btn-marked-pressed.png");
+}
+#keys .row .key.mark.semi_pressed {
+  background-image: url("/btn-marked-half-pressed.png");
+}
+#keys .row .separator {
+  display: inline-block;
+  margin: 0px;
+  padding: 0px;
+  vertical-align: top;
+  margin-top: 27px;
+  line-height: 7px;
+  font-size: 6px;
+  color: #fff;
+  text-align: center;
+  font: monospace;
+}
+#keys .row .separator_5 {
+  width: 10px;
+  background-color: #000;
+}
+#keys .row .separator_7 {
+  width: 14px;
+  background-color: #666;
+}
+#keys .row .separator_8,
+#keys .row .separator_9 {
+  width: 20px;
+  background-color: #000;
+}
+#keys .row .separator_12 {
+  width: 30px;
+  background-color: #666;
+}
+#oud_kb {
+  direction: ltr;
+}
+#oud_kb .diwan {
+  border: 1px solid #c0c0c0;
+  margin: 20px 0px;
+}
+#oud_kb .watar {
+  display: block;
+}
+#oud_kb .group {
+  display: inline-block;
+  margin: 0px 18px;
+}
+#oud_kb .group .note_name {
+  text-align: center;
+}
+#oud_kb .key {
+  display: inline-block;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  border: 1px solid #c0c0c0;
+  width: 36px;
+  height: 40px;
+  text-align: center;
+}
+#oud_kb .key.pressed {
+  background-color: #c0c0c0;
+}
