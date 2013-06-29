@@ -414,6 +414,16 @@ div.text_page pre {
   width: 84px;
   text-align: center;
 }
+.btn.jins .key {
+  font-family: monospace;
+  font-size: 9px;
+  border: 1px solid rgba(191,191,191,0.6);
+  color: #a3a3a3;
+  padding: 2px 0;
+  display: inline-block;
+  width: 15px;
+  text-align: center;
+}
 .btn.basenote {
   height: 20px;
   direction: ltr;
@@ -491,9 +501,6 @@ div.text_page pre {
   -webkit-border-radius: 0 5px 0 0;
   border-radius: 0 5px 0 0;
   padding-right: 1px;
-}
-span.divider {
-  color: rgba(230,217,242,0.7);
 }
 .controls > .panel {
   display: block;
