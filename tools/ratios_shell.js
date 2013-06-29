@@ -2,7 +2,7 @@
 
 // It drops into a shell and allows one to play around with ratios
 
-require("../assets/ratios");
+require("../client/ratios");
 
 show = function(item, indent) {
     if(!indent) {
