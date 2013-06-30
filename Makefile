@@ -1,8 +1,8 @@
 all: static/all.css static/client.js static/libs.js
 
 static/all.css: styles/*.styl
-	stylus --use ~/node_modules/nib styles --out build/css
-	cat build/css/{global,keyboard,maqam}.css > static/all.css
+	stylus --compress --use ~/node_modules/nib styles --out build/css
+	cat build/css/all.css > static/all.css
 
 static/client.js: client/*.js client/*.coffee
 	coffee --compile --output build/js client/*.coffee
