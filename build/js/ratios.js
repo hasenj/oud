@@ -104,6 +104,10 @@ RatioCtor = function(a, b) {
         return self.linearize(12);
     }
 
+    self.quarters = function() {
+        return self.linearize(24);
+    }
+
     self.commas = function() {
         return self.linearize(53);
     }
@@ -160,8 +164,8 @@ var intervals = {
     neutralSecond: Ratio(12,11),
     biggerSemiTone: Ratio(15,14),
     semiTone: Ratio(16,15),
-    // neutralThird: Ratio(11,9),
-    neutralThird: Ratio(27, 22), // zalzal's
+    neutralThird: Ratio(11,9),
+    // neutralThird: Ratio(27, 22), // zalzal's
     // diminishedForth: Ratio(9, 7)
     diminishedForth: Ratio(32, 25)
 }

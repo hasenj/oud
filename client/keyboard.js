@@ -48,7 +48,7 @@ function VirtualKeyVM(row, column, piano) {
     });
 
     self.disp_note_name = ko.computed(function() {
-        return self.note_name().disp_arabic();
+        return self.note_name().display();
     });
 
     self.pressed = ko.observable(false);
@@ -155,7 +155,7 @@ function PianoInstrument() {
         return self.baseNote().noteName;
     });
 
-    self.scale_display_name = ko.computed(function() {
+    self.scaleDisplayName = ko.computed(function() {
         var jins1Name = self.jins1().name;
         var jins2Name = self.jins2().name;
         var compoundName = jins1Name + '-' + jins2Name;
@@ -163,7 +163,7 @@ function PianoInstrument() {
         if(scaleName == compoundName) {
             scaleName = ScaleArabicName(jins1Name) + ' ' + ScaleArabicName(jins2Name);
         }
-        var baseName = self.baseNote().noteName.disp_arabic();
+        var baseName = self.baseNote().noteName.display();
         return scaleName + ' على ' + baseName;
     });
 

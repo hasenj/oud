@@ -286,7 +286,7 @@ div.text_page pre {
   -webkit-box-shadow: 0px 0px 2px 1px rgba(224,224,224,0.99);
   box-shadow: 0px 0px 2px 1px rgba(224,224,224,0.99);
   cursor: default;
-  text-align: center;
+  text-align: end;
   color: rgba(25,23,28,0.7);
   font-family: verdana;
   font-size: 14px;

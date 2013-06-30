@@ -14,7 +14,7 @@
 ABCNotes = "A B C D E F G".split(" ")
 window.stdNoteNames = ABCNotes
 
-note_names_map = { A: "لا", B: "سي", C: "دو", D: "ري", E: "مي", F: "فا", G: "صول" }
+window.note_names_map = { A: "لا", B: "سي", C: "دو", D: "ري", E: "مي", F: "فا", G: "صول" }
 class NoteName
     constructor: (@name) ->
         @index = ABCNotes.indexOf(@name)
@@ -22,7 +22,7 @@ class NoteName
         return new NoteName(ABCNotes.at(@index+n))
     next: -> @add(1)
     prev: -> @add(-1)
-    disp_arabic: ->
+    display: ->
         note_names_map[@name]
 
 window.NoteName = NoteName
@@ -95,6 +95,13 @@ class Jins
         for interval in [@p1, @p2, @p3]
             res.push base.addInterval(interval)
         return res
+
+    intervalSteps: ->
+        [@p1, @p2.sub(@p1), @p3.sub(@p2)]
+
+    intervals:->
+        [@p1, @p2, @p3]
+
 
 # Define the ajnas
 window.ajnas = {}

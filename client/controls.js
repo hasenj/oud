@@ -7,13 +7,12 @@
 //  - note object (frequency)
 //  all parsed form the given string, e.g. 'F1', 'A2', etc
 BaseNote = function(nameWithOctave) {
-    console.log("Argument", nameWithOctave);
     var self = this;
     var raw_name = nameWithOctave[0];
     var octave = Number(nameWithOctave[1]);
     self.raw = nameWithOctave;
     self.noteName = new NoteName(raw_name);
-    self.display_name = self.noteName.disp_arabic() + octave;
+    self.display = self.noteName.display() + " " + octave;
     octave -= 2; // shift by 2 ..
     self.note = notes[raw_name].addInterval(intervals.octave.mul(octave));
 }
@@ -26,6 +25,12 @@ BaseNotesVM = function() {
         return new BaseNote(n);
     }));
     self.selected = ko.observable('C2');
+
+    self.selectedDisplayName = ko.computed(function() {
+        var name = self.selected()[0];
+        var octaveNumber = self.selected()[1];
+        return note_names_map[name] + " " + octaveNumber;
+    });
 
     self.selectedIndex = ko.computed(function() {
         return self.rawBaseNotes.indexOf(self.selected());

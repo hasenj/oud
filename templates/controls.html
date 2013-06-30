@@ -1,6 +1,6 @@
 <div class="panel maqam_info">
     <div class="section maqam_name">
-        <div data-bind="html: scale_display_name"></div>
+        <div data-bind="html: scaleDisplayName"></div>
     </div>
     <!-- jins info -->
     <div class="section ajnas" data-bind="with: jinsSetCtrl">
@@ -23,25 +23,19 @@
         <label class="label"> نغمة البداية </label>
         <div class="btn-group"><!--
             --><div class="btn basenote" data-bind="click: prevBase">-</div><!--
-            --><div class="btn basenote" style="width: 40px" data-bind="click: toggleDropmenu"><!--
-                --><span data-bind="html: selected"></span> <span class="icon"> v </span><!--
+            --><div class="btn basenote" style="width: 50px" data-bind="click: toggleDropmenu"><!--
+                --><span data-bind="html: selectedDisplayName"></span> <span class="icon"> v </span><!--
             --></div><!--
             --><div class="btn basenote" data-bind="click: nextBase">+</div><!--
         --></div>
-        <div class="dropmenu" style="margin-top: 2px; margin-right: 120px; width: 58px;"
+        <div class="dropmenu" style="margin-top: 2px; margin-right: 120px; width: 76px;"
             data-bind="visible: dropmenuVisible, foreach: baseNotes">
-            <div class="item" data-bind="html: raw, css: { selected : $parent.selected() == raw },
+            <div class="item" data-bind="html: display, css: { selected : $parent.selected() == raw },
                 click: function() {
                     $parent.selected(raw);
                 }"></div>
         </div>
     </div>
-    <!-- short description -->
-    <!--
-    <div class="section">
-        <p class="desc" data-bind="text: mode_vm.mode().disp_desc"></p>
-    </div>
-    -->
 </div>
 
 <div class="panel" data-bind="with: maqamPresetsCtrl">
