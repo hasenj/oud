@@ -202,5 +202,5 @@ div.text_page pre{margin-left:20px}
 .maqam_info .section.ajnas .jins{padding-right:50px;height:30px}
 .rtl{text-align:right;direction:rtl}
 .ltr{text-align:left;direction:ltr}
-.logo{background-image:url("/static/images/logo.png");background-repeat:no-repeat;background-position:top right;height:60px;width:994px;-webkit-border-radius:0 0 5px 5px;border-radius:0 0 5px 5px;background-color:rgba(252,251,254,0.9);border:1px solid #c0c0c0;border-top:none;-webkit-box-shadow:0 0 5px 2px #4c4554;box-shadow:0 0 5px 2px #4c4554}
+.logo{background-image:url("/static/images/logo.png");background-repeat:no-repeat;background-position:top right;height:60px;width:994px;-webkit-border-radius:0 0 5px 5px;border-radius:0 0 5px 5px;background-color:rgba(252,251,254,0.9);border:1px solid #c0c0c0;border-top:none}
 .maqam_name{font:normal 1.5em amiri;text-shadow:0 1px 1px #000;color:#414059;direction:rtl;text-align:center}
