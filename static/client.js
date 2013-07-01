@@ -61,8 +61,10 @@ self.dropmenuVisible=ko.observable(false);self.toggleDropmenu=function(){self.dr
 JinsButton=function(key,name){var self=this;self.key=key;self.jins=ajnas[name];self.displayName=ScaleArabicName(name);var unclick=0;self.btnClicked=ko.observable(false);self.simulateClick=function(){self.btnClicked(true);clearTimeout(unclick);unclick=setTimeout(function(){self.btnClicked(false);},200);}}
 JinsSetControls=function(){var self=this;self.keyMap={'1':'ajem','2':'kurd','3':'nahawend','4':'hijaz','5':'rast','6':'beyat','7':'saba','8':'zemzem'}
 self.buttons=ko.observableArray(Object.keys(self.keyMap).map(function(key){var name=self.keyMap[key];return new JinsButton(key,name);}));self.jins1=ko.observable(ajnas.beyat);self.jins2=ko.observable(ajnas.kurd);self.jins3=ko.observable(null);self.jins2.subscribe(function(val){if(self.jins2().p3==intervals.forth){self.jins3(null);}else{self.jins3(val);}});self.pointer=ko.observable(self.jins1);self.advancePointer=function(){if(self.pointer()==self.jins1){self.pointer(self.jins2);return;}else{self.pointer(self.jins1);return;}}
+self.locked=ko.observable(false);self.toggleLock=function(){self.locked(!self.locked());}
 self.pointerClass=ko.computed(function(){return"pointer "+(self.pointer()==self.jins1?"first":"second");})
-self.selectFromKey=function(key,uiClicked){var selectedName=self.keyMap[key];self.pointer()(ajnas[selectedName]);self.advancePointer();if(!uiClicked){var btn=self.buttons().find(function(b){return b.key==key;});btn.simulateClick();}}}
+self.selectFromKey=function(key,uiClicked){var selectedName=self.keyMap[key];self.pointer()(ajnas[selectedName]);if(!self.locked()){self.advancePointer();}
+if(!uiClicked){var btn=self.buttons().find(function(b){return b.key==key;});btn.simulateClick();}}}
 PresetMaqam=function(name,base,jins1,jins2){var self=this;self.name=name;self.base=base;self.jins1=jins1;self.jins2=jins2;self.maqamName=ko.computed(function(){return ScaleArabicName(self.name);});self.simpleNoteName=ko.computed(function(){return SimpleNoteName(self.base);});self.pianoBound=function(piano){var clone=Object.clone(self);clone.apply=function(){piano.jins1(clone.jins1);piano.jins2(clone.jins2);}
 clone.applyWithBase=function(){clone.apply();piano.baseNoteCtrl.selected(clone.base);}
 clone.isApplied=ko.computed(function(){return piano.jins1().name==clone.jins1.name&&piano.jins2().name==clone.jins2.name;});clone.isAppliedWithBase=ko.computed(function(){return clone.isApplied()&&piano.baseNote().raw==clone.base;});return clone;}}
@@ -103,6 +105,8 @@ var note=notes.at(key_index);note=note.addInterval(intervals.octave.mul(octave_i
 self.findKey=function(letter){return self.key_list.find(function(key){return key.letter()==letter;})};self.findKeysByFreq=function(freq){return self.key_list.filter(function(key){return key.freq()==freq;});};self.keydown=function(kbkey){if('-=+'.has(kbkey)){if(kbkey=='-'){self.baseNoteCtrl.prevBase();}else if(kbkey=='='){self.baseNoteCtrl.nextBase();}
 return;}
 if('12345678'.has(kbkey)){self.jinsSetCtrl.selectFromKey(kbkey);return;}
+if(kbkey=='9'){self.jinsSetCtrl.toggleLock();return;}
+if(kbkey=='0'){self.jinsSetCtrl.advancePointer();return;}
 var keyvm=piano.findKey(kbkey)
 if(!keyvm){return}
 var freq=keyvm.freq()

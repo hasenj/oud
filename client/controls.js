@@ -131,6 +131,11 @@ JinsSetControls = function() {
         }
     }
 
+    self.locked = ko.observable(false);
+    self.toggleLock = function() {
+        self.locked(!self.locked());
+    }
+
     self.pointerClass = ko.computed(function() {
         return "pointer " + (self.pointer() == self.jins1 ? "first" : "second");
     })
@@ -138,7 +143,9 @@ JinsSetControls = function() {
     self.selectFromKey = function(key, uiClicked) {
         var selectedName = self.keyMap[key];
         self.pointer()(ajnas[selectedName]);
-        self.advancePointer();
+        if(!self.locked()) {
+            self.advancePointer();
+        }
 
         // simulate click
         if(!uiClicked) {

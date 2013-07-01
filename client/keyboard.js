@@ -244,6 +244,14 @@ function PianoInstrument() {
             self.jinsSetCtrl.selectFromKey(kbkey);
             return;
         }
+        if(kbkey == '9') {
+            self.jinsSetCtrl.toggleLock();
+            return;
+        }
+        if(kbkey == '0') {
+            self.jinsSetCtrl.advancePointer();
+            return;
+        }
         var keyvm = piano.findKey(kbkey)
         if (!keyvm) {
             return

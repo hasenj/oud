@@ -4,7 +4,14 @@
     </div>
     <!-- jins info -->
     <div class="section ajnas" data-bind="with: jinsSetCtrl">
-        <div class="pointer" data-bind="attr: { class : pointerClass }"> <span class="icon"> &gt; </span> </div>
+        <div class="pointer" data-bind="attr: { class : pointerClass }">
+            <span class="icon"> &gt; </span>
+            <span class="shortcuts">
+                <span class="icon" data-bind="visible: locked"> 4 </span>
+                <span class="icon" data-bind="visible: !locked()"> 5 </span>
+                <span class="icon"> c </span>
+            </span>
+        </div>
         <div class="jins">
             <label class="label"> الجنس الأول </label>
             <p class="def" data-bind="template: { name: 'template_jins_info', data: jins1 }"> </p>
