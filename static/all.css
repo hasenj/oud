@@ -165,6 +165,7 @@ div.text_page pre{margin-left:20px}
 .btn:hover,.btn.hover{background:-webkit-gradient(linear, left top, left bottom, color-stop(0, #fff), color-stop(1.8, #ebebeb));background:-webkit-linear-gradient(top, #fff 0%, #ebebeb 180%);background:-moz-linear-gradient(top, #fff 0%, #ebebeb 180%);background:-o-linear-gradient(top, #fff 0%, #ebebeb 180%);background:-ms-linear-gradient(top, #fff 0%, #ebebeb 180%);background:linear-gradient(top, #fff 0%, #ebebeb 180%)}
 .btn:active,.btn.active{background:-webkit-gradient(linear, left top, left bottom, color-stop(0, #e0e0e0), color-stop(1, #fafafa));background:-webkit-linear-gradient(top, #e0e0e0 0%, #fafafa 100%);background:-moz-linear-gradient(top, #e0e0e0 0%, #fafafa 100%);background:-o-linear-gradient(top, #e0e0e0 0%, #fafafa 100%);background:-ms-linear-gradient(top, #e0e0e0 0%, #fafafa 100%);background:linear-gradient(top, #e0e0e0 0%, #fafafa 100%);text-shadow:1px 1px 2px #dbf0e6}
 .btn *{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+.btn.flat{background:none;background-color:trasparent}
 .btn.jins{direction:ltr;padding:10px 0;width:84px;text-align:center;}
 .btn.jins .key{display:inline-block;vertical-align:middle;text-align:center;width:15px;padding:2px 0;border:1px solid rgba(191,191,191,0.6);color:#a3a3a3;font-family:monospace;font-size:9px}
 .btn.basenote{height:20px;direction:ltr;vertical-align:middle;line-height:20px}
@@ -199,7 +200,9 @@ div.text_page pre{margin-left:20px}
 .maqam_info .section.ajnas .pointer{position:absolute;background-color:rgba(204,173,235,0.1);-webkit-box-shadow:0 0 5px 0 rgba(204,189,219,0.5) inset;box-shadow:0 0 5px 0 rgba(204,189,219,0.5) inset;width:288px;height:30px;font-size:22px;-webkit-border-radius:0;border-radius:0;border:1px solid #c0c0c0;border-width:1px 0;-webkit-transition:200ms;-moz-transition:200ms;-o-transition:200ms;-ms-transition:200ms;transition:200ms;line-height:27px;padding-right:14px;color:#4c2673;margin-right:-1px;}
 .maqam_info .section.ajnas .pointer.first{margin-top:-5px}
 .maqam_info .section.ajnas .pointer.second{margin-top:25px}
-.maqam_info .section.ajnas .pointer .shortcuts{margin-right:200px;font-size:12px;color:rgba(127,64,191,0.5)}
+.maqam_info .section.ajnas .pointer .icon.lock{font-size:12px;color:rgba(76,54,99,0.7);margin-right:240px}
+.maqam_info .section.ajnas .shortcuts{position:absolute;margin-right:204px;margin-top:-60px;font-size:12px;color:rgba(127,64,191,0.5);}
+.maqam_info .section.ajnas .shortcuts .btn{font-size:11px;line-height:11px;height:11px;padding:3px 0}
 .maqam_info .section.ajnas .jins{padding-right:50px;height:30px}
 .rtl{text-align:right;direction:rtl}
 .ltr{text-align:left;direction:ltr}

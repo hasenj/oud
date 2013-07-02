@@ -80,6 +80,10 @@ aqua-button(bghue=230)
     *
         user-select: none
 
+.btn.flat
+    background none
+    background-color trasparent
+
 .btn.jins
     direction: ltr
     padding: 10px 0px
@@ -221,10 +225,22 @@ aqua-button(bghue=230)
                 margin-top: 0px - 5px
             &.second
                 margin-top: 30px - 5px
-            .shortcuts
-                margin-right 200px
+            .icon.lock
                 font-size 12px
-                color hsla(270, 50, 50, 0.5)
+                color hsla(270, 30, 30, 0.7)
+                margin-right 240px
+
+        .shortcuts
+            position: absolute
+            margin-right 204px
+            margin-top -60px
+            font-size 12px
+            color hsla(270, 50, 50, 0.5)
+            .btn
+                font-size 11px
+                line-height 11px
+                height: 11px
+                padding 3px 0px
 
         .jins
             padding-right 50px
