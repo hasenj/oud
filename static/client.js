@@ -68,7 +68,7 @@ if(!uiClicked){var btn=self.buttons().find(function(b){return b.key==key;});btn.
 PresetMaqam=function(name,base,jins1,jins2){var self=this;self.name=name;self.base=base;self.jins1=jins1;self.jins2=jins2;self.maqamName=ko.computed(function(){return ScaleArabicName(self.name);});self.simpleNoteName=ko.computed(function(){return SimpleNoteName(self.base);});self.pianoBound=function(piano){var clone=Object.clone(self);clone.apply=function(){piano.jins1(clone.jins1);piano.jins2(clone.jins2);}
 clone.applyWithBase=function(){clone.apply();piano.baseNoteCtrl.selected(clone.base);}
 clone.isApplied=ko.computed(function(){return piano.jins1().name==clone.jins1.name&&piano.jins2().name==clone.jins2.name;});clone.isAppliedWithBase=ko.computed(function(){return clone.isApplied()&&piano.baseNote().raw==clone.base;});return clone;}}
-var preset_def_map={"ajem":"C2 ajem ajem","kurd":"D2 kurd kurd","beyat":"D2 beyat kurd","saba":"D2 saba zemzem","nahawend-u":"C2 nahawend kurd","nahawend-d":"C2 nahawend hijaz","rast-u":"C2 rast rast","rast-d":"C2 rast nahawend","hijaz-u":"D2 hijaz beyat","hijaz-d":"D2 hijaz kurd",}
+var preset_def_map={"ajem":"C2 ajem ajem","kurd":"D2 kurd kurd","nahawend-u":"C2 nahawend hijaz","nahawend-d":"C2 nahawend kurd","hijaz-u":"D2 hijaz beyat","hijaz-d":"D2 hijaz kurd","beyat":"D2 beyat kurd","saba":"D2 saba zemzem","rast-u":"C2 rast rast","rast-d":"C2 rast nahawend",}
 var maqamPresetMap={}
 Object.keys(preset_def_map).map(function(key){var name=key;var def=preset_def_map[key];var parts=def.split(" ")
 var base=parts.shift();var jins1=ajnas[parts.shift()]

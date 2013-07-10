@@ -207,18 +207,17 @@ var preset_def_map = {
     "ajem": "C2 ajem ajem",
     "kurd": "D2 kurd kurd",
 
-    "beyat": "D2 beyat kurd",
-    "saba": "D2 saba zemzem",
-
-    "nahawend-u": "C2 nahawend kurd",
-    "nahawend-d": "C2 nahawend hijaz",
-
-
-    "rast-u": "C2 rast rast",
-    "rast-d": "C2 rast nahawend",
+    "nahawend-u": "C2 nahawend hijaz",
+    "nahawend-d": "C2 nahawend kurd",
 
     "hijaz-u": "D2 hijaz beyat",
     "hijaz-d": "D2 hijaz kurd",
+
+    "beyat": "D2 beyat kurd",
+    "saba": "D2 saba zemzem",
+
+    "rast-u": "C2 rast rast",
+    "rast-d": "C2 rast nahawend",
 
     // "zemzem": "D2 zemzem zemzem",
 
