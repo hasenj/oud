@@ -5,9 +5,9 @@ then
     virtualenv venv --distribute
 fi
 source venv/bin/activate
-pip -q install -r requirements.txt
+pip install -r requirements.txt
 # build client files ..
-make -s
+make
 
 # kill any process listening on our port before starting our server
 pid=`lsof -i tcp:$PORT -s tcp:listen -t`
