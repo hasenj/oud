@@ -1,3 +1,4 @@
+SHELL := /bin/bash
 all: static/all.css static/client.js static/libs.js
 
 static/all.css: styles/*.styl
