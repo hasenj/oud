@@ -1,14 +1,4 @@
 PORT=9040
-# Prepare virtual env and install/update requirements
-if [ ! -d venv ]
-then
-    virtualenv venv --distribute
-fi
-source venv/bin/activate
-pip install -r requirements.txt
-# build client files ..
-make
-
 # kill any process listening on our port before starting our server
 pid=`lsof -i tcp:$PORT -s tcp:listen -t`
 if [ $pid ]
@@ -16,5 +6,6 @@ then
     kill -9 $pid
     sleep 1 # wait
 fi
-# finally, run the server
+# run the server
+source venv/bin/activate
 python main.py
