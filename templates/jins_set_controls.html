@@ -1,0 +1,22 @@
+<div class="shortcuts ajnas" data-bind="with: jinsSetCtrl">
+    <span data-bind="foreach: buttons">
+        <span class="btn-group" data-bind="css: { active: btnClicked }, click: function() { $parent.selectFromKey(key, true); }">
+            <span class="btn flat" data-bind="html: key"></span><!--
+            --><span class="btn flat jins" data-bind="html: displayName"></span>
+        </span>
+    </span>
+</div>
+<div class="shortcuts keys">
+    <span class="btn-group">
+        <span class="btn flat key">9</span><!--
+        --><span class="btn flat">
+            <span class="icon"> 6 </span>
+        </span>
+    </span>
+    <span class="btn-group">
+        <span class="btn flat key">0</span><!--
+        --><span class="btn flat">
+            <span class="icon"> c </span>
+        </span>
+    </span>
+</div>

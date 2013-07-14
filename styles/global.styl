@@ -10,28 +10,21 @@ widget-font()
 
 bgcol = hsl(200, 5, 94)
 footer_bgcol = hsl(200, 6, 90)
-body
-    margin 0px
-    padding 0px
-    background-color bgcol
-    background-image: url('/static/images/cream_dust.png')
 
-.oud_bg
-    background-color: hsl(30, 60, 20)
-    background-image: url('/static/images/oud-bg.png')
-    background-position: 0 -200px
-    opacity: 0.7
-    position: absolute
-    top: 0
-    height: 584px
-    width: 100%
-    z-index: -10
-    box-shadow 0px 0px 3px 1px black
 
 
 html, body
     height 100%
     direction rtl
+
+body
+    margin 0px
+    padding 0px
+    background-color bgcol
+    background-image: url('/static/images/cream_dust.png')
+    font normal 12pt Ubuntu
+    color hsl(0, 0%, 20%)
+
 
 div, p
     user-select text
@@ -84,9 +77,50 @@ div.app
         border-radius 5px
         background-color hsla(270, 20, 99, 0.6)
 
-body
-    font normal 12pt Ubuntu
-    color hsl(0, 0%, 20%)
+.oud_bg
+    background-color: hsl(30, 60, 20)
+    background-image: url('/static/images/oud-bg.png')
+    background-position: 0 -200px
+    opacity: 0.7
+    position: absolute
+    top: 0
+    height: 584px
+    width: 100%
+    z-index: -10
+    box-shadow 0px 0px 3px 1px black
+
+.top
+    width 994px
+    border-radius: 0 0 5px 5px
+    border 1px solid silver
+    border-top none
+    direction ltr
+    background-color hsl(0, 0, 99)
+
+.shortcuts
+    font-size 12px
+    color hsla(270, 50, 50, 0.5)
+    direction ltr
+    padding 8px 12px !important
+    display inline-block
+    .btn-group
+        margin-right 7px
+    .btn
+        font-size 16px
+        line-height 20px
+        height 20px
+        padding 3px 4px
+        display inline-block
+        vertical-align middle
+    .btn.jins
+        text-align center
+        font-family 'Droid Arabic Kufi', serif
+
+.shortcuts.ajnas
+    width 660px
+
+.shortcuts.keys
+    width 150px
 
 // XXX remove this?!!
 #error_box

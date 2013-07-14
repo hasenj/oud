@@ -1,9 +1,10 @@
 {% extends "root.jn" %}
 
 {% block content %}
-    <div class="oud_bg"></div>
     <div class="layout" data-bind="with: piano">
-        <div class="logo"></div>
+        <div class="top">
+            {% include "jins_set_controls.html" %}
+        </div>
         <div class="app">
             <div class="controls">
                 {% include "controls.html" %}
@@ -16,4 +17,5 @@
             {% include "guide.html" %}
         </div>
     </div>
+    <div class="oud_bg"></div>
 {% endblock %}
