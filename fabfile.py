@@ -26,11 +26,17 @@ def deploy(rev="HEAD"):
         put(local_archive, arch)
         run("unzip {0}".format(arch))
         run("./prepare.sh")
-        run("./run.sh & disown")
+        run('./run_bg.sh')
         sleep(1)
         # now that the server is running, set the symlink for serving the static data ..
         with cd("../.."):
-            run("ln -sf {0}/awtar current".format(hash))
+            run("ln -Tsf {0}/awtar current".format(hash))
     print "Deployed commit {0}".format(hash)
+
+@task
+def start():
+    current_version = os.path.join(deploy_dir, "current")
+    with cd(current_version):
+        run("./run_bg.sh")
 
 # XXX Need some task to configure nginx or something ...?
