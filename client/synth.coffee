@@ -127,14 +127,6 @@ tonefreq = (tone, base=128) ->
     tones_per_octave = 53 # turkish comma system
     return base * Math.pow(2, tone/tones_per_octave)
 
-tone_signal = {}
-
-tone_gen = (tone) ->
-    if tone of tone_signal
-        tone_signal[tone]
-    else
-        tone_signal[tone] = signal_gen_from_freq(tonefreq(tone))
-
 window.signal_gen_from_freq = (freq) ->
     signal_raw = oud_signal_gen(freq)
     signal_raw2 = oud_signal_gen(freq)

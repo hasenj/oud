@@ -102,6 +102,19 @@ class Jins
     intervals:->
         [@p1, @p2, @p3]
 
+J2 = intervals.tone
+j2 = intervals.lessertTone
+m2 = intervals.semiTone
+M2 = intervals.biggerSemiTone
+t2 = intervals.neutralSecond
+T2 = intervals.biggerNeutralSecond
+J3 = intervals.majorThird
+M3 = intervals.minorThird
+T3 = intervals.neutralThird
+p4 = intervals.forth
+d4 = intervals.diminishedForth
+D4 = intervals.biggerDiminishedForth
+p5 = intervals.fifth
 
 # Define the ajnas
 window.ajnas = {}
