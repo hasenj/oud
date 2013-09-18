@@ -360,7 +360,9 @@ kb_key_from_event = function(e){
         191: '/',
         222: '\'', // apostrophe
         13: '↩', // enter key
+        229: 'B' // arabic keyboard in chrome (لا key) XXX HACK
     }
+    // console.log(e.which);
     var kbkey;
     if(e.which in special) {
         kbkey = special[e.which]
