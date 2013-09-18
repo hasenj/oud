@@ -111,6 +111,7 @@ JinsSetControls = function() {
     self.jins2 = ko.observable(ajnas.kurd);
     self.jins3 = ko.observable(null);
 
+    // jins is an observable pointing to something from the ajnas map
     self.jinsCtrl = function(jins, label) {
         var parent = self;
         var c = {}
@@ -120,11 +121,26 @@ JinsSetControls = function() {
             return jins().dispName();
         });
         c.select = function() {
-            parent.pointer(jins);
+            if(!parent.locked()) {
+                parent.pointer(jins);
+            }
         }
+        c.isSelected = ko.computed(function() {
+            return parent.pointer() === jins;
+        });
+        c.isLocked = ko.computed(function() {
+            return c.isSelected() && parent.locked();
+        });
         c.toggleLock = function() {
-            c.select();
-            parent.toggleLock();
+            if(c.isLocked()) {
+                parent.locked(false);
+            } else {
+                parent.locked(false);
+                c.select();
+                setTimeout(function() {
+                parent.locked(true);
+                }, 200);
+            }
         }
 
         // almost copy paste from the basenote menu
@@ -137,6 +153,16 @@ JinsSetControls = function() {
                 falseOnDocumentClick(c.jinsMenuVisible);
             }
         }
+
+        c.hovered = ko.observable(false);
+        c.shadowArrowHover = ko.observable(false);
+        c.shadowLockHover = ko.observable(false);
+        c.shadowArrowVisible = ko.computed(function() {
+            return !c.isSelected() && !parent.locked() && (c.shadowArrowHover() || c.shadowLockHover());
+        });
+        c.shadowLockVisible = ko.computed(function() {
+            return c.shadowLockHover() || c.hovered();
+        });
 
         return c;
     }

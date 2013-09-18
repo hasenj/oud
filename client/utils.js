@@ -18,4 +18,17 @@ var falseOnDocumentClick = function(ob) {
     }, 100);
 }
 
+ko.bindingHandlers.hover = {
+    init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        // This will be called when the binding is first applied to an element
+        // Set up any initial state, event handlers, etc. here
+
+        $(element).on('mouseover', function() {
+            valueAccessor()(true);
+        });
+        $(element).on('mouseout', function() {
+            valueAccessor()(false);
+        });
+    }
+};
 

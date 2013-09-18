@@ -157,7 +157,7 @@ aqua-button(bghue=230)
             display inline-block
             vertical-align middle
         .def
-            min-width 120px
+            min-width 80px
             display inline-block
             vertical-align middle
 
@@ -176,6 +176,14 @@ aqua-button(bghue=230)
         margin-top: 4px // to accomedate the pointer's 4px up shift
         font-family 'Droid Arabic Kufi', serif
         line-height 18px
+
+        .pointer_shadow
+            opacity: 0.2
+            font-size 22px
+            padding-right 14px
+            color: hsl(270, 50, 30)
+            margin-right: -1px;
+            padding-top: -1px;
 
         .pointer
             pointer-events: none; // let mouse clicks fall through
@@ -199,7 +207,7 @@ aqua-button(bghue=230)
                 margin-top: 30px - 5px
             .icon.lock
                 font-size 12px
-                color hsla(270, 30, 30, 0.7)
+                color hsla(270, 30, 30, 0.8)
                 margin-right 240px
 
         .jins
@@ -208,6 +216,19 @@ aqua-button(bghue=230)
                 width: 50px
             .label
                 width 100px
+            .lock
+                width 55px
+                // outline 1px solid blue
+                .lock_shadow
+                    opacity: 0.4
+                    font-size 12px
+                    line-height: 12px;
+                    color hsla(270, 30, 30, 0.8)
+                    margin-right: 10px
+                    border-radius: 12px
+                    border: 1px solid silver
+                    padding 2px 4px
+
 
 .rtl
     text-align right

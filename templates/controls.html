@@ -5,7 +5,7 @@
     <!-- jins info -->
     <div class="section ajnas" data-bind="with: jinsSetCtrl">
         <div class="pointer" data-bind="attr: { class : pointerClass }">
-            <span class="icon arrow"> &gt; </span>
+            <span class="icon"> &gt; </span>
             <span class="icon lock" data-bind="visible: locked"> 4 </span>
         </div>
         <!-- ko template: { name: 'template_jins_ctrl', data: jinsCtrl(jins1, 'الجنس الأول') } -->
@@ -57,15 +57,27 @@
 </script>
 
 <script type="text/html" id="template_jins_ctrl">
-    <div class="jins arrow">
-        <div class="ib arrow_space ptr" data-bind="click: select">&nbsp;</div><!--
-        --><label class="label ptr" data-bind="text: label, click: select"></label>
+    <div class="jins arrow" data-bind="hover: hovered">
+        <div class="ib arrow_space ptr" data-bind="click: select, hover: shadowArrowHover">
+            <span class="icon pointer_shadow" data-bind="visible: shadowArrowVisible"> &gt; </span>
+            &nbsp;
+        </div><!--
+        --><label class="label ptr" data-bind="text: label, click: select, hover: shadowArrowHover"></label>
         <p class="def arrow">
             <span class="ib" data-bind="click: toggleJinsMenu">
                 <span data-bind="text: dispName"> </span>
                 <span class="icon"> v </span>
             </span>
         </p>
+        <div class="ib lock" data-bind="hover: shadowLockHover">
+            <span class="ib icon ptr lock_shadow" data-bind="visible: shadowLockVisible, click: toggleLock">
+                <!-- ko if: isLocked --> 5 <!-- /ko -->
+                <!-- ko ifnot: isLocked --> 4 <!-- /ko -->
+            </span>
+            <span data-bind="ifnot: shadowLockVisible">
+                &nbsp;
+            </span>
+        </div>
     </div>
     <div class="dropmenu" style="margin-top: 2px; margin-right: 135px; width: 88px;"
         data-bind="visible: jinsMenuVisible, foreach: $parent.buttons">
