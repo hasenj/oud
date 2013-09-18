@@ -57,10 +57,21 @@
 </script>
 
 <script type="text/html" id="template_jins_ctrl">
-    <div class="jins" data-bind="click: select">
-        <label class="label" data-bind="text: label"></label>
-        <p class="def">
-            <span class="ib" data-bind="text: dispName"> </span>
+    <div class="jins arrow" data-bind="">
+        <div class="ib arrow_space ptr" data-bind="click: select">&nbsp;</div><!--
+        --><label class="label ptr" data-bind="text: label, click: select"></label>
+        <p class="def arrow">
+            <span class="ib" data-bind="click: toggleJinsMenu">
+                <span data-bind="text: dispName"> </span>
+                <span class="icon"> v </span>
+            </span>
         </p>
+    </div>
+    <div class="dropmenu" style="margin-top: 2px; margin-right: 135px; width: 88px;"
+        data-bind="visible: jinsMenuVisible, foreach: $parent.buttons">
+        <div class="item rtl">
+            <span class="text-mini" data-bind="html: key"></span>)
+            <span data-bind="html: displayName"></span>
+        </div>
     </div>
 </script>

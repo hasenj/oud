@@ -178,6 +178,7 @@ aqua-button(bghue=230)
         line-height 18px
 
         .pointer
+            pointer-events: none; // let mouse clicks fall through
             position: absolute
             background-color hsla(270, 60, 80, 0.1)
             box-shadow 0px 0px 5px 0px hsla(270, 30%, 80%, 0.5) inset
@@ -202,8 +203,9 @@ aqua-button(bghue=230)
                 margin-right 240px
 
         .jins
-            padding-right 50px
             height: 30px
+            .arrow_space
+                width: 50px
             .label
                 width 100px
 

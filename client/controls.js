@@ -126,6 +126,18 @@ JinsSetControls = function() {
             c.select();
             parent.toggleLock();
         }
+
+        // almost copy paste from the basenote menu
+        // XXX maybe refactor?
+        c.jinsMenuVisible = ko.observable(false);
+        c.toggleJinsMenu = function() {
+            console.log("Toggling jins menu");
+            c.jinsMenuVisible(!c.jinsMenuVisible());
+            if(c.jinsMenuVisible()) {
+                falseOnDocumentClick(c.jinsMenuVisible);
+            }
+        }
+
         return c;
     }
 
