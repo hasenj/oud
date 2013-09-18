@@ -82,8 +82,9 @@ window.ScaleArabicName = ScaleArabicName
 class Jins
     constructor: (@name, @p1, @p2, @p3) ->
         self = this
-        self.disp_name = ko.computed ->
+        self.dispName = ko.computed ->
             ScaleArabicName(self.name)
+        self.disp_name = self.dispName
         self.disp_intervals = ko.computed ->
             return "--"
             # [self.p1, self.p2, self.p3].join("-")

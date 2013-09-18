@@ -111,6 +111,24 @@ JinsSetControls = function() {
     self.jins2 = ko.observable(ajnas.kurd);
     self.jins3 = ko.observable(null);
 
+    self.jinsCtrl = function(jins, label) {
+        var parent = self;
+        var c = {}
+        c.label = label;
+        c.jins = jins;
+        c.dispName = ko.computed(function() {
+            return jins().dispName();
+        });
+        c.select = function() {
+            parent.pointer(jins);
+        }
+        c.toggleLock = function() {
+            c.select();
+            parent.toggleLock();
+        }
+        return c;
+    }
+
     // jins3 is nullified when jins2 is not diminished
     self.jins2.subscribe(function(val) {
         if(self.jins2().p3 == intervals.forth) {
@@ -154,6 +172,7 @@ JinsSetControls = function() {
         }
     }
 }
+
 
 // base is a raw string, e.g. 'C2'
 PresetMaqam = function(name, base, jins1, jins2) {
