@@ -159,9 +159,9 @@ function PianoInstrument() {
         var jins1Name = self.jins1().name;
         var jins2Name = self.jins2().name;
         var compoundName = jins1Name + '-' + jins2Name;
-        var scaleName = ScaleArabicName(compoundName);
+        var scaleName = getScaleName(compoundName);
         if(scaleName == compoundName) {
-            scaleName = ScaleArabicName(jins1Name) + ' ' + ScaleArabicName(jins2Name);
+            scaleName = getScaleName(jins1Name) + ' ' + getScaleName(jins2Name);
         }
         var baseName = self.baseNote().noteName.display();
         return scaleName + ' على ' + baseName;

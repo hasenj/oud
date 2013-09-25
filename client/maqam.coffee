@@ -33,7 +33,9 @@ window.SimpleNoteName = (noteCode) ->
         return ""
     return noteNamesMap[noteCode[0]]
 
-maqam_names_map = {
+maqam_names = {}
+
+maqam_names.ar = {
     "ajem" : "عجم",
     "ajem-ajem" : "عجم",
     "kurd": "كرد",
@@ -44,7 +46,6 @@ maqam_names_map = {
     "hijaz": "حجاز"
     "hijaz-kurd": "حجاز"
     "hijaz-beyat": "حجاز بياتي",
-    "hijazkar": "حجاز كار"
     "hijaz-hijaz": "حجاز كار"
     "rast": "رست"
     "rast-rast": "رست"
@@ -54,36 +55,89 @@ maqam_names_map = {
     "beyat-beyat" : "حسيني",
     "saba" : "صبا",
     "saba-zemzem" : "صبا",
-    "saba-full": "صبا كامل",
     "saba-kurd": "صبا كامل",
     "zemzem": "زمزمة",
     "zemzem-zemzem": "زمزمة",
-    "zemzem-full": "زمزمة كامل",
     "zemzem-kurd": "زمزمة كامل",
-    "full": "كامل",
     "u": "<span class='icon'>u</span>", # HACK
     "d": "<span class='icon'>d</span>", # HACK
 }
 
-ScaleArabicName = (maqam_code) ->
-    map = maqam_names_map
+maqam_names.en = {
+    "ajem" : "Ajem",
+    "ajem-ajem" : "Major",
+    "kurd": "Kurd",
+    "kurd-kurd": "Kurd",
+    "nahawend": "Nahawend"
+    "nahawend-kurd": "Minor"
+    "nahawend-hijaz": "Harmonic Minor",
+    "hijaz": "Hijaz"
+    "hijaz-kurd": "Hijaz"
+    "hijaz-beyat": "Hijaz Beyat",
+    "hijaz-hijaz": "Hijaz Kar"
+    "rast": "Rast"
+    "rast-rast": "Rast"
+    "rast-nahawend": "Rast Nahawend",
+    "beyat" : "Beyat",
+    "beyat-kurd" : "Beyat",
+    "beyat-beyat" : "Huseiny",
+    "saba" : "Saba",
+    "saba-zemzem" : "Saba",
+    "saba-kurd": "Saba Kurd",
+    "zemzem": "Zemzem",
+    "zemzem-zemzem": "Zemzem",
+    "zemzem-kurd": "Zemzem Kurd",
+    "u": "<span class='icon'>u</span>", # HACK
+    "d": "<span class='icon'>d</span>", # HACK
+}
+
+maqam_names.tr = {
+    "ajem" : "Acem",
+    "ajem-ajem" : "Acem",
+    "kurd": "Kürdi",
+    "kurd-kurd": "Kürdi",
+    "nahawend": "Buselik"
+    "nahawend-kurd": "Buselik"
+    "nahawend-hijaz": "Buselik Hicaz",
+    "hijaz": "Hicaz"
+    "hijaz-kurd": "Hicaz"
+    "hijaz-beyat": "Hicaz Uşşak",
+    "hijaz-hijaz": "Hicaz Kar"
+    "rast": "Rast"
+    "rast-rast": "Rast"
+    "rast-nahawend": "Rast Nahawend",
+    "beyat" : "Uşşak",
+    "beyat-kurd" : "Uşşak",
+    "beyat-beyat" : "Hüseyni",
+    "saba" : "Saba",
+    "saba-zemzem" : "Saba",
+    "saba-kurd": "Saba Kurd",
+    "zemzem": "Zemzem",
+    "zemzem-zemzem": "Zemzem",
+    "zemzem-kurd": "Zemzem Kurd",
+    "u": "<span class='icon'>u</span>", # HACK
+    "d": "<span class='icon'>d</span>", # HACK
+}
+
+getScaleName = (maqam_code) ->
+    map = maqam_names[language()]
     if !maqam_code
         return ""
     if maqam_code of map
         map[maqam_code]
     else if maqam_code.has('-')
-            parts = maqam_code.split('-').map(ScaleArabicName)
+            parts = maqam_code.split('-').map(getScaleName)
             return parts.join(' ')
     else
         maqam_code
 
-window.ScaleArabicName = ScaleArabicName
+window.getScaleName = getScaleName
 
 class Jins
     constructor: (@name, @p1, @p2, @p3) ->
         self = this
         self.displayName = ko.computed ->
-            ScaleArabicName(self.name)
+            getScaleName(self.name)
         self.dispIntervals = ko.computed ->
             return "--"
             # [self.p1, self.p2, self.p3].join("-")

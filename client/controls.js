@@ -72,8 +72,8 @@ JinsButton = function(key, name) {
     var self = this;
     self.key = key;
     self.jins = ajnas[name];
-    self.displayName = ScaleArabicName(name);
-    // self.display = key + ' | ' + ScaleArabicName(name);
+    self.displayName = getScaleName(name);
+    // self.display = key + ' | ' + getScaleName(name);
 
     var unclick = 0;
     self.btnClicked = ko.observable(false);
@@ -222,7 +222,7 @@ PresetMaqam = function(name, base, jins1, jins2) {
 
     // this is computed because it could change depending on active language (in the future)
     self.maqamName = ko.computed(function() {
-        return ScaleArabicName(self.name);
+        return getScaleName(self.name);
     });
 
     // simple as in: no octave number
