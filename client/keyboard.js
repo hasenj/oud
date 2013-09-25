@@ -164,7 +164,7 @@ function PianoInstrument() {
             scaleName = getScaleName(jins1Name) + ' ' + getScaleName(jins2Name);
         }
         var baseName = self.baseNote().noteName.display();
-        return scaleName + ' على ' + baseName;
+        return scaleName + ' ' + getText('on') + ' ' + baseName;
     });
 
     // array of Note objects

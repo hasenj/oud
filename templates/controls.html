@@ -8,9 +8,9 @@
             <span class="icon"> &gt; </span>
             <span class="icon lock" data-bind="visible: locked"> 4 </span>
         </div>
-        <!-- ko template: { name: 'template_jins_ctrl', data: jinsCtrl(jins1, 'الجنس الأول') } -->
+        <!-- ko template: { name: 'template_jins_ctrl', data: jinsCtrl(jins1, 'first-jins') } -->
         <!-- /ko -->
-        <!-- ko template: { name: 'template_jins_ctrl', data: jinsCtrl(jins2, 'الجنس الثاني') } -->
+        <!-- ko template: { name: 'template_jins_ctrl', data: jinsCtrl(jins2, 'second-jins') } -->
         <!-- /ko -->
         <!-- xko if: jins3 -->
             <!-- xko template: { name: 'template_jins_ctrl', data: jinsCtrl(jins3, 'الجنس الثالث') } -->
@@ -19,7 +19,7 @@
     </div>
     <!-- base note -->
     <div class="section pad base_note" data-bind="with: baseNoteCtrl">
-        <label class="label"> نغمة البداية </label>
+        <label class="label" data-bind="text: getText('base-note')"></label>
         <div class="btn-group"><!--
             --><div class="btn basenote" data-bind="click: prevBase">-</div><!--
             --><div class="btn basenote" style="width: 58px" data-bind="click: toggleDropmenu"><!--
@@ -39,7 +39,7 @@
 
 <div class="panel" data-bind="with: maqamPresetsCtrl">
     <div class="section header">
-        <h3>مقامات جاهزة</h3>
+        <h3 data-bind="text: getText('maqam-presets')"></h3>
     </div>
     <div class="section maqamPresets" data-bind="foreach: presets">
         <div class="btn-group" data-bind="with: pianoBound(piano)"><!--
@@ -62,7 +62,7 @@
             <span class="icon pointer_shadow" data-bind="visible: shadowArrowVisible"> &gt; </span>
             &nbsp;
         </div><!--
-        --><label class="label ptr" data-bind="text: label, click: select, hover: shadowArrowHover"></label>
+        --><label class="label ptr" data-bind="text: displayLabel, click: select, hover: shadowArrowHover"></label>
         <p class="def arrow">
             <span class="ib" data-bind="click: toggleJinsMenu">
                 <span data-bind="text: displayName"> </span>

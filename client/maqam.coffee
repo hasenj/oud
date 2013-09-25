@@ -14,7 +14,14 @@
 ABCNotes = "A B C D E F G".split(" ")
 window.stdNoteNames = ABCNotes
 
-window.noteNamesMap = { A: "لا", B: "سي", C: "دو", D: "ري", E: "مي", F: "فا", G: "صول" }
+noteNamesMap = {}
+noteNamesMap.ar = { A: "لا", B: "سي", C: "دو", D: "ري", E: "مي", F: "فا", G: "صول" }
+noteNamesMap.en = { A: "A", B: "B", C: "C", D: "D", E: "E", F: "F", G: "G" }
+noteNamesMap.tr = { A: "LA", B: "SI", C: "DO", D: "RE", E: "MI", F: "FA", G: "SOL" }
+
+window.getNoteName = (name) ->
+    noteNamesMap[language()][name]
+
 class NoteName
     constructor: (@name) ->
         @index = ABCNotes.indexOf(@name)
@@ -23,7 +30,7 @@ class NoteName
     next: -> @add(1)
     prev: -> @add(-1)
     display: ->
-        noteNamesMap[@name]
+        getNoteName(@name)
 
 window.NoteName = NoteName
 
@@ -31,7 +38,7 @@ window.NoteName = NoteName
 window.SimpleNoteName = (noteCode) ->
     if !noteCode
         return ""
-    return noteNamesMap[noteCode[0]]
+    return getNoteName(noteCode[0])
 
 maqam_names = {}
 

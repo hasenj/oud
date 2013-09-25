@@ -10,10 +10,13 @@ BaseNote = function(nameWithOctave) {
     var self = this;
     var raw_name = nameWithOctave[0];
     var octave = Number(nameWithOctave[1]);
+    self.octave = octave;
     self.raw = nameWithOctave;
     self.noteName = new NoteName(raw_name);
-    self.display = self.noteName.display() + " " + octave;
-    octave -= 2; // shift by 2 ..
+    self.display = ko.computed(function() {
+        return self.noteName.display() + " " + self.octave;
+    });
+    octave -= 2; // shift by 2 .. XXX confusion ..
     self.note = notes[raw_name].addInterval(intervals.octave.mul(octave));
 }
 
@@ -29,7 +32,7 @@ BaseNotesVM = function() {
     self.selectedDisplayName = ko.computed(function() {
         var name = self.selected()[0];
         var octaveNumber = self.selected()[1];
-        return noteNamesMap[name] + " " + octaveNumber;
+        return getNoteName(name) + " " + octaveNumber;
     });
 
     self.selectedIndex = ko.computed(function() {
@@ -72,7 +75,9 @@ JinsButton = function(key, name) {
     var self = this;
     self.key = key;
     self.jins = ajnas[name];
-    self.displayName = getScaleName(name);
+    self.displayName = ko.computed(function() {
+        return getScaleName(name);
+    });
     // self.display = key + ' | ' + getScaleName(name);
 
     var unclick = 0;
@@ -117,6 +122,9 @@ JinsSetControls = function() {
         var c = {}
         c.label = label;
         c.jins = jins;
+        c.displayLabel = ko.computed(function() {
+            return getText(c.label);
+        });
         c.displayName = ko.computed(function() {
             return jins().displayName();
         });
