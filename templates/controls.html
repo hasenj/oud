@@ -52,7 +52,7 @@
 <!-- For this template, assume current bound data is a jins object -->
 <script type="text/html" id="template_jins_info">
     <div>
-        <span class="ib" data-bind="text: dispName"> </span>
+        <span class="ib" data-bind="text: displayName"> </span>
     </div>
 </script>
 
@@ -65,7 +65,7 @@
         --><label class="label ptr" data-bind="text: label, click: select, hover: shadowArrowHover"></label>
         <p class="def arrow">
             <span class="ib" data-bind="click: toggleJinsMenu">
-                <span data-bind="text: dispName"> </span>
+                <span data-bind="text: displayName"> </span>
                 <span class="icon"> v </span>
             </span>
         </p>

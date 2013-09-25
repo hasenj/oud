@@ -14,7 +14,7 @@
 ABCNotes = "A B C D E F G".split(" ")
 window.stdNoteNames = ABCNotes
 
-window.note_names_map = { A: "لا", B: "سي", C: "دو", D: "ري", E: "مي", F: "فا", G: "صول" }
+window.noteNamesMap = { A: "لا", B: "سي", C: "دو", D: "ري", E: "مي", F: "فا", G: "صول" }
 class NoteName
     constructor: (@name) ->
         @index = ABCNotes.indexOf(@name)
@@ -23,7 +23,7 @@ class NoteName
     next: -> @add(1)
     prev: -> @add(-1)
     display: ->
-        note_names_map[@name]
+        noteNamesMap[@name]
 
 window.NoteName = NoteName
 
@@ -31,7 +31,7 @@ window.NoteName = NoteName
 window.SimpleNoteName = (noteCode) ->
     if !noteCode
         return ""
-    return note_names_map[noteCode[0]]
+    return noteNamesMap[noteCode[0]]
 
 maqam_names_map = {
     "ajem" : "عجم",
@@ -82,10 +82,9 @@ window.ScaleArabicName = ScaleArabicName
 class Jins
     constructor: (@name, @p1, @p2, @p3) ->
         self = this
-        self.dispName = ko.computed ->
+        self.displayName = ko.computed ->
             ScaleArabicName(self.name)
-        self.disp_name = self.dispName
-        self.disp_intervals = ko.computed ->
+        self.dispIntervals = ko.computed ->
             return "--"
             # [self.p1, self.p2, self.p3].join("-")
 

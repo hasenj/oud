@@ -29,7 +29,7 @@ BaseNotesVM = function() {
     self.selectedDisplayName = ko.computed(function() {
         var name = self.selected()[0];
         var octaveNumber = self.selected()[1];
-        return note_names_map[name] + " " + octaveNumber;
+        return noteNamesMap[name] + " " + octaveNumber;
     });
 
     self.selectedIndex = ko.computed(function() {
@@ -117,8 +117,8 @@ JinsSetControls = function() {
         var c = {}
         c.label = label;
         c.jins = jins;
-        c.dispName = ko.computed(function() {
-            return jins().dispName();
+        c.displayName = ko.computed(function() {
+            return jins().displayName();
         });
         c.select = function() {
             if(!parent.locked()) {

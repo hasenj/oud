@@ -21,7 +21,7 @@ function VirtualKeyVM(row, column, piano) {
         return self.note().freq();
     });
 
-    self.interval_to_next = ko.computed(function() {
+    self.intervalToNext = ko.computed(function() {
         return "5"; // XXX STUB
     });
 
@@ -29,12 +29,12 @@ function VirtualKeyVM(row, column, piano) {
         return piano.kbLayout().letterAt(row, column);
     })
 
-    self.disp_freq = ko.computed(function() {
+    self.dispFreq = ko.computed(function() {
         var t = self.note();
         return t == null? "&nbsp;" : t;
     });
 
-    self.disp_letter = ko.computed(function() {
+    self.dispLetter = ko.computed(function() {
         var letter = self.letter();
         if(letter != " ") {
             return letter;
@@ -42,19 +42,19 @@ function VirtualKeyVM(row, column, piano) {
         return "&nbsp;"
     });
 
-    self.note_name = ko.computed(function() {
+    self.noteName = ko.computed(function() {
         var base = piano.noteName();
         return base.add(self.key_index);
     });
 
-    self.disp_note_name = ko.computed(function() {
-        return self.note_name().display();
+    self.dispNoteName = ko.computed(function() {
+        return self.noteName().display();
     });
 
     self.pressed = ko.observable(false);
     self.semi_pressed = ko.observable(false);
 
-    self.state_class = ko.computed(function() {
+    self.stateClass = ko.computed(function() {
         if(self.pressed()) {
             return "pressed";
         }
@@ -64,7 +64,7 @@ function VirtualKeyVM(row, column, piano) {
         return "unpressed";
     })
 
-    self.position_class = ko.computed(function() {
+    self.positionClass = ko.computed(function() {
         var pos = self.key_index + 1;
         if(pos == 1) {
             return "first mark";
@@ -77,11 +77,11 @@ function VirtualKeyVM(row, column, piano) {
         }
     })
 
-    self.el_class = ko.computed(function() {
-        return "key " + self.state_class() + " " + self.position_class();
+    self.elClass = ko.computed(function() {
+        return "key " + self.stateClass() + " " + self.positionClass();
     })
 
-    self.container_class = ko.computed(function() {
+    self.containerClass = ko.computed(function() {
         var cls = "ib ";
         if(self.key_index < 0 || self.key_index > 7) {
             cls += "outside_octave";
