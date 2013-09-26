@@ -15,7 +15,7 @@ maqam-button(bghue=230)
   display inline-block
   text-align center
   direction rtl
-  // font-family amiri
+  // font-family 'Droid Arabic Naskh', 'Droid Serif', serif
   font-size 1.1em
   text-shadow 1px 1px 2px hsl(150, 40, 60)
   background: linear-gradient(top, 20% white, 280% hsl(0,0,92))
@@ -125,11 +125,17 @@ aqua-button(bghue=230)
 .section.maqamPresets
     text-align center
     .btn-group
-        margin-top: 10px
+        margin-top 10px
+        margin-left 10px
         .btn.maqamPreset
+            font-family 'Droid Arabic Naskh', 'Droid Serif', serif
+            line-height 20px
             &.maqamName
-                width: 60px;
+                width: 80px;
                 font-weight bold
+                .icon
+                    line-height 20px
+                    height 12px
             &.maqamBase
                 width: 20px;
 
@@ -174,7 +180,7 @@ aqua-button(bghue=230)
         height 100px
         padding-top 0px
         margin-top: 4px // to accomedate the pointer's 4px up shift
-        font-family 'Droid Arabic Kufi', serif
+        font-family 'Droid Arabic Kufi', 'Droid Sans', sans-serif;
         line-height 18px
 
         .pointer_shadow
@@ -242,7 +248,7 @@ aqua-button(bghue=230)
     direction ltr
 
 .maqam_name
-    font normal 1.5em amiri
+    font normal 1.5em 'Droid Arabic Naskh', 'Droid Serif', serif;
     text-shadow 0 1px 1px black
     color hsl(243, 16, 30)
     direction rtl

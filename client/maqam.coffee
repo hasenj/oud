@@ -75,7 +75,7 @@ maqam_names.en = {
     "ajem-ajem" : "Major",
     "kurd": "Kurd",
     "kurd-kurd": "Kurd",
-    "nahawend": "Nahawend"
+    "nahawend": "Nahwnd"
     "nahawend-kurd": "Minor"
     "nahawend-hijaz": "Harmonic Minor",
     "hijaz": "Hijaz"
@@ -84,7 +84,7 @@ maqam_names.en = {
     "hijaz-hijaz": "Hijaz Kar"
     "rast": "Rast"
     "rast-rast": "Rast"
-    "rast-nahawend": "Rast Nahawend",
+    "rast-nahawend": "Rast Nahwnd",
     "beyat" : "Beyat",
     "beyat-kurd" : "Beyat",
     "beyat-beyat" : "Huseiny",
