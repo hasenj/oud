@@ -294,6 +294,35 @@ function PianoInstrument() {
 
 piano = new PianoInstrument();
 
+// cookies
+jinsToString = function(jins) {
+    return jins.name;
+}
+jinsFromString = function(name) {
+    return ajnas[name] || null;
+}
+
+bindCookies = function(ob, name, toString, fromString) {
+    var readCookie = function() {
+        var cookie = $.cookie(name);
+        if(!cookie) { return; }
+        var value = fromString(cookie);
+        if(!value) { return; }
+        ob(value);
+    }
+    var writeCookie = function() {
+        var val = ob();
+        $.cookie(name, toString(val));
+    }
+
+    readCookie();
+    ob.subscribe(writeCookie);
+}
+
+bindCookies(piano.jins1, 'jins1', jinsToString, jinsFromString);
+bindCookies(piano.jins2, 'jins2', jinsToString, jinsFromString);
+bindCookies(piano.baseNoteCtrl.selected, 'baseNote', String, String);
+
 // this should go else where - not in keyboard.js
 function GlobalViewModel() {
     var self = this;

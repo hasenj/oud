@@ -29,6 +29,13 @@ BaseNotesVM = function() {
     }));
     self.selected = ko.observable('C2');
 
+    // validation/sanity-check
+    self.selected.subscribe(function(val) {
+        if(self.rawBaseNotes.indexOf(val) == -1) {
+            self.selected('C2'); // default
+        }
+    });
+
     self.selectedDisplayName = ko.computed(function() {
         var name = self.selected()[0];
         var octaveNumber = self.selected()[1];
@@ -73,6 +80,7 @@ BaseNotesVM = function() {
 
 JinsButton = function(key, name) {
     var self = this;
+    self.name = name;
     self.key = key;
     self.jins = ajnas[name];
     self.displayName = ko.computed(function() {

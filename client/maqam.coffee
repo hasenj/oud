@@ -126,6 +126,7 @@ maqam_names.tr = {
     "d": "<span class='icon'>d</span>", # HACK
 }
 
+# Get the display name for a maqam/jins based on the 'code' (e.g. 'ajem', 'hijaz', etc)
 getScaleName = (maqam_code) ->
     map = maqam_names[language()]
     if !maqam_code
