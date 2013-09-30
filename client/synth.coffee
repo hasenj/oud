@@ -1,24 +1,9 @@
 mkbuf = (len) ->
     new Float32Array Math.floor len
 
-firefox_on_linux = ->
-    $.browser.mozilla and (navigator.platform.indexOf("Linux") != -1 or navigator.oscpu.indexOf("Linux") != -1)
+CHANNELS = 1
 
-CHANNELS = 2
-
-mksink = (srate)->
-    try
-        # if $.browser.mozilla
-        #    issue_warning("This app works better in Chrome")
-        prebuf_size = if firefox_on_linux() then (srate/2) else 2048
-        prebuf_size = Math.floor(prebuf_size)
-        Sink(null, CHANNELS, prebuf_size, srate)
-    catch error # not sure if the exception would happen here
-        alert("الرجاء فتح الموقع فيمتصفح كووكل كروم")
-        {sampleRate: srate, ringOffset: 0}
-
-window.dev = mksink(44100)
-SRATE = dev.sampleRate
+SRATE = 44100
 
 period_len = (freq) -> Math.round (SRATE/freq)
 
@@ -76,36 +61,35 @@ oud_wave_shape = mk_wave_shape [
     mk_point 0.91, -0.04
 ]
 
-DURATION = 1.1
-GAIN = 0.7
+DURATION = 2
+GAIN = 0.8
 SIGNAL_LEN = DURATION * SRATE * CHANNELS
 
-dev.ringBuffer = mkbuf(7 * CHANNELS * SRATE)
-
 # just for the dampness
-dampness = (->
-    down = (val) -> Math.max 0, val - 0.24
+dampness = do ->
+    down = (val) -> Math.max 0, val - 0.3
     # e ^ (-2x) - 0.2 # (without going below 0)
     for point in [0..SIGNAL_LEN]
         down(Math.pow(Math.E, -2 * (point/SIGNAL_LEN)))
-)()
 
 # karplus strong algorithm
 string_type_factory = (wave_shape, noise_sample_param) ->
     signal_gen = (freq) ->
+        buffer = mkAudioBuf(SIGNAL_LEN)
+        signal = buffer.getChannelData(0)
         table_len = period_len freq
         table = mkbuf(table_len)
         base_sample = wave_shape_to_sample(wave_shape, table_len)
         # first apply white nose to the base sample
         for s, index in base_sample
             table[index] = base_sample[index] + ks_noise_sample(noise_sample_param)
-        signal = mkbuf(SIGNAL_LEN)
         for s, index in signal
             point = index % table_len
             adj = (table_len + index - 1) % table_len
             table[point] = avg(table[point], table[adj])
-            signal[index] = table[point]
-        return signal
+            # XXX maybe the dampness can be done by a wave shaper node or something?!
+            signal[index] = table[point] * dampness[index] * GAIN
+        return buffer
 
 oud_signal_gen = string_type_factory(oud_wave_shape, 0.12)
 
@@ -127,46 +111,38 @@ tonefreq = (tone, base=128) ->
     tones_per_octave = 53 # turkish comma system
     return base * Math.pow(2, tone/tones_per_octave)
 
-window.signal_gen_from_freq = (freq) ->
-    signal_raw = oud_signal_gen(freq)
-    signal_raw2 = oud_signal_gen(freq)
-    signal = mkbuf(SIGNAL_LEN)
-    for s, point in signal
-        signal[point] = (signal_raw[point] + signal_raw2[point]) * dampness[point] * GAIN
-    make_dual_channel signal
+window.play_freq = (freq) ->
+    buffer = oud_signal_gen(freq)
+    play_signal(buffer)
 
-make_dual_channel = (signal) ->
-    signal2 = mkbuf(signal.length * 2)
-    for s, index in signal2
-        signal2[index] = signal[Math.floor(index/2)]
-    signal2
+# Based on code from: http://www.html5rocks.com/en/tutorials/webaudio/intro/
+# Fix up prefixing
+window.AudioContext = window.AudioContext || window.webkitAudioContext
+window.context = null
 
-window.play_freq = (freq)->
-    play_signal signal_gen_from_freq freq
+init_context = ->
+    console.log("initializing context")
+    try
+        window.context = new AudioContext()
+    catch error # AudioContext not available
+        alert("Your browser does not implement Web Audio API")
 
-window.playtone = (tone)->
-    signal = tone_gen(tone)
-    play_signal signal
+window.addEventListener('load', init_context)
 
-window.play_signal = (signal) ->
-    point = dev.ringOffset
-    ringlen = dev.ringBuffer.length
-    for sample in signal
-        point = (point + 1) % ringlen
-        dev.ringBuffer[point] += sample
-    true
+mkAudioBuf = (len) ->
+    context.createBuffer(CHANNELS, len, SRATE)
 
-mk_ring_cleaner = ->
-    prev_offset = 0
-    len = dev.ringBuffer.length
-    clean_ring = ->
-        offset = dev.ringOffset
-        point = prev_offset
-        end = if offset < prev_offset then len + offset else offset
-        while point < end
-            dev.ringBuffer[point % len] = 0
-            point++
-        prev_offset = offset
-
-setInterval(mk_ring_cleaner(), 200)
-
+# buffer: an AudioBuffer instance
+window.play_signal = (buffer)->
+    if not context
+        console.log("Audio Context not initialized yet!")
+        # retry = -> play_signal(buffer)
+        # setTimeout(retry, 500)
+        return
+    source = context.createBufferSource();    # creates a sound source
+    source.buffer = buffer
+    source.connect(context.destination) # connect the source to the context's destination (the speakers)
+    if source.start
+        source.start(0)
+    else if source.noteOn
+        source.noteOn(0)

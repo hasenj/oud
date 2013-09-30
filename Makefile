@@ -13,7 +13,7 @@ static/client.js: client/*.js client/*.coffee
 	cat build/js/{text,utils,ratios,synth,maqam,controls,keyboard}.js | jsmin > static/client.js
 
 static/libs.js: client-libs/*.js
-	cat client-libs/{jquery,sugar,jquery.hotkeys,jquery.cookie,sink,ko}.js > static/libs.js
+	cat client-libs/{jquery,sugar,jquery.hotkeys,jquery.cookie,ko}.js > static/libs.js
 
 clean-css:
 	rm -rf build/css
