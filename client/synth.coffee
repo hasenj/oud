@@ -74,10 +74,9 @@ dampness = do ->
 
 # karplus strong algorithm
 string_type_factory = (wave_shape, noise_sample_param) ->
-    # We pass the signal buffer because it's created by AudioContext, So the
-    # function must receive it.
-    # For intents and purposes it's an array of floats
-    signal_gen = (freq, signal) ->
+    signal_gen = (freq) ->
+        buffer = mkAudioBuf(SIGNAL_LEN)
+        signal = buffer.getChannelData(0)
         table_len = period_len freq
         table = mkbuf(table_len)
         base_sample = wave_shape_to_sample(wave_shape, table_len)
@@ -90,7 +89,7 @@ string_type_factory = (wave_shape, noise_sample_param) ->
             table[point] = avg(table[point], table[adj])
             # XXX maybe the dampness can be done by a wave shaper node or something?!
             signal[index] = table[point] * dampness[index] * GAIN
-        return signal
+        return buffer
 
 oud_signal_gen = string_type_factory(oud_wave_shape, 0.12)
 
@@ -113,9 +112,8 @@ tonefreq = (tone, base=128) ->
     return base * Math.pow(2, tone/tones_per_octave)
 
 window.play_freq = (freq) ->
-    gen_fn = (signal) ->
-        oud_signal_gen(freq, signal)
-    play_signal(gen_fn)
+    buffer = oud_signal_gen(freq)
+    play_signal(buffer)
 
 # Based on code from: http://www.html5rocks.com/en/tutorials/webaudio/intro/
 # Fix up prefixing
@@ -131,20 +129,18 @@ init_context = ->
 
 window.addEventListener('load', init_context)
 
-## This function takes a "signal function", creates a signal buffer for it to fill
-## then plays the signal filled by the function
-window.play_signal = (signal_fn)->
+mkAudioBuf = (len) ->
+    context.createBuffer(CHANNELS, len, SRATE)
+
+# buffer: an AudioBuffer instance
+window.play_signal = (buffer)->
     if not context
         console.log("Audio Context not initialized yet!")
-        # retry = -> play_signal(signal_fn)
+        # retry = -> play_signal(buffer)
         # setTimeout(retry, 500)
         return
     source = context.createBufferSource();    # creates a sound source
-    source.buffer = context.createBuffer(CHANNELS, SIGNAL_LEN, SRATE)
-    # Note: this only works for mono-channel, and it's all we ever care about
-    bufferSignal = source.buffer.getChannelData(0)
-    # fill the buffer
-    signal_fn(bufferSignal)
+    source.buffer = buffer
     source.connect(context.destination) # connect the source to the context's destination (the speakers)
     if source.start
         source.start(0)
