@@ -8,10 +8,24 @@ widget-font()
     font-size: 14px;
     font-weight normal
 
+margin-start(val)
+    -webkit-margin-start val
+    -moz-margin-start val
+
+margin-end(val)
+    -webkit-margin-end val
+    -moz-margin-end val
+
+padding-start(val)
+    -webkit-padding-start val
+    -moz-padding-start val
+
+padding-end(val)
+    -webkit-padding-end val
+    -moz-padding-end val
+
 bgcol = hsl(200, 5, 94)
 footer_bgcol = hsl(200, 6, 90)
-
-
 
 html, body
     height 100%
@@ -228,12 +242,11 @@ div.text_page
     background-color: hsla(270, 50%, 99%, 0.98)
     border-radius 5px
     border 1px solid hsla(270, 4, 78, 0.98)
-    box-shadow 0px 0px 2px 1px hsla(270, 0, 88, 0.99)
+    box-shadow 0px 2px 5px -1px hsla(270, 0, 20, 0.9)
     cursor: default
-    text-align end
     widget-font()
     .item
-        padding: 3px 14px
+        padding: 3px 12px
         transition: 100ms
         &:hover
             background-color hsla(270, 50%, 40%, 0.9)
@@ -242,3 +255,13 @@ div.text_page
             background-color hsla(270, 30%, 70%, 0.5)
             color: hsl(270, 5, 50)
 
+.dropmenu.notes
+    margin-top: 2px
+    margin-start: 120px
+    text-align: end
+
+.dropmenu.ajnas
+    margin-top: 2px
+    margin-start: 135px
+    .item
+        padding-end 36px

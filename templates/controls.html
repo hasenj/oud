@@ -27,8 +27,7 @@
             --></div><!--
             --><div class="btn basenote" data-bind="click: nextBase">+</div><!--
         --></div>
-        <div class="dropmenu" style="margin-top: 2px; margin-right: 120px; width: 76px;"
-            data-bind="visible: dropmenuVisible, foreach: baseNotes">
+        <div class="dropmenu notes" data-bind="visible: dropmenuVisible, foreach: baseNotes">
             <div class="item" data-bind="html: display, css: { selected : $parent.selected() == raw },
                 click: function() {
                     $parent.selected(raw);
@@ -79,9 +78,8 @@
             </span>
         </div>
     </div>
-    <div class="dropmenu" style="margin-top: 2px; margin-right: 135px; width: 88px;"
-        data-bind="visible: jinsMenuVisible, foreach: $parent.buttons">
-        <div class="item rtl" data-bind="css: { selected : $parent.jins() == jins },
+    <div class="dropmenu ajnas" data-bind="visible: jinsMenuVisible, foreach: $parent.buttons">
+        <div class="item" data-bind="css: { selected : $parent.jins() == jins },
             click: function() { $parent.jins(jins); }">
             <span class="text-mini" data-bind="html: key"></span>)
             <span data-bind="html: displayName"></span>
