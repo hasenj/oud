@@ -23,6 +23,14 @@ var setTextMulti = function(lang, map) {
     text[lang].update(map);
 }
 
+var languageClass = ko.computed(function() {
+    if(language() == "ar") {
+        return "lang_rtl";
+    } else {
+        return "lang_ltr";
+    }
+});
+
 //////
 
 setText('on', 'en', 'on');

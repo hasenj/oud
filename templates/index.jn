@@ -5,7 +5,7 @@
         <div class="top">
             {% include "jins_set_controls.html" %}
         </div>
-        <div class="app">
+        <div class="app" data-bind="class: languageClass">
             <div class="controls">
                 {% include "controls.html" %}
             </div>

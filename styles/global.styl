@@ -59,7 +59,12 @@ div.layout
         margin 0
 
 div.app
-    text-align right
+    &.lang_rtl
+        text-align right
+        direction rtl
+    &.lang_ltr
+        text-align left
+        direction ltr
     > div
         display inline-block
         vertical-align top
@@ -67,8 +72,6 @@ div.app
     > div.controls
         width 310px
         vertical-align top
-        direction rtl
-        text-align right
     div.keyboard
         width 710px
         height 500px
