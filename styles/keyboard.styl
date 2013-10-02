@@ -49,10 +49,14 @@ btn_highlight(color)
                     // border-bottom 1px solid borderc
                 .kb_key
                     font-family Verdana
-                    font-size 12px
+                    font-size 10px
                     font-weight normal
-                    color hsl(120, 10, 30)
-                    line-height: 50px
+                    line-height: 30px
+                    width: 30px;
+                    margin: 8px auto;
+                    color hsla(120, 10, 30, 0.9)
+                    border: 1px solid hsla(0, 0, 50, 0.3);
+                    border-radius: 5px;
                 .note_name
                     font normal 18px Baghdad, monospace
                     color hsl(270, 20, 60)
@@ -64,6 +68,7 @@ btn_highlight(color)
                 border-color: borderhilight
                 .kb_key
                     color hsl(50, 70, 20)
+                    border: 1px solid hsla(0, 0, 30, 0.3);
                 .note_name
                     color hsl(270, 20, 40)
             &.semi_pressed

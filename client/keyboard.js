@@ -36,7 +36,7 @@ function VirtualKeyVM(row, column, piano) {
 
     self.dispLetter = ko.computed(function() {
         var letter = self.letter();
-        if(letter != " ") {
+        if(letter.trim()) {
             return letter;
         }
         return "&nbsp;"
