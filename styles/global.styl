@@ -166,6 +166,16 @@ div.text_page
 .arrow
     cursor: default
 
+.guide_container
+    &.lang_rtl
+        direction rtl
+        text-align right
+        font-family amiri
+    &.lang_ltr
+        direction ltr
+        text-align left
+        font-family Georgia
+        line-height: 1.8
 .guide
     span()
         display inline-block
@@ -174,9 +184,6 @@ div.text_page
         margin 0 4px
     margin-top 0px
     // border-top 1px solid hsla(30, 93, 24, 0.5)
-    direction rtl
-    text-align right
-    font-family amiri
     display inline-block
     h1
         font-size 24pt

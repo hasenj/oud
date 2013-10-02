@@ -23,8 +23,13 @@
                 </div>
             </div>
         </div>
-        <div data-bind="if: language() == 'ar'">
-            {% include "guide.html" %}
+        <div class="guide_container" data-bind="class: languageClass">
+            <!-- ko if: language() == 'ar' -->
+                {% include "guide-ar.html" %}
+            <!-- /ko -->
+            <!-- ko if: language() == 'en' -->
+                {% include "guide-en.html" %}
+            <!-- /ko -->
         </div>
     </div>
     <div class="oud_bg"></div>
