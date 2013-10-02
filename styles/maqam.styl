@@ -67,20 +67,26 @@
 
 .section.maqamPresets
     text-align center
+    direction rtl
     .btn-group
         margin-top 10px
         margin-left 10px
         .btn.maqamPreset
-            font-family 'Droid Arabic Naskh', 'Droid Serif', serif
             line-height 20px
+            vertical-align middle
             &.maqamName
-                width: 80px;
+                width: 72px;
                 font-weight bold
                 .icon
-                    line-height 20px
-                    height 12px
+                    line-height 14px
+                    height 14px
             &.maqamBase
                 width: 20px;
+
+.lang_ltr
+    .btn.maqamName
+        font-weight normal !important
+        font-size 13px
 
 
 .controls > .panel
@@ -196,7 +202,7 @@
     padding-bottom: 10px
     font-size 1.4em
     font-weight normal
-
+    line-height 36px
 div.app.lang_rtl div.maqam_name
     font-family 'Amiri'
     text-shadow 0 1px 1px black
