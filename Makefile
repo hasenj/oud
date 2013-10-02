@@ -10,7 +10,7 @@ static/client.js: client/*.js client/*.coffee
 	mkdir -p build/js
 	coffee --compile --output build/js client/*.coffee
 	cp client/*.js build/js/
-	cat build/js/{text,utils,ratios,synth,maqam,controls,keyboard}.js | jsmin > static/client.js
+	cat build/js/{utils,text,ratios,synth,maqam,controls,keyboard}.js | jsmin > static/client.js
 
 static/libs.js: client-libs/*.js
 	cat client-libs/{jquery,sugar,jquery.hotkeys,jquery.cookie,ko}.js > static/libs.js

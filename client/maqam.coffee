@@ -119,9 +119,9 @@ maqam_names.tr = {
     "saba" : "Saba",
     "saba-zemzem" : "Saba",
     "saba-kurd": "Saba Kurd",
-    "zemzem": "Zemzem",
-    "zemzem-zemzem": "Zemzem",
-    "zemzem-kurd": "Zemzem Kurd",
+    "zemzem": "Zemzeme",
+    "zemzem-zemzem": "Zemzeme",
+    "zemzem-kurd": "Zemzeme Kurd",
     "u": "<span class='icon'>u</span>", # HACK
     "d": "<span class='icon'>d</span>", # HACK
 }

@@ -13,6 +13,16 @@
                 {% include "keyboard.html" %}
             </div>
         </div>
+        <div data-bind="if: languagePopup">
+            <div class="languagePopup">
+                <div class="content">
+                    <h1>Language / Dil / اللغة</h1>
+                    <div class="lang" data-bind="click: goAr">عربي</div>
+                    <div class="lang" data-bind="click: goEn">English</div>
+                    <div class="lang" data-bind="click: goTr">Türkçe</div>
+                </div>
+            </div>
+        </div>
         <div>
             {% include "guide.html" %}
         </div>

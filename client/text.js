@@ -43,7 +43,23 @@ var goTr = function() {
     language('tr');
 }
 
-//////
+////// app-specific code
+
+bindCookies(language, 'language');
+
+languagePopup = ko.observable(false);
+showLanguagePopup = function() {
+    languagePopup(true);
+    falseOnDocumentClick(languagePopup);
+}
+
+// show a language popup if the user hasn't chosen one before
+if(!$.cookie('language')) {
+    showLanguagePopup();
+}
+
+
+// values for texts
 
 setText('on', 'en', 'on');
 setText('on', 'ar', 'على');

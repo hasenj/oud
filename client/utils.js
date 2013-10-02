@@ -43,3 +43,26 @@ ko.bindingHandlers['class'] = {
         element['__ko__previousClassValue__'] = value;
     }
 };
+
+// bind an observable to a cookie
+bindCookies = function(ob, name, toString, fromString) {
+    if(arguments.length == 2) {
+        toString = String; // identity function for strings
+        fromString = String;
+    }
+    var readCookie = function() {
+        var cookie = $.cookie(name);
+        if(!cookie) { return; }
+        var value = fromString(cookie);
+        if(!value) { return; }
+        ob(value);
+    }
+    var writeCookie = function() {
+        var val = ob();
+        $.cookie(name, toString(val));
+    }
+
+    readCookie();
+    ob.subscribe(writeCookie);
+}
+
