@@ -301,10 +301,23 @@ jinsToString = function(jins) {
 jinsFromString = function(name) {
     return ajnas[name] || null;
 }
+boolToString = String
+stringToBool = function(s) {
+    console.log(s);
+    if(s == "false") {
+        return false;
+    } else if(s == "true") {
+        return true;
+    }
+    // default to true
+    console.log("warning: cookie value is niether 'true' nor 'false'. Falling back to true");
+    return true;
+}
 
 bindCookies(piano.jins1, 'jins1', jinsToString, jinsFromString);
 bindCookies(piano.jins2, 'jins2', jinsToString, jinsFromString);
 bindCookies(piano.baseNoteCtrl.selected, 'baseNote');
+bindCookies(piano.jinsSetCtrl.locked, 'locked', boolToString, stringToBool);
 
 // this should go else where - not in keyboard.js
 function GlobalViewModel() {

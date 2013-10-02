@@ -14,7 +14,7 @@ BaseNote = function(nameWithOctave) {
     self.raw = nameWithOctave;
     self.noteName = new NoteName(raw_name);
     self.display = ko.computed(function() {
-        return self.noteName.display() + " " + self.octave;
+        return self.noteName.display() + self.octave;
     });
     octave -= 2; // shift by 2 .. XXX confusion ..
     self.note = notes[raw_name].addInterval(intervals.octave.mul(octave));
@@ -39,7 +39,7 @@ BaseNotesVM = function() {
     self.selectedDisplayName = ko.computed(function() {
         var name = self.selected()[0];
         var octaveNumber = self.selected()[1];
-        return getNoteName(name) + " " + octaveNumber;
+        return getNoteName(name) + octaveNumber;
     });
 
     self.selectedIndex = ko.computed(function() {
@@ -203,7 +203,7 @@ JinsSetControls = function() {
         }
     }
 
-    self.locked = ko.observable(false);
+    self.locked = ko.observable(true);
     self.toggleLock = function() {
         self.locked(!self.locked());
     }

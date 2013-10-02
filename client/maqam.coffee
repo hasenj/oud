@@ -16,8 +16,8 @@ window.stdNoteNames = ABCNotes
 
 noteNamesMap = {}
 noteNamesMap.ar = { A: "لا", B: "سي", C: "دو", D: "ري", E: "مي", F: "فا", G: "صول" }
-noteNamesMap.en = { A: "A", B: "B", C: "C", D: "D", E: "E", F: "F", G: "G" }
-noteNamesMap.tr = { A: "LA", B: "SI", C: "DO", D: "RE", E: "MI", F: "FA", G: "SOL" }
+noteNamesMap.tr = { A: "La", B: "Si", C: "Do", D: "Re", E: "Mi", F: "Fa", G: "Sol" }
+noteNamesMap.en = noteNamesMap.tr # { A: "A", B: "B", C: "C", D: "D", E: "E", F: "F", G: "G" }
 
 window.getNoteName = (name) ->
     noteNamesMap[language()][name]
