@@ -1,65 +1,8 @@
-@import 'nib'
-@import 'nib/gradients'
-@import 'global'
+@import 'macros'
 
 #maqam_section
   text-align right
   direction rtl
-
-maqam-button(bghue=230)
-  -reset()
-  cursor pointer
-  // box-shadow 0px 0px 11px 2px hsl(bghue, 1, 96) inset
-  border solid 1px hsl(bghue, 20, 85)
-  // background-color white
-  display inline-block
-  text-align center
-  direction rtl
-  // font-family 'Droid Arabic Naskh', 'Droid Serif', serif
-  font-size 1.1em
-  text-shadow 1px 1px 2px hsl(150, 40, 60)
-  background: linear-gradient(top, 20% white, 280% hsl(0,0,92))
-  border-radius 5px
-  &:hover
-  &.hover
-    background: linear-gradient(top, white, 180% hsl(0,0,92))
-  &:active
-  &.active
-    // background-color hsl(190, 20, 80)
-    background: linear-gradient(top, hsl(0,0,88), hsl(0,0,98))
-    text-shadow 1px 1px 2px hsl(150, 40, 90)
-
-
-aqua-button(bghue=230)
-  -reset()
-  outer_border(lite=0)
-    outer_shadow_color = hsl(((bghue+20) % 360), 3, 40+lite)
-    // box-shadow 0px 0px 1px 1px outer_shadow_color
-    border 1px solid (outer_shadow_color * 1.6)
-  cursor pointer
-  box-shadow 0px 0px 1px 1px hsl(bghue, 1, 90) inset
-  outer_border()
-  display inline-block
-  border-radius 5px
-  padding 5px 10px
-  font-size 0.9em
-  text-shadow 0px 0px 1px hsl(150, 30, 86)
-  color hsl(300,20,20)
-  grad(lite=89, to=1.1)
-    g1 = hsl(bghue,30,lite)
-    g2 = hsl(bghue,20,lite*0.96)
-    g3 = hsl(bghue,20,lite*to)
-    background linear-gradient(top, g1 60%, g2 50%, g3)
-  grad()
-  &:hover
-  &.hover
-    outer_border(-14)
-    grad(92, 1.5)
-  &:active
-  &.active
-    grad(85)
-    outer_border(-8)
-
 
 .btn
     maqam-button()
@@ -189,7 +132,6 @@ aqua-button(bghue=230)
             padding-start 14px
             color: hsl(270, 50, 30)
             margin-start: -1px;
-            padding-top: -1px;
 
         .pointer
             pointer-events: none; // let mouse clicks fall through
@@ -203,7 +145,7 @@ aqua-button(bghue=230)
             border-radius 0px
             border 1px solid silver
             border-width 1px 0px
-            transition 300ms
+            transition 200ms
             color: hsl(270, 50, 30)
             padding-start 14px
             margin-start -1px
@@ -247,10 +189,17 @@ aqua-button(bghue=230)
     text-align left
     direction ltr
 
+// mqam name
 .maqam_name
-    font normal 1.5em 'Droid Arabic Naskh', 'Droid Serif', serif;
-    text-shadow 0 1px 1px black
     color hsl(243, 16, 30)
-    direction rtl
     text-align center
+    padding-bottom: 10px
+    font-size 1.4em
+    font-weight normal
+
+div.app.lang_rtl div.maqam_name
+    font-family 'Amiri'
+    text-shadow 0 1px 1px black
+div.app.lang_ltr div.maqam_name
+    font-family 'Droid Sans', sans
 

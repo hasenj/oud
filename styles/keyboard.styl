@@ -1,6 +1,3 @@
-@import 'nib'
-@import 'global'
-
 unpressed_color = hsl(20, 80, 95)
 semipress_color = hsl(40, 60, 87)
 press_color = hsl(40, 77, 80)
@@ -81,6 +78,7 @@ btn_highlight(color)
                 background-image url('/static/images/btn-marked-pressed.png')
             &.mark.semi_pressed
                 background-image url('/static/images/btn-marked-half-pressed.png')
+        // XXX remove this stuff
         .separator
             display inline-block
             margin 0px
@@ -91,7 +89,7 @@ btn_highlight(color)
             font-size 6px
             color white
             text-align center
-            font: monospace
+            font-family: monospace
         .separator_5
             width: 10px
             background-color black

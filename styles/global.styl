@@ -1,28 +1,7 @@
-@import 'nib'
+@import 'nib/reset'
+@import 'macros'
 
 global-reset()
-
-widget-font()
-    color: hsla(270, 10%, 10%, 0.7);
-    font-family: verdana;
-    font-size: 14px;
-    font-weight normal
-
-margin-start(val)
-    -webkit-margin-start val
-    -moz-margin-start val
-
-margin-end(val)
-    -webkit-margin-end val
-    -moz-margin-end val
-
-padding-start(val)
-    -webkit-padding-start val
-    -moz-padding-start val
-
-padding-end(val)
-    -webkit-padding-end val
-    -moz-padding-end val
 
 bgcol = hsl(200, 5, 94)
 footer_bgcol = hsl(200, 6, 90)
@@ -201,7 +180,6 @@ div.text_page
         text-align center
         margin-top 20px
         margin-bottom 10px
-        padding-bottom -10px
         border-bottom 1px solid hsl(200, 6, 82)
 
     p, li

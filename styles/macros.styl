@@ -1,0 +1,83 @@
+@import 'nib'
+@import 'nib/gradients'
+
+widget-font()
+    color: hsla(270, 10, 10, 0.7);
+    font-family: verdana;
+    font-size: 14px;
+    font-weight normal
+
+margin-start(val)
+    -webkit-margin-start val
+    -moz-margin-start val
+
+margin-end(val)
+    -webkit-margin-end val
+    -moz-margin-end val
+
+padding-start(val)
+    -webkit-padding-start val
+    -moz-padding-start val
+
+padding-end(val)
+    -webkit-padding-end val
+    -moz-padding-end val
+
+maqam-button(bghue=230)
+  -reset()
+  cursor pointer
+  // box-shadow 0px 0px 11px 2px hsl(bghue, 1, 96) inset
+  border solid 1px hsl(bghue, 20, 85)
+  // background-color white
+  display inline-block
+  text-align center
+  direction rtl
+  // font-family 'Droid Arabic Naskh', 'Droid Serif', serif
+  font-size 1.1em
+  text-shadow 1px 1px 2px hsl(150, 40, 60)
+  bg1 = rgb(hsl(0,0,92))
+  bg2 = rgb(hsl(0,0,88))
+  bg3 = rgb(hsl(0,0,98))
+  background: linear-gradient(top, 20% white, 280% bg1)
+  border-radius 5px
+  &:hover
+  &.hover
+    background: linear-gradient(top, white, 180% bg2)
+  &:active
+  &.active
+    // background-color hsl(190, 20, 80)
+    background: linear-gradient(top, bg2, bg3)
+    text-shadow 1px 1px 2px hsl(150, 40, 90)
+
+
+aqua-button(bghue=230)
+  -reset()
+  outer_border(lite=0)
+    outer_shadow_color = hsl(((bghue+20) % 360), 3, 40+lite)
+    // box-shadow 0px 0px 1px 1px outer_shadow_color
+    border 1px solid (outer_shadow_color * 1.6)
+  cursor pointer
+  box-shadow 0px 0px 1px 1px hsl(bghue, 1, 90) inset
+  outer_border()
+  display inline-block
+  border-radius 5px
+  padding 5px 10px
+  font-size 0.9em
+  text-shadow 0px 0px 1px hsl(150, 30, 86)
+  color hsl(300,20,20)
+  grad(lite=89, to=1.1)
+    g1 = hsl(bghue,30,lite)
+    g2 = hsl(bghue,20,lite*0.96)
+    g3 = hsl(bghue,20,lite*to)
+    background linear-gradient(top, g1 60%, g2 50%, g3)
+  grad()
+  &:hover
+  &.hover
+    outer_border(-14)
+    grad(92, 1.5)
+  &:active
+  &.active
+    grad(85)
+    outer_border(-8)
+
+
