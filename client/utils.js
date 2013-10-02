@@ -54,7 +54,7 @@ bindCookies = function(ob, name, toString, fromString) {
         var cookie = $.cookie(name);
         if(!cookie) { return; }
         var value = fromString(cookie);
-        if(!value) { return; }
+        if(value == null) { return; }
         ob(value);
     }
     var writeCookie = function() {
