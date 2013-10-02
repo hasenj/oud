@@ -23,7 +23,7 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div data-bind="if: language() == 'ar'">
             {% include "guide.html" %}
         </div>
     </div>
