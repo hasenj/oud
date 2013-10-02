@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="layout" data-bind="with: piano">
-        <div class="top">
+        <div class="top" data-bind="class: languageClass">
             {% include "jins_set_controls.html" %}
         </div>
         <div class="app" data-bind="class: languageClass">
