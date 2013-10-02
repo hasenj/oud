@@ -31,6 +31,18 @@ var languageClass = ko.computed(function() {
     }
 });
 
+var goEn = function() {
+    language('en');
+}
+
+var goAr = function() {
+    language('ar');
+}
+
+var goTr = function() {
+    language('tr');
+}
+
 //////
 
 setText('on', 'en', 'on');
