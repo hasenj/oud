@@ -153,8 +153,9 @@
             border-width 1px 0px
             transition 200ms
             color: hsl(270, 50, 30)
-            padding-start 14px
-            margin-start -1px
+            // for the margin-start stuff, see below
+            // padding-start 14px
+            // margin-start -1px
             &.first
                 margin-top: 0px - 5px
             &.second
@@ -162,7 +163,7 @@
             .icon.lock
                 font-size 12px
                 color hsla(270, 30, 30, 0.8)
-                margin-start 240px
+                // margin-start 240px
 
         .jins
             height: 30px
@@ -186,6 +187,20 @@
                     border: 1px solid silver
                     padding 4px
 
+// margin-start doesn't update properly when language is switched ..
+// so we have to resort to using this instead
+.lang_rtl
+    .pointer
+        padding-right 14px
+        margin-right -1px
+        .icon.lock
+            margin-right 240px
+.lang_ltr
+    .pointer
+        padding-left 14px
+        margin-left -1px
+        .icon.lock
+            margin-left 240px
 
 .rtl
     text-align right
