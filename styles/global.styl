@@ -255,19 +255,20 @@ div.text_page
         padding-end 36px
 
 .languagePopup {
+    textcolor = hsl(270, 60, 40)
     position: fixed;
     top: 0px;
     margin: 100px 200px
     width: 600px;
     padding: 0px;
-    color: blue;
+    color: textcolor;
     text-align: center;
     font-family: 'Droid Arabic Kufi', 'Droid Sans', sans-serif;
-    background-color: white;
+    background-color: hsl(270, 0, 99);
     border-radius: 30px;
-    box-shadow: 0px 0px 10px 2px darken(blue, 20);
-    border: 1px solid blue;
-    opacity: 0.9;
+    box-shadow: 0px 0px 10px -2px darken(textcolor, 10);
+    border: 1px solid textcolor;
+    opacity: 0.95;
     .content {
         margin: 0px;
         padding: 0px;
@@ -280,7 +281,7 @@ div.text_page
         }
         div.lang {
             margin: 0px;
-            border-top: 1px solid blue;
+            border-top: 1px solid textcolor;
             padding: 20px;
             font-size: 28px;
             &:last-child {
@@ -289,7 +290,7 @@ div.text_page
 
             cursor: pointer;
             &:hover {
-                background-color: lighten(blue, 30);
+                background-color: lighten(textcolor, 45);
             }
         }
     }
