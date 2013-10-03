@@ -45,8 +45,6 @@ var goTr = function() {
 
 ////// app-specific code
 
-bindCookies(language, 'language');
-
 languagePopup = ko.observable(false);
 showLanguagePopup = function() {
     languagePopup(true);
@@ -58,6 +56,7 @@ if(!$.cookie('language')) {
     showLanguagePopup();
 }
 
+bindCookies(language, 'language');
 
 // values for texts
 

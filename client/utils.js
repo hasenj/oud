@@ -64,5 +64,6 @@ bindCookies = function(ob, name, toString, fromString) {
 
     readCookie();
     ob.subscribe(writeCookie);
+    writeCookie(); // sounds redundant, but it's necessary for first time usage
 }
 
