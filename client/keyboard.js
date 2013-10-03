@@ -303,7 +303,6 @@ jinsFromString = function(name) {
 }
 boolToString = String
 stringToBool = function(s) {
-    console.log(s);
     if(s == "false") {
         return false;
     } else if(s == "true") {

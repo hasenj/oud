@@ -121,7 +121,7 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext
 window.context = null
 
 init_context = ->
-    console.log("initializing context")
+    console.log("Initializing Audio Context")
     try
         window.context = new AudioContext()
     catch error # AudioContext not available
@@ -135,7 +135,7 @@ mkAudioBuf = (len) ->
 # buffer: an AudioBuffer instance
 window.play_signal = (buffer)->
     if not context
-        console.log("Audio Context not initialized yet!")
+        console.log("Audio Context not Initialized yet!")
         # retry = -> play_signal(buffer)
         # setTimeout(retry, 500)
         return
