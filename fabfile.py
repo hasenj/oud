@@ -26,7 +26,7 @@ def deploy(rev="HEAD"):
         put(local_archive, arch)
         run("unzip {0}".format(arch))
         run("./prepare.sh")
-        run('./run_bg.sh')
+        run('./start.sh')
         sleep(1)
         # now that the server is running, set the symlink for serving the static data ..
         with cd("../.."):
@@ -37,6 +37,6 @@ def deploy(rev="HEAD"):
 def start():
     current_version = os.path.join(deploy_dir, "current")
     with cd(current_version):
-        run("./run_bg.sh")
+        run("./start.sh")
 
 # XXX Need some task to configure nginx or something ...?
