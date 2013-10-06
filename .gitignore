@@ -4,3 +4,7 @@ build
 static/all.css
 static/client.js
 static/libs.js
+build-mobile
+mobile/styles.css
+mobile/client.js
+mobile/libs.js
