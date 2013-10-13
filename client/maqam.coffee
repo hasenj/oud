@@ -165,37 +165,22 @@ class Jins
         [@p1, @p2, @p3]
 
 J2 = intervals.tone
-j2 = intervals.lessertTone
-m2 = intervals.semiTone
-M2 = intervals.biggerSemiTone
-t2 = intervals.neutralSecond
-T2 = intervals.biggerNeutralSecond
+M2 = intervals.semiTone
+T2 = intervals.neutralSecond
 J3 = intervals.majorThird
 M3 = intervals.minorThird
 T3 = intervals.neutralThird
-p4 = intervals.forth
-d4 = intervals.diminishedForth
+P4 = intervals.forth
 D4 = intervals.biggerDiminishedForth
-p5 = intervals.fifth
+P5 = intervals.fifth
 
 # Define the ajnas
 window.ajnas = {}
-ajnas.ajem = new Jins('ajem', intervals.lesserTone, intervals.majorThird, intervals.forth)
-ajnas.kurd = new Jins('kurd', intervals.semiTone, intervals.minorThird, intervals.forth)
-ajnas.hijaz = new Jins('hijaz', intervals.semiTone, intervals.majorThird, intervals.forth)
-ajnas.nahawend = new Jins('nahawend', intervals.tone, intervals.minorThird, intervals.forth)
-ajnas.beyat = new Jins('beyat', intervals.neutralSecond, intervals.minorThird, intervals.forth)
-ajnas.rast = new Jins('rast', intervals.lesserTone, intervals.neutralThird, intervals.forth)
-ajnas.saba = new Jins('saba', intervals.neutralSecond, intervals.minorThird, intervals.diminishedForth)
-ajnas.zemzem = new Jins('zemzem', intervals.semiTone, intervals.minorThird, intervals.diminishedForth)
-
-# XXX do something about this ..
-# window.selected_mode = ko.observable($.cookie('mode') || 'ajem')
-# selected_mode.subscribe( (val) ->
-#     $.cookie('mode', val)
-# )
-
-
-# just a sanity check
-# if(window.selected_mode() not of maqamPresetMap)
-#     window.selected_mode('ajem')
+ajnas.ajem = new Jins('ajem', J2, J3, P4)
+ajnas.kurd = new Jins('kurd', M2, M3, P4)
+ajnas.hijaz = new Jins('hijaz', M2, J3, P4)
+ajnas.nahawend = new Jins('nahawend', J2, M3, P4)
+ajnas.beyat = new Jins('beyat', T2, M3, P4)
+ajnas.rast = new Jins('rast', J2, T3, P4)
+ajnas.saba = new Jins('saba', T2, M3, D4)
+ajnas.zemzem = new Jins('zemzem', M2, M3, D4)
