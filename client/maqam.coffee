@@ -171,7 +171,7 @@ J3 = intervals.majorThird
 M3 = intervals.minorThird
 T3 = intervals.neutralThird
 P4 = intervals.forth
-D4 = intervals.biggerDiminishedForth
+D4 = intervals.diminishedForth
 P5 = intervals.fifth
 
 # Define the ajnas
