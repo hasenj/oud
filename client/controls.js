@@ -137,9 +137,7 @@ JinsSetControls = function() {
             return jins().displayName();
         });
         c.select = function() {
-            if(!parent.locked()) {
-                parent.pointer(jins);
-            }
+            parent.pointer(jins);
         }
         c.isSelected = ko.computed(function() {
             return parent.pointer() === jins;
