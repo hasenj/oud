@@ -25,6 +25,15 @@ function VirtualKeyVM(row, column, piano) {
         return "5"; // XXX STUB
     });
 
+    // how many quarter tones to next key in scale
+    self.distanceToNext = ko.computed(function() {
+        var next_note = piano.note_at(self.octave_index, self.key_index + 1);
+        var this_note = self.note();
+        // XXX use NoteRatio instead of Ratio because Ratio expects integers only
+        var ratio = NoteRatio(next_note, this_note);
+        return ratio.quarter_count() - 2; // sub semitone because it's min default
+    });
+
     self.letter = ko.computed(function() {
         return piano.kbLayout().letterAt(row, column);
     })

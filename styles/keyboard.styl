@@ -83,30 +83,32 @@ btn_highlight(color)
                 background-image url('/static/images/btn-marked-pressed.png')
             &.mark.semi_pressed
                 background-image url('/static/images/btn-marked-half-pressed.png')
-        // XXX remove this stuff
         .separator
             display inline-block
             margin 0px
             padding 0px
             vertical-align top
-            margin-top 27px
-            line-height: 7px
-            font-size 6px
-            color white
+            margin-top: 30px
+            margin-left: -14px
             text-align center
             font-family: monospace
-        .separator_5
-            width: 10px
-            background-color black
-        .separator_7
-            width: 14px
-            background-color gray * 0.8
-        .separator_8, .separator_9
-            width: 20px
-            background-color black
-        .separator_12
-            width: 30px
-            background-color gray * 0.8
+            position: absolute;
+            background-color transparent
+            height: 24px
+            width: 24px
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 80%;
+            // opacity: 0.7;
+        .separator_0
+            width: 0px
+            height: 0px
+        .separator_1
+            background-image: url('/static/images/c1.png')
+        .separator_2
+            background-image: url('/static/images/c2.png')
+        .separator_3, .separator_4
+            background-image: url('/static/images/c3.png')
 
 // oud styles
 #oud_kb

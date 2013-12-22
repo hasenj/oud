@@ -108,6 +108,13 @@ RatioCtor = function(a, b) {
         return self.linearize(24);
     }
 
+    // how many 'quarter' tones are in there roughly?
+    self.quarter_count = function() {
+        var lin = self.toLinear() * 24;
+        lin = Number(lin.toFixed(1)); // HACK round to tenth before rounding integer
+        return Math.round(lin);
+    }
+
     self.commas = function() {
         return self.linearize(53);
     }
@@ -201,6 +208,15 @@ Note = function(frequency) {
         }
         play_signal(signal);
     }
+}
+
+// like Ratio, but accept non-integers
+NoteRatio = function(a, b) {
+    a = a.freq();
+    b = b.freq();
+    a = parseInt(a * 1000);
+    b = parseInt(b * 1000);
+    return Ratio(a, b);
 }
 
 // standard notes
