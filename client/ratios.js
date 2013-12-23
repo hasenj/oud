@@ -118,9 +118,24 @@ RatioCtor = function(a, b) {
     // how many 'quarter' tones are in there roughly?
     self.quarter_count = function() {
         var lin = self.toLinear() * 24;
-        lin = Number(lin.toFixed(1)); // HACK round to tenth before rounding integer
         return Math.round(lin);
     }
+
+    // how many 'commas' tones are in there roughly?
+    self.comma_count = function() {
+        var lin = self.toLinear() * 53;
+        return Math.round(lin);
+    }
+
+    // how many 'steps' are roughly in there, assuming we divide octave to `units` units?
+    self.step_count = function(units) {
+        if(!units) {
+            units = 1;
+        }
+        var lin = self.toLinear() * units;
+        return Math.round(lin);
+    }
+
 
     self.commas = function() {
         return self.linearize(53);
@@ -230,19 +245,36 @@ Note = function(frequency) {
 NoteRatio = function(a, b) {
     a = a.inFirstLaOctave().freq();
     b = b.inFirstLaOctave().freq();
+    // HACK: sometimes la + little and la - little are almost an octave appart ..
+    if(Math.abs(Math.round(a/b)) == 2) {
+        if(b > a) { b = b / 2; }
+        else { b = b * 2; }
+    }
     a = parseInt(a * 1000);
     b = parseInt(b * 1000);
     return Ratio(a, b);
 }
 
 // standard notes
-notes = {}
+notes = {};
 notes.A1 = new Note(110);
 notes.B1 = notes.A1.addInterval(intervals.tone);
 notes.C = notes.A1.addInterval(intervals.minorThird);
 notes.D = notes.A1.addInterval(intervals.forth);
 notes.E = notes.A1.addInterval(intervals.fifth);
 notes.F = notes.C.addInterval(intervals.forth);
-notes.G = notes.C.addInterval(intervals.fifth);
+notes.G = notes.D.addInterval(intervals.forth);
 notes.A = notes.A1.addInterval(intervals.octave);
 notes.B = notes.B1.addInterval(intervals.octave);
+
+// HACK: use std western notes for determining accidentals ..
+accidentals = {};
+accidentals.A = new Note(110);
+accidentals.B = new Note(123);
+accidentals.C = new Note(131);
+accidentals.D = new Note(147);
+accidentals.E = new Note(165);
+accidentals.F = new Note(175);
+accidentals.G = new Note(196);
+accidentals = notes;
+

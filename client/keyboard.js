@@ -59,20 +59,27 @@ function VirtualKeyVM(row, column, piano) {
     // get how much is this note shifted from its standard (version on la minor scale)
     self.noteShift = ko.computed(function() {
         var a = self.note();
-        var b = notes[self.noteName().name]; // HACK ..
+        var b = accidentals[self.noteName().name]; // HACK .. noteName().name then indexing that into a map
         return NoteRatio(a, b).quarter_count();
     });
 
     self.dispNoteName = ko.computed(function() {
         var raw = self.noteName().display()
         var shift = self.noteShift();
+        var symbols = {
+            'sharp': '&#9839;',
+            'flat': '&#9837;',
+            'h_flat': '&#119091;',
+            'h_sharp': '&#119090;'
+        }
         var map = {
             '0': '',
-            '1': '&#119090;', // half-sharp
-            '2': '&#9839;', // sharp
-            '-1': '&#119091;', // half-flat
-            '-2': '&#9837;', // flat
+            '1': symbols.h_sharp,
+            '2': symbols.sharp,
+            '-1': symbols.h_flat,
+            '-2': symbols.flat,
         }
+        // map = {}; // HACK TEMP
         shift = shift.toString();
         if(shift in map) { shift = map[shift] }
         return raw + shift;
