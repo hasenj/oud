@@ -11,6 +11,13 @@ gcd = function(a,b) {
     }
 }
 
+log_n = function(a,n) {
+    return Math.log(a)/Math.log(n);
+}
+log2 = function(a) {
+    return log_n(a, 2);
+}
+
 // A ratio is a:b
 // we just call the first number a and the second number b
 RatioCtor = function(a, b) {
@@ -201,19 +208,28 @@ Note = function(frequency) {
     }
     self.subRatio = self.subInterval;
 
-    var signal = null;
-    self.play = function() {
-        if(!signal) {
-            signal = signal_gen_from_freq(self.freq());
+    // return a note similar to this but in first la octave
+    self.inFirstLaOctave = function() {
+        var f = self.freq();
+        while(f < 110) {
+            f = f * 2;
         }
-        play_signal(signal);
+        while(f >= 220) {
+            f = f / 2;
+        }
+        return new Note(f);
+    }
+
+    // what octave are we in? assuming we start from la 110
+    self.laOctave = function() {
+        return log2(self.freq() / self.inFirstLaOctave().freq()) + 1; // add 1 because this would be 0 indexed
     }
 }
 
 // like Ratio, but accept non-integers
 NoteRatio = function(a, b) {
-    a = a.freq();
-    b = b.freq();
+    a = a.inFirstLaOctave().freq();
+    b = b.inFirstLaOctave().freq();
     a = parseInt(a * 1000);
     b = parseInt(b * 1000);
     return Ratio(a, b);
@@ -226,8 +242,7 @@ notes.B1 = notes.A1.addInterval(intervals.tone);
 notes.C = notes.A1.addInterval(intervals.minorThird);
 notes.D = notes.A1.addInterval(intervals.forth);
 notes.E = notes.A1.addInterval(intervals.fifth);
-notes.F = notes.D.addInterval(intervals.majorThird);
-notes.G = notes.D.addInterval(intervals.forth);
+notes.F = notes.C.addInterval(intervals.forth);
+notes.G = notes.C.addInterval(intervals.fifth);
 notes.A = notes.A1.addInterval(intervals.octave);
 notes.B = notes.B1.addInterval(intervals.octave);
-

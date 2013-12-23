@@ -56,8 +56,26 @@ function VirtualKeyVM(row, column, piano) {
         return base.add(self.key_index);
     });
 
+    // get how much is this note shifted from its standard (version on la minor scale)
+    self.noteShift = ko.computed(function() {
+        var a = self.note();
+        var b = notes[self.noteName().name]; // HACK ..
+        return NoteRatio(a, b).quarter_count();
+    });
+
     self.dispNoteName = ko.computed(function() {
-        return self.noteName().display();
+        var raw = self.noteName().display()
+        var shift = self.noteShift();
+        var map = {
+            '0': '',
+            '1': '&#119090;', // half-sharp
+            '2': '&#9839;', // sharp
+            '-1': '&#119091;', // half-flat
+            '-2': '&#9837;', // flat
+        }
+        shift = shift.toString();
+        if(shift in map) { shift = map[shift] }
+        return raw + shift;
     });
 
     self.pressed = ko.observable(false);
