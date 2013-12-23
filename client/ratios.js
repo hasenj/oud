@@ -232,6 +232,7 @@ Note = function(frequency) {
         while(f >= 220) {
             f = f / 2;
         }
+        // XXX do something about LA being either LA1 or LA2 ..
         return new Note(f);
     }
 
@@ -243,13 +244,8 @@ Note = function(frequency) {
 
 // like Ratio, but accept non-integers
 NoteRatio = function(a, b) {
-    a = a.inFirstLaOctave().freq();
-    b = b.inFirstLaOctave().freq();
-    // HACK: sometimes la + little and la - little are almost an octave appart ..
-    if(Math.abs(Math.round(a/b)) == 2) {
-        if(b > a) { b = b / 2; }
-        else { b = b * 2; }
-    }
+    if(a.freq) a = a.freq();
+    if(b.freq) b = b.freq();
     a = parseInt(a * 1000);
     b = parseInt(b * 1000);
     return Ratio(a, b);
@@ -276,5 +272,9 @@ accidentals.D = new Note(147);
 accidentals.E = new Note(165);
 accidentals.F = new Note(175);
 accidentals.G = new Note(196);
+
+// HACK/TEMP
 accidentals = notes;
+accidentals.A = notes.A1;
+accidentals.B = notes.B1;
 

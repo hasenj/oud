@@ -29,7 +29,7 @@ function VirtualKeyVM(row, column, piano) {
     self.distanceToNext = ko.computed(function() {
         var next_note = piano.note_at(self.octave_index, self.key_index + 1);
         var this_note = self.note();
-        // XXX use NoteRatio instead of Ratio because Ratio expects integers only
+        // NOTE: use use NoteRatio instead of Ratio because Ratio expects integers only
         var ratio = NoteRatio(next_note, this_note);
         return ratio.quarter_count() - 2; // sub semitone because it's min default
     });
@@ -58,8 +58,12 @@ function VirtualKeyVM(row, column, piano) {
 
     // get how much is this note shifted from its standard (version on la minor scale)
     self.noteShift = ko.computed(function() {
-        var a = self.note();
+        var a = self.note().inFirstLaOctave();
         var b = accidentals[self.noteName().name]; // HACK .. noteName().name then indexing that into a map
+        // HACK
+        if(self.noteName().name == 'A' && a.freq() > 170) {
+            a = a.subInterval(intervals.octave);
+        }
         return NoteRatio(a, b).quarter_count();
     });
 
