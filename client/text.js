@@ -2,8 +2,6 @@
 
 var language = ko.observable('ar'); // default to arabic
 
-// XXX TODO use cookies to remember language settings
-
 var text = {
     ar: {},
     en: {},

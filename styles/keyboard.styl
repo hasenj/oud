@@ -139,8 +139,18 @@ btn_highlight(color)
 .lang_ltr {
     .note_name {
         font: normal 14px Tahoma !important;
-        // color: hsl(270, 20, 50) !important;
         line-height: 50px !important;
+        direction: ltr;
     }
+}
+
+.lang_rtl {
+    .note_name {
+        direction: rtl;
+    }
+}
+
+.note_name .accidental {
+    font: normal 18px FreeSerif !important;
 }
 

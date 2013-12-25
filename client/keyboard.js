@@ -58,7 +58,10 @@ function VirtualKeyVM(row, column, piano) {
     });
 
     self.dispNoteName = ko.computed(function() {
-        var raw = self.noteName().display()
+        return self.noteName().display()
+    });
+
+    self.dispNoteAccidental = ko.computed(function() {
         var shift = self.noteShift();
         var symbols = {
             'sharp': '&#9839;',
@@ -73,10 +76,9 @@ function VirtualKeyVM(row, column, piano) {
             '-1': symbols.h_flat,
             '-2': symbols.flat,
         }
-        // map = {}; // HACK TEMP
         shift = shift.toString();
         if(shift in map) { shift = map[shift] }
-        return raw + shift;
+        return shift;
     });
 
     self.pressed = ko.observable(false);
