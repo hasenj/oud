@@ -230,18 +230,23 @@ div.text_page
 
 .dropmenu
     position: absolute
-    margin-top: 8px
+    margin-top: 0px
     margin-left: -8px
-    padding: 8px 0px;
-    background-color: hsla(270, 50%, 99%, 0.98)
-    border-radius 5px
-    border 1px solid hsla(270, 4, 78, 0.98)
+    padding-top: 0px;
+    padding-bottom: 10px;
+    background-color: white;
+    border-radius: 0px 0px 5px 5px
+    border: 1px solid gray;
+    border-top-color: silver;
     box-shadow 0px 2px 5px -1px hsla(270, 0, 20, 0.9)
     cursor: default
     widget-font()
     .item
-        padding: 3px 12px
+        padding: 8px 20px
         transition: 100ms
+        min-width: 80px;
+        font-family: "Droid Arabic Kufi", "Droid Sans", FreeSans, sans-serif;
+        border-bottom: 1px solid silver;
         &:hover
             background-color hsla(270, 50%, 40%, 0.9)
             color: hsl(270, 10, 99)
@@ -250,15 +255,21 @@ div.text_page
             color: hsl(270, 5, 50)
 
 .dropmenu.notes
-    margin-top: 2px
-    margin-start: 120px
+    margin-top: -2px
+    margin-start: 121px
     text-align: end
+    .item
+        min-width: 74px;
+        width: 74px;
+        padding: 2px 0px;
+        text-align: center;
 
 .dropmenu.ajnas
-    margin-top: 2px
+    margin-top: -4px
     margin-start: 135px
     .item
-        padding-end 36px
+        min-width: 120px;
+
 
 .languagePopup {
     textcolor = hsl(270, 60, 40)
