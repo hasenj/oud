@@ -264,21 +264,6 @@ notes.G = notes.D.addInterval(intervals.forth);
 notes.A = notes.A1.addInterval(intervals.octave);
 notes.B = notes.B1.addInterval(intervals.octave);
 
-// HACK: use std western notes for determining accidentals ..
-accidentals = {};
-accidentals.A = new Note(110);
-accidentals.B = new Note(123);
-accidentals.C = new Note(131);
-accidentals.D = new Note(147);
-accidentals.E = new Note(165);
-accidentals.F = new Note(175);
-accidentals.G = new Note(196);
-
-// HACK/TEMP
-accidentals = notes;
-accidentals.A = notes.A1;
-accidentals.B = notes.B1;
-
 // each key maps to its interval to the next in quarter counts!
 stdIntervals = {
     'A': 4,
