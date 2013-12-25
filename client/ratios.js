@@ -242,7 +242,7 @@ Note = function(frequency) {
     }
 }
 
-// like Ratio, but accept non-integers
+// like Ratio, but accept non-integers, and accept note objects too
 NoteRatio = function(a, b) {
     if(a.freq) a = a.freq();
     if(b.freq) b = b.freq();
@@ -278,3 +278,13 @@ accidentals = notes;
 accidentals.A = notes.A1;
 accidentals.B = notes.B1;
 
+// each key maps to its interval to the next in quarter counts!
+stdIntervals = {
+    'A': 4,
+    'B': 2,
+    'C': 4,
+    'D': 4,
+    'E': 2,
+    'F': 4,
+    'G': 4,
+};

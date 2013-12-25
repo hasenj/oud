@@ -21,10 +21,6 @@ function VirtualKeyVM(row, column, piano) {
         return self.note().freq();
     });
 
-    self.intervalToNext = ko.computed(function() {
-        return "5"; // XXX STUB
-    });
-
     // how many quarter tones to next key in scale
     self.distanceToNext = ko.computed(function() {
         var next_note = piano.note_at(self.octave_index, self.key_index + 1);
@@ -58,13 +54,7 @@ function VirtualKeyVM(row, column, piano) {
 
     // get how much is this note shifted from its standard (version on la minor scale)
     self.noteShift = ko.computed(function() {
-        var a = self.note().inFirstLaOctave();
-        var b = accidentals[self.noteName().name]; // HACK .. noteName().name then indexing that into a map
-        // HACK
-        if(self.noteName().name == 'A' && a.freq() > 170) {
-            a = a.subInterval(intervals.octave);
-        }
-        return NoteRatio(a, b).quarter_count();
+        return piano.shift_at(self.octave_index, self.key_index);
     });
 
     self.dispNoteName = ko.computed(function() {
@@ -226,6 +216,60 @@ function PianoInstrument() {
         return Array.create(self.jins1_notes(), self.jins2_notes(), self.jins3_notes());
     });
 
+    ko.unwrap = ko.utils.unwrapObservable; // TEMP
+    // XXX TODO update ko version
+
+    // intervals in quarter-tones
+    self.quarter_intervals = ko.computed(function() {
+        var intervals = [];
+        var notes = self.octave_notes();
+        for(var i = 0; i < notes.length - 1; i++) {
+            var n0 = notes[i]; // this note
+            var n1 = notes[i+1]; // next note
+            intervals.push(NoteRatio(n1, n0).quarter_count());
+        }
+        return intervals;
+    });
+
+    // std intervals starting from base note
+    self.std_intervals = ko.computed(function() {
+        var result = [];
+        var noteName = self.baseNote().noteName; // XXX these object names / hirarchies are so fucking confusing
+        console.log("Base:", noteName);
+        var notes = self.octave_notes();
+        // loop notes and find shifts
+        for(var i = 0; i < notes.length - 1; i++) {
+            result.push(stdIntervals[noteName.name]);
+            noteName = noteName.next();
+        }
+        return result;
+    });
+
+    // how much is each key shifted from the std version (do re mi ...)
+    self.note_shifts = ko.computed(function() {
+        var intervals = self.quarter_intervals();
+        var std_intervals = self.std_intervals();
+        console.log("std:", std_intervals);
+        console.log("our:", intervals);
+        var result = [];
+        var carry = 0;
+        // first one is known: 0
+        // XXX: this is only true because we only start from std notes ... if
+        // we change to support other starting notes .. this logic will break!
+        result.push(0);
+        // loop notes and find shifts
+        for(var i = 0; i < intervals.length; i++) {
+            var std_shift = std_intervals[i];
+            var scale_shift = intervals[i];
+            var expected = std_shift + carry;
+            var carry = expected - scale_shift;
+            console.log("index:", i, " carry:", carry);
+            result.push(-carry);
+        }
+        return result;
+    });
+
+
     self.note_at = function(octave_index, key_index) {
         if(key_index < 0) { // HACK, but works
             return self.note_at(octave_index - 1, key_index + 7)
@@ -235,9 +279,26 @@ function PianoInstrument() {
             return self.note_at(octave_index +1, key_index - 7);
         }
         var note = notes.at(key_index);
+        // adjust by octave
         note = note.addInterval(intervals.octave.mul(octave_index));
         return note;
     };
+
+
+    // accidentals ..
+    self.shift_at = function(octave_index, key_index) {
+        // XXX logic copied mostly from note_at
+        if(key_index < 0) { // HACK, but works
+            return self.shift_at(octave_index - 1, key_index + 7)
+        }
+        var shifts = self.note_shifts();
+        if(key_index >= shifts.length) {
+            return self.shift_at(octave_index +1, key_index - 7);
+        }
+        var shift = shifts.at(key_index);
+        return shift
+    };
+
 
     // this is kind cheating .. it doesn't need to be inside the piano actually
     // but we'll do it this way to keep things grouped together
