@@ -124,7 +124,7 @@ function VirtualKeyVM(row, column, piano) {
         if(t==null) {
             return
         }
-        console.log("freq:", t);
+        console.log("note:", self.noteName().name, "freq:", t);
         play_freq(t);
     }
 
@@ -239,7 +239,7 @@ function PianoInstrument() {
     self.std_intervals = ko.computed(function() {
         var result = [];
         var noteName = self.baseNote().noteName; // XXX these object names / hirarchies are so fucking confusing
-        console.log("Base:", noteName);
+        // console.log("Base:", noteName);
         var notes = self.octave_notes();
         // loop notes and find shifts
         for(var i = 0; i < notes.length - 1; i++) {
@@ -253,8 +253,8 @@ function PianoInstrument() {
     self.note_shifts = ko.computed(function() {
         var intervals = self.quarter_intervals();
         var std_intervals = self.std_intervals();
-        console.log("std:", std_intervals);
-        console.log("our:", intervals);
+        // console.log("std:", std_intervals);
+        // console.log("our:", intervals);
         var result = [];
         var carry = 0;
         // first one is known: 0
@@ -267,7 +267,7 @@ function PianoInstrument() {
             var scale_shift = intervals[i];
             var expected = std_shift + carry;
             var carry = expected - scale_shift;
-            console.log("index:", i, " carry:", carry);
+            // console.log("index:", i, " carry:", carry);
             result.push(-carry);
         }
         return result;
