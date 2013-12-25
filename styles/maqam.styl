@@ -29,6 +29,7 @@
     direction: ltr
     vertical-align middle
     line-height: 20px
+    font-family: "Droid Arabic Kufi", "Droid Sans", FreeSans, sans-serif;
 
 .btn-group
     direction ltr
@@ -125,11 +126,16 @@
                 margin-bottom: 4px
 
 .maqam_info
+    .section.base_note, .section.ajnas {
+        font-family 'Droid Arabic Kufi', 'Droid Sans', sans-serif;
+    }
+    .section.base_note
+        .label
+            font-size: 12px;
     .section.ajnas
         height 100px
         padding-top 0px
         margin-top: 4px // to accomedate the pointer's 4px up shift
-        font-family 'Droid Arabic Kufi', 'Droid Sans', sans-serif;
         line-height 18px
 
         .pointer_shadow
