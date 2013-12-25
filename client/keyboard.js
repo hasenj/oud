@@ -226,7 +226,9 @@ function PianoInstrument() {
         for(var i = 0; i < notes.length - 1; i++) {
             var n0 = notes[i]; // this note
             var n1 = notes[i+1]; // next note
-            intervals.push(NoteRatio(n1, n0).quarter_count());
+            var qs = NoteRatio(n1, n0).quarter_count();
+            if(qs == 5) { qs = 6; } // HACK against hijaz interval
+            intervals.push(qs);
         }
         return intervals;
     });
