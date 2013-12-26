@@ -100,8 +100,10 @@ function VirtualKeyVM(row, column, piano) {
             return "first mark";
         } else if (pos == 5) {
             return "fifth mark";
-        } else if (pos == 9) {
+        } else if (piano.jins3() && pos == 9) {
             return "ninth mark";
+        } else if (!piano.jins3() && pos == 8) {
+            return "eighth mark";
         } else {
             return "";
         }
