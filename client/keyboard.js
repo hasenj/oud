@@ -124,8 +124,9 @@ function VirtualKeyVM(row, column, piano) {
     self.play = function() {
         var t = self.freq();
         if(t==null) {
-            return
+            return;
         }
+        t = Number(t.toFixed(2));
         console.log("note:", self.noteName().name, "freq:", t);
         play_freq(t);
     }
@@ -331,8 +332,11 @@ function PianoInstrument() {
     };
 
     self.findKeysByFreq = function(freq) {
+        var eq = function(a, b) {
+            return Number(a).toFixed(2) == Number(b).toFixed(2);
+        }
         return self.key_list.filter(function(key) {
-            return key.freq() == freq;
+            return eq(key.freq(), freq);
         });
     };
 

@@ -205,7 +205,6 @@ var intervals = {
 // -------------------------------------------------------------------------------------------
 
 Note = function(frequency) {
-    frequency = Number(frequency.toFixed(2));
     // assert 0 <= index < 7
     var self = this;
     self.frequency = frequency;
