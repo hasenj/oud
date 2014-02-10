@@ -58,7 +58,7 @@ function VirtualKeyVM(row, column, piano) {
     });
 
     self.dispNoteName = ko.computed(function() {
-        return self.noteName().display()
+        return self.noteName().display();
     });
 
     self.dispNoteAccidental = ko.computed(function() {
@@ -67,17 +67,21 @@ function VirtualKeyVM(row, column, piano) {
             'sharp': '&#9839;',
             'flat': '&#9837;',
             'h_flat': '&#119091;',
-            'h_sharp': '&#119090;'
-        }
+            'h_sharp': '&#119090;',
+            'd_flat': '&#119083;',
+            'd_shart': '&#119082;'
+        };
         var map = {
             '0': '',
             '1': symbols.h_sharp,
             '2': symbols.sharp,
+            '4': symbols.d_sharp,
             '-1': symbols.h_flat,
             '-2': symbols.flat,
-        }
+            '-4': symbols.d_flat
+        };
         shift = shift.toString();
-        if(shift in map) { shift = map[shift] }
+        if(shift in map) { shift = map[shift]; }
         return shift;
     });
 
