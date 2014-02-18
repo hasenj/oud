@@ -1,4 +1,3 @@
-@import 'nib/reset'
 @import 'macros'
 
 global-reset()
@@ -43,59 +42,99 @@ link()
     -webkit-user-select none
     user-select none
 
-div.layout
-    padding 0
-    margin 0 auto
-    width 1026px
-    > div
-        padding 0
-        margin 0
+div.layout {
+    padding: 0;
+    margin: 0px;
 
-div.app
-    text-align right
-    direction rtl
-    > div
-        display inline-block
-        vertical-align top
-        margin-top: 10px
-    > div.controls
-        width 302px
-        vertical-align top
-        margin-left 8px
-    &.lang_rtl > div.controls
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+
+    > div {
+        width 1030px
+        margin: 0 auto;
+        // TEMP
+        outline: 1px solid blue;
+        margin-bottom: 10px;
+    }
+
+    div.top {
+        border-radius: 0 0 5px 5px
+        border 1px solid silver
+        border-top none
+        direction ltr
+        background-color hsl(0, 0, 99)
+    }
+
+    div.app {
         text-align right
         direction rtl
-    &.lang_ltr > div.controls
-        direction ltr
-        text-align left
-    div.keyboard
-        width 710px
-        height 500px
-        direction ltr
-        border 1px solid silver
-        border-radius 5px
-        background-color hsla(270, 20, 99, 0.6)
+        > div {
+            display inline-block
+            vertical-align top
+            margin-top: 10px
+        }
+        > div.controls {
+            width 302px
+            vertical-align top
+            margin-left 8px
+        }
+        &.lang_rtl > div.controls {
+            text-align right
+            direction rtl
+        }
+        &.lang_ltr > div.controls {
+            direction ltr
+            text-align left
+        }
+        div.keyboard {
+            width 710px
+            height 500px
+            direction ltr
+            border 1px solid silver
+            border-radius 5px
+            background-color: hsla(270, 20, 99, 0.6);
+        }
+    }
+
+    div.guide_container {
+        padding: 10px 0px;
+        font-size: 20px;
+        &.lang_rtl {
+            direction rtl
+            text-align right
+            font-family amiri
+        }
+        &.lang_ltr {
+            direction ltr
+            text-align left
+            font-family Georgia
+            line-height: 1.8
+        }
+
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+
+        > div {
+        }
+
+        a.lang_ltr {
+            direction: ltr;
+            display: inline-block;
+        }
+    }
+}
+
 
 .oud_bg
-    background-color: hsl(30, 60, 20)
-    background-image: url('/static/images/oud-bg.png')
-    background-position: 0 -200px
-    background-size: cover
-    opacity: 0.7
-    position: absolute
-    top: 0
-    height: 572px
-    width: 100%
-    z-index: -10
-    box-shadow 0px 0px 3px 1px black
-
-.top
-    width 1024px
-    border-radius: 0 0 5px 5px
-    border 1px solid silver
-    border-top none
-    direction ltr
-    background-color hsl(0, 0, 99)
+    background-color: hsl(30, 30, 60);
+    background-image: url('/static/images/oud-bg.png');
+    background-size: cover;
+    box-shadow 0px 0px 3px 1px black;
+    margin-bottom: 10px !important; // for the shadow ..
 
 .shortcuts
     font-size 0px
@@ -167,16 +206,6 @@ div.text_page
 .arrow
     cursor: default
 
-.guide_container
-    &.lang_rtl
-        direction rtl
-        text-align right
-        font-family amiri
-    &.lang_ltr
-        direction ltr
-        text-align left
-        font-family Georgia
-        line-height: 1.8
 .guide
     span()
         display inline-block

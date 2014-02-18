@@ -1,7 +1,7 @@
 {% extends "root.jn" %}
 
 {% block content %}
-    <div class="layout" data-bind="with: piano">
+    <div class="layout oud_bg" data-bind="with: piano">
         <div class="top" data-bind="class: languageClass">
             {% include "jins_set_controls.html" %}
         </div>
@@ -13,16 +13,8 @@
                 {% include "keyboard.html" %}
             </div>
         </div>
-        <div data-bind="if: languagePopup">
-            <div class="languagePopup">
-                <div class="content">
-                    <h1>Language / Dil / اللغة</h1>
-                    <div class="lang" data-bind="click: goAr">عربي</div>
-                    <div class="lang" data-bind="click: goEn">English</div>
-                    <div class="lang" data-bind="click: goTr">Türkçe</div>
-                </div>
-            </div>
-        </div>
+    </div>
+    <div class="layout">
         <div class="guide_container" data-bind="class: languageClass">
             <!-- ko if: language() == 'ar' -->
                 {% include "guide-ar.html" %}
@@ -32,5 +24,14 @@
             <!-- /ko -->
         </div>
     </div>
-    <div class="oud_bg"></div>
+    <div data-bind="if: languagePopup">
+        <div class="languagePopup">
+            <div class="content">
+                <h1>Language / Dil / اللغة</h1>
+                <div class="lang" data-bind="click: goAr">عربي</div>
+                <div class="lang" data-bind="click: goEn">English</div>
+                <div class="lang" data-bind="click: goTr">Türkçe</div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
