@@ -53,7 +53,7 @@ div.layout {
     align-content: center;
 
     > div {
-        width 1230px
+        width 1050px
         margin: 0 auto;
         // TEMP
         // outline: 1px solid blue;
@@ -61,23 +61,26 @@ div.layout {
     }
 
     div.top {
-        border-radius: 0 0 5px 5px
-        border 1px solid silver
-        border-top none
-        direction ltr
-        background-color hsl(0, 0, 99)
+        direction: ltr;
+        div.top_controls {
+            border: 1px solid silver;
+            border-top: none;
+            border-radius: 0 0 3px 3px;
+            background-color: hsl(0, 0, 99);
+        }
     }
 
     div.app {
         text-align right
         direction rtl
+        display: table;
         > div {
-            display inline-block
-            vertical-align top
-            margin-top: 10px
+            display: table-cell;
+            vertical-align: top;
+            // margin-top: 10px
         }
         > div.controls {
-            width 302px
+            width 310px
             vertical-align top
             margin-left 8px
         }
@@ -90,12 +93,10 @@ div.layout {
             text-align left
         }
         div.keyboard {
-            width 910px
-            height 500px
             direction ltr
             border 1px solid silver
-            border-radius: 2px;
-            background-color: hsla(270, 20, 98, 0.8);
+            border-radius: 3px;
+            background-color: hsla(270, 20, 98, 0.5);
         }
     }
 
@@ -169,7 +170,7 @@ div.layout {
     padding 8px
     margin 10px
     width 90%
-    border-radius 6px
+    border-radius 3px
   .error
     border 2px solid red
     background-color hsl(10, 70, 90)
@@ -266,7 +267,7 @@ div.text_page
     padding-top: 0px;
     padding-bottom: 10px;
     background-color: white;
-    border-radius: 0px 0px 5px 5px
+    border-radius: 0px 0px 3px 3px
     border: 1px solid gray;
     border-top-color: silver;
     box-shadow 0px 2px 5px -1px hsla(270, 0, 20, 0.9)

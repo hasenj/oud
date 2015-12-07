@@ -39,12 +39,12 @@
         margin: 0px;
         border-left-width: 0px;
     .btn:first-child
-        border-top-left-radius: 5px
-        border-bottom-left-radius: 5px
+        border-top-left-radius: 3px
+        border-bottom-left-radius: 3px
         border-left-width: 1px;
     .btn:last-child
-        border-top-right-radius: 5px
-        border-bottom-right-radius: 5px
+        border-top-right-radius: 3px
+        border-bottom-right-radius: 3px
 
 // a stacking of button groups
 .btn-stack
@@ -55,16 +55,16 @@
             border-radius 0px
     .btn-group:first-child
         .btn:first-child
-            border-top-left-radius: 5px
+            border-top-left-radius: 3px
         .btn:last-child
-            border-top-right-radius: 5px
+            border-top-right-radius: 3px
     .btn-group:last-child
         .btn
             border-bottom-width: 1px
         .btn:first-child
-            border-bottom-left-radius: 5px
+            border-bottom-left-radius: 3px
         .btn:last-child
-            border-bottom-right-radius: 5px
+            border-bottom-right-radius: 3px
 
 .section.maqamPresets
     text-align center
@@ -94,10 +94,12 @@
     display block
     width 300px
     padding 10px 0px
-    background-color hsl(0, 0, 99)
-    border 1px solid hsl(0, 0, 90)
-    border-radius 5px
-    margin-bottom: 10px
+    background-color: hsl(0, 0, 99);
+    border: 1px solid hsl(0, 0, 90);
+    border-radius: 3px;
+    &:first-child {
+        margin-bottom: 10px;
+    }
     .section
         border-bottom 1px solid hsl(0, 0, 90)
         &:first-child
