@@ -1,8 +1,1 @@
-flask
-flask-bcrypt
-flask-peewee
-mysql-python
-gevent
-gevent-socketio
-requests
-blinker
+jinja2

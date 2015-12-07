@@ -1,10 +1,10 @@
-{% extends "root.jn" %}
+{% extends "root.html" %}
 
 {% block content %}
     <div class="layout oud_bg" data-bind="with: piano">
         <div class="top" data-bind="class: languageClass">
             <div class="top_controls">
-                {% include "jins_set_controls.html" %}
+                {% include "top_controls.html" %}
             </div>
         </div>
         <div class="app" data-bind="class: languageClass">

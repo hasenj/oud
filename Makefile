@@ -2,35 +2,48 @@ SHELL := /bin/bash
 
 all: web mobile
 
-web: static/all.css static/client.js static/libs.js
+web: out/index.html out/all.css out/client.js out/libs.js web-res
 
-static/all.css: styles/*.styl
+web-res: static/images/* static/fonts/*
+	mkdir -p out
+	cp -r static/images out/images
+	cp -r static/fonts out/fonts
+
+out/index.html: templates/*.html
+	mkdir -p out
+	venv/bin/python render.py templates/index.html > out/index.html
+
+out/all.css: styles/*.styl
 	mkdir -p build/css
-	stylus --compress --use ./node_modules/nib styles styles --out build/css
-	cat build/css/{global,keyboard,maqam}.css > static/all.css
+	mkdir -p out
+	./node_modules/stylus/bin/stylus --compress --use ./node_modules/nib styles styles --out build/css
+	cat build/css/{global,keyboard,maqam}.css > out/all.css
 
-static/client.js: client/*.js client/*.coffee
+out/client.js: client/*.js client/*.coffee
 	mkdir -p build/js
-	coffee --compile --output build/js client/*.coffee
+	mkdir -p out
+	./node_modules/coffee-script/bin/coffee --compile --output build/js client/*.coffee
 	cp client/*.js build/js/
-	cat build/js/{utils,text,ratios,synth,maqam,controls,keyboard}.js | jsmin > static/client.js
+	cat build/js/{utils,text,ratios,synth,maqam,controls,keyboard}.js | jsmin > out/client.js
 
-static/libs.js: client-libs/*.js
-	cat client-libs/{jquery,sugar,jquery.hotkeys,jquery.cookie,ko}.js > static/libs.js
+out/libs.js: client-libs/*.js
+	mkdir -p out
+	cat client-libs/{jquery,sugar,jquery.hotkeys,jquery.cookie,ko}.js > out/libs.js
 
 clean-css:
 	rm -rf build/css
-	rm -f static/all.css
+	rm -f out/all.css
 
 clean-js:
 	rm -rf build/js
-	rm -f static/client.js
+	rm -f out/client.js
 
 clean-libs:
-	rm -f static/libs.js
+	rm -f out/libs.js
 
 clean-web: clean-css clean-js clean-libs
 	rm -r build
+	rm -r out
 
 clean: clean-web
 
