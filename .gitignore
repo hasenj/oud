@@ -8,3 +8,4 @@ build-mobile
 mobile/styles.css
 mobile/client.js
 mobile/libs.js
+node_modules

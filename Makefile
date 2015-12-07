@@ -6,7 +6,7 @@ web: static/all.css static/client.js static/libs.js
 
 static/all.css: styles/*.styl
 	mkdir -p build/css
-	stylus --compress --use ~/node_modules/nib styles --out build/css
+	stylus --compress --use ./node_modules/nib styles styles --out build/css
 	cat build/css/{global,keyboard,maqam}.css > static/all.css
 
 static/client.js: client/*.js client/*.coffee
