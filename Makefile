@@ -4,10 +4,9 @@ all: web mobile
 
 web: out/index.html out/all.css out/client.js out/libs.js web-res
 
-web-res: static/images/* static/fonts/*
+web-res: static/**
 	mkdir -p out
-	cp -r static/images out/images
-	cp -r static/fonts out/fonts
+	cp -r static/* out/
 
 out/index.html: templates/*.html
 	mkdir -p out
