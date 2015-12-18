@@ -1,0 +1,26 @@
+CACHE MANIFEST
+
+CACHE:
+/
+/all.css
+/libs.js
+/client.js
+/icon.png
+/fonts/icons.eot
+/fonts/icons.ttf
+/images/btn-half-pressed.png
+/images/btn-marked-half-pressed.png
+/images/btn-marked-pressed.png
+/images/btn-marked.png
+/images/btn-pressed.png
+/images/btn.png
+/images/c1.png
+/images/c2.png
+/images/c3.png
+/images/oud-bg.png
+
+NETWORK:
+*
+
+FALLBACK:
+/ /
