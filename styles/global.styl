@@ -53,11 +53,9 @@ div.layout {
     align-content: center;
 
     > div {
-        width 1050px
+        width: 1200px;
         margin: 0 auto;
-        // TEMP
-        // outline: 1px solid blue;
-        margin-bottom: 10px;
+        margin-bottom: 24px;
     }
 
     div.top {
@@ -81,15 +79,15 @@ div.layout {
             // margin-top: 10px
         }
         > div.controls {
-            width 310px
+            width 340px
             vertical-align top
             margin-left 8px
         }
-        &.lang_rtl > div.controls {
+        &.lang_rtl > div.controls > div.panel {
             text-align right
             direction rtl
         }
-        &.lang_ltr > div.controls {
+        &.lang_ltr > div.controls > div.panel {
             direction ltr
             text-align left
         }
@@ -162,7 +160,7 @@ div.layout {
 }
 
 .shortcuts.ajnas {
-    width: 720px;
+    width: 870px;
 }
 
 .shortcuts.keys {
