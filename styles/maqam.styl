@@ -32,9 +32,12 @@
     font-family: "Droid Arabic Kufi", "Droid Sans", FreeSans, sans-serif;
 
 .btn-group
-    direction ltr
-    display inline-block
+    direction: ltr;
+    display: inline-table;
+    border-radius: 3px;
+    box-shadow: 0px 1px 5px -3px;
     .btn
+        display: table-cell;
         border-radius: 0px
         margin: 0px;
         border-left-width: 0px;
@@ -45,26 +48,6 @@
     .btn:last-child
         border-top-right-radius: 3px
         border-bottom-right-radius: 3px
-
-// a stacking of button groups
-.btn-stack
-    .btn-group
-        .btn
-            border-radius 0px
-            border-bottom-width: 0px
-            border-radius 0px
-    .btn-group:first-child
-        .btn:first-child
-            border-top-left-radius: 3px
-        .btn:last-child
-            border-top-right-radius: 3px
-    .btn-group:last-child
-        .btn
-            border-bottom-width: 1px
-        .btn:first-child
-            border-bottom-left-radius: 3px
-        .btn:last-child
-            border-bottom-right-radius: 3px
 
 .section.maqamPresets
     text-align center
