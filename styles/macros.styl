@@ -23,61 +23,25 @@ padding-end(val)
     -webkit-padding-end val
     -moz-padding-end val
 
-maqam-button(bghue=230)
+maqam-button(bghue=24)
   -reset()
   cursor pointer
-  // box-shadow 0px 0px 11px 2px hsl(bghue, 1, 96) inset
-  border solid 1px hsla(bghue, 20, 85, 0.7)
-  // background-color white
-  display inline-block
+  border: solid 1px hsla(bghue, 15, 85, 0.62)
+  padding: 3px 2px;
   text-align center
-  direction rtl
-  // font-family 'Droid Arabic Naskh', 'Droid Serif', serif
-  font-size 1.1em
-  text-shadow 1px 1px 2px hsl(150, 40, 60)
-  bg1 = rgb(hsl(0,0,92))
-  bg2 = rgb(hsl(0,0,88))
-  bg3 = rgb(hsl(0,0,98))
-  background: linear-gradient(top, 20% white, 280% bg1)
-  border-radius 5px
+  direction: rtl;
+  // font-size: 1.1em;
+  text-shadow: 1px 1px 2px hsl(150, 40, 60);
+  bg1 = hsl(bghue, 8, 98);
+  bg2 = hsl(bghue, 8, 94);
+  bg3 = hsl(bghue, 8, 100);
+  background: linear-gradient(top, 20% white, 80% bg1);
+  border-radius 3px
   &:hover
   &.hover
-    background: linear-gradient(top, white, 180% bg2)
+    background: linear-gradient(top, white, 180% bg2);
   &:active
   &.active
-    // background-color hsl(190, 20, 80)
-    background: linear-gradient(top, bg2, bg3)
-    text-shadow 1px 1px 2px hsl(150, 40, 90)
-
-
-aqua-button(bghue=230)
-  -reset()
-  outer_border(lite=0)
-    outer_shadow_color = hsl(((bghue+20) % 360), 3, 40+lite)
-    // box-shadow 0px 0px 1px 1px outer_shadow_color
-    border 1px solid (outer_shadow_color * 1.6)
-  cursor pointer
-  box-shadow 0px 0px 1px 1px hsl(bghue, 1, 90) inset
-  outer_border()
-  display inline-block
-  border-radius 5px
-  padding 5px 10px
-  font-size 0.9em
-  text-shadow 0px 0px 1px hsl(150, 30, 86)
-  color hsl(300,20,20)
-  grad(lite=89, to=1.1)
-    g1 = hsl(bghue,30,lite)
-    g2 = hsl(bghue,20,lite*0.96)
-    g3 = hsl(bghue,20,lite*to)
-    background linear-gradient(top, g1 60%, g2 50%, g3)
-  grad()
-  &:hover
-  &.hover
-    outer_border(-14)
-    grad(92, 1.5)
-  &:active
-  &.active
-    grad(85)
-    outer_border(-8)
-
+    background: linear-gradient(top, bg2, bg3);
+    text-shadow: 1px 1px 2px hsl(150, 40, 90);
 
