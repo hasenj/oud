@@ -140,30 +140,34 @@ div.layout {
     background-size: cover;
 }
 
-.shortcuts
-    font-size 0px
-    color hsla(270, 50, 50, 0.5)
-    direction ltr
+.shortcuts {
+    font-size: 0px;
+    color: hsla(270, 50, 50, 0.65);
+    direction: ltr;
     padding 8px 10px !important
-    display inline-block
-    .btn-group
-        margin-right 5px
-    .btn
+    display: inline-block;
+    .btn-group {
+        margin-right: 5px;
+    }
+    .btn {
         font-size 14px
         line-height 14px
-        height 14px
-        padding 3px 3px
-        display inline-block
-        vertical-align middle
-    .btn.jins
+        height: 14px;
+        padding: 6px 8px;
+    }
+    .btn.jins {
         text-align center
         font-family 'Droid Arabic Kufi', 'Droid Sans', sans-serif;
+    }
+}
 
-.shortcuts.ajnas
-    width 696px
+.shortcuts.ajnas {
+    width: 720px;
+}
 
-.shortcuts.keys
-    width 182px
+.shortcuts.keys {
+    width: 200px;
+}
 
 // XXX remove this?!!
 #error_box
@@ -273,7 +277,7 @@ div.text_page
     border-radius: 0px 0px 3px 3px
     border: 1px solid gray;
     border-top-color: silver;
-    box-shadow 0px 2px 5px -1px hsla(270, 0, 20, 0.9)
+    box-shadow: 0px 2px 5px -2px hsla(270, 0, 20, 0.5);
     cursor: default
     widget-font()
     .item
@@ -300,7 +304,7 @@ div.text_page
         text-align: center;
 
 .dropmenu.ajnas
-    margin-top: -4px
+    margin-top: -2px
     margin-start: 135px
     .item
         min-width: 120px;
