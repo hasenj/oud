@@ -2,6 +2,8 @@ unpressed_color = hsl(20, 80, 95)
 semipress_color = hsl(40, 60, 87)
 press_color = hsl(40, 77, 80)
 
+btn_shadow_color = hsla(0, 0, 0, 0.54);
+
 btn_highlight(color)
     // box-shadow inset 0px -50px 40px -30px color
     background-color color
@@ -36,7 +38,7 @@ btn_highlight(color)
             text-shadow 0px 0px 2px silver * 1.2
             overflow: hidden
             border-radius: 2px;
-            box-shadow: 0px 2px 3px 0px;
+            box-shadow: 0px 2px 3px 0px btn_shadow_color;
             .half
                 height 53px
                 line-height 60px
@@ -62,7 +64,7 @@ btn_highlight(color)
                     color hsl(270, 20, 60)
                     line-height: 50px
             &.pressed
-                box-shadow: 0px 1px 2px 0px;
+                box-shadow: 0px 1px 2px 0px btn_shadow_color;
                 background-image url('/images/btn-pressed.png')
                 // background-color bgc * 0.8
                 color hsl(300, 20, 10)
@@ -72,7 +74,7 @@ btn_highlight(color)
                 .note_name
                     color hsl(270, 20, 40)
             &.semi_pressed
-                box-shadow: 0px 2px 2px 0px;
+                box-shadow: 0px 2px 2px 0px btn_shadow_color;
                 background-image url('/images/btn-half-pressed.png')
                 .kb_key
                     color hsl(50, 70, 20)
