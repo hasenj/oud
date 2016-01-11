@@ -95,8 +95,23 @@ div.layout {
             direction: ltr;
             // border: 1px solid silver;
             border-radius: 3px;
-            background-color: hsla(270, 20, 98, 0.5);
+            background-color: hsla(270, 20, 98, 0.4);
             box-shadow: 0px 2px 2px -2px;
+
+            position: relative;
+            // a little ornament
+            div.ornament {
+                position: absolute;
+                bottom: 0px;
+                left: 0px;
+                width: 100px;
+                height: 120px;
+                background-image: url('/images/ornament.png');
+                opacity: 0.24;
+                background-size: 100px auto;
+                background-repeat: no-repeat;
+                background-position: bottom left;
+            }
         }
     }
 
