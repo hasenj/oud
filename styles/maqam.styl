@@ -49,23 +49,31 @@
         border-top-right-radius: 3px
         border-bottom-right-radius: 3px
 
-.section.maqamPresets
+.section.maqamPresets {
     text-align center
     direction rtl
-    .btn-group
+    .btn-group {
         margin-top 10px
         margin-left 10px
-        .btn.maqamPreset
-            line-height 20px
-            vertical-align middle
-            &.maqamName
+        .btn.maqamPreset {
+            line-height: 20px;
+            vertical-align: middle;
+            font-family: "Droid Arabic Naskh", "Droid Sans";
+            font-size: 12px;
+            &.maqamName {
                 width: 72px;
                 font-weight bold
-                .icon
-                    line-height 14px
-                    height 14px
-            &.maqamBase
+                .icon {
+                    vertical-align: baseline;
+                    margin: 0px 4px;
+                }
+            }
+            &.maqamBase {
                 width: 20px;
+            }
+        }
+    }
+}
 
 .lang_ltr
     .btn.maqamName
