@@ -135,6 +135,12 @@ function VirtualKeyVM(row, column, piano) {
         play_freq(t);
     }
 
+    self.clickPlay = function() {
+        self.play();
+        self.press();
+        setTimeout(self.unpress, 200);
+    }
+
     self.press = function() {
         self.pressed(true)
     }
