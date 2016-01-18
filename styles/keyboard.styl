@@ -16,14 +16,17 @@ btn_highlight(color)
     borderhilight = hsl(270, 90, 94)
     bgc = hsl(270, 50, 98)
     radiuspx = 2px
-    *
-        user-select none
-    text-align center
+    text-align: center;
     margin-top: 30px
     .row
         margin -10px 0px // vertical spacing
         .key
-            link()
+            link();
+            * {
+                cursor: default;
+                user-select: none;
+                -webkit-user-select: none;
+            }
             padding 0px
             margin: 9px 1px
             background-image url('/images/btn.png')
