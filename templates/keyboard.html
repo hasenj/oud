@@ -1,7 +1,7 @@
 <div id="keys" data-bind="foreach: { data: vkb_rows, as: 'row' }">
     <div class="row" data-bind="foreach: row"><!--
         --><div data-bind="attr: {class: containerClass}"><!--
-            --><div class="key unpressed" data-bind="click: clickPlay, attr: {class: elClass}"><!--
+            --><div class="key unpressed" data-bind="event: {mousedown: keydown, mouseup: keyup, mouseout: keyup}, attr: {class: elClass}"><!--
                 --><div class="half upper"><!--
                     --><div class='kb_key' data-bind="html: dispLetter">&nbsp;</div><!--
                 --></div><!--

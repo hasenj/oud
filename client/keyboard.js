@@ -135,12 +135,11 @@ function VirtualKeyVM(row, column, piano) {
         play_freq(t);
     }
 
-    self.clickPlay = function() {
-        var key = self.letter();
-        piano.keydown(key);
-        setTimeout(function() {
-            piano.keyup(key);
-        }, 200);
+    self.keydown = function() {
+        piano.keydown(self.letter());
+    }
+    self.keyup = function() {
+        piano.keyup(self.letter());
     }
 
     self.press = function() {
