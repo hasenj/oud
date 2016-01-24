@@ -142,6 +142,12 @@ function VirtualKeyVM(row, column, piano) {
         piano.keyup(self.letter());
     }
 
+    self.hover = function(object, event) {
+        if(event.which === 1) {
+            self.keydown();
+        }
+    }
+
     self.press = function() {
         self.pressed(true)
     }
