@@ -1,12 +1,5 @@
-# Prepare virtual env and install/update requirements
-if [ ! -d venv ]
-then
-    virtualenv venv --distribute
-fi
-venv/bin/easy_install -U distribute # not sure why but needed for ubuntu server
-venv/bin/pip install -r requirements.txt
-
 # install npm dependencies
+mkdir -p node_modules # deploy server doesn't like it without this
 npm install coffee-script
 npm install stylus
 npm install nib

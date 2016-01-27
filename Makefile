@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-all: web mobile
+all: web
 
 web: out/index.html out/all.css out/client.js out/libs.js web-res
 
@@ -45,25 +45,4 @@ clean-web: clean-css clean-js clean-libs
 	rm -r out
 
 clean: clean-web
-
-mobile: mobile/client.js mobile/styles.css mobile/libs.js
-
-mobile/client.js: client/*.js client/*.coffee
-	mkdir -p mobile
-	echo "" > mobile/client.js
-	# mkdir -p build-mobile/js
-	# coffee --compile --output build-mobile/js client/*.coffee
-	# cp client/*.js build-mobile/js/
-	# cat build-mobile/js/{utils,text,ratios,synth,maqam,controls,mobile}.js | jsmin > mobile/client.js
-
-mobile/styles.css: styles/mobile.less
-	mkdir -p mobile
-	echo "" > mobile/styles.css
-	# mkdir -p build-mobile/css
-	# lessc styles/mobile.less > mobile/styles.css
-
-mobile/libs.js: client-libs/*.js
-	mkdir -p mobile
-	echo "" > mobile/libs.js
-	# cat client-libs/{jquery,sugar,jquery.hotkeys,jquery.cookie,ko}.js > mobile/libs.js
 
