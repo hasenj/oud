@@ -17,7 +17,6 @@ body
     font normal 12pt Ubuntu
     color hsl(0, 0%, 20%)
 
-
 div, p
     user-select text
 
@@ -227,86 +226,121 @@ div.text_page
 .arrow
     cursor: default
 
-.guide
-    span()
-        display inline-block
-        float right
-        padding 2px 20px
-        margin 0 4px
-    margin-top 0px
-    // border-top 1px solid hsla(30, 93, 24, 0.5)
-    display inline-block
-    h1
-        font-size 24pt
-        text-align center
-        margin-top 20px
-        margin-bottom 10px
-        border-bottom 1px solid hsl(200, 6, 82)
+.guide {
+    margin: 0px;
+    margin-top: 80px;
+    font-family: "Droid Arabic Naskh", "Droid Sans";
 
-    p, li
-        margin-bottom 16px
-        font-size 14pt
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
 
-    ul
-        list-style-type: disc;
-        list-style-position: inside;
+    div.column {
+        &:last-child {
+            margin-left: 0px;
+        }
 
-    .span4 {
-        width: 440px;
-        span();
+        &.span4 {
+            width: 420px;
+        }
+
+        &.span6 {
+            width: 540px;
+        }
+
+        display: flex;
+        flex-flow: column nowrap;
+
+        div.doc_pane {
+            box-shadow: 0px 1px 3px -2px hsl(240, 50%, 70%);
+            border-radius: 4px;
+
+            background-color: white;
+            color: hsla(0, 0%, 20%, 0.86);
+
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+
+            h1 {
+                border-bottom: 1px solid hsla(240, 50%, 70%, 0.1);
+            }
+
+            p {
+                padding: 8px 20px;
+            }
+        }
+
+        h1 {
+            font-size: 12pt;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid hsl(200, 6, 82);
+        }
+
+        p, li {
+            font-size: 9pt;
+        }
+
+        ul {
+            list-style-type: disc;
+            list-style-position: inside;
+        }
     }
-    .span6 {
-        width: 660px;
-        span();
-    }
+}
 
 // fonts
 @font-face {
-  font-family: 'FreeSerif'; // for musical symbols
-  src: url('/fonts/FreeSerif.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'FreeSerif'; // for musical symbols
+    src: url('/fonts/FreeSerif.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: 'icons';
-  src: url('/fonts/icons.eot') format('embedded-opentype'),
-       url('/fonts/icons.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'icons';
+    src: url('/fonts/icons.eot') format('embedded-opentype'),
+         url('/fonts/icons.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
-.icon
-    font-family 'icons'
-    font-weight normal !important
-    display inline-block
-    vertical-align middle
+.icon {
+    font-family: 'icons';
+    font-weight: normal !important;
+    display: inline-block;
+    vertical-align: middle;
+}
 
-.dropmenu
-    position: absolute
-    margin-top: 0px
-    margin-left: -8px
+.dropmenu {
+    position: absolute;
+    margin-top: 0px;
+    margin-left: -8px;
     padding-top: 0px;
     padding-bottom: 10px;
     background-color: white;
-    border-radius: 0px 0px 3px 3px
+    border-radius: 0px 0px 3px 3px;
     border: 1px solid gray;
     border-top-color: silver;
     box-shadow: 0px 2px 5px -2px hsla(270, 0, 20, 0.5);
-    cursor: default
-    widget-font()
-    .item
-        padding: 8px 20px
-        transition: 100ms
+    cursor: default;
+    widget-font();
+    .item {
+        padding: 8px 20px;
+        transition: 100ms;
         min-width: 80px;
         font-family: "Droid Arabic Kufi", "Droid Sans", FreeSans, sans-serif;
         border-bottom: 1px solid silver;
-        &:hover
-            background-color hsla(270, 50%, 40%, 0.9)
-            color: hsl(270, 10, 99)
-        &.selected
-            background-color hsla(270, 30%, 70%, 0.5)
-            color: hsl(270, 5, 50)
+        &:hover {
+            background-color: hsla(270, 50%, 40%, 0.9);
+            color: hsl(270, 10, 99);
+        }
+        &.selected {
+            background-color: hsla(270, 30%, 70%, 0.5);
+            color: hsl(270, 5, 50);
+        }
+    }
+}
 
 .dropmenu.notes
     margin-top: -3px

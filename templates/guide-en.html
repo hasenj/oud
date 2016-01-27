@@ -1,58 +1,68 @@
 <div class="guide">
-    <div class="span4">
-        <h1>
-            About
-        </h1>
+    <div class="column span4">
+        <div class="doc_pane">
+            <h1>
+                About
+            </h1>
 
-        <p>
-        This web app is a dynamic music keyboard designed to facilitate playing music on the classical middle eastern scales (aka Maqam/Makam).
-        </p>
-        <p>
-        Initially I built this for myself because learning to play on the Oud requires a lot of practice before one could do anything remotely meaningful.
-        </p>
-        <h1>
-            Scale building
-        </h1>
-        <p>
-        The scale is built out of two tetrachords, each is a "mini scale" spanning four notes, and they get put together, separated by the ratio 3:2 (perfect fifth). The ratios here represent the relationship between the frequencies of the notes. Say note X has frequency 150 Hz and note Y has frequency 100 Hz, then the ratio between X and Y is 3:2.
-</p>
-<p>
-        The scales and tetrachords are not built by counting semitones and full tones; they're defined using mathematical ratios as intervals. For instance, the "major" (ajem) tetrachord is defined as having the major second (10:9), major third (5:4), and perfect forth (4:3) as its 3 intervals.
-</p>
-<p>
-        There are 8 tetrachords avilable for building a variety of scales. Two major (ajem, hijaz), 3 minor (nahawend, kurd, beyat), 1 neutral (rast), 2 diminished (saba, zemzem).
-</p>
-<p>Diminished tetrachords end with a diminished (not perfect) forth. If the second tetrachord is dinimished, then the scale does not end on the same note, so we add a third tetrachord (actually a repeat of the second tetrachord) to obtain the next set of notes in the scale.</p>
-<p>
-        <h1>
-            Base note
-        </h1>
-        <p>
-        In addition to a set of intervals, the scale also needs a starting note (or base note). The list of available choices for a starting note are based on the "A-minor" scale; i.e. the "nahawend-kurd" scale starting on "La" at 110 Hz.
-        </p>
+            <p>
+            This web app is a dynamic music keyboard designed to facilitate playing music on the classical middle eastern scales (aka Maqam/Makam).
+            </p>
+            <p>
+            Initially I built this for myself because learning to play on the Oud requires a lot of practice before one could do anything remotely meaningful.
+            </p>
+        </div>
+        <div class="doc_pane">
+            <h1>
+                Scale building
+            </h1>
+            <p>
+            The scale is built out of two tetrachords, each is a "mini scale" spanning four notes, and they get put together, separated by the ratio 3:2 (perfect fifth). The ratios here represent the relationship between the frequencies of the notes. Say note X has frequency 150 Hz and note Y has frequency 100 Hz, then the ratio between X and Y is 3:2.
+            </p>
+            <p>
+            The scales and tetrachords are not built by counting semitones and full tones; they're defined using mathematical ratios as intervals. For instance, the "major" (ajem) tetrachord is defined as having the major second (10:9), major third (5:4), and perfect forth (4:3) as its 3 intervals.
+            </p>
+            <p>
+            There are 8 tetrachords avilable for building a variety of scales. Two major (ajem, hijaz), 3 minor (nahawend, kurd, beyat), 1 neutral (rast), 2 diminished (saba, zemzem).
+            </p>
+            <p>Diminished tetrachords end with a diminished (not perfect) forth. If the second tetrachord is dinimished, then the scale does not end on the same note, so we add a third tetrachord (actually a repeat of the second tetrachord) to obtain the next set of notes in the scale.</p>
+            <p>
+        </div>
+        <div class="doc_pane">
+            <h1>
+                Base note
+            </h1>
+            <p>
+            In addition to a set of intervals, the scale also needs a starting note (or base note). The list of available choices for a starting note are based on the "A-minor" scale; i.e. the "nahawend-kurd" scale starting on "La" at 110 Hz.
+            </p>
+        </div>
     </div>
-    <div class="span6">
-        <h1>
-            How to play
-        </h1>
+    <div class="column span6">
+        <div class="doc_pane">
+            <h1>
+                How to play
+            </h1>
 
-        <p>
+            <p>
             In the middle of the screen you have a piano-like keyboard with key labels that map to the physical keyboard on your computer. Just hit keys on your physical computer and you will start hearing tones. Hit "D F G H" to play the first 4 notes of the scale.
-        </p>
-        <p>
+            </p>
+            <p>
             On the right you have a list of scales/maqams to choose from. When you choose a Maqam, the notes on the keyboard will change to adjust to the scale you've chosen. For instance, change to Hijaz and hit the first 4 keys "D F G H" again, and you will hear slightly different tones.
-        </p>
-        <p>
-        Each row on the keyboard represents an octave, plus some keys from the previous and next octaves. This creates some overlap (e.g. 'P' is the same note as 'D') and makes it easier to transition up and down the scale.
-        </p>
-        <h1>
-            Configuring the scale
-        </h1>
-        <p>
-        On the right we have a control panel that shows the 2 tetrachords (Jins) that make up the scale. If you click on a tetrachord you get a dropdown menu and you can change the tetrachord by selecting something from that menu. Alternatively, you can use keyboard shortcuts (1-8) to change the tetrachord under the "pointer" (violet arrow), and use '0' to move the pointer.
-        </p>
-        <p>
-        You can also change the starting note from the control panel: by clicking on the name of the note and selecting a different one from the dropdown menu, or clicking the + and - keys next to the name, or from the keyboard.
-        </p>
+            </p>
+            <p>
+            Each row on the keyboard represents an octave, plus some keys from the previous and next octaves. This creates some overlap (e.g. 'P' is the same note as 'D') and makes it easier to transition up and down the scale.
+            </p>
+        </div>
+        <div class="doc_pane">
+            <h1>
+                Configuring the scale
+            </h1>
+            <p>
+            On the right we have a control panel that shows the 2 tetrachords (Jins) that make up the scale. If you click on a tetrachord you get a dropdown menu and you can change the tetrachord by selecting something from that menu. Alternatively, you can use keyboard shortcuts (1-8) to change the tetrachord under the "pointer" (violet arrow), and use '0' to move the pointer.
+            </p>
+            <p>
+            You can also change the starting note from the control panel: by clicking on the name of the note and selecting a different one from the dropdown menu, or clicking the + and - keys next to the name, or from the keyboard.
+            </p>
+        </div>
     </div>
 </div>
